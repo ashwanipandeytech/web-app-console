@@ -99,29 +99,29 @@
           "style": "scss"
         }
       },
-      "root": "projects/app",
-      "sourceRoot": "projects/app/src",
+      "root": "projects/mobile-app",
+      "sourceRoot": "projects/mobile-app/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "browser": "projects/app/src/main.ts",
-            "tsConfig": "projects/app/tsconfig.app.json",
+            "browser": "projects/mobile-app/src/main.ts",
+            "tsConfig": "projects/mobile-app/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/app/public"
+                "input": "projects/mobile-app/public"
               }
             ],
             "styles": [
-              "projects/app/src/styles.scss"
+              "projects/mobile-app/src/styles.scss"
             ],
-            "server": "projects/app/src/main.server.ts",
+            "server": "projects/mobile-app/src/main.server.ts",
             "outputMode": "server",
             "ssr": {
-              "entry": "projects/app/src/server.ts"
+              "entry": "projects/mobile-app/src/server.ts"
             }
           },
           "configurations": {
@@ -152,10 +152,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "app:build:production"
+              "buildTarget": "mobile-app:build:production"
             },
             "development": {
-              "buildTarget": "app:build:development"
+              "buildTarget": "mobile-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -166,16 +166,16 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "tsConfig": "projects/app/tsconfig.spec.json",
+            "tsConfig": "projects/mobile-app/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/app/public"
+                "input": "projects/mobile-app/public"
               }
             ],
             "styles": [
-              "projects/app/src/styles.scss"
+              "projects/mobile-app/src/styles.scss"
             ]
           }
         }
