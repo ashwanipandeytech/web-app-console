@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { PageContentResolver } from 'shared-lib';
+import { Auth } from './auth/auth';
 
 export const routes: Routes = [
     {
@@ -18,6 +19,7 @@ export const routes: Routes = [
             pageData: PageContentResolver
         }
     },
+    { path: 'login', component: Auth },
 
    
 ];
