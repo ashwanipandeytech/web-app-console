@@ -1,0 +1,164 @@
+<div class="container">
+    <!-- Category Icons -->
+    <div class="category-icons">
+        <button type="button" class="btn p-1">
+            <img src="assets/images/svg/feeders.svg" alt="Feeders">
+            <span class="small">Feeders</span>
+        </button>
+        <button type="button" class="btn p-1">
+            <img src="assets/images/svg/egg-washer.svg" alt="Egg washer">
+            <span class="small">Egg washer</span>
+        </button>
+        <button type="button" class="btn p-1">
+            <img src="assets/images/svg/incubator.svg" alt="Incubator">
+            <span class="small">Incubator</span>
+        </button>
+        <button type="button" class="btn p-1">
+            <img src="assets/images/svg/drinkers.svg" alt="Drinkers">
+            <span class="small">Drinkers</span>
+        </button>
+        <button type="button" class="btn p-1">
+            <img src="assets/images/svg/brooders.svg" alt="Brooders">
+            <span class="small">Brooders</span>
+        </button>
+    </div>
+
+    <!-- Banner -->
+    <div class="banner">
+        <img src="assets/images/banner-one.png" class="img-fluid rounded" alt="Sale Banner">
+    </div>
+
+    <section class="suggested-products">
+        <!-- Suggested Products -->
+        <div class="py-3 d-flex justify-content-between align-items-center">
+            <h6 class="mb-0">Suggested for you</h6>
+            <a class="icon-link text-primary small icon-link-hover" href="#">
+                See all
+                <svg xmlns="http://www.w3.org/2000/svg" class="bi" viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                </svg>
+            </a>
+        </div>
+    
+        <div class="row g-2">
+            <!-- Product 1 -->
+            <div class="col-4">
+                <div class="product-image position-relative text-center bg-light rounded mb-2">
+                    <img src="assets/images/image1.png" class="img-fluid" alt="Product">
+                    <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
+                </div>
+                <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
+                <div class="product-price">₹652</div>
+            </div>
+    
+            <!-- Product 2 -->
+            <div class="col-4">
+                <div class="product-image position-relative text-center bg-light rounded mb-2">
+                    <img src="assets/images/image2.png" class="img-fluid" alt="Product">
+                    <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
+                </div>
+                <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
+                <div class="product-price">₹652</div>
+            </div>
+    
+            <!-- Product 3 -->
+            <div class="col-4">
+                <div class="product-image position-relative text-center bg-light rounded mb-2">
+                    <img src="assets/images/image3.png" class="img-fluid" alt="Product">
+                    <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
+                </div>
+                <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="product-price">₹652</div>
+                    <div class="discount">50% off</div>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="col-4">
+                <div class="product-image position-relative text-center bg-light rounded mb-2">
+                    <img src="assets/images/image1.png" class="img-fluid" alt="Product">
+                    <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
+                </div>
+                <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
+                <div class="product-price">₹652</div>
+            </div>
+    
+            <!-- Product 5 -->
+            <div class="col-4">
+                <div class="product-image position-relative text-center bg-light rounded mb-2">
+                    <img src="assets/images/image2.png" class="img-fluid" alt="Product">
+                    <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
+                </div>
+                <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
+                <div class="product-price">₹652</div>
+            </div>
+    
+            <!-- Product 6 -->
+            <div class="col-4">
+                <div class="product-image position-relative text-center bg-light rounded mb-2">
+                    <img src="assets/images/image3.png" class="img-fluid" alt="Product">
+                    <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
+                </div>
+                <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="product-price">₹652</div>
+                    <div class="discount">50% off</div>
+                </div>
+            </div>
+            
+            <!-- Product 7 -->
+            <div class="col-4">
+                <div class="product-image position-relative text-center bg-light rounded mb-2">
+                    <img src="assets/images/image1.png" class="img-fluid" alt="Product">
+                    <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
+                </div>
+                <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
+                <div class="product-price">₹652</div>
+            </div>
+    
+            <!-- Product 7 -->
+            <div class="col-4">
+                <div class="product-image position-relative text-center bg-light rounded mb-2">
+                    <img src="assets/images/image2.png" class="img-fluid" alt="Product">
+                    <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
+                </div>
+                <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
+                <div class="product-price">₹652</div>
+            </div>
+    
+            <!-- Product 9 -->
+            <div class="col-4">
+                <div class="product-image position-relative text-center bg-light rounded mb-2">
+                    <img src="assets/images/image3.png" class="img-fluid" alt="Product">
+                    <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
+                </div>
+                <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="product-price">₹652</div>
+                    <div class="discount">50% off</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="#" class="active">
+            <img src="assets/images/svg/home.svg" alt="home">
+            <span class="d-block">Home</span>
+        </a>
+        <a href="#">
+            <img src="assets/images/svg/categories.svg" alt="categories">
+            <span class="d-block">Categories</span>
+        </a>
+        <a href="#">
+            <img src="assets/images/svg/recyle.svg" alt="categories">
+            <span class="d-block">Buy again</span>
+        </a>
+        <a href="#">
+            <img src="assets/images/svg/profile.svg" alt="categories">
+            <span class="d-block">Profile</span>
+        </a>
+    </div>
+</div>

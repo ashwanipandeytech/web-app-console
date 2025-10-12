@@ -1,0 +1,129 @@
+<div class="cart-page bg-light">
+    <div class="cart-card mx-auto pt-2">
+        <div class="bg-white">
+            <div class="border-bottom px-3 py-2 mb-2">Products in cart</div>
+            <!-- Products -->
+            <div class="cart-item d-flex align-items-center justify-content-between gap-1 border-bottom px-3 pb-2 mb-2">
+                <div class="product-image bg-light rounded">
+                    <img src="assets/images/image1.png" alt="">
+                </div>
+                <div>
+                    <p class="small fw-semibold mb-0">Product name</p>
+                    <small class="fs-12 text-muted">Some details</small>
+                </div>
+                <div class="qty-stepper d-flex align-items-center bg-light rounded">
+                    <button class="btn p-1">−</button>
+                    <span class="mx-2">1</span>
+                    <button class="btn p-1">+</button>
+                </div>
+                <div class="fw-semibold">₹652</div>
+            </div>
+            <div class="cart-item d-flex align-items-center justify-content-between gap-1 border-bottom px-3 pb-2 mb-2">
+                <div class="product-image bg-light rounded">
+                    <img src="assets/images/image2.png" alt="">
+                </div>
+                <div>
+                    <p class="small fw-semibold mb-0">Product name</p>
+                    <small class="fs-12 text-muted">Some details</small>
+                </div>
+                <div class="qty-stepper d-flex align-items-center bg-light rounded">
+                    <button class="btn p-1">−</button>
+                    <span class="mx-2">1</span>
+                    <button class="btn p-1">+</button>
+                </div>
+                <div class="fw-semibold">₹652</div>
+            </div>
+            <div class="cart-item d-flex align-items-center justify-content-between gap-1 border-bottom px-3 pb-2 mb-2">
+                <div class="product-image bg-light rounded">
+                    <img src="assets/images/image3.png" alt="">
+                </div>
+                <div>
+                    <p class="small fw-semibold mb-0">Product name</p>
+                    <small class="fs-12 text-muted">Some details</small>
+                </div>
+                <div class="qty-stepper d-flex align-items-center bg-light rounded">
+                    <button class="btn p-1">−</button>
+                    <span class="mx-2">1</span>
+                    <button class="btn p-1">+</button>
+                </div>
+                <div class="fw-semibold">₹652</div>
+            </div>
+        </div>
+
+        <!-- Coupon -->
+        <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2">
+            <span class="fw-semibold">Have a coupon?</span>
+            <button type="button" class="btn text-primary fw-semibold p-0" data-bs-toggle="modal" data-bs-target="#couponModal">Apply</button>
+        </div>
+
+        <!-- Bill details -->
+        <div class="bg-white px-3 py-2 mt-2">
+            <p class="fw-semibold mb-2">Bill details</p>
+            <div class="d-flex justify-content-between mb-1"><span>Items total</span><span>₹1365</span></div>
+            <div class="d-flex justify-content-between mb-1"><span>Delivery charge</span><span>₹40</span></div>
+            <div class="d-flex justify-content-between mb-1"><span>Handling fees</span><span>₹16</span></div>
+            <div class="d-flex justify-content-between border-bottom pb-2 mb-2"><span>GST total</span><span>₹9</span></div>
+            <div class="d-flex justify-content-between fw-semibold mb-2"><span>Grand total</span><span>₹1458</span></div>
+            <div class="summary-box text-center">Total savings on this order ₹236</div>
+        </div>
+
+        <!-- Delivery -->
+        <div class="bg-white px-3 pt-2 pb-4 mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="fw-semibold mb-0">Delivering to:</p>
+                <button type="button" class="btn text-primary fw-semibold p-0" data-bs-toggle="modal" data-bs-target="#addressModal">Change</button>
+            </div>
+            <small class="text-muted">Address here 256, Street 65/4</small>
+            <!-- Button -->
+            <div class="mt-2">
+                <button class="btn btn-primary w-100">Continue to Pay</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade mobile-modal" id="addressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-end">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="addressModalLabel">Select address</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="btn">
+                <button class="btn">
+                    <i class="bi bi-plus"></i> Add new address
+                </button>
+            </div>        
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Understood</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="couponModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="couponModalLabel">Select address</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="btn">
+                <button class="btn">
+                    <i class="bi bi-plus"></i> Add new address
+                </button>
+            </div>        
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Understood</button>
+        </div>
+        </div>
+    </div>
+</div>

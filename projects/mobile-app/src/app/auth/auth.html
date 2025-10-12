@@ -1,1 +1,78 @@
-<p>auth works!</p>
+<div class="container">
+    <ng-container *ngIf="isSignUp">
+        <div class="py-3">
+            <!-- Sign up form -->
+            <form>
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">Full name</label>
+                    <input type="text" class="form-control" id="fullName" placeholder="Your full name">
+                </div>
+    
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone no.</label>
+                    <input type="tel" class="form-control" id="phone" placeholder="+1234567890">
+                </div>
+    
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                    <input type="password" class="form-control" id="password" placeholder="Enter password">
+                    <span class="input-group-text"><i class="bi bi-eye"></i></span>
+                    </div>
+                </div>
+    
+                <div class="mb-4">
+                    <label for="confirmPassword" class="form-label">Confirm password</label>
+                    <div class="input-group">
+                    <input type="password" class="form-control" id="confirmPassword" placeholder="Re-enter password">
+                    <span class="input-group-text"><i class="bi bi-eye"></i></span>
+                    </div>
+                </div>
+    
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-primary btn-lg" (click)="login()">Create account</button>
+                </div>
+            </form>
+    
+            <!-- Divider -->
+            <div class="divider">Or sign up with</div>
+    
+            <!-- Social Buttons -->
+            <div class="d-flex justify-content-center social-icons mb-3">
+                <img src="https://img.icons8.com/color/48/000000/facebook-new.png" alt="Facebook">
+                <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google">
+                <img src="https://img.icons8.com/ios-filled/50/000000/mac-os.png" alt="Apple">
+            </div>
+    
+            <div class="text-center mb-3">
+                <a href="#" class="text-primary">Sign up with email instead</a>
+            </div>
+    
+            <!-- Terms -->
+            <div class="footer-text">
+                By signing up, you agree to our <a href="#">Terms</a> and <a href="#">Policies</a>.
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="forgotPassword">
+        <div class="text-center pt-5">            
+            <form>
+                <div class="d-flex justify-content-center otp-input mb-4">
+                    <input type="text" class="form-control" maxlength="1" required>
+                    <input type="text" class="form-control" maxlength="1" required>
+                    <input type="text" class="form-control" maxlength="1" required>
+                    <input type="text" class="form-control" maxlength="1" required>
+                </div>
+        
+                <button type="submit" class="btn btn-primary w-100">Submit</button>
+            </form>
+    
+            <div class="mt-3">
+            <small class="text-muted">Didn’t receive a code? 
+                <a href="#" class="resend-link text-primary">Resend</a>
+            </small>
+            </div>
+        </div>
+    </ng-container>
+</div>
