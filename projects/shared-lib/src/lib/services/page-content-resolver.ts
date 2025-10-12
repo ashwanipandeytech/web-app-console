@@ -14,10 +14,11 @@ export class PageContentResolver implements Resolve<any> {
   resolve(route: ActivatedRouteSnapshot): Observable<any> {  
     const content_type='page'
     const fieldValue=route.paramMap.get('pageSlug') || 'home';
-    return from(this.pageContent.getContentByFieldName(content_type, fieldValue)).pipe(
-      catchError(error => {
-        return of('No data');
-      })
-    );
+    return of([]);
+    // return from(this.pageContent.getContentByFieldName(content_type, fieldValue)).pipe(
+    //   catchError(error => {
+    //     return of('No data');
+    //   })
+    // );
   }
 }

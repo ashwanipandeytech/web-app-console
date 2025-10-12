@@ -12,6 +12,6 @@ export class App {
   protected readonly title = signal('conceptfit');
   
   constructor(){
-    console.info('Environment', environment);
+   // console.info('Environment', environment);
   }
 }

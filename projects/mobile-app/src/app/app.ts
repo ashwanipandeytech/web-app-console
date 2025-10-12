@@ -16,7 +16,7 @@ export class App {
   isHomeScreenOpen: Boolean = true;
 
   constructor(private router: Router){
-    console.info('Environment', environment);
+   // console.info('Environment', environment);
   }
 
   openSignUp() {

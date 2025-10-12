@@ -11,15 +11,7 @@ export const environment = {
 
   
   at: {
-    environmentTypeUrl: "https://api.sw.fit",
-    googleTagManagerUrl: "https://www.googletagmanager.com",
-    envContentColor: "#fafafa",
-    ALLOW_SMART_BANNER:true,
-    // CONTENTFULCONFIG: {
-    //   space: 'hpzfbna3olmf',
-    //   accessToken: 'kyRZX_XUiZNxcc0KtM08jvpnXrIJ-LjpKlNyw47nldY',
-    //   environment: 'master',
-    // },
+  
     CONTENTFULCONFIG: {
       space: 'hpzfbna3olmf',
       accessToken: 'rbe0Cjmi-NLoiHwSZcRR9CeHeAiffdm82WstatYk-p0',

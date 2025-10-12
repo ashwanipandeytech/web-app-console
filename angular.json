@@ -117,12 +117,8 @@
             ],
             "styles": [
               "projects/mobile-app/src/styles.scss"
-            ],
-            "server": "projects/mobile-app/src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "projects/mobile-app/src/server.ts"
-            }
+            ]
+          
           },
           "configurations": {
             "production": {
