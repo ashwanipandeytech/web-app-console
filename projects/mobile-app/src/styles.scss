@@ -3,12 +3,16 @@
     --bs-body-color: #141414;
 }
 
+.bg-primary-light {
+   background-color: #CCE9F8;
+}
+ 
 @media screen and (max-width: 576px) {
     .modal {
         // --bs-modal-border-radius: 0;
         &.mobile-modal {
-            border-radius: var(--bs-modal-border-radius) var(--bs-modal-border-radius) 0 0;
             --bs-modal-margin: 0;
+
             // &.fade {
             //     :not(.show) {
             //         .modal-dialog {
@@ -25,7 +29,19 @@
                 &.modal-dialog-end {
                     display: flex;
                     align-items: end;
+                    height: 85%;
                     min-height: 100%;
+                }
+                .modal-content {
+                    margin-bottom: -10%;
+                    border-radius: .75rem .75rem 0 0;
+                    transition: margin-bottom .3s ease-out;
+                }
+            }
+            &.show {
+                .modal-content {
+                    max-height: 85%;
+                    margin-bottom: 0 !important;
                 }
             }
         }
@@ -38,6 +54,10 @@
 .fw-semibold { font-weight: 600; }
 
 .px-12 { padding-inline: 12px; }
+
+.carousel-indicators [data-bs-target] {
+    background-color: #0093DD76;
+}
 
 .material-symbols-outlined {
     font-variation-settings:

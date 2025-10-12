@@ -1,6 +1,39 @@
-<div class="container">
-
+<div id="carouselExampleIndicators" class="carousel slide mt-2 mb-3">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+        <img src="assets/images/product-image.png" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+        <img src="assets/images/product-image.png" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+        <img src="assets/images/product-image.png" class="d-block w-100" alt="...">
+        </div>
+    </div>
 </div>
+<div class="container">
+    <h5 class="fw-semibold mb-0">Product name here</h5>
+    <p class="fs-14 text-muted">Poultry farming equipment can be categorized by function into several groups, including housing and confinement.</p>
+    <hr>
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+            <h4 class="fw-semibold mb-0">₹652</h4>
+            <span class="fs-12 text-danger ms-3">50% off</span>
+        </div>
+        <div class="qty-stepper d-flex align-items-center bg-light rounded">
+            <button class="btn p-1">−</button>
+            <span class="mx-2">1</span>
+            <button class="btn p-1">+</button>
+        </div>
+    </div>
+    <hr>
+</div>
+
 <div class="position-absolute start-0 end-0 bottom-0 p-2">
     <button class="btn btn-primary fw-semibold w-100" (click)="addToCart()">
         <img src="assets/images/svg/plus.svg" />
