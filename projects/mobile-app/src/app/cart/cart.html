@@ -85,22 +85,77 @@
 
 <!-- Modal -->
 <div class="modal fade mobile-modal" id="addressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-end">
+    <div class="modal-dialog modal-dialog-end modal-dialog-scrollable">
         <div class="modal-content">
         <div class="modal-header">
-            <h1 class="modal-title fs-5" id="addressModalLabel">Select address</h1>
+            <h1 class="modal-title fs-5" id="addressModalLabel">New address details</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <div class="btn">
-                <button class="btn">
+            <ng-container *ngIf="isNewAddress">
+                <div class="d-flex align-items-start bg-primary-light rounded p-3 mb-3">
+                    <img src="assets/images/svg/indictor.svg" alt="" class="pt-1">
+                    <p class="fs-14 ms-1 mb-0">
+                        <span class="d-block">Area name</span>
+                        <span class="fs-12">Address here 256, Street 65/4, Address here 256, Street 65/4</span>
+                    </p>
+                </div>
+                <form>
+                    <div class="mb-3">
+                        <label for="buildingName" class="form-label fw-semibold mb-1">Flat/House no./Building name</label>
+                        <input type="text" class="form-control" id="buildingName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label fw-semibold mb-1">Full name</label>
+                        <input type="text" class="form-control" id="fullName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phoneNo" class="form-label fw-semibold mb-1">Phone</label>
+                        <input type="text" class="form-control" id="phoneNo">
+                    </div>
+                    <div class="mb-3">
+                        <label for="landmark" class="form-label mb-1"><span class="fw-semibold">Landmark</span> (Optional)</label>
+                        <input type="text" class="form-control" id="landmark">
+                    </div>
+                    <div class="mb-3">
+                        <label for="landmark" class="form-label fw-semibold mb-1">Address type</label>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-outline-primary">Home</button>
+                            <button type="button" class="btn bg-light">Office</button>
+                            <button type="button" class="btn bg-light">Others</button>
+                        </div>
+                    </div>
+                </form>
+            </ng-container>
+
+            <ng-container *ngIf="!isNewAddress">
+                <button class="btn bg-primary-light text-primary w-100" (click)="newAddress()">
                     <i class="bi bi-plus"></i> Add new address
                 </button>
-            </div>        
+                <hr />
+
+                <div>
+                    <p class="fs-14 text-muted mb-2">Saved addresses</p>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault1">
+                        <label class="form-check-label fs-14" for="radioDefault1">Address name</label>
+                        <span class="d-block fs-12 text-muted">Address here 256, Street 65/4, 635412</span>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault1">
+                        <label class="form-check-label fs-14" for="radioDefault1">Address name</label>
+                        <span class="d-block fs-12 text-muted">Address here 256, Street 65/4, 635412</span>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault1">
+                        <label class="form-check-label fs-14" for="radioDefault1">Address name</label>
+                        <span class="d-block fs-12 text-muted">Address here 256, Street 65/4, 635412</span>
+                    </div>
+                </div>
+            </ng-container>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Understood</button>
+        <div class="modal-footer" *ngIf="isNewAddress">
+            <button type="button" class="btn btn-primary w-100">Save address</button>
         </div>
         </div>
     </div>
@@ -109,21 +164,24 @@
 <div class="modal fade" id="couponModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title fs-5" id="couponModalLabel">Select address</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="btn">
-                <button class="btn">
-                    <i class="bi bi-plus"></i> Add new address
-                </button>
-            </div>        
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Understood</button>
-        </div>
+            <div class="modal-header bg-primary-light">
+                <button type="button" class="btn-close text-primary" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p class="position-relative bg-white rounded-circle mx-auto" style="width: fit-content;margin-top: -15%;">
+                    <img src="assets/images/svg/coupon.svg" alt="" style="filter: drop-shadow(0 11px 15px);">
+                </p>
+                <h4 class="text-primary">Coupon applied!</h4>     
+                <p class="fs-12 text-muted">KDVND6565FDVDSDF</p>
+                <div class="alert alert-success mb-0" role="alert">
+                    <p class="fw-semibold text-success mb-0">Saved ₹652</p>
+                    <span class="fs-12">You have saved total ₹652 on this order!</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                <button type="button" class="btn btn-outline-primary w-100">Okay!</button>
+            </div>
         </div>
     </div>
 </div>
