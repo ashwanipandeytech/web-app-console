@@ -1,11 +1,16 @@
-<template #hostContainer></template>
 
-<!-- <ng-container *ngIf="allInOnePageSections.length>0">
-    <ng-container *ngFor="let item of allInOnePageSections">
-  
-        <ng-container *ngComponentOutlet="pageComponentFactory.templateWiseComponents[item?.fields?.cComponentCode]; inputs: { data: item }"></ng-container>
-      
-      </ng-container>
+<ng-container *ngIf="userExist">
+  <header-panel-component-selector></header-panel-component-selector>
+  <left-panel-component-selector></left-panel-component-selector>
+
+</ng-container>
+
+<ng-container *ngIf="!userExist">
+<login-component-selector></login-component-selector>
+
+</ng-container>
 
 
-</ng-container> -->
+
+
+
