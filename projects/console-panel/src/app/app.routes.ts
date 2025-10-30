@@ -20,6 +20,14 @@ export const routes: Routes = [
             pageData: PageContentResolver
         }
     },
+    {
+        path: 'dashboard',  
+        pathMatch: 'full',     
+        loadComponent: () => import('./modules/dashboard/pages/dashboard').then(m => m.Dashboard),
+        resolve: {
+            pageData: PageContentResolver
+        }
+    },
     { path: 'login', component: Login },
    
 ];
