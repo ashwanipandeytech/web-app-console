@@ -18,17 +18,11 @@ export class HostOutletComponent {
   @ViewChild('hostContainer', { read: ViewContainerRef, static: true })
   hostContainer!: ViewContainerRef;
   ngOnInit(): void {    
-    this.activatedRoute.data.subscribe((response: any) => {
-      console.info(response,'response')
-     
-    //this.allInOnePageSections=response?.pageData;
-    // response?.pageData.map((item: any) => {  
-    //     let  templateVersion=item.fields.cComponentCode
-    //    this.pageComponentFactory.loadComponentInstance('Block-C-22-v1', item, this.hostContainer);
+   
+// step1 check from localstorage whether user exist of not
+// step2 if user exist then redirect to dashboard
+// step3 if user not exist then show login (toggle it from html selector)
 
-    //   })
-      
-    });
   }
  // await this.loaddynamicComponentService.loadComponentInstance(templateVersion, item, this.maincontentContainer, this.componentEntryId);
 

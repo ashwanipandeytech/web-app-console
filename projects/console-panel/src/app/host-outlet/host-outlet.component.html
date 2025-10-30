@@ -8,6 +8,9 @@
 <ng-container *ngIf="!userExist">
 <login-component-selector></login-component-selector>
 
+//In login component selector user can login or register 
+//After successful login or registration userExist will be true and header and left panel will be shown and redirect to dashboard
+//For redirection need to pass the component name in app.routes.ts
 </ng-container>
 
 
