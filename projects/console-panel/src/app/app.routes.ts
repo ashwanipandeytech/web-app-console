@@ -1,8 +1,10 @@
 import { Routes } from '@angular/router';
 import { PageContentResolver } from 'shared-lib';
+import { Login } from './auth/login/login';
 
 export const routes: Routes = [
     {
+        
         path: '',
         pathMatch: 'full',
         loadComponent: () => import('./host-outlet/host.component').then(m => m.HostOutletComponent),
@@ -18,6 +20,6 @@ export const routes: Routes = [
             pageData: PageContentResolver
         }
     },
-
+    { path: 'login', component: Login },
    
 ];
