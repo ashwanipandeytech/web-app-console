@@ -3,31 +3,43 @@ import { PageContentResolver } from 'shared-lib';
 import { Login } from './auth/login/login';
 
 export const routes: Routes = [
-    {
+    // {
         
+    //     path: '',
+    //     pathMatch: 'full',
+    //     loadComponent: () => import('./host-outlet/host.component').then(m => m.HostOutletComponent),
+    //     resolve: {
+    //         pageData: PageContentResolver
+    //     }
+    // },
+    // {
+    //     path: 'fotobuch',  
+    //     pathMatch: 'full',     
+    //     loadComponent: () => import('./host-outlet/host.component').then(m => m.HostOutletComponent),
+    //     resolve: {
+    //         pageData: PageContentResolver
+    //     }
+    // },
+    
+    {
         path: '',
-        pathMatch: 'full',
-        loadComponent: () => import('./host-outlet/host.component').then(m => m.HostOutletComponent),
-        resolve: {
-            pageData: PageContentResolver
-        }
+        loadComponent: () =>
+        import('./auth/login/login').then(c => c.Login)
     },
     {
-        path: 'fotobuch',  
-        pathMatch: 'full',     
-        loadComponent: () => import('./host-outlet/host.component').then(m => m.HostOutletComponent),
-        resolve: {
-            pageData: PageContentResolver
-        }
+        path: 'dashboard',
+        loadComponent: () =>
+        import('./modules/dashboard/dashboard').then(c => c.Dashboard)
     },
     {
-        path: 'dashboard',  
-        pathMatch: 'full',     
-        loadComponent: () => import('./modules/dashboard/pages/dashboard').then(m => m.Dashboard),
-        resolve: {
-            pageData: PageContentResolver
-        }
+        path: 'all-customers',
+        loadComponent: () =>
+        import('./modules/customers/customers').then(c => c.Customers)
     },
-    { path: 'login', component: Login },
+    {
+        path: 'add-customer',
+        loadComponent: () =>
+        import('./modules/customers/add-customer/add-customer').then(c => c.AddCustomer)
+    },
    
 ];
