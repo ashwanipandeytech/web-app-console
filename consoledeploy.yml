@@ -22,4 +22,3 @@ jobs:
           local-dir: dist/console-panel/browser/
           server-dir: ${{ secrets.CONSOLE_REMOTE_DIR }}
           dangerous-clean-slate: false
-          git-ftp-args: --force
