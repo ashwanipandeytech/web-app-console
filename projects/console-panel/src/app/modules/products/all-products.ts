@@ -3,11 +3,11 @@ import {Sidebar} from "../../layout/sidebar/sidebar";
 import {Header} from "../../layout/header/header";
 
 @Component({
-  selector: 'app-customers',
+  selector: 'app-all-products',
   imports: [Sidebar, Header],
-  templateUrl: './customers.html',
-  styleUrl: './customers.scss'
+  templateUrl: './all-products.html',
+  styleUrl: './all-products.scss'
 })
-export class Customers {
+export class AllProducts {
 
 }
