@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { PageContentResolver } from 'shared-lib';
 import { Login } from './auth/login/login';
+import { Dashboard } from './modules/dashboard/dashboard';
 
 export const routes: Routes = [
     // {
@@ -28,8 +29,8 @@ export const routes: Routes = [
     },
     {
         path: 'dashboard',
-        loadComponent: () =>
-        import('./modules/dashboard/dashboard').then(c => c.Dashboard)
+        component: Dashboard
+        
     },
     {
         path: 'all-customers',
