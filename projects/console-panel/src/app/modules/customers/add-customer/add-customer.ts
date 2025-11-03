@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import {Sidebar} from "../../../layout/sidebar/sidebar";
 
 @Component({
   selector: 'app-add-customer',
-  imports: [],
+  imports: [Sidebar],
   templateUrl: './add-customer.html',
   styleUrl: './add-customer.scss'
 })
