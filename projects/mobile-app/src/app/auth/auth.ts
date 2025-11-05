@@ -9,7 +9,8 @@ import { Router } from '@angular/router';
   styleUrl: './auth.scss'
 })
 export class Auth {
-  isSignUp: Boolean=true;
+  isLogin: Boolean=true;
+  isSignUp: Boolean=false;
   forgotPassword: Boolean=false;
   constructor(private router: Router){}
 

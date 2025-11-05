@@ -1,21 +1,24 @@
-.category-icons {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 3;
-    overflow-x: auto;
-    .btn {
-        flex: 1;
-        img {
-            width: 32px;
-            height: 32px;
+.category-icon-wrapper {
+    z-index: 1024; 
+    .category-icons {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 3;
+        overflow-x: auto;
+        .btn {
+            flex: 1;
+            img {
+                width: 32px;
+                height: 32px;
+            }
+            .small {
+                font-size: .75rem;
+                white-space: nowrap;
+            }
         }
-        .small {
-            font-size: .75rem;
-            white-space: nowrap;
-        }
-    }
-} 
+    } 
+}
 
 .suggested-products {
     .product-image {

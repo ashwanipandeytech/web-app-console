@@ -108,7 +108,7 @@
 @media (min-width: 576px) {
     .overlay-box {
         max-width: 400px;
-        margin: 0 auto 2rem auto;
+        margin: 0 auto;
     }
 }
 @media screen and (max-width: 575.99px) {
@@ -260,7 +260,7 @@
     border-top: 1px solid #ddd;
     display: flex;
     justify-content: space-around;
-    padding: 8px 0;
+    padding: 12px 0;
 }
 
 .bottom-nav a {
@@ -306,7 +306,7 @@
     font-size: 12px;
     text-align: center;
     color: #666;
-    margin-top: 20px;
+    // margin-top: 20px;
 }
 
 .footer-text a {

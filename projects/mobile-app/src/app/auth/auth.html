@@ -1,4 +1,4 @@
-<div class="p-3">
+<div class="p-3" style="height: calc(100vh - 86px);">
     <ng-container *ngIf="isSignUp">
         <div class="py-3">
             <!-- Sign up form -->
@@ -50,6 +50,43 @@
     
             <!-- Terms -->
             <div class="footer-text">
+                By signing up, you agree to our <a href="#">Terms</a> and <a href="#">Policies</a>.
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="isLogin">
+        <div class="d-flex flex-column h-100">
+            <div class="text-center my-5">
+                <h2 class="display-1 fw-semibold">Safure</h2>
+                <h4 class="display-6">Everything delivered in 10 minutes</h4>
+            </div>
+            <!-- Sign up form -->
+            <form class="pt-3">  
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Enter Phone Number</label>
+                    <input type="tel" class="form-control" id="phone" placeholder="+91">
+                </div>
+    
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password" placeholder="Enter password">
+                        <span class="input-group-text position-absolute end-0 z-3"><i class="bi bi-eye"></i></span>
+                    </div>
+                </div>
+    
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-primary btn-lg" (click)="login()">Continue</button>
+                </div>
+            </form>
+    
+            <div class="text-center mb-3">
+                <a href="#" class="text-primary">Sign up</a>
+            </div>
+    
+            <!-- Terms -->
+            <div class="footer-text mt-auto">
                 By signing up, you agree to our <a href="#">Terms</a> and <a href="#">Policies</a>.
             </div>
         </div>
