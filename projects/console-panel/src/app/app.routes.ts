@@ -5,6 +5,8 @@ import { Dashboard } from './modules/dashboard/dashboard';
 import { Customers } from './modules/customers/customers';
 import { AddCustomer } from './modules/customers/add-customer/add-customer';
 import { AllProducts } from './modules/products/all-products';
+import { Order } from './modules/order/order';
+import { Category } from './modules/category/category';
 
 export const routes: Routes = [
     // {
@@ -45,6 +47,14 @@ export const routes: Routes = [
     {
         path: 'add-product',
         component: AddCustomer
+    },
+    {
+        path: 'orders',
+        component: Order
+    },
+    {
+        path: 'category',
+        component: Category
     },
    
 ];
