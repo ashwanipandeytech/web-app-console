@@ -3,13 +3,13 @@ import { RouterOutlet } from '@angular/router';
 import { environment } from '#environments';
 import { PageContentFetcher } from 'shared-lib';
 @Component({
-  selector: 'conceptfit-root',
+  selector: 'safure-root',
   imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('conceptfit');
+  protected readonly title = signal('Safure');
   
   constructor(){
    // console.info('Environment', environment);
