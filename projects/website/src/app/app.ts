@@ -2,9 +2,11 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { environment } from '#environments';
 import { PageContentFetcher } from 'shared-lib';
+import { Header } from './layout/header/header';
+import { Footer } from './layout/footer/footer';
 @Component({
   selector: 'safure-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Header, Footer],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
