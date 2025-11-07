@@ -28,12 +28,8 @@
             ],
             "styles": [
               "projects/website/src/styles.scss"
-            ],
-            "server": "projects/website/src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "projects/website/src/server.ts"
-            }
+            ]
+            
           },
           "configurations": {
             "production": {
