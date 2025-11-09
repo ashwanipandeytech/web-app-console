@@ -2,14 +2,7 @@
   "name": "web-workspace",
   "type": "module",
   "version": "0.0.0",
-  "imports": {
-    "#environments": {
-      "development": "./environments/website/stage/at.ts",
-      "production": "./src/environments/config.production.ts",
-      "mobile-app": "./environments/website/stage/at.ts",
-      "default": "./environments/website/stage/at.ts"
-    }
-  },
+ 
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

@@ -1,32 +1,37 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-// import { environment } from '#environments';
+import { Injectable } from '@angular/core';
+ import { environment } from '../../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { Commonresponseobject } from '../model/responsemodel';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class DataService {
     //userid = JSON.parse(localStorage.getItem('user'))['ID'];
-    constructor(private http: HttpClient) { }
+    constructor(public http: HttpClient) { 
+
+      console.info('API CALL:', environment);
+    }
     httpOptions = {
       headers: new HttpHeaders({
-        //'Authorization': environment[window['environmentType']].Auth_Key,
-        'Content-Type': 'application/json'
+        'Authorization': environment.GLOBAL_AUTH,
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Accept': 'application/json'
   
       })
     };
   
     callApi(data: any, apiEndPoint: any) {
+     
       const requestPayload = {
-        //application: environment[window['environmentType']].APPLICATION,
-//version: environment[window['environmentType']].VERSION,
+        application: environment.APPLICATION,
+        version: environment.VERSION,
         data
       };
       const consolecolor = 'font-size:12px; font-weight: bold;padding:3px 2px;color:';
       // console.log('%c' + apiEndPoint + ':', consolecolor + 'green');
       // console.dir(apiEndPoint + ':' + JSON.stringify(requestPayload, null, 2));
-     // return this.http.post<Commonresponseobject>(environment[window['environmentType']].API_URL + apiEndPoint, requestPayload, this.httpOptions);
+      return this.http.post<Commonresponseobject>(environment.API_URL + apiEndPoint, data, this.httpOptions);
     }
   }
 

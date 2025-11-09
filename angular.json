@@ -32,7 +32,14 @@
             
           },
           "configurations": {
-            "production": {
+            "web-production": {
+              "fileReplacements": [
+                {
+                  "replace": "environments/environment.ts",
+                  "with": "projects/website/environments/production.environment.ts"
+                }
+
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -47,25 +54,32 @@
               ],
               "outputHashing": "all"
             },
-            "development": {
+            "web-development": {
+              "fileReplacements": [
+                {
+                  "replace": "environments/environment.ts",
+                  "with": "projects/website/environments/development.environment.ts"
+                }
+
+              ],
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "web-development"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
-            "production": {
-              "buildTarget": "website:build:production"
+            "web-production": {
+              "buildTarget": "website:build:web-production"
             },
-            "development": {
-              "buildTarget": "website:build:development"
+            "web-development": {
+              "buildTarget": "website:build:web-development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "web-development"
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"
@@ -117,7 +131,14 @@
           
           },
           "configurations": {
-            "production": {
+            "mobile-production": {
+              "fileReplacements": [
+                {
+                  "replace": "environments/environment.ts",
+                  "with": "projects/mobile-app/environments/production.environment.ts"
+                }
+
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -132,25 +153,32 @@
               ],
               "outputHashing": "all"
             },
-            "development": {
+            "mobile-development": {
+              "fileReplacements": [
+                {
+                  "replace": "environments/environment.ts",
+                  "with": "projects/mobile-app/environments/development.environment.ts"
+                }
+
+              ],
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "mobile-development"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
-            "production": {
-              "buildTarget": "mobile-app:build:production"
+            "mobile-production": {
+              "buildTarget": "mobile-app:build:mobile-production"
             },
-            "development": {
-              "buildTarget": "mobile-app:build:development"
+            "mobile-development": {
+              "buildTarget": "mobile-app:build:mobile-development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "mobile-development"
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"
@@ -201,7 +229,15 @@
             ]
           },
           "configurations": {
-            "production": {
+            "console-production": {
+
+              "fileReplacements": [
+                {
+                  "replace": "environments/environment.ts",
+                  "with": "projects/console-panel/environments/production.environment.ts"
+                }
+
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -216,25 +252,32 @@
               ],
               "outputHashing": "all"
             },
-            "development": {
+            "console-development": {
+              "fileReplacements": [
+                {
+                  "replace": "environments/environment.ts",
+                  "with": "projects/console-panel/environments/development.environment.ts"
+                }
+
+              ],
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "console-development"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
-            "production": {
-              "buildTarget": "console-panel:build:production"
+            "console-production": {
+              "buildTarget": "console-panel:build:console-production"
             },
-            "development": {
-              "buildTarget": "console-panel:build:development"
+            "console-development": {
+              "buildTarget": "console-panel:build:console-development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "console-development"
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"
