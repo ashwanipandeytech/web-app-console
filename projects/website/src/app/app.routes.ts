@@ -7,6 +7,11 @@ import { ProductSidebar } from './pages/product-sidebar/product-sidebar';
 import { Cart } from './cart/cart';
 import { Checkout } from './cart/checkout/checkout';
 import { Login } from './auth/login/login';
+import { Terms } from './terms/terms';
+import { Privacy } from './privacy/privacy';
+import { UserProfile } from './account/user-profile/user-profile';
+import { Wishlist } from './account/wishlist/wishlist';
+import { Compaire } from './account/compaire/compaire';
 
 export const routes: Routes = [
     {
@@ -30,8 +35,28 @@ export const routes: Routes = [
         component: Cart
     },
     {
+        path: 'user-profile',
+        component: UserProfile
+    },
+    {
+        path: 'wishlist',
+        component: Wishlist
+    },
+    {
+        path: 'compaire',
+        component: Compaire
+    },
+    {
         path: 'checkout',
         component: Checkout
+    },
+    {
+        path: 'terms',
+        component: Terms
+    },
+    {
+        path: 'privacy',
+        component: Privacy
     },
     {
         path: 'contact-us',
