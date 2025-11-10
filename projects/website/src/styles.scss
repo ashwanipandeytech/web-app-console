@@ -1,2 +1,643 @@
 @use 'scss/variable' as *;
 @use './scss/global' as *;
+
+.hero {
+  background: url("https://a2zlivestock.com/wp-content/uploads/2025/01/Making-Livestock-Care-Simple-Safe-Effective-7.png") no-repeat top right/cover;
+}
+
+.category-section {
+  @include gridItem();
+
+  .product-wrapper {
+    @include flexItem($direction: column, $gap: 2rem);
+    cursor: pointer;
+    box-shadow: none;
+    height: auto;
+    background-color: transparent;
+    padding-bottom: 0;
+    border: none;
+
+    .wrapper-img {
+      @include flexItem();
+      width: 100%;
+      border-radius: 1.2rem;
+      border: 1px solid $theme-bg;
+      transition: all 0.3s;
+      background: $theme-bg;
+      height: 19rem;
+      img {
+        transition: all 0.2s ease-in-out;
+      }
+      &:hover {
+        border: 1px solid $theme-color;
+        img {
+          transform: scale(1.2);
+        }
+      }
+    }
+
+    .wrapper-details {
+      font-size: 2rem;
+      font-weight: 500;
+      color: $paragraph;
+    }
+  }
+
+  @media #{$sm} {
+    @include gridItem($grid: repeat(2, minmax(0, 1fr)), $gap: 2rem);
+
+    .product-wrapper {
+      .wrapper-img {
+        height: 15rem;
+      }
+      .wrapper-details {
+        font-size: 1.8rem;
+      }
+    }
+  }
+
+  @media #{$mdx} {
+    @include gridItem($grid: repeat(4, minmax(0, 1fr)), $gap: 2rem);
+  }
+}
+
+.healthy-section {
+  padding-top: 6rem;
+
+  .product-wrapper {
+    height: 45.3rem;
+    border: none;
+    background-color: transparent;
+    @include flexItem(
+      $direction: column,
+      $justify: space-between,
+      $align: flex-start
+    );
+
+    .wrapper-info {
+      padding: 2rem 0 0 3rem;
+      display: unset;
+
+      .wrapper-details {
+        padding: 0 0 2rem 0;
+        font-size: 3.4rem;
+        margin-bottom: 0;
+      }
+      .shop-btn {
+        margin: 0;
+        padding: 1rem 2rem;
+
+        svg {
+          fill: $primary-color;
+        }
+      }
+    }
+
+    .wrapper-img {
+      height: 26rem;
+      padding: 0;
+      width: 100%;
+      flex: 1 1 0%;
+    }
+  }
+
+  @media #{$sm} {
+    .product-wrapper {
+      height: auto;
+      .wrapper-details {
+        br {
+          display: none;
+        }
+      }
+    }
+  }
+}
+.wrapper-subtitle {
+  display: block;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  font-family: $inter;
+  font-weight: 500;
+}
+
+.wrapper-one {
+  background: url("/images/homepage-one/category-img/c-bg-img-1.webp") no-repeat center / cover;
+
+  .shop-btn {
+    @include shopBtn($btn-bg: $theme-color, $bf-color: $primary-color);
+
+    svg {
+      fill: $heading;
+    }
+  }
+}
+
+.wrapper-two {
+  background: url("/images/homepage-one/category-img/c-bg-img-2.webp") no-repeat center / cover;
+
+  .shop-btn {
+    @include shopBtn($btn-bg: $btn-bg-1);
+  }
+}
+.wrapper-three {
+  background: url("/images/homepage-one/category-img/c-bg-img-3.webp") no-repeat center / cover;
+
+  .shop-btn {
+    @include shopBtn($btn-bg: $btn-bg-2);
+  }
+}
+
+// fresh-section
+.fresh {
+  background: url("/images/homepage-one/category-section-background.webp") no-repeat center / cover;
+}
+
+// flash-sle-------------------
+.flash-sale {
+  background-color: rgba($primary-color, 0.4);
+}
+.flash-sale-section {
+  background: url("/images/homepage-one/flash_sale.webp") no-repeat center / cover;
+  height: 47rem;
+  border-radius: 4px;
+  padding: 4.7rem 6rem 6rem;
+  position: relative;
+
+  .flash-sale-content {
+    .wrapper-heading {
+      margin-bottom: 0;
+    }
+    .wrapper-details {
+      color: $heading;
+      font-size: 1.8rem;
+    }
+    .shop-btn {
+      margin: 3rem 0 0 0;
+    }
+  }
+
+  .discount-item {
+    @include flexItem();
+    width: 17.6rem;
+    height: 17.6rem;
+    position: absolute;
+    border-radius: 50%;
+    background: $secondary-theme;
+    color: $heading;
+    text-align: center;
+    bottom: 2rem;
+    right: 12rem;
+
+    span {
+      display: block;
+    }
+    .discount-text {
+      font-size: 5.4rem;
+    }
+    .discount-inner-text {
+      font-size: 3.8rem;
+      font-weight: 500;
+    }
+  }
+
+  @media #{$sm} {
+    height: auto;
+    padding: 2.5rem;
+    background-position: left;
+
+    .flash-sale-content {
+      .wrapper-heading {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+      .wrapper-details {
+        color: $heading;
+        font-size: 1.8rem;
+        br {
+          display: none;
+        }
+      }
+      .shop-btn {
+        margin: 3rem 0 0 0;
+      }
+    }
+    .discount-item {
+      display: none;
+    }
+  }
+}
+
+.countdown-section {
+  @include flexItem($gap: 2.3rem, $justify: unset);
+  margin-bottom: 4rem;
+  .countdown-items {
+    @include flexItem($direction: column, $gap: 1rem);
+
+    span {
+      font-weight: 600;
+    }
+
+    .number {
+      @include flexItem();
+      font-size: 3rem;
+      background: $primary-color;
+      height: 10rem;
+      width: 10rem;
+      border-radius: 50%;
+    }
+
+    .text {
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: $heading;
+    }
+  }
+
+  @media #{$sm} {
+    gap: 1rem;
+    .countdown-items {
+      span {
+        font-weight: 600;
+      }
+
+      .number {
+        font-size: 1.8rem;
+        height: 5rem;
+        width: 5rem;
+        border-radius: 50%;
+      }
+
+      .text {
+        font-size: 1.3rem;
+      }
+    }
+  }
+}
+
+.flash {
+  .flash-sale {
+    background: url("/images/homepage-one/flash-sale-bg.webp")
+      no-repeat center / cover;
+    height: 44rem;
+    border-radius: 0.5rem;
+    padding: 6.5rem;
+    @include flexItem($justify: flex-end);
+
+    .countdown-items {
+      .number {
+        @include flexItem();
+        width: 10rem;
+        height: 10rem;
+        border-radius: 50%;
+        background: $primary-color;
+      }
+
+      .text {
+        color: $primary-color;
+      }
+    }
+
+    @media #{$sm} {
+      justify-content: center;
+      height: auto;
+
+      .countdown-section {
+        @include flexItem($gap: 1rem);
+
+        .number {
+          font-size: 1.8rem;
+          @include flexItem();
+          width: 5rem;
+          height: 5rem;
+        }
+
+        .text {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}
+
+// top-selling---------------
+.top-selling {
+  padding-top: 0;
+
+  @media #{$sm} {
+    padding-top: 6rem;
+  }
+}
+.top-selling-section {
+  .product-wrapper {
+    height: 21rem;
+    @include flexItem($gap: 1.6rem);
+    position: relative;
+    padding: 1.5rem;
+
+    .product-img {
+      height: 17.4rem;
+      width: 16.8rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .product-info {
+      padding: 0;
+      margin: 0;
+      align-items: flex-start;
+      text-align: left;
+      flex: 1 1 0%;
+    }
+
+    .product-cart-items {
+      position: absolute;
+      left: 0;
+      top: -0.5rem;
+      right: unset;
+    }
+    .price {
+      justify-content: flex-start;
+      margin: 0 0 2rem 0;
+    }
+    &:hover {
+      .product-cart-items {
+        left: 1.5rem;
+      }
+    }
+  }
+
+  @media #{$mdl} {
+    .product-wrapper {
+      height: auto;
+      .product-info {
+        align-items: flex-start;
+        .product-details {
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        .product-btn {
+          padding: 1.2rem;
+        }
+      }
+      .product-img {
+        height: 12rem;
+        width: 12rem;
+      }
+    }
+  }
+}
+
+.grocery-section {
+  padding-top: 6rem;
+  .product-wrapper {
+    height: 29.5rem;
+    border: none;
+    background: none;
+    padding: 3rem 4rem 4rem;
+  }
+  .wrapper-left {
+    background: url("/images/homepage-one/grocery-bg.webp") no-repeat
+      center / cover;
+
+    .shop-btn {
+      background: $secondary-theme;
+      color: $heading;
+      margin: 5rem 0 0 0;
+
+      svg {
+        fill: $heading;
+      }
+      &:hover {
+        color: $primary-color;
+        svg {
+          fill: $primary-color;
+        }
+      }
+    }
+  }
+  .wrapper-right {
+    background: url("/images/homepage-one/grocery-bg-1.webp") no-repeat
+      center / cover;
+  }
+
+  @media #{$md} {
+    .product-wrapper {
+      height: 29rem;
+      padding: 2rem;
+
+      background-position: left;
+
+      .wrapper-details {
+        font-size: 3rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        br {
+          display: none;
+        }
+      }
+      .shop-btn {
+        margin: 4rem 0 0 0;
+      }
+    }
+  }
+}
+
+// best-deal----------
+.best-product {
+  background: url("/images/homepage-one/best-deal-bg.webp") no-repeat
+    center / cover;
+  padding-bottom: 11.2rem;
+  height: 36.5rem;
+  padding: 8rem 0;
+
+  .best-product-section {
+    .row > * {
+      --bs-gutter-x: 20px;
+      --bs-gutter-y: 20px;
+    }
+
+    .product-wrapper {
+      height: auto;
+      padding: 0;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+
+      .product-info {
+        background: none;
+        padding: 0;
+
+        .wrapper-details {
+          color: $heading;
+          font-size: 1.8rem;
+        }
+        .shop-btn {
+          margin: 3rem 0 0 0;
+        }
+      }
+    }
+  }
+
+  @media #{$mdl} {
+    height: auto;
+    padding: 3rem 2rem;
+    .best-product-section {
+      .product-wrapper {
+        padding: 0;
+      }
+    }
+  }
+}
+
+//arrival-section----------
+.arrival {
+  background: url("/images/homepage-one/new-arrival-bg.webp") no-repeat
+    center / cover;
+}
+
+.modern-grocery-section {
+  background: url("/images/homepage-one/grocery-bg-2.webp") no-repeat
+    center / cover;
+  height: 28.7rem;
+  margin-top: 7rem;
+
+  .product-wrapper {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    height: auto;
+    padding: 8rem 0;
+    .product-info {
+      background: transparent;
+      .wrapper-heading {
+        color: $primary-color;
+      }
+    }
+    .shop-btn {
+      margin-top: 2rem;
+      background: $secondary-theme;
+      color: $heading;
+      svg {
+        fill: $heading;
+      }
+      &:hover {
+        color: $primary-color;
+        svg {
+          fill: $primary-color;
+        }
+      }
+    }
+  }
+
+  @media #{$mdl} {
+    height: auto;
+    .product-wrapper {
+      padding: 3rem 1rem;
+    }
+  }
+}
+
+//popular-sales-section----------
+
+.popular-sale-section {
+  .product-wrapper {
+    @include flexItem($justify: unset, $gap: 1.7rem);
+    height: auto;
+    padding: 1.5rem 1rem;
+    border-radius: 0;
+    border: none;
+    &:not(:last-child) {
+      border-bottom: 1px solid #e8e8e8;
+    }
+    .product-img {
+      width: 7.5rem;
+      height: 7.5rem;
+      padding: 0;
+      margin: 0;
+      border: 1px solid $theme-bg;
+      overflow: hidden;
+    }
+    .product-info {
+      padding: 0;
+
+      .product-details {
+        text-align: left;
+      }
+    }
+    .price {
+      justify-content: unset;
+      margin: 0;
+    }
+  }
+
+  @media #{$sm} {
+    .product-wrapper {
+      .product-info {
+        .product-details {
+          font-size: 2rem;
+        }
+      }
+    }
+  }
+}
+
+// common-design for product-info
+@media #{$sm} {
+  #info-left,
+  #info-left-1 {
+    padding: 0;
+    align-items: flex-start;
+    text-align: left;
+    .wrapper-heading {
+      font-size: 3.6rem;
+      margin-bottom: 1rem;
+    }
+    .wrapper-details {
+      br {
+        display: none;
+      }
+    }
+  }
+}
+
+
+// brand-section------------
+
+// .brand-section {
+//   @include gridItem($grid: repeat(6, minmax(0, 1fr)), $gap: 0);
+//   border: 1px solid $theme-bg;
+
+//   .product-wrapper {
+//     @include flexItem();
+//     @include wrapper($hg: 13rem, $pd: 0, $br: 0);
+//     background: $primary-color;
+//     border: 1px solid $theme-bg;
+//     box-shadow: none;
+
+//     .wrapper-img {
+//       transition: all 0.2s;
+//       filter: grayscale(1);
+//     }
+
+//     &:hover {
+//       .wrapper-img {
+//         filter: none;
+//       }
+//     }
+//   }
+
+//   @media #{$sm} {
+//     @include gridItem($grid: repeat(2, minmax(0, 1fr)), $gap: 0);
+//   }
+//   @media #{$md} {
+//     .product-wrapper {
+//       padding: 1rem;
+//     }
+//   }
+// }

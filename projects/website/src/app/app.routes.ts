@@ -12,6 +12,7 @@ import { Privacy } from './privacy/privacy';
 import { UserProfile } from './account/user-profile/user-profile';
 import { Wishlist } from './account/wishlist/wishlist';
 import { Compaire } from './account/compaire/compaire';
+import { Category } from './pages/category/category';
 
 export const routes: Routes = [
     {
@@ -25,6 +26,10 @@ export const routes: Routes = [
     {
         path: 'about-us',
         component: AboutUs
+    },
+    {
+        path: 'category',
+        component: Category
     },
     {
         path: 'product-sidebar',
