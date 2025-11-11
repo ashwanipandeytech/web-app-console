@@ -145,18 +145,21 @@ button {
 
 // wrapper------
 .product-wrapper {
-  @include wrapper();
+  @include wrapper($hg: 100%, $pd: 0, $br: 0);
   position: relative;
   transition: all 0.2s;
-  border: 1px solid $primary-color;
+  //border: 1px solid $primary-color;
   overflow: hidden;
 
   .product-img {
     @include flexItem();
+    background-color: $primary-color;
     height: 21rem;
     padding-top: 3.2rem;
-    margin-bottom: 3.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 1rem;
     position: relative;
+    overflow: hidden;
 
     img {
       transform: scale(1);
@@ -204,11 +207,13 @@ button {
   }
 
   .product-info {
-    @include flexItem($direction: column);
+    @include flexItem($direction: column, $align: flex-start);
     margin: 0rem;
-    text-align: center;
-    padding: 0 3rem 3rem;
-    .ratings {
+    // text-align: center;
+    padding: 0 1rem 1rem;
+    background-color: transparent !important;
+    position: relative;
+    .ratings {  
       margin: 0.6rem 0;
     }
   }
@@ -221,16 +226,20 @@ button {
     transition: all 0.4s;
     width: 100%;
     .product-btn {
-      width: 100%;
+      width: fit-content;
       @include flexItem($gap: 1rem);
+      position: absolute;
+      top: -52px;
+      right: 7px;
+      padding: .5rem .5rem;
       .btn-text {
-        font-weight: 600;
+        font-weight: 500;
       }
     }
   }
 
   &:hover {
-    border: 1px solid $theme-color;
+    //border: 1px solid $theme-color;
     .product-img {
       img {
         transform: scale(1.1);
@@ -281,8 +290,11 @@ button {
 }
 
 .product-btn {
-  @include productBtn();
+  @include productBtn($bg: $theme-color, $color: $primary-color);
   transition: all 0.4s;
+  svg {
+    fill: $primary-color
+  }
 }
 
 .section-title {

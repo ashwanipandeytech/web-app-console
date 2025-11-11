@@ -13,6 +13,7 @@ import { UserProfile } from './account/user-profile/user-profile';
 import { Wishlist } from './account/wishlist/wishlist';
 import { Compaire } from './account/compaire/compaire';
 import { Category } from './pages/category/category';
+import { ProductInfo } from './pages/product-info/product-info';
 
 export const routes: Routes = [
     {
@@ -34,6 +35,10 @@ export const routes: Routes = [
     {
         path: 'product-sidebar',
         component: ProductSidebar
+    },
+    {
+        path: 'product-info',
+        component: ProductInfo
     },
     {
         path: 'cart',

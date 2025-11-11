@@ -147,11 +147,11 @@ $spartan: "League Spartan", sans-serif;
 @mixin wrapper($hg: 44.5rem, $pd: 0 0 2rem 0, $br: 4px) {
   width: 100%;
   height: $hg;
-  padding: $pd;
-  border-radius: $br;
-  background-color: $primary-color;
+  //padding: $pd;
+  //border-radius: $br;
+  //background-color: $primary-color;
   cursor: pointer;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  //box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 // (section-title)
