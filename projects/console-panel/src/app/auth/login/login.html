@@ -9,26 +9,54 @@
         </div>
         <div class="bottom">
             <h3 class="panel-title">Login</h3>
-            <form>
+            <form [formGroup]="loginForm">
                 <div class="input-group mb-30">
                     <span class="input-group-text"><i class="fa-regular fa-user"></i></span>
-                    <input type="text" class="form-control"  placeholder="Username or email address">
+                    <input type="text" class="form-control" formControlName="email" placeholder="Username or email address">
                 </div>
-                <div class="input-group mb-20">
-                    <span class="input-group-text"><i class="fa-regular fa-lock"></i></span>
-                    <input type="password" class="form-control rounded-end" placeholder="Password">
-                    <a role="button" class="password-show"><i class="fa-duotone fa-eye"></i></a>
-                </div>
+         @if (submitted && f['email'].errors) {
+  <div class="text-danger fs-14 mb-2">
+    @if (f['email'].errors['required']) {
+      <small>Email is required.</small>
+    }
+    @if (f['email'].errors['email']) {
+      <small>Please enter a valid email address.</small>
+    }
+  </div>
+}
+
+<div class="input-group mb-20">
+  <span class="input-group-text"><i class="fa-regular fa-lock"></i></span>
+  <input
+    type="password"
+    class="form-control rounded-end"
+    formControlName="password"
+    placeholder="Password"
+  />
+  <a role="button" class="password-show"><i class="fa-duotone fa-eye"></i></a>
+</div>
+
+@if (submitted && f['password'].errors) {
+  <div class="text-danger fs-14 mb-2">
+    @if (f['password'].errors['required']) {
+      <small>Password is required.</small>
+    }
+    @if (f['password'].errors['minlength']) {
+      <small>Password must be at least 6 characters.</small>
+    }
+  </div>
+}
+
                 <div class="d-flex justify-content-between mb-30">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="loginCheckbox">
+                        <input class="form-check-input" type="checkbox" value="" id="loginCheckbox" formControlName="remeberMe">
                         <label class="form-check-label text-white" for="loginCheckbox">
                             Remember Me
                         </label>
                     </div>
                     <a href="reset-password.html" class="text-white fs-14">Forgot Password?</a>
                 </div>
-                <a class="btn btn-primary w-100 login-btn"  (click)="callLogin()">Sign in</a>
+                <a class="btn btn-primary w-100 login-btn"  (click)="goToLogin()">Sign in</a>
             </form>
             <div class="other-option">
                 <p>Or continue with</p>

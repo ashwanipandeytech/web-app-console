@@ -3,7 +3,7 @@ import { PageContentResolver } from 'shared-lib';
 import { Login } from './auth/login/login';
 import { Dashboard } from './modules/dashboard/dashboard';
 import { Customers } from './modules/customers/customers';
-import { AddCustomer } from './modules/customers/add-customer/add-customer';
+import { AddProduct } from './modules/products/add-product/add-product';
 import { AllProducts } from './modules/products/all-products';
 import { Order } from './modules/order/order';
 import { Category } from './modules/category/category';
@@ -46,7 +46,7 @@ export const routes: Routes = [
     },
     {
         path: 'add-product',
-        component: AddCustomer
+        component: AddProduct
     },
     {
         path: 'orders',
