@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import {Sidebar} from "../../../layout/sidebar/sidebar";
 import {Header} from "../../../layout/header/header";
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
+
 
 @Component({
   selector: 'app-add-customer',
@@ -28,29 +29,51 @@ export class AddProduct {
   publishForm!: FormGroup;
   productOptionData!: FormGroup;
   productMultipleOptionForm!: FormGroup;
-
- categories = [
-    { id: 'catFinance', name: 'Finance', parentId: null, hasSubCategories: false },
-    { id: 'catBanking', name: 'Banking', parentId: 'catFinance', hasSubCategories: false },
-    { id: 'catAccounting', name: 'Accounting', parentId: 'catFinance', hasSubCategories: false },
-    { id: 'catBangladeshBank', name: 'BangladeshBank', parentId: 'catAccounting', hasSubCategories: false },
-    { id: 'catFashion', name: 'Fashion & Clothing', parentId: null, hasSubCategories: false },
-    { id: 'catTShirt', name: 't-Shirt', parentId: 'catFashion', hasSubCategories: false },
-    { id: 'catShirt', name: 'Shirt', parentId: 'catFashion', hasSubCategories: false },
-    { id: 'catCasualShirt', name: 'Casual Shirt', parentId: 'catShirt', hasSubCategories: false },
-    { id: 'catBag', name: 'Bag', parentId: null, hasSubCategories: false },
-    { id: 'catMonitor', name: 'Monitor', parentId: null, hasSubCategories: false },
-    { id: 'catKeyboard', name: 'Keyboard', parentId: null, hasSubCategories: false },
-    { id: 'catMouse', name: 'Mouse', parentId: null, hasSubCategories: false }
+    tagsForm!: FormGroup;
+  commonTags = ['mobile', 'tab', 'watch', 't-shirt', 'shirt', 'book', 'monitor', 'cloth'];
+categories = [
+    {
+      id: 'catFinance',
+      name: 'Finance',
+      subCategories: [
+        { id: 'catBanking', name: 'Banking' },
+        {
+          id: 'catAccounting',
+          name: 'Accounting',
+          subCategories: [{ id: 'catBangladeshBank', name: 'BangladeshBank' }]
+        }
+      ]
+    },
+    {
+      id: 'catFashion',
+      name: 'Fashion & Clothing',
+      subCategories: [
+        { id: 'catTShirt', name: 't-Shirt' },
+        {
+          id: 'catShirt',
+          name: 'Shirt',
+          subCategories: [{ id: 'catCasualShirt', name: 'Casual Shirt' }]
+        }
+      ]
+    },
+    { id: 'catBag', name: 'Bag' },
+    { id: 'catMonitor', name: 'Monitor' },
+    { id: 'catKeyboard', name: 'Keyboard' },
+    { id: 'catMouse', name: 'Mouse' }
   ];
   constructor(private fb: FormBuilder){
-this.initializeForms()
+    this.initializeForms()
+    this.initializeCategoryControls();
   }
 
+  ngOnInit(){
+  }
   initializeForms(){
     this.addProductDetails();
     this.productOptionType();
     this.submitProductMultipleOptionForm();
+    this.addCategoriesForm();
+    this.addTagsForm();
     // this.addInverntoryForm();
   }
 
@@ -69,9 +92,6 @@ this.initializeForms()
 
 
 submitProductMultipleOptionForm(){
-this.categories.forEach(category => {
-      category.hasSubCategories = this.categories.some(cat => cat.parentId === category.id);
-    });
   this.productMultipleOptionForm = this.fb.group({
       // Media Tab
       thumbUpload: ['', Validators.required],
@@ -132,64 +152,131 @@ this.categories.forEach(category => {
 
       // Category Panel
      categorySearch: [''],
-      selectedCategories: this.fb.array(
-        this.categories.map(() => this.fb.control(false)) // One control per category
-      ),
       newCategoryName: ['', Validators.required],
       newCategoryParent: ['']
 
     });
 }
 
+addCategoriesForm(){
+ this.categoryForm = this.fb.group({
+      search: [''],
+      selectedCategories: this.fb.array([]),
+      newCategory: this.fb.group({
+        name: [''],
+        parent: ['']
+      })
+    });
+}
+
+addTagsForm(){
+   this.tagsForm = this.fb.group({
+      tagInput: [''],
+      tags: [[]]
+    });
+}
+private initializeCategoryControls(): void {
+    const selectedCategories = this.categoryForm.get('selectedCategories') as FormArray;
+    selectedCategories.clear();
+
+    this.categories.forEach(category => {
+      selectedCategories.push(new FormControl(false));
+      if (category.subCategories) {
+        category.subCategories.forEach(sub => {
+          selectedCategories.push(new FormControl(false));
+          if (sub.subCategories) {
+            sub.subCategories.forEach(() => {
+              selectedCategories.push(new FormControl(false));
+            });
+          }
+        });
+      }
+    });
+  }
+
+  get selectedCategories(): FormArray {
+    return this.categoryForm.get('selectedCategories') as FormArray;
+  }
+
+  get newCategoryForm(): FormGroup {
+    return this.categoryForm.get('newCategory') as FormGroup;
+  }
+
+
+  onSearch(): void {
+    console.log('Search Query:', this.categoryForm.get('search')?.value);
+    // Add search logic here
+  }
+   getCategoryLabel(index: number): string {
+    // Simplified way to show category name from index
+    const flatList: string[] = [];
+    this.categories.forEach(c => {
+      flatList.push(c.name);
+      c.subCategories?.forEach(sub => {
+        flatList.push('— ' + sub.name);
+        sub.subCategories?.forEach(subSub => flatList.push('—— ' + subSub.name));
+      });
+    });
+    return flatList[index] || 'Category ' + index;
+  }
+  addNewCategory(): void {
+    const newCat = this.newCategoryForm.value;
+    console.log('New Category:', newCat);
+  }
+
+
+  // Tags start 
+
+ addTag() {
+  console.log('this.tagsForm.value==>',this.tagsForm.value);
+  
+    const tagValue = this.tagsForm.value.tagInput?.trim();
+    console.log('tagValue ==>', tagValue);
+
+    if (tagValue) {
+      const currentTags = this.tagsForm.value.tags || [];
+      const newTags = [
+        ...currentTags,
+        ...tagValue.split(',').map((t: any) => t.trim()).filter(Boolean)
+      ];
+      this.tagsForm.patchValue({ tags: newTags, tagInput: '' });
+    }
+  }
+
+  // ✅ Remove tag by index
+  removeTag(index: number) {
+    const currentTags = [...this.tagsForm.value.tags];
+    currentTags.splice(index, 1);
+    this.tagsForm.patchValue({ tags: currentTags });
+  }
+
+  // ✅ Select from most used tags
+  selectTag(tag: string) {
+    const currentTags = this.tagsForm.value.tags || [];
+    if (!currentTags.includes(tag)) {
+      this.tagsForm.patchValue({ tags: [...currentTags, tag] });
+    }
+  }
 
 getProductDetails(){
   console.log('productDetails==>',this.productDetails.value);
   console.log('productOptionData==>',this.productOptionData.value);
 console.log('submitProductMultipleOptionForm==>',this.productMultipleOptionForm.value);
+// console.log('New Category:', this.categoryForm.get('newCategory')?.value);
+console.log('New Category:', this.newCategoryForm.value);
+console.log('this.tagsForm==>',this.tagsForm.value.tags);
+console.log('selectedCategories==>',this.selectedCategories.value);
+
+// tagsform value 
+const tagsArray = this.tagsForm.value.tags;
+const tagsString = tagsArray.join(', ');
+console.log('tagsString',tagsString);
+
 
   
   
 }
 
-
-
-get selectedCategories(): FormArray {
-    return this.productMultipleOptionForm.get('selectedCategories') as FormArray;
-  }
-
-  // Helper to add a new category dynamically
-addNewCategory() {
-    const newCategoryName = this.productMultipleOptionForm.get('newCategoryName')?.value;
-    const newCategoryParent = this.productMultipleOptionForm.get('newCategoryParent')?.value || null;
-
-    if (newCategoryName) {
-      const newCategoryId = `cat${this.categories.length + 1}`;
-      const newCategory = {
-        id: newCategoryId,
-        name: newCategoryName,
-        parentId: newCategoryParent,
-        hasSubCategories: false
-      };
-      this.categories.push(newCategory);
-
-      // Update hasSubCategories for the parent category, if any
-      if (newCategoryParent) {
-        const parentCategory = this.categories.find(cat => cat.id === newCategoryParent);
-        if (parentCategory) {
-          parentCategory.hasSubCategories = true;
-        }
-      }
-
-      // Add a new control to the selectedCategories FormArray
-      this.selectedCategories.push(this.fb.control(false));
-
-      // Reset the new category form fields
-      this.productMultipleOptionForm.patchValue({
-        newCategoryName: '',
-        newCategoryParent: ''
-      });
-    }
-  }
 
  
 }

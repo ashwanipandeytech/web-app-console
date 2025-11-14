@@ -26,7 +26,11 @@ export const routes: Routes = [
     //         pageData: PageContentResolver
     //     }
     // },
-    
+    {
+        path: '',
+        loadComponent: () =>
+        import('./auth/login/login').then(c => c.Login)
+    },
     {
         path: 'login',
         loadComponent: () =>

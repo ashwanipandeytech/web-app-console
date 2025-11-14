@@ -6,10 +6,19 @@ import { Commonresponseobject } from '../model/responsemodel';
   providedIn: 'root'
 })
 export class DataService {
+  authToken:any;
     //userid = JSON.parse(localStorage.getItem('user'))['ID'];
     constructor(public http: HttpClient) { 
 
       console.info('API CALL:', environment);
+        // Get user from localStorage
+        const userString = localStorage.getItem('user');
+        const user = userString ? JSON.parse(userString) : null;
+
+        console.log("User:", user);
+
+        // Check token
+        this.authToken = user?.token ?? '';
     }
     httpOptions = {
       headers: new HttpHeaders({
@@ -32,6 +41,30 @@ export class DataService {
       // console.log('%c' + apiEndPoint + ':', consolecolor + 'green');
       // console.dir(apiEndPoint + ':' + JSON.stringify(requestPayload, null, 2));
       return this.http.post<Commonresponseobject>(environment.API_URL + apiEndPoint, data, this.httpOptions);
+    }
+   callApiNew(data: any, apiEndPoint: any) {
+      const requestPayload = {
+        application: environment.APPLICATION,
+        version: environment.VERSION,
+        data
+      };
+      return this.http.post<Commonresponseobject>(environment.API_URL_NEW + apiEndPoint, data, this.httpOptions);
+    }
+
+      callApiWithFormData(data: any, apiEndPoint: string) {
+        const httpHeaders = new HttpHeaders({
+          'Authorization': `Bearer ${this.authToken}`
+        });
+      console.log('httpHeaders==>',httpHeaders);
+        return this.http.post(environment.API_URL_NEW + apiEndPoint,data,{ headers: httpHeaders });
+      }
+
+
+      callGetApi(apiEndPoint: any) {
+          const httpHeaders = new HttpHeaders({
+          'Authorization': `Bearer ${this.authToken}`
+        });
+      return this.http.get<Commonresponseobject>(environment.API_URL_NEW + apiEndPoint,{headers:httpHeaders});
     }
   }
 
