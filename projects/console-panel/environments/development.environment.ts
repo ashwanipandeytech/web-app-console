@@ -10,5 +10,6 @@ export const environment = {
 'VERSION':'v1',
 'API_URL':'https://api.demohandler.in/api/v1/admin/auth/',
 'API_URL_NEW':'https://api.demohandler.in/api/v1/admin/',
+'DOMAIN':'https://api.demohandler.in'
 };
 

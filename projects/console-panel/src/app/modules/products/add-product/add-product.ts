@@ -19,7 +19,7 @@ import { QuillModule } from 'ngx-quill';
 export class AddProduct {
   productDetails!:FormGroup;
   inventoryForm!: FormGroup;
-  priceForm!: FormGroup;
+  // priceForm!: FormGroup;
   shippingInfoForm!: FormGroup;
   videoForm!: FormGroup;
   shippingConfigForm!: FormGroup;
@@ -61,6 +61,14 @@ categories = [
     { id: 'catKeyboard', name: 'Keyboard' },
     { id: 'catMouse', name: 'Mouse' }
   ];
+  productMediaSection!: FormGroup;
+  thumbFile: any;
+  galleryFiles: any;
+  thumbPreview: any;
+  productInventrySection!: FormGroup;
+  priceSection!:FormGroup;
+  shippingInfoSection!:FormGroup;
+  productAttributesForm!: FormGroup;
   constructor(private fb: FormBuilder){
     this.initializeForms()
     this.initializeCategoryControls();
@@ -74,6 +82,11 @@ categories = [
     this.submitProductMultipleOptionForm();
     this.addCategoriesForm();
     this.addTagsForm();
+    this.mediaForm();
+    this.inventryForm();
+    this.priceForm();
+    this.shippingForm();
+    this.productAttributeForm();
     // this.addInverntoryForm();
   }
 
@@ -91,13 +104,15 @@ categories = [
   }
 
 
-submitProductMultipleOptionForm(){
-  this.productMultipleOptionForm = this.fb.group({
-      // Media Tab
+  mediaForm(){
+      this.productMediaSection = this.fb.group({
       thumbUpload: ['', Validators.required],
       galleryUpload: [''],
-      
-      // Inventory Tab
+      })
+  }
+
+  inventryForm(){
+      this.productInventrySection = this.fb.group({
       sku: ['', Validators.required],
       manageStock: [false],
       stockStatus: [],
@@ -107,13 +122,72 @@ submitProductMultipleOptionForm(){
       showStockQuantity: [false],
       showStockWithText: [false],
       hideStock: [false],
-      
-      // Price Tab
-      regularPrice: [0, [Validators.required, Validators.min(0)]],
-      salePrice: [0, Validators.min(0)],
+      })
+  }
+
+  priceForm(){
+this.priceSection = this.fb.group({
+      regularPrice: [0, [Validators.required, Validators.min(1)]],
+      salePrice: [0, Validators.min(1)],
       discountType: ['1'],
       priceDateStart: [''],
       priceDateEnd: [''],
+})
+  }
+  shippingForm(){
+    this.shippingInfoSection = this.fb.group({
+      weight: [0, Validators.min(0)],
+      length: [0, Validators.min(0)],
+      width: [0, Validators.min(0)],
+      height: [0, Validators.min(0)],
+      shippingClass: ['0'],
+      
+    })
+  }
+productAttributeForm(){
+
+  this.productAttributesForm = this.fb.group({
+  selectedAttribute: [''],
+  attributes: this.fb.array([])
+});
+}
+get attributes(): FormArray {
+  return this.productAttributesForm.get('attributes') as FormArray;
+}
+addAttribute() {
+  const attr = this.fb.group({
+    name: [''],      // attribute name
+    value: ['']      // attribute value
+  });
+
+  this.attributes.push(attr);
+  console.log('this.attributes==>',this.attributes);
+  
+}
+
+submitProductMultipleOptionForm(){
+  this.productMultipleOptionForm = this.fb.group({
+      // Media Tab
+      // thumbUpload: ['', Validators.required],
+      // galleryUpload: [''],
+      
+      // Inventory Tab
+      // sku: ['', Validators.required],
+      // manageStock: [false],
+      // stockStatus: [],
+      // soldIndividually: [false],
+      // productCode: [''],
+      // lowStockWarning: [0],
+      // showStockQuantity: [false],
+      // showStockWithText: [false],
+      // hideStock: [false],
+      
+      // Price Tab
+      // regularPrice: [0, [Validators.required, Validators.min(0)]],
+      // salePrice: [0, Validators.min(0)],
+      // discountType: ['1'],
+      // priceDateStart: [''],
+      // priceDateEnd: [''],
 
 
       //attribute
@@ -121,11 +195,11 @@ submitProductMultipleOptionForm(){
 
       
       // Shipping Info Tab
-      weight: [0, Validators.min(0)],
-      length: [0, Validators.min(0)],
-      width: [0, Validators.min(0)],
-      height: [0, Validators.min(0)],
-      shippingClass: ['0'],
+      // weight: [0, Validators.min(0)],
+      // length: [0, Validators.min(0)],
+      // width: [0, Validators.min(0)],
+      // height: [0, Validators.min(0)],
+      // shippingClass: ['0'],
 
       // Shipping COnfiguration
       estimateShippingTime: [''],
@@ -257,15 +331,45 @@ private initializeCategoryControls(): void {
       this.tagsForm.patchValue({ tags: [...currentTags, tag] });
     }
   }
+onThumbSelect(event: any) {
+  const file = event.target.files[0];
+  this.thumbFile = file;
 
+  // Create image preview
+  const reader = new FileReader();
+  reader.onload = () => {
+    this.thumbPreview = reader.result as string;
+  };
+  reader.readAsDataURL(file);
+}
+
+onGallerySelect(event: any) {
+  this.galleryFiles = event.target.files;
+}
 getProductDetails(){
-  console.log('productDetails==>',this.productDetails.value);
-  console.log('productOptionData==>',this.productOptionData.value);
-console.log('submitProductMultipleOptionForm==>',this.productMultipleOptionForm.value);
-// console.log('New Category:', this.categoryForm.get('newCategory')?.value);
-console.log('New Category:', this.newCategoryForm.value);
-console.log('this.tagsForm==>',this.tagsForm.value.tags);
-console.log('selectedCategories==>',this.selectedCategories.value);
+  console.log('thumbFile',this.thumbFile);  // FileList
+  console.log('galleryFiles',this.galleryFiles);  // FileList
+console.log('this.priceSection.value.priceDateStart==>',this.priceSection.value);
+// price start and end time 
+  const priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
+  const priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
+  
+  // media payload 
+    let mediaSectionPayload = {
+    thumbFile:this.thumbFile,
+    galleryFiles:this.galleryFiles
+    }
+  
+
+
+
+//   console.log('productDetails==>',this.productDetails.value);
+//   console.log('productOptionData==>',this.productOptionData.value);
+// console.log('submitProductMultipleOptionForm==>',this.productMultipleOptionForm.value);
+// // console.log('New Category:', this.categoryForm.get('newCategory')?.value);
+// console.log('New Category:', this.newCategoryForm.value);
+// console.log('this.tagsForm==>',this.tagsForm.value.tags);
+// console.log('selectedCategories==>',this.selectedCategories.value);
 
 // tagsform value 
 const tagsArray = this.tagsForm.value.tags;

@@ -7,6 +7,7 @@ import { AddProduct } from './modules/products/add-product/add-product';
 import { AllProducts } from './modules/products/all-products';
 import { Order } from './modules/order/order';
 import { Category } from './modules/category/category';
+import { SettingsComponent } from './modules/settings/settings.component';
 
 export const routes: Routes = [
     // {
@@ -59,6 +60,10 @@ export const routes: Routes = [
     {
         path: 'category',
         component: Category
+    },
+      {
+        path: 'settings',
+        component: SettingsComponent
     },
    
 ];
