@@ -53,10 +53,13 @@
 
 
             <div class="panel mb-30">
+
             <form [formGroup]="productOptionData" (ngSubmit)="productOptionType()">
                 <div class="panel-header">
                     <h5>Product Data</h5>
                     <div class="panel-header-right">
+                      @if(false){
+
                         <div class="form-check d-flex gap-4">
                             <div class="form-check">
                                 <input class="form-check-input" formControlName="generalProductData" type="checkbox" value="" id="generalProductData">
@@ -71,6 +74,7 @@
                                 </label>
                             </div>
                         </div>
+                      }
                     </div>
                     <div class="btn-box d-flex gap-2">
                         <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button>
@@ -88,7 +92,7 @@
         <button class="btn btn-sm btn-outline-primary" id="nav-price-tab" data-bs-toggle="tab" data-bs-target="#nav-price" type="button" role="tab" aria-controls="nav-price" aria-selected="false">Price</button>
         <button class="btn btn-sm btn-outline-primary" id="nav-attribute-tab" data-bs-toggle="tab" data-bs-target="#nav-attribute" type="button" role="tab" aria-controls="nav-attribute" aria-selected="false">Attribute</button>
         <button class="btn btn-sm btn-outline-primary" id="nav-shipping-info-tab" data-bs-toggle="tab" data-bs-target="#nav-shipping-info" type="button" role="tab" aria-controls="nav-shipping-info" aria-selected="false">Shipping info</button>
-        <button class="btn btn-sm btn-outline-primary" id="nav-video-tab" data-bs-toggle="tab" data-bs-target="#nav-video" type="button" role="tab" aria-controls="nav-video" aria-selected="false">Video</button>
+        <!-- <button class="btn btn-sm btn-outline-primary" id="nav-video-tab" data-bs-toggle="tab" data-bs-target="#nav-video" type="button" role="tab" aria-controls="nav-video" aria-selected="false">Video</button> -->
         <button class="btn btn-sm btn-outline-primary" id="nav-shipping-configuration-tab" data-bs-toggle="tab" data-bs-target="#nav-shipping-configuration" type="button" role="tab" aria-controls="nav-shipping-configuration" aria-selected="false">Shipping Configuration</button>
         <button class="btn btn-sm btn-outline-primary" id="nav-offer-tab" data-bs-toggle="tab" data-bs-target="#nav-offer" type="button" role="tab" aria-controls="nav-offer" aria-selected="false">Offer</button>
       </div>

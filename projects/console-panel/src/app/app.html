@@ -1,1 +1,10 @@
-<router-outlet />
+<!-- header start -->
+ @if(isLogin){
+
+     <app-header></app-header>
+     <!-- header end -->
+     
+     <!-- main sidebar start -->
+     <app-sidebar></app-sidebar>
+ }
+<router-outlet></router-outlet>

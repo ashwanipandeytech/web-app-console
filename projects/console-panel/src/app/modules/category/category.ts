@@ -1,34 +1,43 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Sidebar } from "../../layout/sidebar/sidebar";
 import { Header } from "../../layout/header/header";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DataService } from 'shared-lib';
 import { catchError, of } from 'rxjs';
+import { environment } from 'environments/environment';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationPopupComponent } from '../../confirmationPopup/confirmationPopup.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { GlobalService } from '../../global.service';
 
 @Component({
   selector: 'app-category',
   templateUrl: './category.html',
   styleUrl: './category.scss',
-  standalone:false,
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Category {
+  isEdit:boolean=false;
+  readonly dialog = inject(MatDialog);
   public dataService: any = inject(DataService);
   addCategory!: FormGroup;
   imageFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
-  categoryListData: any;
-  constructor(private fb: FormBuilder,private cd:ChangeDetectorRef ) {
+  categoryListData: any = [];
+  updateCategoryId: any;
+  constructor(private fb: FormBuilder, private cd: ChangeDetectorRef,private globalService:GlobalService) {
     this.addCategoryForm();
   }
   addCategoryForm() {
     this.addCategory = this.fb.group({
       name: ['', [Validators.required]],
-      mainCategory: ['',Validators.required],
+      mainCategory: ['', Validators.required],
       categoryThumbnail: [''],
       customCategoryIcon: [''],
       description: ['', [Validators.minLength(30)]],
-      displayType: ['',Validators.required],
+      display_type: ['', Validators.required],
 
     });
   }
@@ -40,9 +49,9 @@ export class Category {
       this.imagePreview = objectURL;
     }
   }
-ngOnInit(){
-  this.getCategoryList();
-}
+  ngOnInit() {
+    this.getCategoryList();
+  }
   saveCategoryData() {
     const formData = new FormData();
     if (this.imageFile) {
@@ -62,16 +71,26 @@ ngOnInit(){
       .pipe(
         catchError(err => {
           console.error('Error:', err);
+            setTimeout(() => {
+          this.globalService.showMsgSnackBar(err);
+        }, 100);
           return of(null);
         })
       )
       .subscribe((res: any) => {
         console.log('Response:', res);
+        this.addCategory.reset();
+        this.imagePreview = '';
+        this.imageFile = null;
         this.getCategoryList();
+        setTimeout(() => {
+          this.globalService.showMsgSnackBar(res);
+        }, 100);
       });
   }
-  getCategoryList(){
-     this.dataService.callGetApi('categories')
+  getCategoryList() {
+    this.categoryListData = [];
+    this.dataService.callGetApi('categories')
       .pipe(
         catchError(err => {
           console.error('Error:', err);
@@ -80,9 +99,92 @@ ngOnInit(){
       )
       .subscribe((res: any) => {
         console.log('Response:', res);
-        this.categoryListData = res.data;
-        this.cd.detectChanges(); 
+        if (res.data) {
+
+          for (let i = 0; i < res.data.length; i++) {
+            const element = res.data[i];
+            console.log('element==>', element.thumbnail);
+            if (element?.thumbnail != null) {
+              console.log('environment.API_URL==>', environment.API_URL);
+              element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
+            }
+            this.categoryListData.push(element);
+          }
+        }
+        console.log('categoryListData==>', this.categoryListData);
+
+        this.cd.detectChanges();
+        // this.categoryListData = res.data;
       });
   }
 
+  openDialog(id: any): void {
+    let popupData = {
+      title: 'Category',
+      description: 'Are you sure, you want to delete catrgory',
+      id: id
+    }
+    let dialogRef = this.dialog.open(ConfirmationPopupComponent, {
+      width: '250px',
+      data: popupData,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed with:', result);
+
+      if (result.action === 'delete') {
+        // Perform delete
+        this.deleteCategory(result.id);
+
+      }
+    })
+  }
+  editCategory(item:any){
+    this.isEdit = true;
+    this.updateCategoryId = item.id;
+  this.addCategory.patchValue(item);
+  }
+  updatecategory(){
+    let formData = this.addCategory.value;
+    formData.id = this.updateCategoryId;
+     this.dataService.callUpdateApi('categories', formData)
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+           setTimeout(() => {
+          this.globalService.showMsgSnackBar(err);
+        }, 100);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+        this.getCategoryList();
+         setTimeout(() => {
+          this.globalService.showMsgSnackBar(res);
+        }, 100);
+        this.cd.detectChanges();
+        // this.categoryListData = res.data;
+      });
+  }
+  deleteCategory(id: any) {
+    this.dataService.callDeleteApi('categories', id)
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+           setTimeout(() => {
+          this.globalService.showMsgSnackBar(err);
+        }, 100);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+        this.getCategoryList();
+          setTimeout(() => {
+          this.globalService.showMsgSnackBar(res);
+        }, 100);
+        this.cd.detectChanges();
+        // this.categoryListData = res.data;
+      });
+  }
 }

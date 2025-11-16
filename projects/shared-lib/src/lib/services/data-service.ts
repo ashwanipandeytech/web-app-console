@@ -1,11 +1,14 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
  import { environment } from '../../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Commonresponseobject } from '../model/responsemodel';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
+  snackBar = inject(MatSnackBar);
   authToken:any;
     //userid = JSON.parse(localStorage.getItem('user'))['ID'];
     constructor(public http: HttpClient) { 
@@ -65,6 +68,19 @@ export class DataService {
           'Authorization': `Bearer ${this.authToken}`
         });
       return this.http.get<Commonresponseobject>(environment.API_URL_NEW + apiEndPoint,{headers:httpHeaders});
+    }
+    callDeleteApi(apiEndPoint:any,id:any){
+          const httpHeaders = new HttpHeaders({
+          'Authorization': `Bearer ${this.authToken}`
+        });
+      return this.http.delete<Commonresponseobject>(environment.API_URL_NEW + apiEndPoint + '/' + id, {headers:httpHeaders});
+    }
+    callUpdateApi(apiEndPoint: any,data: any){
+      const httpHeaders = new HttpHeaders({
+          'Authorization': `Bearer ${this.authToken}`
+        });
+      console.log('httpHeaders==>',httpHeaders);
+        return this.http.put(environment.API_URL_NEW + apiEndPoint + '/' + data.id,data,{ headers: httpHeaders });
     }
   }
 
