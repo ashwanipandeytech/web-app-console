@@ -90,7 +90,7 @@
         <button class="btn btn-sm btn-outline-primary active" id="nav-media-tab" data-bs-toggle="tab" data-bs-target="#nav-media" type="button" role="tab" aria-controls="nav-media" aria-selected="true">Media</button>
         <button class="btn btn-sm btn-outline-primary" id="nav-inventory-tab" data-bs-toggle="tab" data-bs-target="#nav-inventory" type="button" role="tab" aria-controls="nav-inventory" aria-selected="false">Inventory</button>
         <button class="btn btn-sm btn-outline-primary" id="nav-price-tab" data-bs-toggle="tab" data-bs-target="#nav-price" type="button" role="tab" aria-controls="nav-price" aria-selected="false">Price</button>
-        <button class="btn btn-sm btn-outline-primary" id="nav-attribute-tab" data-bs-toggle="tab" data-bs-target="#nav-attribute" type="button" role="tab" aria-controls="nav-attribute" aria-selected="false">Attribute</button>
+        <!-- <button class="btn btn-sm btn-outline-primary" id="nav-attribute-tab" data-bs-toggle="tab" data-bs-target="#nav-attribute" type="button" role="tab" aria-controls="nav-attribute" aria-selected="false">Attribute</button> -->
         <button class="btn btn-sm btn-outline-primary" id="nav-shipping-info-tab" data-bs-toggle="tab" data-bs-target="#nav-shipping-info" type="button" role="tab" aria-controls="nav-shipping-info" aria-selected="false">Shipping info</button>
         <!-- <button class="btn btn-sm btn-outline-primary" id="nav-video-tab" data-bs-toggle="tab" data-bs-target="#nav-video" type="button" role="tab" aria-controls="nav-video" aria-selected="false">Video</button> -->
         <button class="btn btn-sm btn-outline-primary" id="nav-shipping-configuration-tab" data-bs-toggle="tab" data-bs-target="#nav-shipping-configuration" type="button" role="tab" aria-controls="nav-shipping-configuration" aria-selected="false">Shipping Configuration</button>
@@ -100,181 +100,237 @@
     <div class="tab-content product-data-tab" id="nav-tabContent">
       <!-- Media Tab -->
       <div class="tab-pane fade show active" id="nav-media" role="tabpanel" aria-labelledby="nav-media-tab" tabindex="0">
-        <div class="row">
-          <div class="col-xxl-3 col-md-4 col-5 col-xs-12">
-            <div class="add-thumbnail product-image-upload">
-              <div class="part-txt">
-                <h5>Add thumbnail <span>(jpeg/png)</span></h5>
+        <form  [formGroup]="productMediaSection">
+          <div class="row">
+            <div class="col-xxl-3 col-md-4 col-5 col-xs-12">
+              <div class="add-thumbnail product-image-upload">
+                <div class="part-txt">
+                  <h5>Add thumbnail <span>(jpeg/png)</span></h5>
+                </div>
+                <input type="file" class="image-input" formControlName="thumbUpload" accept="image/*" (change)="onThumbSelect($event)">
+               @if(thumbPreview){
+
+                 <img [src]="thumbPreview" class="preview-img" />
+               }
               </div>
-              <input type="text" class="image-input" formControlName="thumbUpload" id="thumbUpload">
+            </div>
+            <div class="col-xxl-9 col-md-8 col-7 col-xs-12">
+              <div class="add-gallery-img product-image-upload">
+                <div class="part-txt">
+                  <h5>Add gallery <span>(jpeg/png)</span></h5>
+                </div>
+                <input type="file" class="image-input" formControlName="galleryUpload" accept="image/*" (change)="onGallerySelect($event)">
+              </div>
             </div>
           </div>
-          <div class="col-xxl-9 col-md-8 col-7 col-xs-12">
-            <div class="add-gallery-img product-image-upload">
-              <div class="part-txt">
-                <h5>Add gallery <span>(jpeg/png)</span></h5>
-              </div>
-              <input type="text" class="image-input" formControlName="galleryUpload" id="galleryUpload">
-            </div>
-          </div>
-        </div>
+        </form>
       </div>
       <!-- Inventory Tab -->
-      <div class="tab-pane fade" id="nav-inventory" role="tabpanel" aria-labelledby="nav-inventory-tab" tabindex="0">
-        <div class="row align-items-center g-3 mb-3">
-          <label class="col-md-2 col-form-label col-form-label-sm">SKU <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
-          <div class="col-md-10">
-            <input type="text" class="form-control form-control-sm" formControlName="sku" id="SKU">
+      <form [formGroup]="productInventrySection">
+
+        <div class="tab-pane fade" id="nav-inventory" role="tabpanel" aria-labelledby="nav-inventory-tab" tabindex="0">
+            <div class="row align-items-center g-3 mb-3">
+              <label class="col-md-2 col-form-label col-form-label-sm">SKU <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
+              <div class="col-md-10">
+                <input type="text" class="form-control form-control-sm" formControlName="sku" id="SKU">
+              </div>
+            </div>
+          <div class="row align-items-center g-3 mb-3">
+            <label class="col-md-2 col-form-label col-form-label-sm">Manage Stock?</label>
+            <div class="col-md-10">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="manageStock" id="manageStock">
+                <label class="form-check-label" for="manageStock">
+                  Manage stock level (quantity)
+                </label>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="row align-items-center g-3 mb-3">
-          <label class="col-md-2 col-form-label col-form-label-sm">Manage Stock?</label>
-          <div class="col-md-10">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" formControlName="manageStock" id="manageStock">
-              <label class="form-check-label" for="manageStock">
-                Manage stock level (quantity)
-              </label>
+          <div class="row align-items-center g-3 mb-3">
+            <label class="col-md-2 col-form-label col-form-label-sm">Stock Status <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
+            <div class="col-md-10">
+              <select class="form-control form-control-sm" formControlName="stockStatus">
+                <option value="0">In stock</option>
+                <option value="1">Out of stock</option>
+                <option value="2">On backorder</option>
+              </select>
+            </div>
+          </div>
+          <div class="row align-items-center g-3 mb-3">
+            <label class="col-md-2 col-form-label col-form-label-sm">Sold individually <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
+            <div class="col-md-10">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="soldIndividually" id="soldIndividually">
+                <label class="form-check-label" for="soldIndividually">
+                  Limit purchases to 1 item per order
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center g-3 mb-3">
+            <label class="col-md-2 col-form-label col-form-label-sm">Product Code <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
+            <div class="col-md-10">
+              <input type="text" class="form-control form-control-sm" formControlName="productCode" id="productCode">
+            </div>
+          </div>
+          <div class="row align-items-center g-3 mb-3">
+            <label for="lowStockWarning" class="col-md-2 col-form-label col-form-label-sm">Low Stock Warning</label>
+            <div class="col-md-10">
+              <input type="number" class="form-control form-control-sm" formControlName="lowStockWarning" id="lowStockWarning">
+            </div>
+          </div>
+          <div class="row align-items-center g-3 mb-3">
+            <label for="showStockQuantity" class="col-md-2 col-8 col-form-label col-form-label-sm">Show Stock Quantity</label>
+            <div class="col-md-10 col-4">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" formControlName="showStockQuantity" id="showStockQuantity">
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center g-3 mb-3">
+            <label for="showStockWithText" class="col-md-2 col-8 col-form-label col-form-label-sm">Show Stock With Text</label>
+            <div class="col-md-10 col-4">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" formControlName="showStockWithText" id="showStockWithText">
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center g-3">
+            <label for="hideStock" class="col-md-2 col-8 col-form-label col-form-label-sm">Hide Stock</label>
+            <div class="col-md-10 col-4">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" formControlName="hideStock" id="hideStock">
+              </div>
             </div>
           </div>
         </div>
-        <div class="row align-items-center g-3 mb-3">
-          <label class="col-md-2 col-form-label col-form-label-sm">Stock Status <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
-          <div class="col-md-10">
-            <select class="form-control form-control-sm" formControlName="stockStatus">
-              <option value="0">In stock</option>
-              <option value="1">Out of stock</option>
-              <option value="2">On backorder</option>
-            </select>
-          </div>
-        </div>
-        <div class="row align-items-center g-3 mb-3">
-          <label class="col-md-2 col-form-label col-form-label-sm">Sold individually <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
-          <div class="col-md-10">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" formControlName="soldIndividually" id="soldIndividually">
-              <label class="form-check-label" for="soldIndividually">
-                Limit purchases to 1 item per order
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="row align-items-center g-3 mb-3">
-          <label class="col-md-2 col-form-label col-form-label-sm">Product Code <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
-          <div class="col-md-10">
-            <input type="text" class="form-control form-control-sm" formControlName="productCode" id="productCode">
-          </div>
-        </div>
-        <div class="row align-items-center g-3 mb-3">
-          <label for="lowStockWarning" class="col-md-2 col-form-label col-form-label-sm">Low Stock Warning</label>
-          <div class="col-md-10">
-            <input type="number" class="form-control form-control-sm" formControlName="lowStockWarning" id="lowStockWarning">
-          </div>
-        </div>
-        <div class="row align-items-center g-3 mb-3">
-          <label for="showStockQuantity" class="col-md-2 col-8 col-form-label col-form-label-sm">Show Stock Quantity</label>
-          <div class="col-md-10 col-4">
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" formControlName="showStockQuantity" id="showStockQuantity">
-            </div>
-          </div>
-        </div>
-        <div class="row align-items-center g-3 mb-3">
-          <label for="showStockWithText" class="col-md-2 col-8 col-form-label col-form-label-sm">Show Stock With Text</label>
-          <div class="col-md-10 col-4">
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" formControlName="showStockWithText" id="showStockWithText">
-            </div>
-          </div>
-        </div>
-        <div class="row align-items-center g-3">
-          <label for="hideStock" class="col-md-2 col-8 col-form-label col-form-label-sm">Hide Stock</label>
-          <div class="col-md-10 col-4">
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" formControlName="hideStock" id="hideStock">
-            </div>
-          </div>
-        </div>
-      </div>
+         </form>
       <!-- Price Tab -->
-      <div class="tab-pane fade" id="nav-price" role="tabpanel" aria-labelledby="nav-price-tab" tabindex="0">
-        <div class="row g-3 mb-3">
-          <label for="regularPrice" class="col-md-2 col-form-label col-form-label-sm">Regular Price (₹)</label>
-          <div class="col-md-10">
-            <input type="number" class="form-control form-control-sm" formControlName="regularPrice" id="regularPrice">
+
+      <form [formGroup]="priceSection">
+
+        <div class="tab-pane fade" id="nav-price" role="tabpanel" aria-labelledby="nav-price-tab" tabindex="0">
+          <div class="row g-3 mb-3">
+            <label for="regularPrice" class="col-md-2 col-form-label col-form-label-sm">Regular Price (₹)</label>
+            <div class="col-md-10">
+              <input type="number" class="form-control form-control-sm" formControlName="regularPrice">
+            </div>
+          </div>
+          <div class="row g-3 mb-3">
+            <label for="salePrice" class="col-md-2 col-form-label col-form-label-sm">Discount (₹)</label>
+            <div class="col-md-8">
+              <input type="number" class="form-control form-control-sm" formControlName="salePrice">
+            </div>
+            <div class="col-md-2">
+              <div class="form-control-sm p-0">
+                <select class="form-control form-control-sm" formControlName="discountType">
+                  <option value="Flat">Flat</option>
+                  <option value="Discount">Discount</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row g-3">
+            <label for="PriceDateStart" class="col-md-2 col-form-label col-form-label-sm">Sale price dates</label>
+            <div class="col-md-5">
+            <input
+              type="datetime-local"
+              class="form-control form-control-sm"
+              formControlName="priceDateStart"
+            />
+            </div>
+            <div class="col-md-5">
+              <input type="datetime-local" class="form-control form-control-sm" formControlName="priceDateEnd" placeholder="DD MMMM YYYY - HH:MM">
+            </div>
           </div>
         </div>
-        <div class="row g-3 mb-3">
-          <label for="salePrice" class="col-md-2 col-form-label col-form-label-sm">Discount (₹)</label>
-          <div class="col-md-8">
-            <input type="number" class="form-control form-control-sm" formControlName="salePrice" id="salePrice">
+      </form>
+      <!-- Shipping Info Tab -->
+
+      <form [formGroup]="shippingInfoSection">
+        <div class="tab-pane fade" id="nav-shipping-info" role="tabpanel" aria-labelledby="nav-shipping-info-tab" tabindex="0">
+          <div class="row g-3 mb-3">
+            <label class="col-md-2 col-form-label col-form-label-sm">Weight (kg) <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
+            <div class="col-md-10">
+              <input type="number" class="form-control form-control-sm" formControlName="weight" id="weight" placeholder="0">
+            </div>
           </div>
-          <div class="col-md-2">
-            <div class="form-control-sm p-0">
-              <select class="form-control form-control-sm" formControlName="discountType">
-                <option value="Flat">Flat</option>
-                <option value="Discount">Discount</option>
+          <div class="row g-3 mb-3">
+            <label class="col-md-2 col-form-label col-form-label-sm">Dimensions (cm) <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
+            <div class="col-md-10">
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <input type="number" class="form-control form-control-sm" formControlName="length" id="Dimensions" placeholder="Length">
+                </div>
+                <div class="col-md-4">
+                  <input type="number" class="form-control form-control-sm" formControlName="width" placeholder="Width">
+                </div>
+                <div class="col-md-4">
+                  <input type="number" class="form-control form-control-sm" formControlName="height" placeholder="Height">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row g-3">
+            <label class="col-md-2 col-form-label col-form-label-sm">Shipping Class <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
+            <div class="col-md-10">
+              <select class="form-control form-control-sm" formControlName="shippingClass">
+                <option value="0">No Shipping Class</option>
               </select>
             </div>
           </div>
         </div>
-        <div class="row g-3">
-          <label for="PriceDateStart" class="col-md-2 col-form-label col-form-label-sm">Sale price dates</label>
-          <div class="col-md-5">
-            <input type="text" class="form-control form-control-sm dateRangePicker" formControlName="priceDateStart" id="PriceDateStart" placeholder="DD MMMM YYYY - HH:MM">
-          </div>
-          <div class="col-md-5">
-            <input type="text" class="form-control form-control-sm dateRangePicker" formControlName="priceDateEnd" id="PriceDateEnd" placeholder="DD MMMM YYYY - HH:MM">
-          </div>
-        </div>
+      </form>
+      <!-- Other Tabs (Unmodified for brevity) -->
+   <div class="tab-pane fade" id="nav-attribute" role="tabpanel" aria-labelledby="nav-attribute-tab" tabindex="0">
+
+  <form [formGroup]="productAttributesForm">
+    <div class="add-product-attribute">
+
+      <!-- Dropdown + Add button -->
+      <div class="form-group d-flex align-items-center gap-2">
+        <select class="form-control form-control-sm" formControlName="selectedAttribute">
+          <option value="">Custom Product Attribute</option>
+          <option value="brand">Brand</option>
+          <option value="color">Color</option>
+          <option value="size">Size</option>
+        </select>
+
+        <button type="button" class="btn btn-sm btn-icon btn-primary" (click)="addAttribute()">
+          <i class="fa-light fa-plus"></i>
+        </button>
       </div>
-      <!-- Shipping Info Tab -->
-      <div class="tab-pane fade" id="nav-shipping-info" role="tabpanel" aria-labelledby="nav-shipping-info-tab" tabindex="0">
-        <div class="row g-3 mb-3">
-          <label class="col-md-2 col-form-label col-form-label-sm">Weight (kg) <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
-          <div class="col-md-10">
-            <input type="number" class="form-control form-control-sm" formControlName="weight" id="weight" placeholder="0">
-          </div>
-        </div>
-        <div class="row g-3 mb-3">
-          <label class="col-md-2 col-form-label col-form-label-sm">Dimensions (cm) <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
-          <div class="col-md-10">
-            <div class="row g-3">
-              <div class="col-md-4">
-                <input type="number" class="form-control form-control-sm" formControlName="length" id="Dimensions" placeholder="Length">
+
+      <!-- Dynamic Attribute Fields -->
+      <div formArrayName="attributes">
+        @for(attr of attributes.controls; let i = $index; track i){
+
+          <div [formGroupName]="i" class="mt-2">
+  
+            <div class="row">
+              <div class="col-md-5">
+                <input type="text" class="form-control form-control-sm" placeholder="Attribute Name" formControlName="name">
               </div>
-              <div class="col-md-4">
-                <input type="number" class="form-control form-control-sm" formControlName="width" placeholder="Width">
+  
+              <div class="col-md-5">
+                <input type="text" class="form-control form-control-sm" placeholder="Attribute Value" formControlName="value">
               </div>
-              <div class="col-md-4">
-                <input type="number" class="form-control form-control-sm" formControlName="height" placeholder="Height">
+  
+              <div class="col-md-2">
+                <button type="button" class="btn btn-sm btn-danger" (click)="attributes.removeAt(i)">
+                  <i class="fa-light fa-xmark"></i>
+                </button>
               </div>
             </div>
+  
           </div>
-        </div>
-        <div class="row g-3">
-          <label class="col-md-2 col-form-label col-form-label-sm">Shipping Class <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
-          <div class="col-md-10">
-            <select class="form-control form-control-sm" formControlName="shippingClass">
-              <option value="0">No Shipping Class</option>
-            </select>
-          </div>
-        </div>
+        }
       </div>
-      <!-- Other Tabs (Unmodified for brevity) -->
-     <div class="tab-pane fade" id="nav-attribute" role="tabpanel" aria-labelledby="nav-attribute-tab" tabindex="0">
-                            <div class="add-product-attribute">
-                                <div class="form-group">
-                                    <select class="form-control form-control-sm">
-                                        <option value="">Custom Product Attribute</option>
-                                        <option value="">Brand</option>
-                                        <option value="">Color</option>
-                                        <option value="">Size</option>
-                                    </select>
-                                    <button class="btn btn-sm btn-icon btn-primary" id="addAttr"><i class="fa-light fa-plus"></i></button>
-                                </div>
-                            </div>
-                        </div>
+
+    </div>
+  </form>
+</div>
+
       <div class="tab-pane fade" id="nav-video" role="tabpanel" aria-labelledby="nav-video-tab" tabindex="0">
         <div class="row align-items-center g-3 mb-3">
           <label class="col-md-2 col-form-label col-form-label-sm">Video Provider</label>

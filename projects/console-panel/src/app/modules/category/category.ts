@@ -33,7 +33,7 @@ export class Category {
   addCategoryForm() {
     this.addCategory = this.fb.group({
       name: ['', [Validators.required]],
-      mainCategory: ['', Validators.required],
+      parent_id: ['', Validators.required],
       categoryThumbnail: [''],
       customCategoryIcon: [''],
       description: ['', [Validators.minLength(30)]],
@@ -186,5 +186,9 @@ export class Category {
         this.cd.detectChanges();
         // this.categoryListData = res.data;
       });
+  }
+  clearForm(){
+    this.addCategory.reset();
+    this.isEdit = false;
   }
 }

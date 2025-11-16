@@ -10,7 +10,7 @@
             <div class="panel">
                 <div class="panel-header">
                     <h5>Add New Category</h5>
-<button (click)="addCategory.reset()">Reset</button>
+           <button (click)="clearForm()">Reset</button>
                 </div>
                 <form [formGroup]="addCategory">
                 <div class="panel-body">
@@ -27,15 +27,19 @@
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label">Main Category</label>
-                            <select class="" formControlName="mainCategory">
-                                <option value="">Select</option>
-                                <option value="Cloth">Cloth</option>
+                            <select class="" formControlName="parent_id">
+                                 <option value="">Select</option>
+                                @for(item of categoryListData; let i = $index; track i){
+                                     <option [value]="item.id">{{item.name}}</option>
+                                }
+                                <!-- <option value="">Select</option>
+                               
                                 <option value="Fashion">Fashion</option>
                                 <option value="Jewellery">Jewellery</option>
                                 <option value="Bag">Bag</option>
                                 <option value="SmartPhone">Smart Phone</option>
                                 <option value="Watch">Watch</option>
-                                <option value="Sunglass">Sunglass</option>
+                                <option value="Sunglass">Sunglass</option> -->
                             </select>
                         </div>
                         <div class="col-sm-6">

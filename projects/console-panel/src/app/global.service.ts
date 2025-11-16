@@ -12,6 +12,8 @@ constructor() { }
 showMsgSnackBar(response:any){
     this.snackBar.open(response.message, 'OK', {
             duration: 3000,
+           horizontalPosition: 'end',
+           verticalPosition: 'top',
            panelClass: [response.success ? 'snackbar-success' : 'snackbar-error']
           });
 }
