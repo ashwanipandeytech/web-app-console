@@ -276,8 +276,8 @@ submitProductMultipleOptionForm(){
       // metaDscr: ['', [Validators.required, Validators.maxLength(160)]],
 
       // Published Panel
-      status: ['0', Validators.required],
-      visibility: ['0', Validators.required],
+      status: ['1', Validators.required],
+      visibility: ['1', Validators.required],
       publishDate: ['', Validators.required],
 
       // Category Panel
@@ -412,7 +412,7 @@ getProductDetails(){
     thumbFile:this.thumbFile,
     galleryFiles:this.galleryFiles
     }
-    let finalData = {
+    let finalData:any = {
       category_id:this.parentId,
       media: mediaSectionPayload,
       title:this.productDetails.value.productTitle,
@@ -424,7 +424,12 @@ getProductDetails(){
       offer:this.offerForm.value,
       seo:this.seoForm.value,
       tags:this.tagsForm.value,
-      visibility:this.productMultipleOptionForm.value
+      // visibility:this.productMultipleOptionForm.value,
+      visibility: {
+       status: this.productMultipleOptionForm.value.status,
+       publishDate:this.productMultipleOptionForm.value.publishDate,
+       visibility:this.productMultipleOptionForm.value.visibility
+  }
     }
     console.log('finalData==>',finalData);
     this.dataService.callApiNew(finalData, 'products')
