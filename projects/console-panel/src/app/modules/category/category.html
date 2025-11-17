@@ -1,4 +1,4 @@
-<!-- main sidebar end -->
+
 
 <!-- main content start -->
 <div class="main-content">
@@ -10,11 +10,13 @@
             <div class="panel">
                 <div class="panel-header">
                     <h5>Add New Category</h5>
-           <button (click)="clearForm()">Reset</button>
+                    <button class="btn btn-sm btn-icon btn-outline-primary" (click)="clearForm()">
+                        <i class="fa-light fa-arrows-rotate"></i>
+                    </button>
                 </div>
                 <form [formGroup]="addCategory">
                 <div class="panel-body">
-                    <div class="row g-3">
+                    <div class="row gx-3 gy-5">
                         <div class="col-12">
                             <label class="form-label">Category Name</label>
                             <input type="text" class="form-control form-control-sm" formControlName="name" id="categoryTitle">
@@ -27,37 +29,25 @@
                         </div>
                         <div class="col-sm-6">
                             <label class="form-label">Main Category</label>
-                            <select class="" formControlName="parent_id">
-                                 <option value="">Select</option>
+                            <select class="form-select" formControlName="parent_id">
+                                <option value="">Select</option>
                                 @for(item of categoryListData; let i = $index; track i){
-                                     <option [value]="item.id">{{item.name}}</option>
+                                <option [value]="item.id">{{item.name}}</option>
                                 }
-                                <!-- <option value="">Select</option>
-                               
-                                <option value="Fashion">Fashion</option>
-                                <option value="Jewellery">Jewellery</option>
-                                <option value="Bag">Bag</option>
-                                <option value="SmartPhone">Smart Phone</option>
-                                <option value="Watch">Watch</option>
-                                <option value="Sunglass">Sunglass</option> -->
                             </select>
                         </div>
                         <div class="col-sm-3">
                             <label class="form-label">IsMenu</label>
-                               <input class="form-check-input" type="checkbox" formControlName="is_menu">
-
+                            <input class="form-check-input" type="checkbox" formControlName="is_menu">
                         </div>
-                           <div class="col-sm-3">
-                             <label class="form-label">Allow On</label>
-                            <select class="" formControlName="allow_on">
+                        <div class="col-sm-3">
+                            <label class="form-label">Allow On</label>
+                            <select class="form-select" formControlName="allow_on">
                                 <option value="">Default</option>
                                 <option value="Web">Web</option>
                                 <option value="Mobile">Mobile</option>
                                 <option value="both">both</option>
                             </select>
-                              <!-- <label class="form-label">IsMenu</label>
-                            <input type="checkbox" formControlName="allowOn" class="form-control form-control-sm"> -->
-
                         </div>
                         <div class="col-12">
                             <label class="form-label">Description</label>
@@ -65,7 +55,7 @@
                         </div>
                         <div class="col-12">
                             <label class="form-label">Display Type</label>
-                            <select class="" formControlName="display_type">
+                            <select class="form-select" formControlName="display_type">
                                 <option value="">Default</option>
                                 <option value="Products">Products</option>
                                 <option value="Subcategories">Subcategories</option>
@@ -74,21 +64,14 @@
                         </div>
                        <div class="col-12">
                         <div class="upload-category-thumbnail">
-                            <label class="form-label mb-0" for="thumbUpload">Add Category Thumbnail</label>
-                        <button>
-                            <input 
-                            type="file"
-                            (change)="onImageChange($event)"
-                            accept="image/*"
-                            class="form-control"
-                            />
-                        </button>
+                            <label class="form-label" for="thumbUpload">Add Category Thumbnail</label>
+                            <input class="form-control" type="file" (change)="onImageChange($event)" accept="image/*" />
+
                             <!-- Preview Image -->
                             @if(imagePreview){
-
-                                <div class="mt-2">
+                            <div class="mt-2">
                                 <img src="{{imagePreview}}" alt="Thumbnail Preview" width="120" height="120" style="border-radius:8px;">
-                                </div>
+                            </div>
                             }
                         </div>
 </div>

@@ -1,10 +1,10 @@
+@if(isLogin){
 <!-- header start -->
- @if(isLogin){
+<app-header></app-header>
+<!-- header end -->
 
-     <app-header></app-header>
-     <!-- header end -->
-     
-     <!-- main sidebar start -->
-     <app-sidebar></app-sidebar>
- }
+<!-- main sidebar start -->
+<app-sidebar></app-sidebar>
+<!-- main sidebar end -->
+}
 <router-outlet></router-outlet>
