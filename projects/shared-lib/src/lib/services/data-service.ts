@@ -46,12 +46,15 @@ export class DataService {
       return this.http.post<Commonresponseobject>(environment.API_URL + apiEndPoint, data, this.httpOptions);
     }
    callApiNew(data: any, apiEndPoint: any) {
+            const httpHeaders = new HttpHeaders({
+          'Authorization': `Bearer ${this.authToken}`
+        });
       const requestPayload = {
         application: environment.APPLICATION,
         version: environment.VERSION,
         data
       };
-      return this.http.post<Commonresponseobject>(environment.API_URL_NEW + apiEndPoint, data, this.httpOptions);
+      return this.http.post<Commonresponseobject>(environment.API_URL_NEW + apiEndPoint, data, { headers: httpHeaders });
     }
 
       callApiWithFormData(data: any, apiEndPoint: string) {
@@ -75,12 +78,27 @@ export class DataService {
         });
       return this.http.delete<Commonresponseobject>(environment.API_URL_NEW + apiEndPoint + '/' + id, {headers:httpHeaders});
     }
-    callUpdateApi(apiEndPoint: any,data: any){
-      const httpHeaders = new HttpHeaders({
+    callUpdateApi(apiEndPoint: any,data: any,id:any){
+
+  const httpHeaders = new HttpHeaders({
           'Authorization': `Bearer ${this.authToken}`
         });
       console.log('httpHeaders==>',httpHeaders);
-        return this.http.put(environment.API_URL_NEW + apiEndPoint + '/' + data.id,data,{ headers: httpHeaders });
+        return this.http.post(environment.API_URL_NEW + apiEndPoint + '/' + id,data,{ headers: httpHeaders });
+
+
+
+       const requestPayload = {
+        application: environment.APPLICATION,
+        version: environment.VERSION,
+        data
+      };
+      return this.http.post<Commonresponseobject>(environment.API_URL_NEW + apiEndPoint + '/' + id, data, this.httpOptions);
+      // const httpHeaders = new HttpHeaders({
+      //     'Authorization': `Bearer ${this.authToken}`
+      //   });
+      // console.log('httpHeaders==>',httpHeaders);
+      //   return this.http.post(environment.API_URL_NEW + apiEndPoint + '/' + data.id,data,{ headers: httpHeaders });
     }
   }
 

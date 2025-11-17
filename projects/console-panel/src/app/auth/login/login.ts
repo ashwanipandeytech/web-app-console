@@ -28,6 +28,7 @@ this.loginFormGrp();
  //add toastr library private activatedRoute= inject(ActivatedRoute);
   // email:any='superadmin@demohandler.com'
   // password:any='R9!hQ7k$2Pm@A1eZx4LwT8uV#cN0sBf'
+  // password:Admin@12345
   // callLogin() {
 
   //   const loginData = {

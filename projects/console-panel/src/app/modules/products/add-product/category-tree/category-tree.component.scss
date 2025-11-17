@@ -1,0 +1,66 @@
+/* Tree Container */
+.category-tree {
+  list-style: none;
+  margin: 0;
+  padding-left: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Each Node */
+.category-tree li {
+  margin: 6px 0;
+}
+
+/* Category item layout */
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  border: 1px solid #e4e4e4;
+  transition: 0.2s;
+}
+
+/* Hover effect */
+.category-item:hover {
+  background-color: #eef6ff;
+  border-color: #b9d6ff;
+}
+
+/* Textbox styling */
+.name-input {
+  padding: 4px 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 180px;
+}
+
+/* Category label (name display) */
+.label-text {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Nested branches */
+.category-tree ul {
+  padding-left: 25px;
+  border-left: 2px dashed #dcdcdc;
+  margin-left: 10px;
+}
+
+/* Checkbox style (optional cleaner look) */
+input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .name-input {
+    width: 120px;
+  }
+}

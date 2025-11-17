@@ -1,0 +1,29 @@
+
+
+<ul class="category-tree">
+   @for(cat of categories; track $index){
+  <ng-container>
+ <li>
+
+      <div class="category-item">
+        <input
+          type="checkbox"
+          [(ngModel)]="cat.checked"
+          (change)="onCheckboxChange(cat)"
+        >
+
+        <span class="label-text">{{ cat.name }}</span>
+      </div>
+
+      <!-- Recursive children -->
+      <app-category-tree 
+        *ngIf="cat.children?.length"
+        [categories]="cat.children"
+        [selectedIds]="selectedIds">
+      </app-category-tree>
+
+    </li>
+
+  </ng-container>
+}
+</ul>

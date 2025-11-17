@@ -1,10 +1,21 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import {Sidebar} from "../../../layout/sidebar/sidebar";
 import {Header} from "../../../layout/header/header";
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
+import { DataService } from 'shared-lib';
+import { catchError, of } from 'rxjs';
+import { GlobalService } from '../../../global.service';
+import {MatTreeModule} from '@angular/material/tree';
+import { environment } from 'environments/environment';
+import {MatIconModule} from '@angular/material/icon';
+import { SharedModule } from '../../../shared.module';
+import { CategoryTreeComponent } from './category-tree/category-tree.component';
 
-
+interface FoodNode {
+  name: string;
+  children?: FoodNode[];
+}
 @Component({
   selector: 'app-add-customer',
   imports: [
@@ -12,11 +23,20 @@ import { QuillModule } from 'ngx-quill';
      Header,
      ReactiveFormsModule,
      QuillModule,
+     MatTreeModule,
+     MatIconModule,
+     CategoryTreeComponent
     ],
   templateUrl: './add-product.html',
   styleUrl: './add-product.scss'
 })
+
 export class AddProduct {
+    childrenAccessor = (node: FoodNode) => node.children ?? [];
+
+  dataSource = [];
+
+  hasChild = (_: number, node: FoodNode) => !!node.children && node.children.length > 0;
   productDetails!:FormGroup;
   inventoryForm!: FormGroup;
   // priceForm!: FormGroup;
@@ -69,12 +89,19 @@ categories = [
   priceSection!:FormGroup;
   shippingInfoSection!:FormGroup;
   productAttributesForm!: FormGroup;
-  constructor(private fb: FormBuilder){
+  public dataService: any = inject(DataService);
+  categoryListData:any=[];
+  parentId!:Number;
+  constructor(private fb: FormBuilder,private globalService:GlobalService,private cd:ChangeDetectorRef){
     this.initializeForms()
     this.initializeCategoryControls();
   }
 
+   onGetId(id: number) {
+    this.parentId = id;
+  }
   ngOnInit(){
+    this.getCategoryList();
   }
   initializeForms(){
     this.addProductDetails();
@@ -87,6 +114,9 @@ categories = [
     this.priceForm();
     this.shippingForm();
     this.productAttributeForm();
+    this.shippingConfigForms();
+    this.offerFormGroup();
+    this.seoFormGroup();
     // this.addInverntoryForm();
   }
 
@@ -165,6 +195,32 @@ addAttribute() {
   
 }
 
+shippingConfigForms(){
+this.shippingConfigForm = this.fb.group({
+      estimateShippingTime: [''],
+      freeShipping: [false],
+      flatRate: [false],
+      quantityMulitiply: [false],
+      cashOnDelivery: [false],
+})
+}
+
+offerFormGroup(){
+  this.offerForm = this.fb.group({
+     flashDeal: [false],
+      todaysDeal: [false],
+      featured: [false],
+  })
+}
+seoFormGroup(){
+  this.seoForm = this.fb.group({
+      focusKeyphrase: ['', Validators.required],
+      metaTitle: ['', [Validators.required, Validators.maxLength(60)]],
+      slugText: ['', [Validators.required, Validators.pattern('^[a-z0-9-]+$')]],
+      metaDscr: ['', [Validators.required, Validators.maxLength(160)]],
+  })
+}
+
 submitProductMultipleOptionForm(){
   this.productMultipleOptionForm = this.fb.group({
       // Media Tab
@@ -202,22 +258,22 @@ submitProductMultipleOptionForm(){
       // shippingClass: ['0'],
 
       // Shipping COnfiguration
-      estimateShippingTime: [''],
-      freeShipping: [false],
-      flatRate: [false],
-      quantityMulitiply: [false],
-      cashOnDelivery: [false],
+      // estimateShippingTime: [''],
+      // freeShipping: [false],
+      // flatRate: [false],
+      // quantityMulitiply: [false],
+      // cashOnDelivery: [false],
 
       // offer 
-      flashDeal: [false],
-      todaysDeal: [false],
-      featured: [false],
+      // flashDeal: [false],
+      // todaysDeal: [false],
+      // featured: [false],
 
 // SEO Data
-      focusKeyphrase: ['', Validators.required],
-      metaTitle: ['', [Validators.required, Validators.maxLength(60)]],
-      slugText: ['', [Validators.required, Validators.pattern('^[a-z0-9-]+$')]],
-      metaDscr: ['', [Validators.required, Validators.maxLength(160)]],
+      // focusKeyphrase: ['', Validators.required],
+      // metaTitle: ['', [Validators.required, Validators.maxLength(60)]],
+      // slugText: ['', [Validators.required, Validators.pattern('^[a-z0-9-]+$')]],
+      // metaDscr: ['', [Validators.required, Validators.maxLength(160)]],
 
       // Published Panel
       status: ['0', Validators.required],
@@ -225,11 +281,12 @@ submitProductMultipleOptionForm(){
       publishDate: ['', Validators.required],
 
       // Category Panel
-     categorySearch: [''],
-      newCategoryName: ['', Validators.required],
-      newCategoryParent: ['']
+      // categorySearch: [''],
+      // newCategoryName: ['', Validators.required],
+      // newCategoryParent: ['']
 
     });
+    
 }
 
 addCategoriesForm(){
@@ -347,18 +404,64 @@ onGallerySelect(event: any) {
   this.galleryFiles = event.target.files;
 }
 getProductDetails(){
-  console.log('thumbFile',this.thumbFile);  // FileList
-  console.log('galleryFiles',this.galleryFiles);  // FileList
-console.log('this.priceSection.value.priceDateStart==>',this.priceSection.value);
-// price start and end time 
-  const priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
-  const priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
-  
+  let priceSection = this.priceSection.value;
+  priceSection.priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
+  priceSection.priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
   // media payload 
     let mediaSectionPayload = {
     thumbFile:this.thumbFile,
     galleryFiles:this.galleryFiles
     }
+    let finalData = {
+      category_id:this.parentId,
+      media: mediaSectionPayload,
+      title:this.productDetails.value.productTitle,
+      description:this.productDetails.value.productDescription,
+      inventory:this.productInventrySection.value,
+      price_data:priceSection,
+      shipping_info:this.shippingInfoSection.value,
+      shipping_config:this.shippingConfigForm.value,
+      offer:this.offerForm.value,
+      seo:this.seoForm.value,
+      tags:this.tagsForm.value,
+      visibility:this.productMultipleOptionForm.value
+    }
+    console.log('finalData==>',finalData);
+    this.dataService.callApiNew(finalData, 'products')
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+            setTimeout(() => {
+          this.globalService.showMsgSnackBar(err);
+        }, 100);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+        // this.addCategory.reset();
+        // this.imagePreview = '';
+        // this.imageFile = null;
+        // this.getCategoryList();
+        setTimeout(() => {
+          this.globalService.showMsgSnackBar(res);
+        }, 100);
+      });
+
+
+
+//   console.log('thumbFile',this.thumbFile);  // FileList
+//   console.log('galleryFiles',this.galleryFiles);  // FileList
+// console.log('this.priceSection.value.priceDateStart==>',this.priceSection.value);
+// // price start and end time 
+//   const priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
+//   const priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
+  
+  // media payload 
+    // let mediaSectionPayload = {
+    // thumbFile:this.thumbFile,
+    // galleryFiles:this.galleryFiles
+    // }
   
 
 
@@ -372,15 +475,46 @@ console.log('this.priceSection.value.priceDateStart==>',this.priceSection.value)
 // console.log('selectedCategories==>',this.selectedCategories.value);
 
 // tagsform value 
-const tagsArray = this.tagsForm.value.tags;
-const tagsString = tagsArray.join(', ');
-console.log('tagsString',tagsString);
+// const tagsArray = this.tagsForm.value.tags;
+// const tagsString = tagsArray.join(', ');
+// console.log('tagsString',tagsString);
 
 
   
   
 }
 
+
+// get categories 
+  getCategoryList() {
+    this.categoryListData = [];
+    this.dataService.callGetApi('categories')
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+        if (res.data) {
+
+          for (let i = 0; i < res.data.length; i++) {
+            const element = res.data[i];
+            console.log('element==>', element.thumbnail);
+            if (element?.thumbnail != null) {
+              console.log('environment.API_URL==>', environment.API_URL);
+              element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
+            }
+            this.categoryListData.push(element);
+          }
+        }
+        console.log('categoryListData==>', this.categoryListData);
+        // this.dataSource = this.categoryListData;
+        this.cd.detectChanges();
+        // this.categoryListData = res.data;
+      });
+  }
 
  
 }

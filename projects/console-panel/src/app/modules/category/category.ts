@@ -38,6 +38,8 @@ export class Category {
       customCategoryIcon: [''],
       description: ['', [Validators.minLength(30)]],
       display_type: ['', Validators.required],
+      is_menu:[false,Validators.required],
+      allow_on:['',Validators.required]
 
     });
   }
@@ -144,9 +146,46 @@ export class Category {
   this.addCategory.patchValue(item);
   }
   updatecategory(){
-    let formData = this.addCategory.value;
-    formData.id = this.updateCategoryId;
-     this.dataService.callUpdateApi('categories', formData)
+    // let formData = this.addCategory.value;
+    // formData.id = this.updateCategoryId;
+    let formValue = this.addCategory.value;
+
+
+     const formData = new FormData();
+     formData.append('_method', 'PUT');
+    if (this.imageFile) {
+      formData.append('categoryThumbnail', this.imageFile);
+    }
+    Object.keys(this.addCategory.value).forEach(key => {
+      if (key !== 'categoryThumbnail') {
+        formData.append(key, this.addCategory.value[key]);
+      }
+    });
+// Add ID for update
+// formValue.id = this.updateCategoryId;
+// const form = new FormData();
+
+// Laravel-style method spoofing
+// form.append('_method', 'PUT');
+
+// // Append normal text fields
+// form.append('id', formValue.id);
+// form.append('name', formValue.name);
+// form.append('parent_id', formValue.parent_id);
+// form.append('description', formValue.description);
+// form.append('display_type', formValue.display_type);
+// form.append('customCategoryIcon', formValue.customCategoryIcon);
+
+
+// Append files ONLY if user selected them
+// if (formValue.categoryThumbnail instanceof File) {
+//   form.append('categoryThumbnail', formValue.categoryThumbnail);
+// }
+
+// if (formValue.customCategoryIcon instanceof File) {
+//   form.append('customCategoryIcon', formValue.customCategoryIcon);
+// }
+     this.dataService.callUpdateApi('categories', formData,this.updateCategoryId)
       .pipe(
         catchError(err => {
           console.error('Error:', err);
