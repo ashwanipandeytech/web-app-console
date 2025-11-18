@@ -12,15 +12,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { GlobalService } from '../../global.service';
 @Component({
   selector: 'app-all-products',
-  imports: [Sidebar, Header],
+  imports: [],
   templateUrl: './all-products.html',
   styleUrl: './all-products.scss'
 })
-
-
-
-
-
 
 
 
