@@ -392,7 +392,7 @@
 }
 
 .grocery-section {
-  padding-top: 6rem;
+  padding-top: 5rem;
   .product-wrapper {
     height: 20rem;
     border: none;
@@ -426,8 +426,8 @@
 
   @media #{$md} {
     .product-wrapper {
-      height: 29rem;
-      padding: 2rem;
+      // height: 29rem;
+      // padding: 2rem;
 
       background-position: left;
 

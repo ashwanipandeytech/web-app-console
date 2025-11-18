@@ -118,7 +118,8 @@ $spartan: "League Spartan", sans-serif;
 
 // (product-buttons)
 @mixin productBtn(
-  $pd: 1.2rem 1.6rem 1.2rem 2.5rem,
+  // $pd: 1.2rem 1.6rem 1.2rem 2.5rem,
+  $pd: .5rem 1rem,
   $bg: rgba($theme-color, 0.2),
   $color: $theme-color
 ) {

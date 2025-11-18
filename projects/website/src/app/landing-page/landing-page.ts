@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'web-landing-page',
@@ -12,9 +13,11 @@ import { DataService } from 'shared-lib';
 export class LandingPage {
  public dataService:any= inject(DataService);
   productListData: any=[];
+  baseURL: string;
 
  constructor(private cd:ChangeDetectorRef){
 this.callAllProductList();
+this.baseURL=environment.DOMAIN;
  }
    callAllProductList() {
 
