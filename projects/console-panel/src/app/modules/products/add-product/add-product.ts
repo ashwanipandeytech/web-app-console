@@ -501,15 +501,17 @@ getProductDetails(){
 
         if (res.success ==true) {    
           let id = res.data.id;
-            if (!this.selectedThumbImg) return;
-  const formDataThumb = new FormData();
-  // for (let i = 0; i < this.selectedFile.length; i++) {
-    // const element = this.selectedFile[i];
-    formDataThumb.append("files", this.selectedThumbImg, this.selectedThumbImg.name);
-    formDataThumb.append("module", "product");
-    formDataThumb.append("module_id", id);
-    formDataThumb.append("type", "thumb");
-    this.callUploadnediaSection(formDataThumb);
+            if (this.selectedThumbImg){
+
+              const formDataThumb = new FormData();
+              // for (let i = 0; i < this.selectedFile.length; i++) {
+                // const element = this.selectedFile[i];
+                formDataThumb.append("files", this.selectedThumbImg, this.selectedThumbImg.name);
+                formDataThumb.append("module", "product");
+                formDataThumb.append("module_id", id);
+                formDataThumb.append("type", "thumb");
+                this.callUploadnediaSection(formDataThumb);
+            }
   for (let i = 0; i < this.selectedFile.length; i++) {
   const element = this.selectedFile[i];
 
@@ -575,18 +577,18 @@ callUploadnediaSection(formData:any){
       .pipe(
         catchError(err => {
           console.error('Error:', err);
-            setTimeout(() => {
-          this.globalService.showMsgSnackBar(err);
-        }, 100);
+        //     setTimeout(() => {
+        //   this.globalService.showMsgSnackBar(err);
+        // }, 100);
           return of(null);
         })
       )
       .subscribe((res: any) => {
         console.log('Response:', res);
         // this.getCategoryList();
-        setTimeout(() => {
-          this.globalService.showMsgSnackBar(res);
-        }, 100);
+        // setTimeout(() => {
+        //   this.globalService.showMsgSnackBar(res);
+        // }, 100);
       });
 }
 
