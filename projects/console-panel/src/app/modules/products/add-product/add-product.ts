@@ -82,7 +82,7 @@ categories = [
   productMediaSection!: FormGroup;
   thumbFile: any;
   galleryFiles: any;
-  thumbPreview: any;
+  thumbPreview: any=[];
   productInventrySection!: FormGroup;
   priceSection!:FormGroup;
   shippingInfoSection!:FormGroup;
@@ -90,6 +90,8 @@ categories = [
   public dataService: any = inject(DataService);
   categoryListData:any=[];
   parentId!:Number;
+  selectedThumbImg: any;
+  thumbGallery: any=[];
   constructor(private fb: FormBuilder,private globalService:GlobalService,private cd:ChangeDetectorRef){
     this.initializeForms()
     this.initializeCategoryControls();
@@ -394,7 +396,7 @@ onThumbSelect(event: any) {
   // Create image preview
   const reader = new FileReader();
   reader.onload = () => {
-    this.thumbPreview = reader.result as string;
+    this.thumbPreview.push(reader.result as string);
   };
   reader.readAsDataURL(file);
 }
@@ -409,24 +411,43 @@ onFileSelect(event: any) {
   // Preview if needed
   const reader = new FileReader();
   reader.onload = () => {
-    this.thumbPreview = reader.result as string;
+    // this.thumbPreview = reader.result as string;
+      this.thumbGallery.push(reader.result as string);
+      this.cd.detectChanges();
   };
   reader.readAsDataURL(file);
-
   // Call upload immediately
   // this.uploadImage();
 }
 
+onFileSelectThumb(event: any) {
+   const file = event.target.files[0];
+  if (!file) return;
+  // const file = event.target.files[0];
+  // this.selectedFile.push(file);
+this.selectedThumbImg = file;
+
+  // Preview if needed
+  const reader = new FileReader();
+  reader.onload = () => {
+    // this.thumbPreview = reader.result as string;
+      this.thumbPreview = reader.result as string;
+      this.cd.detectChanges();
+  };
+  reader.readAsDataURL(file);
+  // Call upload immediately
+  // this.uploadImage();
+}
 uploadImage() {
-  if (!this.selectedFile) return;
+  if (!this.selectedThumbImg) return;
   const formData = new FormData();
-  for (let i = 0; i < this.selectedFile.length; i++) {
-    const element = this.selectedFile[i];
-    formData.append("files", element, element.name);
+  // for (let i = 0; i < this.selectedFile.length; i++) {
+    // const element = this.selectedFile[i];
+    formData.append("files", this.selectedThumbImg, this.selectedThumbImg.name);
     formData.append("module", "product");
     formData.append("module_id", "gallery");
     formData.append("type", "gallery");
-  }
+  // }
   // Add other parameters if needed
 
 
@@ -480,6 +501,15 @@ getProductDetails(){
 
         if (res.success ==true) {    
           let id = res.data.id;
+            if (!this.selectedThumbImg) return;
+  const formDataThumb = new FormData();
+  // for (let i = 0; i < this.selectedFile.length; i++) {
+    // const element = this.selectedFile[i];
+    formDataThumb.append("files", this.selectedThumbImg, this.selectedThumbImg.name);
+    formDataThumb.append("module", "product");
+    formDataThumb.append("module_id", id);
+    formDataThumb.append("type", "thumb");
+    this.callUploadnediaSection(formDataThumb);
   for (let i = 0; i < this.selectedFile.length; i++) {
   const element = this.selectedFile[i];
 

@@ -2,14 +2,22 @@
 .snackbar-success {
   background: #4caf50 !important; /* green */
   color: #fff !important;
+   z-index: 9999;
 }
 
 .snackbar-error {
   background: #f44336 !important; /* red */
   color: #fff !important;
+   z-index: 9999;
 }
 
 .snackbar-warning {
   background: #ff9800 !important; /* orange */
   color: #000 !important;
+   z-index: 9999;
 }
+.cdk-overlay-container {
+    position: fixed;
+    z-index: 99999;
+}
+

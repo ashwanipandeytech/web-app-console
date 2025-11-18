@@ -80,7 +80,10 @@ this.loginFormGrp();
     
       if (response && response.success) {
         localStorage.setItem('user', JSON.stringify(response.data));
-        this.router.navigate(['dashboard']);
+        // this.router.navigate(['dashboard']).subs;
+        this.router.navigateByUrl('dashboard').then(()=>{
+          window.location.reload();
+        })
       } else if (response == null) {
         alert('Invalid user, try valid email');
        //add toaserfnc alert('Login failed: ' + response.message);

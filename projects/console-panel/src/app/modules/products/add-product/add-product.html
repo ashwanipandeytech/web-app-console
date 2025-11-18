@@ -89,10 +89,10 @@
                           <div class="part-txt">
                             <h5>Add thumbnail <span>(jpeg/png)</span></h5>
                           </div>
-                                  <input type="file" class="image-input" formControlName="thumbUpload" accept="image/*" (change)="onFileSelect($event)">
+                                  <input type="file" class="image-input" formControlName="thumbUpload" accept="image/*" (change)="onFileSelectThumb($event)">
                         @if(thumbPreview){
+  <img [src]="thumbPreview" class="preview-img" />
 
-                          <img [src]="thumbPreview" class="preview-img" />
                         }
                         </div>
                       </div>
@@ -101,7 +101,11 @@
                           <div class="part-txt">
                             <h5>Add gallery <span>(jpeg/png)</span></h5>
                           </div>
-                             <input type="file" class="image-input" formControlName="galleryUpload" accept="image/*" (change)="onFileSelect($event)">
+                            
+                          <input type="file" class="image-input" formControlName="galleryUpload" accept="image/*" (change)="onFileSelect($event)">
+                          @for (item of thumbGallery; track $index) {
+                                <img [src]="item" class="preview-img" />
+                            }
                         </div>
                       </div>
                     </div>
@@ -455,46 +459,49 @@
             <div class="mb-30 w-100">
                 <a type="button" class="btn btn-primary d-block" (click)="getProductDetails()">Preview Changed</a>
             </div>
-          <div class="panel mb-30">
-      <div class="panel-header">
-        <h5>Published</h5>
-        <div class="btn-box d-flex gap-2">
-          <button type="button" class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button>
-          <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa-light fa-angle-up"></i></button>
-        </div>
-      </div>
-      <div class="panel-body">
-        <div class="row g-3">
-          <div class="col-6">
-            <label class="form-label">Status</label>
-            <select class="form-control form-control-sm" formControlName="status">
-              <option value="0">Published</option>
-              <option value="1">Draft</option>
-            </select>
-          </div>
-          <div class="col-6">
-            <label class="form-label">Visibility</label>
-            <select class="form-control form-control-sm" formControlName="visibility">
-              <option value="0">Public</option>
-              <option value="1">Pass. Protected</option>
-              <option value="2">Private</option>
-            </select>
-          </div>
-          <div class="col-12">
-            <div class="publish-date">
-              <label>Published on: </label>
-              <input class="input-flush" type="date" id="publishDate"  formControlName="publishDate">
-              <label for="publishDate" class="cursor-pointer text-primary"><i class="fa-light fa-pen-to-square"></i></label>
+            @if(false){
+
+              <div class="panel mb-30" >
+          <div class="panel-header">
+            <h5>Published</h5>
+            <div class="btn-box d-flex gap-2">
+              <button type="button" class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button>
+              <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa-light fa-angle-up"></i></button>
             </div>
-            <!-- <div class="publish-date">
-              <label>Published on: </label>
-              <input class="input-flush" type="datetime-local" id="publishDate" formControlName="publishDate">
-              <label for="publishDate" class="cursor-pointer text-primary"><i class="fa-light fa-pen-to-square"></i></label>
-            </div> -->
+          </div>
+          <div class="panel-body">
+            <div class="row g-3">
+              <div class="col-6">
+                <label class="form-label">Status</label>
+                <select class="form-control form-control-sm" formControlName="status">
+                  <option value="0">Published</option>
+                  <option value="1">Draft</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label">Visibility</label>
+                <select class="form-control form-control-sm" formControlName="visibility">
+                  <option value="0">Public</option>
+                  <option value="1">Pass. Protected</option>
+                  <option value="2">Private</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <div class="publish-date">
+                  <label>Published on: </label>
+                  <input class="input-flush" type="date" id="publishDate"  formControlName="publishDate">
+                  <label for="publishDate" class="cursor-pointer text-primary"><i class="fa-light fa-pen-to-square"></i></label>
+                </div>
+                <!-- <div class="publish-date">
+                  <label>Published on: </label>
+                  <input class="input-flush" type="datetime-local" id="publishDate" formControlName="publishDate">
+                  <label for="publishDate" class="cursor-pointer text-primary"><i class="fa-light fa-pen-to-square"></i></label>
+                </div> -->
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+            }
 <div class="panel mb-30">
   <div class="panel-header">
     <h5>Category</h5>
