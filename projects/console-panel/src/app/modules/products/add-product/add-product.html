@@ -107,7 +107,7 @@
                 <div class="part-txt">
                   <h5>Add thumbnail <span>(jpeg/png)</span></h5>
                 </div>
-                <input type="file" class="image-input" formControlName="thumbUpload" accept="image/*" (change)="onThumbSelect($event)">
+                <input type="file" class="image-input" formControlName="thumbUpload" accept="image/*" (change)="onFileSelect($event)">
                @if(thumbPreview){
 
                  <img [src]="thumbPreview" class="preview-img" />
@@ -119,7 +119,7 @@
                 <div class="part-txt">
                   <h5>Add gallery <span>(jpeg/png)</span></h5>
                 </div>
-                <input type="file" class="image-input" formControlName="galleryUpload" accept="image/*" (change)="onGallerySelect($event)">
+                <input type="file" class="image-input" formControlName="galleryUpload" accept="image/*" (change)="onFileSelect($event)">
               </div>
             </div>
           </div>

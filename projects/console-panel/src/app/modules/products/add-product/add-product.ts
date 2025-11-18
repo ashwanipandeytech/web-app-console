@@ -388,6 +388,7 @@ private initializeCategoryControls(): void {
       this.tagsForm.patchValue({ tags: [...currentTags, tag] });
     }
   }
+ selectedFile: File[] = [];
 onThumbSelect(event: any) {
   const file = event.target.files[0];
   this.thumbFile = file;
@@ -398,6 +399,40 @@ onThumbSelect(event: any) {
     this.thumbPreview = reader.result as string;
   };
   reader.readAsDataURL(file);
+}
+
+// media upload photo fnc 
+onFileSelect(event: any) {
+   const file = event.target.files[0];
+  if (!file) return;
+  // const file = event.target.files[0];
+  this.selectedFile.push(file);
+
+  // Preview if needed
+  const reader = new FileReader();
+  reader.onload = () => {
+    this.thumbPreview = reader.result as string;
+  };
+  reader.readAsDataURL(file);
+
+  // Call upload immediately
+  // this.uploadImage();
+}
+
+uploadImage() {
+  if (!this.selectedFile) return;
+  const formData = new FormData();
+  for (let i = 0; i < this.selectedFile.length; i++) {
+    const element = this.selectedFile[i];
+    formData.append("files", element, element.name);
+    formData.append("module", "product");
+    formData.append("module_id", "gallery");
+    formData.append("type", "gallery");
+  }
+  // Add other parameters if needed
+
+
+
 }
 
 onGallerySelect(event: any) {
@@ -444,6 +479,22 @@ getProductDetails(){
       )
       .subscribe((res: any) => {
         console.log('Response:', res);
+
+        if (res.success ==true) {    
+          let id = res.data.id;
+  for (let i = 0; i < this.selectedFile.length; i++) {
+  const element = this.selectedFile[i];
+
+  const formData = new FormData();   // IMPORTANT: create new for each file
+
+  formData.append("files", element, element.name);
+  formData.append("module", "product");
+  formData.append("module_id", id);
+  formData.append("type", "gallery");
+
+  this.callUploadnediaSection(formData);
+}
+        }
         // this.addCategory.reset();
         // this.imagePreview = '';
         // this.imageFile = null;
@@ -489,6 +540,27 @@ getProductDetails(){
   
 }
 
+
+
+callUploadnediaSection(formData:any){
+    this.dataService.callApiWithFormData(formData, 'media/upload')
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+            setTimeout(() => {
+          this.globalService.showMsgSnackBar(err);
+        }, 100);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+        // this.getCategoryList();
+        setTimeout(() => {
+          this.globalService.showMsgSnackBar(res);
+        }, 100);
+      });
+}
 
 // get categories 
   getCategoryList() {

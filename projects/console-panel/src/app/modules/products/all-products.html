@@ -207,9 +207,12 @@
         </td>
         <td>
             <div class="table-product-card">
-                <div class="part-img">
-                    <img src="../images/Livestock-scratch-brush.png" alt="Image">
-                </div>
+                @if(item && item.images.length>0){
+
+                    <div class="part-img">
+                      <img [src]="item?.images[0]?.url" alt="Image">
+                    </div>
+                }
                 <div class="part-txt">
                     <span class="product-name">{{item.title}}</span>
                     <span class="product-category">{{item.category.name}}</span>
