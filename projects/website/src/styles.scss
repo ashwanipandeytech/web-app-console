@@ -159,9 +159,9 @@
 }
 .flash-sale-section {
   background: url("/images/homepage-one/flash_sale.webp") no-repeat center / cover;
-  height: 47rem;
+  height: 38rem;
   border-radius: 4px;
-  padding: 4.7rem 6rem 6rem;
+  padding: 2rem 6rem;
   position: relative;
 
   .flash-sale-content {
@@ -394,10 +394,11 @@
 .grocery-section {
   padding-top: 5rem;
   .product-wrapper {
-    height: 20rem;
+    height: 18rem;
     border: none;
     background: none;
     padding: 1.5rem 2rem 2rem;
+    border-radius: .65rem;
   }
   .wrapper-left {
     background: url("/images/homepage-one/grocery-bg.webp") no-repeat

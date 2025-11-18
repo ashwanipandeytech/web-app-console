@@ -19,7 +19,7 @@ export class LandingPage {
 this.callAllProductList();
 this.baseURL=environment.DOMAIN;
  }
-   callAllProductList() {
+  callAllProductList() {
 
     // const payload = {
     //   email: this.email,

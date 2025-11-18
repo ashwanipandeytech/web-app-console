@@ -81,7 +81,7 @@
     <div class="container">
         <div class="section-title">
             <h3>Category</h3>
-            <a href="/category" class="view">View All</a>
+            <a href="/category" class="h3 view">View All</a>
         </div>
         <div class="category-section">
             <div class="product-wrapper" data-aos="fade-right" data-aos-duration="100">
@@ -273,7 +273,7 @@
     <div class="container">
         <div class="section-title">
             <h3>Top Selling Prodcuts</h3>
-            <a href="/product-sidebar" class="view">View All</a>
+            <a href="/product-sidebar" class="h3 view">View All</a>
         </div>
         <!-- <div class="top-selling-section"> -->
         <div class="fresh-section">
@@ -283,7 +283,11 @@
                     <div class="product-wrapper" data-aos="fade-up">
                         <div class="product-img">
                             <!-- <img src="../images/homepage-one/product-img/p-img-1.webp" alt="product-img"> -->
-                            <img [src]="item?.images[0]?.url" alt="product-img">
+                            <a href="/product-info">
+                                <a href="/product-info">
+                                    <img [src]="item?.images[0]?.url" alt="product-img">
+                                </a>
+                            </a>
                             <div class="product-cart-items">
                                 <!-- <a href="#" class="cart cart-item">
                                     <span>
@@ -300,7 +304,7 @@
                                         </svg>
                                     </span>
                                 </a> -->
-                                <a href="wishlist.html" class="favourite cart-item">
+                                <a href="#" class="favourite cart-item">
                                     <span>
                                         <svg width="40" height="40" viewbox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <rect width="40" height="40" rx="3" fill="#AE1C9A"></rect>
@@ -416,7 +420,7 @@
     <div class="container">
         <div class="section-title">
             <h3>Popular Sales</h3>
-            <a href="/product-sidebar" class="view">View All</a>
+            <a href="/product-sidebar" class="h3 view">View All</a>
         </div>
         <div class="fresh-section">
             <div class="row g-5">
@@ -425,7 +429,9 @@
                     <div class="product-wrapper" data-aos="fade-up">
                         <div class="product-img">
                             <!-- <img src="../images/homepage-one/product-img/p-img-1.webp" alt="product-img"> -->
-                            <img [src]="item?.images[0]?.url" alt="product-img">
+                            <a href="/product-info">
+                                <img [src]="item?.images[0]?.url" alt="product-img">
+                            </a>
                             <div class="product-cart-items">
                                 <!-- <a href="#" class="cart cart-item">
                                     <span>
@@ -442,7 +448,7 @@
                                         </svg>
                                     </span>
                                 </a> -->
-                                <a href="wishlist.html" class="favourite cart-item">
+                                <a href="#" class="favourite cart-item">
                                     <span>
                                         <svg width="40" height="40" viewbox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <rect width="40" height="40" rx="3" fill="#AE1C9A"></rect>
@@ -510,7 +516,7 @@
     <div class="container">
         <div class="section-title">
             <h3>Drinks Juice</h3>
-            <a href="product-sidebar.html" class="view">View All</a>
+            <a href="product-sidebar.html" class="h3 view">View All</a>
         </div>
         <div class="juice-product-section">
             <div class="row g-5">
@@ -534,7 +540,7 @@
                                         </svg>
                                     </span>
                                 </a>
-                                <a href="wishlist.html" class="favourite cart-item">
+                                <a href="#" class="favourite cart-item">
                                     <span>
                                         <svg width="40" height="40" viewbox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <rect width="40" height="40" rx="3" fill="#AE1C9A"></rect>
@@ -610,7 +616,7 @@
                                         </svg>
                                     </span>
                                 </a>
-                                <a href="wishlist.html" class="favourite cart-item">
+                                <a href="#" class="favourite cart-item">
                                     <span>
                                         <svg width="40" height="40" viewbox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <rect width="40" height="40" rx="3" fill="#AE1C9A"></rect>
@@ -686,7 +692,7 @@
                                         </svg>
                                     </span>
                                 </a>
-                                <a href="wishlist.html" class="favourite cart-item">
+                                <a href="#" class="favourite cart-item">
                                     <span>
                                         <svg width="40" height="40" viewbox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <rect width="40" height="40" rx="3" fill="#AE1C9A"></rect>
@@ -762,7 +768,7 @@
                                         </svg>
                                     </span>
                                 </a>
-                                <a href="wishlist.html" class="favourite cart-item">
+                                <a href="#" class="favourite cart-item">
                                     <span>
                                         <svg width="40" height="40" viewbox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <rect width="40" height="40" rx="3" fill="#AE1C9A"></rect>
@@ -855,7 +861,7 @@
     <div class="container">
         <div class="section-title">
             <h3>New Arrivals</h3>
-            <a href="/product-sidebar" class="view">View All</a>
+            <a href="/product-sidebar" class="h3 view">View All</a>
         </div>
         <div class="arrival-section">
             <div class="row g-5">
@@ -864,7 +870,9 @@
                     <div class="product-wrapper" data-aos="fade-up">
                         <div class="product-img">
                             <!-- <img src="../images/homepage-one/product-img/p-img-1.webp" alt="product-img"> -->
-                            <img [src]="item?.images[0]?.url" alt="product-img">
+                            <a href="/product-info">
+                                <img [src]="item?.images[0]?.url" alt="product-img">
+                            </a>
                             <div class="product-cart-items">
                                 <!-- <a href="#" class="cart cart-item">
                                     <span>
@@ -881,7 +889,7 @@
                                         </svg>
                                     </span>
                                 </a> -->
-                                <a href="wishlist.html" class="favourite cart-item">
+                                <a href="#" class="favourite cart-item">
                                     <span>
                                         <svg width="40" height="40" viewbox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <rect width="40" height="40" rx="3" fill="#AE1C9A"></rect>
@@ -965,7 +973,7 @@
     <div class="container">
         <div class="section-title">
             <h3>Popular Sales</h3>
-            <a href="product-sidebar.html" class="view">View All</a>
+            <a href="product-sidebar.html" class="h3 view">View All</a>
         </div>
         <div class="popular-sale-section">
             <div class="row g-5">

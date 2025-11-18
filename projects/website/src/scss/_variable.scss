@@ -157,7 +157,7 @@ $spartan: "League Spartan", sans-serif;
 
 // (section-title)
 @mixin view() {
-  font-family: $spartan;
+  font-family: $inter;
   position: relative;
   font-weight: 600;
   &::before {
