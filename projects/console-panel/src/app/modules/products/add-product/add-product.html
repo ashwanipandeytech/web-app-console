@@ -12,7 +12,7 @@
           <form [formGroup]="productDetails" (ngSubmit)="addProductDetails()">
             <div class="panel mb-30">
                 <div class="panel-body product-title-input">
-                    <label class="form-label">Write Title</label>
+                    <label class="form-label">Product Title</label>
                     <input type="text" formControlName="productTitle" class="form-control" id="productTitle" placeholder="Title for product">
                     <p class="perma-txt" hidden>
                         Permalink: <span data-link="https://example.com/" class="site-link text-primary" id="productPermalink">https://example.com/</span>
@@ -38,7 +38,7 @@
           <div class="panel mb-30">
             <form [formGroup]="productOptionData" (ngSubmit)="productOptionType()">
             <div class="panel-header">
-                <h5>Product Data</h5>
+                <h5>Product Detail</h5>
                 <div class="panel-header-right">
                   @if(false){
 
@@ -84,19 +84,20 @@
                 <div class="tab-pane fade show active" id="nav-media" role="tabpanel" aria-labelledby="nav-media-tab" tabindex="0">
                   <form [formGroup]="productMediaSection">
                     <div class="row">
-                      <div class="col-xxl-3 col-md-4 col-5 col-xs-12">
+                      <div class="col-12">
                         <div class="add-thumbnail product-image-upload">
                           <div class="part-txt">
-                            <h5>Add thumbnail <span>(jpeg/png)</span></h5>
+                            <h5>Main Image 
+                              <span>(jpeg/png)</span>
+                            </h5>
                           </div>
-                                  <input type="file" class="form-control" formControlName="thumbUpload" accept="image/*" (change)="onFileSelectThumb($event)">
-                        @if(thumbPreview){
-  <img [src]="thumbPreview" class="preview-img" />
-
-                        }
+                            <input type="file" class="form-control" formControlName="thumbUpload" accept="image/*" (change)="onFileSelectThumb($event)">
+                            @if(thumbPreview){
+                              <img [src]="thumbPreview" class="preview-img" />
+                            }
+                          </div>
                         </div>
-                      </div>
-                      <div class="col-xxl-9 col-md-8 col-7 col-xs-12">
+                      <div class="col-12">
                         <div class="add-gallery-img product-image-upload">
                           <div class="part-txt">
                             <h5>Add gallery <span>(jpeg/png)</span></h5>
@@ -457,7 +458,7 @@
 
         <div class="col-xxl-3 col-lg-4 add-product-sidebar">
             <div class="mb-30 w-100">
-                <a type="button" class="btn btn-primary d-block" (click)="getProductDetails()">Preview Changed</a>
+                <a type="button" class="btn btn-primary d-block" (click)="getProductDetails()">Publish</a>
             </div>
             @if(false){
 

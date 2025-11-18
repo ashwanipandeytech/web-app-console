@@ -24,7 +24,7 @@
       border: 1px solid $theme-bg;
       transition: all 0.3s;
       background: $theme-bg;
-      height: 19rem;
+      height: 10rem;
       img {
         transition: all 0.2s ease-in-out;
       }
@@ -394,10 +394,10 @@
 .grocery-section {
   padding-top: 6rem;
   .product-wrapper {
-    height: 29.5rem;
+    height: 20rem;
     border: none;
     background: none;
-    padding: 3rem 4rem 4rem;
+    padding: 1.5rem 2rem 2rem;
   }
   .wrapper-left {
     background: url("/images/homepage-one/grocery-bg.webp") no-repeat
@@ -406,7 +406,7 @@
     .shop-btn {
       background: $secondary-theme;
       color: $heading;
-      margin: 5rem 0 0 0;
+      margin: 1rem 0 0 0;
 
       svg {
         fill: $heading;
@@ -442,7 +442,7 @@
         }
       }
       .shop-btn {
-        margin: 4rem 0 0 0;
+        margin: 1rem 0 0 0;
       }
     }
   }
@@ -453,10 +453,12 @@
   background: url("/images/homepage-one/best-deal-bg.webp") no-repeat
     center / cover;
   padding-bottom: 11.2rem;
-  height: 36.5rem;
+  height: 100%;
   padding: 8rem 0;
 
   .best-product-section {
+      max-width: 650px;
+      margin-inline: auto;
     .row > * {
       --bs-gutter-x: 20px;
       --bs-gutter-y: 20px;

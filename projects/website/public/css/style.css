@@ -99,14 +99,6 @@ iframe {
   width: 100%;
 }
 
-.container {
-  max-width: 132.1rem;
-}
-@media only screen and (min-width: 767px) and (max-width: 1200px) {
-  .container {
-    padding: 0 2rem;
-  }
-}
 
 .box-shadows {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -1540,7 +1532,7 @@ button {
   border: 1px solid rgba(52, 168, 83, 0.06);
   transition: all 0.3s;
   background: rgba(52, 168, 83, 0.06);
-  height: 19rem;
+  height: 10rem;
 }
 .category-section .product-wrapper .wrapper-img img {
   transition: all 0.2s ease-in-out;

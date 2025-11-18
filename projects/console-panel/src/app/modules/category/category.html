@@ -39,11 +39,11 @@
                                 </select>
                             </div>
                         }
-                        <div class="col-sm-3">
-                            <label class="form-label">IsMenu</label>
+                        <div class="col-6">
+                            <label class="form-label">Show in menu</label>
                             <input class="form-check-input" type="checkbox" formControlName="is_menu">
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-6">
                             <label class="form-label">Allow On</label>
                             <select class="form-select" formControlName="allow_on">
                                 <option value="">Default</option>
@@ -57,17 +57,17 @@
                             <textarea rows="5" class="form-control form-control-sm" formControlName="description"></textarea>
                         </div>
                         <div class="col-12">
-                            <label class="form-label">Display Type</label>
+                            <label class="form-label">Select parent category</label>
                             <select class="form-select" formControlName="display_type">
                                 <option value="">Default</option>
-                                <option value="Products">Products</option>
-                                <option value="Subcategories">Subcategories</option>
-                                <option value="Both">Both</option>
+                                <option value="farming">Farming1</option>
+                                <option value="Farming2">Farming2</option>
+                                <!-- <option value="Both">Both</option> -->
                             </select>
                         </div>
                        <div class="col-12">
                         <div class="upload-category-thumbnail">
-                            <label class="form-label" for="thumbUpload">Add Category Thumbnail</label>
+                            <label class="form-label" for="thumbUpload">Add Category Image</label>
                             <input class="form-control" type="file" (change)="onImageChange($event)" accept="image/*" />
 
                             <!-- Preview Image -->
