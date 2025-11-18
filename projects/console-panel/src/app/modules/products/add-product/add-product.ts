@@ -19,8 +19,6 @@ interface FoodNode {
 @Component({
   selector: 'app-add-customer',
   imports: [
-    Sidebar,
-     Header,
      ReactiveFormsModule,
      QuillModule,
      MatTreeModule,

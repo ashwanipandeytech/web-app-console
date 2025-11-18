@@ -66,11 +66,20 @@ export class DataService {
       }
 
 
-      callGetApi(apiEndPoint: any) {
+      callGetApi(apiEndPoint: any,from:any='') {
+        console.log(from);
+        
+        if (from !='web') {
+          console.log('enter');
+          
           const httpHeaders = new HttpHeaders({
           'Authorization': `Bearer ${this.authToken}`
         });
-      return this.http.get<Commonresponseobject>(environment.API_URL_NEW + apiEndPoint,{headers:httpHeaders});
+        return this.http.get<Commonresponseobject>(environment.API_URL_NEW + apiEndPoint,{headers:httpHeaders});
+        }
+        else{
+        return this.http.get<Commonresponseobject>(environment.API_URL_NEW + apiEndPoint);
+        }
     }
     callDeleteApi(apiEndPoint:any,id:any){
           const httpHeaders = new HttpHeaders({
