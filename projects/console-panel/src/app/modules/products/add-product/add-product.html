@@ -92,8 +92,8 @@
                             </h5>
                           </div>
                             <input type="file" class="form-control" formControlName="thumbUpload" accept="image/*" (change)="onFileSelectThumb($event)">
-                            @if(thumbPreview){
-                              <img [src]="thumbPreview" class="preview-img" />
+                            @if(thumbPreview!=''){
+                              <img [src]="thumbPreview" class="preview-img rounded mt-1" />
                             }
                           </div>
                         </div>
@@ -105,7 +105,7 @@
                             
                           <input type="file" class="form-control" formControlName="galleryUpload" accept="image/*" (change)="onFileSelect($event)">
                           @for (item of thumbGallery; track $index) {
-                                <img [src]="item" class="preview-img"  width="100px" height="100px" />
+                                <img [src]="item" class="preview-img rounded mt-1" />
                             }
                         </div>
                       </div>
@@ -216,19 +216,21 @@
                         </div>
                       </div>
                     </div>
-                    <div class="row g-3">
-                      <label for="PriceDateStart" class="col-md-2 col-form-label col-form-label-sm">Sale price dates</label>
-                      <div class="col-md-5">
-                      <input
-                        type="datetime-local"
-                        class="form-control form-control-sm"
-                        formControlName="priceDateStart"
-                      />
+                    @if(false) {
+                      <div class="row g-3">
+                        <label for="PriceDateStart" class="col-md-2 col-form-label col-form-label-sm">Sale price dates</label>
+                        <div class="col-md-5">
+                        <input
+                          type="datetime-local"
+                          class="form-control form-control-sm"
+                          formControlName="priceDateStart"
+                        />
+                        </div>
+                        <div class="col-md-5">
+                          <input type="datetime-local" class="form-control form-control-sm" formControlName="priceDateEnd" placeholder="DD MMMM YYYY - HH:MM">
+                        </div>
                       </div>
-                      <div class="col-md-5">
-                        <input type="datetime-local" class="form-control form-control-sm" formControlName="priceDateEnd" placeholder="DD MMMM YYYY - HH:MM">
-                      </div>
-                    </div>
+                    }
                   </form>
                 </div>
 

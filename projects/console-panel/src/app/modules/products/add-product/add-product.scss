@@ -24,3 +24,7 @@
 .example-tree div[role=group] > .mat-nested-tree-node {
   padding-left: 40px;
 }
+.preview-img {
+  max-width: 100px;
+  aspect-ratio: 1;
+}
