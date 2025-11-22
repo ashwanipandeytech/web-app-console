@@ -43,10 +43,12 @@
     "@gilsdav/ngx-translate-router": "^7.2.1",
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
-   "ngx-toastr": "^19.0.0",
     "contentful": "^11.7.17",
     "express": "^5.1.0",
+    "jquery": "^3.7.1",
+    "ngx-owl-carousel-o": "^20.0.1",
     "ngx-quill": "^28.0.2",
+    "ngx-toastr": "^19.0.0",
     "quill": "^2.0.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"

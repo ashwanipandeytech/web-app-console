@@ -509,7 +509,7 @@ getProductDetails(){
                 formDataThumb.append("files", this.selectedThumbImg, this.selectedThumbImg.name);
                 formDataThumb.append("module", "product");
                 formDataThumb.append("module_id", id);
-                formDataThumb.append("type", "thumb");
+                formDataThumb.append("type", "thumbnail");
                 this.callUploadnediaSection(formDataThumb);
             }
   for (let i = 0; i < this.selectedFile.length; i++) {
