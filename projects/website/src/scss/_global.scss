@@ -74,6 +74,9 @@ a {
   span {
     font-size: 14px;
     font-weight: 500;
+    @media #{$md} {
+      font-size: 12px;
+    }
   }
 }
 
@@ -140,7 +143,7 @@ button {
   padding: 4rem 0;
 
   @media #{$md} {
-    padding: 3rem 0;
+    padding: 2rem 0;
   }
 }
 
@@ -161,6 +164,9 @@ button {
     border-radius: 1rem;
     position: relative;
     overflow: hidden;
+    @media #{$sm} {
+      height: 16rem;
+    }
 
     img {
       transform: scale(1);
@@ -234,6 +240,9 @@ button {
       // top: -52px;
       // right: 7px;
       // padding: .5rem .5rem;
+      @media #{$md} {
+        @include flexItem($gap: .5rem);
+      }
       .btn-text {
         font-weight: 500;
       }
@@ -312,7 +321,7 @@ button {
 
   @media #{$sm} {
     h3 {
-      font-size: 3rem;
+      font-size: 2rem;
     }
   }
 }

@@ -5,14 +5,18 @@
 
 
 .hero {
-  background: url("https://a2zlivestock.com/wp-content/uploads/2025/01/Making-Livestock-Care-Simple-Safe-Effective-7.png") no-repeat top right/cover;
+//   background: url("https://a2zlivestock.com/wp-content/uploads/2025/01/Making-Livestock-Care-Simple-Safe-Effective-7.png") no-repeat top right/cover;
+  .owl-dots {
+    position: absolute;
+    bottom: 0;
+  }
 }
 
 .category-section {
   @include gridItem();
 
   .product-wrapper {
-    @include flexItem($direction: column, $gap: 2rem);
+    @include flexItem($direction: column, $gap: .5rem);
     cursor: pointer;
     box-shadow: none;
     height: auto;
@@ -453,8 +457,7 @@
 
 // best-deal----------
 .best-product {
-  background: url("/images/homepage-one/best-deal-bg.webp") no-repeat
-    center / cover;
+  background: url("/images/homepage-one/best-deal-bg.webp") no-repeat center / cover;
   padding-bottom: 11.2rem;
   height: 100%;
   padding: 8rem 0;
