@@ -21,27 +21,27 @@
                             <h4>-50%</h4>
                         </div>
                         @for (item of item.images; track $index) {
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide slider-top-img">
-                                    <img src="{{item.url}}" alt="img">
-                                </div>
-                                <!-- <div class="swiper-slide slider-top-img">
-                                    <img src="../images/homepage-one/product-img/p-img-38.webp" alt="img">
-                                </div> -->
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide slider-top-img">
+                                <img src="{{item.url}}" alt="img">
                             </div>
+                            <!-- <div class="swiper-slide slider-top-img">
+                                <img src="../images/homepage-one/product-img/p-img-38.webp" alt="img">
+                            </div> -->
+                        </div>
                         }
                     </div>
                     @for (item of item.images; track $index) {
-                        <div class="swiper product-bottom">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide slider-bottom-img">
-                                    <img src="{{item.url}}" alt="img">
-                                </div>
-                                <!-- <div class="swiper-slide slider-bottom-img">
-                                    <img src="https://a2zlivestock.com/wp-content/uploads/2025/04/Listing-46.png" alt="img">
-                                </div> -->
+                    <div class="swiper product-bottom">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide slider-bottom-img">
+                                <img src="{{item.url}}" alt="img">
                             </div>
+                            <!-- <div class="swiper-slide slider-bottom-img">
+                                <img src="https://a2zlivestock.com/wp-content/uploads/2025/04/Listing-46.png" alt="img">
+                            </div> -->
                         </div>
+                    </div>
                     }
                 </div>
             </div>
@@ -50,6 +50,7 @@
                     <span class="wrapper-subtitle">{{item.category.name}}</span>
                     <h3 class="wrapper-heading">{{item.title}}
                     </h3>
+                    @if(false) {
                     <div class="ratings">
                         <span>
                             <svg width="75" height="15" viewbox="0 0 75 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -62,6 +63,7 @@
                         </span>
                         <span class="text">6 Reviews</span>
                     </div>
+                    }
                     <div class="price">
                         <span class="price-cut">₹{{item.price_data.regularPrice}}</span>
                         <span class="new-price">₹{{item.price_data.salePrice}}</span>
@@ -70,11 +72,11 @@
 
                     <p class="content-paragraph" [innerHTML]="item.description"></p>
                     <hr>
-                    <div class="product-availability">
+                    <!-- <div class="product-availability">
                         <span>Availabillity : </span>
                         <span class="inner-text">132 Products Available</span>
-                    </div>
-                    <div class="product-size">
+                    </div> -->
+                    <!-- <div class="product-size">
                         <p class="size-title">Weight</p>
                         <div class="size-section">
                             <span class="size-text">Select Weight</span>
@@ -109,8 +111,8 @@
                                 <span class="option-measure">₹35.00</span>
                             </li>
                         </ul>
-                    </div>
-                    <div class="product-quantity">
+                    </div> -->
+                    <div class="product-quantity align-items-start">
                         <div class="quantity-wrapper">
                          <div class="quantity">
                             <span class="minus" (click)="decrease()">-</span>
@@ -150,6 +152,7 @@
                         <p class="sku">SKU : <span class="inner-text">{{item.sku}}</span></p>
                     </div>
                     <hr>
+                    @if(false) {
                     <div class="product-report">
                         <a class="report">
                             <span>
@@ -190,6 +193,7 @@
         
                         </div>
                     </div>
+                    }
                     <div class="product-share">
                         <p>Share This:</p>
                         <div class="social-icons">
