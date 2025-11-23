@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 
@@ -11,8 +12,10 @@ import { DataService } from 'shared-lib';
 export class ProductInfo {
   public dataService:any= inject(DataService);
   productListData: any=[];
+  productDetails: any;
+  productId: any;
 
-  constructor(private cd:ChangeDetectorRef){
+  constructor(private cd:ChangeDetectorRef,private route:ActivatedRoute){
     this.callAllProductList();
   }
 
@@ -43,4 +46,13 @@ export class ProductInfo {
     });
     
   }
+  ngOnInit() {
+  this.productId = this.route.snapshot.paramMap.get('id');
+
+  this.dataService.callGetById('products',this.productId).subscribe((res:any) => {
+    this.productDetails = res.data;
+    console.log('productId==>',this.productDetails);
+    this.cd.detectChanges();
+  });
+}
 }

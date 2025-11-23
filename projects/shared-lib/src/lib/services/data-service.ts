@@ -87,6 +87,16 @@ export class DataService {
         });
       return this.http.delete<Commonresponseobject>(environment.API_URL_NEW + apiEndPoint + '/' + id, {headers:httpHeaders});
     }
+    callGetById(apiEndPoint: string, id: string | number) {
+  const httpHeaders = new HttpHeaders({
+    Authorization: `Bearer ${this.authToken}`
+  });
+
+  return this.http.get<Commonresponseobject>(
+    `${environment.API_URL_NEW}${apiEndPoint}/${id}`,
+    { headers: httpHeaders }
+  );
+}
     callUpdateApi(apiEndPoint: any,data: any,id:any){
 
   const httpHeaders = new HttpHeaders({

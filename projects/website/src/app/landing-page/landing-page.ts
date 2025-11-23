@@ -4,6 +4,7 @@ import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { environment } from 'environments/environment';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { Router } from '@angular/router';
 declare var $:any;
 @Component({
   selector: 'web-landing-page',
@@ -14,6 +15,7 @@ declare var $:any;
 })
 export class LandingPage {
  public dataService:any= inject(DataService);
+  categoryListData:any;
   productListData: any=[];
   baseURL: string;
   slides = [
@@ -34,7 +36,7 @@ export class LandingPage {
 
 slideConfig:any;
   
- constructor(private cd:ChangeDetectorRef){
+ constructor(private cd:ChangeDetectorRef, private router: Router){
 this.callAllProductList();
 this.baseURL=environment.DOMAIN;
  }
@@ -68,6 +70,39 @@ this.baseURL=environment.DOMAIN;
     });
     
   }
+ngOnInit(){
+  this.getCategoryList();
+}
+ openProduct(id: number) {
+  this.router.navigate(['/product-info', id]);
+}
+  getCategoryList() {
+    this.categoryListData = [];
+    this.dataService.callGetApi('categories')
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+        if (res.data) {
 
-  
+          for (let i = 0; i < res.data.length; i++) {
+            const element = res.data[i];
+            console.log('element==>', element.thumbnail);
+            if (element?.thumbnail != null) {
+              console.log('environment.API_URL==>', environment.API_URL);
+              element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
+            }
+            this.categoryListData.push(element);
+          }
+        }
+        console.log('categoryListData==>', this.categoryListData);
+
+        this.cd.detectChanges();
+        // this.categoryListData = res.data;
+      });
+  }
 }

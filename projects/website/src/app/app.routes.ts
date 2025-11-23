@@ -36,14 +36,14 @@ export const routes: Routes = [
         path: 'product-sidebar',
         component: ProductSidebar
     },
-    {
-        path: 'product-info',
+        {
+        path: 'product-info/:id',
         component: ProductInfo
-    },
+        },
     {
         path: 'cart',
         component: Cart
-    },
+    },   
     {
         path: 'user-profile',
         component: UserProfile
