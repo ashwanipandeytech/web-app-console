@@ -117,7 +117,7 @@
   font-size: 1.4rem;
   margin-bottom: 1rem;
   text-transform: uppercase;
-  font-family: $inter;
+  font-family: $nunito;
   font-weight: 500;
 }
 
@@ -427,8 +427,7 @@
 
   @media #{$md} {
     .product-wrapper {
-      // height: 29rem;
-      // padding: 2rem;
+      height: 19rem;
 
       background-position: left;
 

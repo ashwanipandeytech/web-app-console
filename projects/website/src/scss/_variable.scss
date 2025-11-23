@@ -9,6 +9,7 @@ $btn-bg-1: #fe0600;
 $btn-bg-2: #921dff;
 
 // font---------------
+$nunito: "Nunito", sans-serif;
 $inter: "Inter", sans-serif;
 $spartan: "League Spartan", sans-serif;
 
@@ -57,7 +58,7 @@ $spartan: "League Spartan", sans-serif;
   font-weight: $font;
   position: $position;
   color: $bf-color;
-  font-family: $inter;
+  font-family: $nunito;
   transition: all 0.3s;
   overflow: hidden;
 
@@ -157,7 +158,7 @@ $spartan: "League Spartan", sans-serif;
 
 // (section-title)
 @mixin view() {
-  font-family: $inter;
+  font-family: $nunito;
   position: relative;
   font-weight: 600;
   &::before {
