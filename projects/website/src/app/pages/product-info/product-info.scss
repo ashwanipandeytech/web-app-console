@@ -19,25 +19,27 @@
 }
 
 .product-info-img {
+  position: relative;
+  .product-discount-content {
+    position: absolute;
+    top: 2.4rem;
+    left: 2.4rem;
+    background: $secondary-theme;
+    width: 8.1rem;
+    height: 8.1rem;
+    @include flexItem();
+    border-radius: 50%;
+    z-index: 2;
+
+    h4 {
+      font-size: 2rem;
+      font-family: $nunito;
+    }
+  }
+  
   .swiper {
     position: relative;
 
-    .product-discount-content {
-      position: absolute;
-      top: 2.4rem;
-      left: 2.4rem;
-      background: $secondary-theme;
-      width: 8.1rem;
-      height: 8.1rem;
-      @include flexItem();
-      border-radius: 50%;
-      z-index: 2;
-
-      h4 {
-        font-size: 2rem;
-        font-family: $nunito;
-      }
-    }
 
     .swiper-wrapper {
       align-items: center;

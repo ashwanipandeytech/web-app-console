@@ -1,11 +1,12 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 
 @Component({
   selector: 'web-product-info',
-  imports: [],
+  imports: [CarouselModule],
   templateUrl: './product-info.html',
   styleUrl: './product-info.scss'
 })
@@ -14,6 +15,29 @@ export class ProductInfo {
   productListData: any=[];
   productDetails: any;
   productId: any;
+
+  productInfoSectionOptions = {
+    items: 1,
+    loop: true,
+    // nav: false,
+    dots: true,
+    margin: 8,
+    // responsive: {
+    //   0: {
+    //     items: 1
+    //   },
+    //   576: {
+    //     items: 2
+    //   },
+    //   768: {
+    //     items: 3
+    //   },
+    //   992: {
+    //     items: 4,
+    //     dots: true,
+    //   }
+    // },
+  }
 
   constructor(private cd:ChangeDetectorRef,private route:ActivatedRoute){
     this.callAllProductList();

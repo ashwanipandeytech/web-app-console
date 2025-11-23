@@ -966,7 +966,7 @@
             <a href="/product-sidebar" class="h3 view">View All</a>
         </div>
         <div class="arrival-section">
-            <owl-carousel-o [options]="productSectionOptions" >
+            <owl-carousel-o [options]="productSectionOptions">
                 @for (item of productListData; track $index) {
                     <ng-template carouselSlide>
                         <div class="product-wrapper" data-aos="fade-up">
