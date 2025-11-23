@@ -1,5 +1,8 @@
 @use 'scss/variable' as *;
 @use './scss/global' as *;
+@import "ngx-owl-carousel-o/lib/styles/scss/owl.carousel";
+@import "ngx-owl-carousel-o/lib/styles/scss/owl.theme.default";
+
 
 .hero {
   background: url("https://a2zlivestock.com/wp-content/uploads/2025/01/Making-Livestock-Care-Simple-Safe-Effective-7.png") no-repeat top right/cover;
