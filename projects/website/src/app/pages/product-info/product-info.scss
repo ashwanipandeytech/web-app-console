@@ -14,7 +14,7 @@
   margin-top: 2.5rem;
 
   .row > * {
-    --bs-gutter-y: 50px;
+    --bs-gutter-y: 1rem;
   }
 }
 
@@ -35,7 +35,7 @@
 
       h4 {
         font-size: 2rem;
-        font-family: $inter;
+        font-family: $nunito;
       }
     }
 
@@ -106,10 +106,10 @@
   .wrapper-subtitle {
     color: $paragraph;
   }
-  .wrapper-heading {
-    font-size: 3rem;
-    font-weight: 500;
-  }
+  // .wrapper-heading {
+  //   font-size: 3rem;
+  //   font-weight: 500;
+  // }
   .ratings {
     margin-top: 1.3rem;
     @include flexItem($justify: flex-start, $gap: 5px);
@@ -339,7 +339,7 @@ hr {
 .product-description {
   .nav-item {
     border-bottom: 1px solid $theme-bg;
-    gap: 2rem;
+    gap: 1rem;
 
     .nav-link {
       font-size: 1.6rem;
@@ -416,7 +416,7 @@ hr {
 .intro-heading {
   font-weight: 500;
   font-size: 1.8rem;
-  font-family: $inter;
+  font-family: $nunito;
 }
 
 .product-weekly {
