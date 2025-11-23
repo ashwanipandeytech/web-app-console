@@ -13,7 +13,7 @@ declare var $:any;
   standalone:true,
 })
 export class LandingPage {
- public dataService:any= inject(DataService);
+  public dataService:any= inject(DataService);
   productListData: any=[];
   baseURL: string;
   slides = [
@@ -21,24 +21,68 @@ export class LandingPage {
     { id: 1, img: 'https://a2zlivestock.com/wp-content/uploads/2025/04/Making-Livestock-Care-Simple-Safe-Effective-16.png' }
   ];
 
- heroSectionOptions = {
-  autoHeight: true,
-  autoWidth: true,
-  loop: true,
-  nav: false,
-  dots: true,
-  items: 1,
-  autoplay: true,
-};
+  heroSectionOptions = {
+    autoHeight: true,
+    autoWidth: true,
+    loop: true,
+    nav: false,
+    dots: true,
+    items: 1,
+    autoplay: true,
+  };
 
-slideConfig:any;
+  bannerSectionOptions = {
+    loop: true,
+    // nav: false,
+    dots: true,
+    margin: 8,
+    responsive: {
+      0: {
+        items: 1
+      },
+      576: {
+        items: 2
+      },
+      768: {
+        items: 3
+      },
+      992: {
+        items: 4,
+        dots: true,
+      }
+    },
+  }
   
-constructor(private cd:ChangeDetectorRef){
-  this.callAllProductList();
-  this.baseURL=environment.DOMAIN;
-}
+  productSectionOptions = {
+    loop: true,
+    // nav: false,
+    dots: true,
+    margin: 8,
+    responsive: {
+      0: {
+        items: 2
+      },
+      576: {
+        items: 5
+      },
+      768: {
+        items: 6
+      },
+      992: {
+        items: 8,
+        dots: true,
+      }
+    },
+  }
 
-ngAfterViewInit() {}
+  // slideConfig:any;
+    
+  constructor(private cd:ChangeDetectorRef){
+    this.callAllProductList();
+    this.baseURL=environment.DOMAIN;
+  }
+
+  ngAfterViewInit() {}
 
   callAllProductList() {
 
@@ -67,6 +111,4 @@ ngAfterViewInit() {}
     });
     
   }
-
-  
 }
