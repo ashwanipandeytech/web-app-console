@@ -328,7 +328,6 @@ button {
 }
 
 // blog---
-
 .blog-item,
 .cart-content {
   @include flexItem($direction: column, $gap: 2.5rem);
@@ -346,7 +345,6 @@ button {
 }
 
 // modal------
-
 .modal-wrapper {
   width: 100%;
   height: 100%;

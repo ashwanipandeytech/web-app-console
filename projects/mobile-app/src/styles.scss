@@ -1,7 +1,11 @@
-:root {
-    --bs-font-sans-serif: "Inter", sans-serif;
-    --bs-body-color: #141414;
-}
+@use 'scss/variable' as *;
+@use 'scss/global' as *;
+
+
+// :root {
+//     --bs-font-sans-serif: "Inter", sans-serif;
+//     --bs-body-color: #141414;
+// }
 
 .bg-primary-light {
    background-color: #CCE9F8;

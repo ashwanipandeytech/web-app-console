@@ -1,4 +1,4 @@
-<app-header *ngIf="!isHomeScreenOpen"></app-header>
+<!-- <app-header *ngIf="!isHomeScreenOpen"></app-header> -->
 <router-outlet />
 <ng-container *ngIf="isHomeScreenOpen">
     <div class="hero-section">
@@ -11,7 +11,7 @@
         <div class="d-grid gap-3">
             <button type="button" class="btn btn-primary btn-lg" (click)="openSignUp()">Sign up now &rarr;</button>
             
-            <a href="#" class="btn btn-outline-lightgray btn-lg">Do it later</a>
+            <a href="#" class="btn btn-outline-lightgray btn-lg" (click)="goToHome()">Do it later</a>
         </div>
         </div>
     </div>

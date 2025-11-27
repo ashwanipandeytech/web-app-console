@@ -23,4 +23,8 @@ export class App {
     this.isHomeScreenOpen=false;
     this.router.navigate(['/login']);
   }
+  goToHome() {
+    this.isHomeScreenOpen=false;
+    this.router.navigate(['/home']);
+  }
 }
