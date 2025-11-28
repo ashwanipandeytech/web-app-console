@@ -2047,7 +2047,7 @@ button {
   }
 }
 
-.grocery-section {
+/* .grocery-section {
   padding-top: 6rem;
 }
 .grocery-section .product-wrapper {
@@ -2095,7 +2095,7 @@ button {
   .grocery-section .product-wrapper .shop-btn {
     margin: 4rem 0 0 0;
   }
-}
+} */
 
 .best-product {
   background: url("../../images/homepage-one/best-deal-bg.webp") no-repeat center/cover;
@@ -2818,7 +2818,7 @@ hr {
   background: #f8f8f8;
 }
 
-.sidebar-section {
+/* .sidebar-section {
   background: #ffffff;
   border-radius: 0.5rem;
   padding: 4rem 2rem;
@@ -2913,7 +2913,7 @@ hr {
     display: none;
   }
 }
-
+ 
 .deal-btn {
   background-color: transparent;
   margin-top: 6rem;
@@ -3011,6 +3011,7 @@ hr {
   text-align: center;
   margin-bottom: 0;
 }
+*/
 
 .blogs-wrapper {
   border: none;

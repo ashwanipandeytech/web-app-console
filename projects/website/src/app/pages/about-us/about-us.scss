@@ -1,0 +1,373 @@
+@use '../../../scss/variable' as *;
+.blog {
+//   background: url("../../../../images/homepage-one/page-title-banner.png") no-repeat center / cover;
+
+  padding: 6rem 0;
+
+  .heading {
+    font-size: 3.6rem;
+    text-align: center;
+  }
+}
+
+.blog-bradcrum {
+  span {
+    font-size: 1.5rem;
+    color: $heading;
+  }
+  a {
+    font-size: 1.5rem;
+    color: $heading;
+    font-weight: 300;
+    font-family: $inter;
+  }
+
+  @media #{$sm} {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    a {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.about {
+  padding: 8rem 0 5rem 0;
+  background: $primary-color;
+
+  @media #{$md} {
+    padding: 2rem 0 2rem 0;
+  }
+}
+
+.about-section {
+  .row > * {
+    --bs-gutter-x: 6rem;
+  }
+
+  .about-img {
+    position: relative;
+
+    .about-inner-img {
+      position: absolute;
+      top: 12.3rem;
+      z-index: 1;
+      right: 10rem;
+    }
+  }
+
+  .about-content {
+    .about-info {
+      padding: 2rem 0;
+    }
+
+    .about-list {
+      p {
+        color: $heading;
+      }
+
+      ul li {
+        margin-top: 1.5rem;
+        @include flexItem($justify: flex-start, $gap: 1.5rem);
+      }
+    }
+  }
+}
+
+.about-service {
+  .about-service-section {
+    @include flexItem($justify: space-around);
+  }
+
+  .about-wrapper {
+    @include flexItem($direction: column, $gap: 3rem);
+    width: 28.6rem;
+    text-align: center;
+  }
+
+  .seperator {
+    width: 1px;
+    height: 19.7rem;
+    background: $theme-bg;
+
+    @media #{$sm} {
+      display: none;
+    }
+  }
+
+  @media #{$md} {
+    .seperator {
+      display: none;
+    }
+
+    .about-service-section {
+      @include flexItem($direction: column, $gap: 3rem);
+    }
+  }
+
+  @media #{$mdx} {
+    .about-service-section {
+      @include flexItem($direction: row, $gap: 3rem);
+    }
+  }
+}
+
+.about-details {
+  font-family: $spartan;
+  font-size: 2.4rem;
+  line-height: 3rem;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  &:hover {
+    color: $theme-color;
+  }
+
+  @media #{$sm} {
+    font-size: 2.6rem;
+    line-height: 2.5rem;
+  }
+}
+.about-feedback {
+  .section-title {
+    justify-content: center;
+    margin-bottom: 0;
+  }
+  .swiper {
+    padding: 3rem 0;
+  }
+
+  .swiper-wrapper {
+    box-sizing: border-box;
+    margin-left: -11rem;
+  }
+
+  .swiper-slide {
+    background: $primary-color;
+    padding: 3rem;
+    min-height: 27.5rem;
+    box-shadow: none;
+    border: 1px solid $theme-bg;
+    margin-bottom: 2rem;
+    background: rgba($theme-color, 0.1);
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    position: unset;
+    @include flexItem();
+    bottom: -10.1rem;
+    margin: 0;
+    width: 4.8rem;
+    height: 4.8rem;
+    border: 1px solid $theme-color;
+    border-radius: 50%;
+    transition: all 0.5s;
+    &::after {
+      display: none;
+    }
+    svg {
+      stroke: currentColor;
+      stroke: $theme-color;
+      transition: all 0.5s;
+    }
+    &:hover {
+      background: $theme-color;
+      svg {
+        stroke: $primary-color;
+      }
+    }
+  }
+
+  .swiper-buttons {
+    position: absolute;
+    bottom: -2rem;
+    left: 0;
+    right: 0;
+    @include flexItem($gap: 3rem);
+  }
+  .swiper-button-next {
+    left: 9rem;
+  }
+  .swiper-button-prev {
+    right: 9rem;
+  }
+
+  @media #{$sm} {
+    .swiper-slide {
+      padding: 2rem;
+      height: auto;
+
+      .testimonial-details {
+        font-size: 1.6rem;
+
+        .testimonial-inner-text {
+          display: inline;
+        }
+      }
+
+      .testimonial-info {
+        .testimonial-name {
+          font-family: $spartan;
+          font-size: 1.8rem;
+        }
+      }
+    }
+  }
+  @media #{$mdl} {
+    padding: 7rem 0;
+    .section-title {
+      margin-bottom: 2rem;
+    }
+    .swiper {
+      padding: 0 1rem;
+    }
+    .swiper-wrapper {
+      margin-left: 0;
+    }
+    .swiper-buttons {
+      bottom: -4rem;
+    }
+  }
+}
+
+.about-promotion {
+  height: 52.7rem;
+  z-index: 1;
+  position: relative;
+  @include flexItem();
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: $theme-color;
+    z-index: 10;
+    opacity: 0.6;
+  }
+
+  video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+  }
+
+  .about-btn {
+    height: 10rem;
+    width: 10rem;
+    background: $primary-color;
+    z-index: 100;
+    border-radius: 50%;
+    @include flexItem();
+    transition: all 0.5s;
+    position: relative;
+    cursor: pointer;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 1px solid #fff;
+      border-radius: 50%;
+      z-index: -100;
+      transition: all 5s;
+      animation: btnAnimation 2s linear 0s infinite;
+    }
+  }
+}
+
+.testimonial-wrapper {
+  @include wrapper($hg: auto);
+  @include flexItem(
+    $direction: column,
+    $justify: flex-start,
+    $align: flex-start
+  );
+  position: relative;
+  cursor: default;
+  width: 100%;
+  background: $primary-color;
+
+  .testimonial-details {
+    font-size: 1.5rem;
+    color: $paragraph;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 30px;
+  }
+
+  .ratings {
+    margin-bottom: 1rem;
+    @include flexItem($justify: unset, $gap: 1rem);
+    .text {
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+  }
+
+  .testimonial-info {
+    @include flexItem($justify: flex-start, $gap: 2rem);
+
+    .testimonial-name {
+      font-family: $inter;
+      font-size: 2.2rem;
+    }
+    .testimonial-title {
+      margin-top: 0.5rem;
+    }
+    .title-inner {
+      color: $theme-color;
+    }
+  }
+
+  @media #{$md} {
+    .testimonial-inner-text {
+      display: inline;
+    }
+  }
+}
+
+.divider {
+  background: $theme-bg;
+  width: 100%;
+  height: 1px;
+  border-radius: 50%;
+  margin: 2rem 0;
+}
+
+.latest {
+  .section-title {
+    justify-content: center;
+
+    .about-details {
+      font-size: 3.6rem;
+    }
+  }
+
+  .latest-section {
+    .row > * {
+      --bs-gutter-x: 3.5rem;
+    }
+  }
+
+  @media #{$sm} {
+    .blogs-wrapper {
+      .about-details {
+        font-size: 2rem;
+      }
+
+      .shop-btn {
+        font-size: 1.6rem;
+      }
+    }
+  }
+}

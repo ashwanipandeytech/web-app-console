@@ -2,12 +2,13 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, ElementRef, inject, Renderer2, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 
 @Component({
   selector: 'web-product-info',
-  imports: [CommonModule ],
+  imports: [CommonModule, CarouselModule],
   templateUrl: './product-info.html',
   styleUrl: './product-info.scss'
 })
@@ -20,12 +21,35 @@ export class ProductInfo {
   productId: any;
   quantity: any=1;
 
-  constructor(private cd:ChangeDetectorRef,private route:ActivatedRoute,
-     private sanitizer: DomSanitizer,
-  private renderer: Renderer2
+  productInfoSectionOptions = {
+    items: 1,
+    loop: true,
+    dots: true
+  }
 
+  productSectionOptions = {
+    loop: true,
+    // nav: false,
+    dots: true,
+    margin: 8,
+    responsive: {
+      0: {
+        items: 2
+      },
+      576: {
+        items: 5
+      },
+      768: {
+        items: 6
+      },
+      992: {
+        items: 8,
+        dots: true,
+      }
+    },
+  }
 
-  ){
+  constructor(private cd:ChangeDetectorRef,private route:ActivatedRoute, private sanitizer: DomSanitizer, private renderer: Renderer2){
     this.callAllProductList();
   }
 
@@ -58,40 +82,40 @@ export class ProductInfo {
   }
   ngOnInit() {
     window.scrollTo(0,0);
-  this.productId = this.route.snapshot.paramMap.get('id');
+    this.productId = this.route.snapshot.paramMap.get('id');
 
-  this.dataService.callGetById('products',this.productId).subscribe((res:any) => {
-    this.productDetails = res.data;
-    console.log('productId==>',this.productDetails);
-    this.cd.detectChanges();
-  });
-}
-renderDescription(html: string) {
-  const safeHtml = this.sanitizer.bypassSecurityTrustHtml(html);
-  const div = this.renderer.createElement('div');
-  div.innerHTML = safeHtml as string;
-  this.renderer.appendChild(this.descBox.nativeElement, div);
-}
-ngAfterViewInit() {
-  for (let index = 0; index < this.productDetails.length; index++) {
-    const element = this.productDetails[index];
-    if (element.id == this.productId) {
-      this.renderDescription(element.description);
+    this.dataService.callGetById('products',this.productId).subscribe((res:any) => {
+      this.productDetails = res.data;
+      console.log('productId==>',this.productDetails);
       this.cd.detectChanges();
+    });
+  }
+  renderDescription(html: string) {
+    const safeHtml = this.sanitizer.bypassSecurityTrustHtml(html);
+    const div = this.renderer.createElement('div');
+    div.innerHTML = safeHtml as string;
+    this.renderer.appendChild(this.descBox.nativeElement, div);
+  }
+  ngAfterViewInit() {
+    for (let index = 0; index < this.productDetails.length; index++) {
+      const element = this.productDetails[index];
+      if (element.id == this.productId) {
+        this.renderDescription(element.description);
+        this.cd.detectChanges();
 
+      }
     }
   }
-}
-increase() {
-  this.quantity++;
-}
-
-decrease() {
-  if (this.quantity > 1) {
-    this.quantity--;
+  increase() {
+    this.quantity++;
   }
-}
-toggleHeart() {
-  this.isWishlisted = !this.isWishlisted;
-}
+
+  decrease() {
+    if (this.quantity > 1) {
+      this.quantity--;
+    }
+  }
+  toggleHeart() {
+    this.isWishlisted = !this.isWishlisted;
+  }
 }

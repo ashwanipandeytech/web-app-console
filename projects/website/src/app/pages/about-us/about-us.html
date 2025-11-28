@@ -19,8 +19,8 @@
         <div class="about-section">
             <div class="row align-items-center gy-5">
                 <div class="col-lg-6">
-                    <div class="about-img" data-aos="fade-right">
-                        <img src="../images/homepage-one/about/about-img-1.webp" alt="img">
+                    <div class="about-img bg-light p-3" data-aos="fade-right">
+                        <img src="../images/homepage-one/about/about-img-1.png" alt="img">
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -174,6 +174,7 @@
 </section>
 <!--------------- about-service-end---------------->
 
+@if(false) {
 <!--------------- about-slider-section---------------->
 <section class="about-feedback product">
     <div class="container p-0">
@@ -181,223 +182,147 @@
             <h3>Customers Feedback</h3>
         </div>
     </div>
-    <div class="position-relative">
+    <div class="position-relative container">
         <div class="swiper about-swiper">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide testimonial-wrapper">
-                    <div class="ratings">
-                        <span>
-                            <svg width="99" height="21" viewbox="0 0 99 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.88976 0.5L12.1102 7.40983H19.2955L13.4824 11.6803L15.7028 18.5902L9.88976 14.3197L4.07671 18.5902L6.2971 11.6803L0.484039 7.40983H7.66937L9.88976 0.5Z" fill="#FFA800"></path>
-                                <path d="M29.671 0.5L31.8914 7.40983H39.0767L33.2637 11.6803L35.4841 18.5902L29.671 14.3197L23.858 18.5902L26.0783 11.6803L20.2653 7.40983H27.4506L29.671 0.5Z" fill="#FFA800"></path>
-                                <path d="M49.4484 0.5L51.6687 7.40983H58.8541L53.041 11.6803L55.2614 18.5902L49.4484 14.3197L43.6353 18.5902L45.8557 11.6803L40.0426 7.40983H47.228L49.4484 0.5Z" fill="#FFA800"></path>
-                                <path d="M69.2296 0.5L71.45 7.40983H78.6353L72.8223 11.6803L75.0427 18.5902L69.2296 14.3197L63.4166 18.5902L65.6369 11.6803L59.8239 7.40983H67.0092L69.2296 0.5Z" fill="#FFA800"></path>
-                                <path d="M89.007 0.5L91.2273 7.40983H98.4127L92.5996 11.6803L94.82 18.5902L89.007 14.3197L83.1939 18.5902L85.4143 11.6803L79.6012 7.40983H86.7866L89.007 0.5Z" fill="#FFA800"></path>
-                            </svg>
+            <owl-carousel-o [options]="testimonialSectionOptions">
+                <ng-template carouselSlide>
+                    <div class="testimonial-wrapper border p-3 p-md-4">
+                        <div class="ratings">
+                            <span>
+                                <svg width="99" height="21" viewbox="0 0 99 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9.88976 0.5L12.1102 7.40983H19.2955L13.4824 11.6803L15.7028 18.5902L9.88976 14.3197L4.07671 18.5902L6.2971 11.6803L0.484039 7.40983H7.66937L9.88976 0.5Z" fill="#FFA800"></path>
+                                    <path d="M29.671 0.5L31.8914 7.40983H39.0767L33.2637 11.6803L35.4841 18.5902L29.671 14.3197L23.858 18.5902L26.0783 11.6803L20.2653 7.40983H27.4506L29.671 0.5Z" fill="#FFA800"></path>
+                                    <path d="M49.4484 0.5L51.6687 7.40983H58.8541L53.041 11.6803L55.2614 18.5902L49.4484 14.3197L43.6353 18.5902L45.8557 11.6803L40.0426 7.40983H47.228L49.4484 0.5Z" fill="#FFA800"></path>
+                                    <path d="M69.2296 0.5L71.45 7.40983H78.6353L72.8223 11.6803L75.0427 18.5902L69.2296 14.3197L63.4166 18.5902L65.6369 11.6803L59.8239 7.40983H67.0092L69.2296 0.5Z" fill="#FFA800"></path>
+                                    <path d="M89.007 0.5L91.2273 7.40983H98.4127L92.5996 11.6803L94.82 18.5902L89.007 14.3197L83.1939 18.5902L85.4143 11.6803L79.6012 7.40983H86.7866L89.007 0.5Z" fill="#FFA800"></path>
+                                </svg>
 
-                        </span>
-                        <span class="text">(5.0)</span>
-                    </div>
-                    <p class="testimonial-details">Lorem Ipsum is simply dummy text of the printing and typesetting
-                        industry. Lorem Ipsum has been the industry's standard dummy text ever since the redi 1500s,
-                        when an into the find unknown printer took a galley of type and scrambled it to make a type
-                        inot the specimen book. It has survived not only five centuries but also the on leap into
-                        find it a
-                        electronic typesetting, remaining end to make it.
-                    </p>
-                    <div class="divider"></div>
-                    <div class="testimonial-info">
-                        <div class="testimonial-img">
-                            <img src="../images/homepage-one/about/testimonial-img-1.webp" alt="img">
+                            </span>
+                            <span class="text">(5.0)</span>
                         </div>
-                        <div class="testimonial-info-details">
-                            <h5 class="testimonial-name">Md Abdur Rahman</h5>
-                            <p class="testimonial-title">CEO OF <span class="title-inner">DesginCraft</span></p>
+                        <p class="testimonial-details">Lorem Ipsum is simply dummy text of the printing and typesetting
+                            industry. Lorem Ipsum has been the industry's standard dummy text ever since the redi 1500s,
+                            when an into the find unknown printer took a galley of type and scrambled it to make a type
+                            inot the specimen book. It has survived not only five centuries but also the on leap into
+                            find it a
+                            electronic typesetting, remaining end to make it.
+                        </p>
+                        <div class="divider"></div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-img">
+                                <img src="../images/homepage-one/about/testimonial-img-1.webp" alt="img">
+                            </div>
+                            <div class="testimonial-info-details">
+                                <h5 class="testimonial-name">Md Abdur Rahman</h5>
+                                <p class="testimonial-title">CEO OF <span class="title-inner">DesginCraft</span></p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="swiper-slide testimonial-wrapper">
-                    <div class="ratings">
-                        <span>
-                            <svg width="99" height="21" viewbox="0 0 99 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.88976 0.5L12.1102 7.40983H19.2955L13.4824 11.6803L15.7028 18.5902L9.88976 14.3197L4.07671 18.5902L6.2971 11.6803L0.484039 7.40983H7.66937L9.88976 0.5Z" fill="#FFA800"></path>
-                                <path d="M29.671 0.5L31.8914 7.40983H39.0767L33.2637 11.6803L35.4841 18.5902L29.671 14.3197L23.858 18.5902L26.0783 11.6803L20.2653 7.40983H27.4506L29.671 0.5Z" fill="#FFA800"></path>
-                                <path d="M49.4484 0.5L51.6687 7.40983H58.8541L53.041 11.6803L55.2614 18.5902L49.4484 14.3197L43.6353 18.5902L45.8557 11.6803L40.0426 7.40983H47.228L49.4484 0.5Z" fill="#FFA800"></path>
-                                <path d="M69.2296 0.5L71.45 7.40983H78.6353L72.8223 11.6803L75.0427 18.5902L69.2296 14.3197L63.4166 18.5902L65.6369 11.6803L59.8239 7.40983H67.0092L69.2296 0.5Z" fill="#FFA800"></path>
-                                <path d="M89.007 0.5L91.2273 7.40983H98.4127L92.5996 11.6803L94.82 18.5902L89.007 14.3197L83.1939 18.5902L85.4143 11.6803L79.6012 7.40983H86.7866L89.007 0.5Z" fill="#FFA800"></path>
-                            </svg>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="testimonial-wrapper border p-3 p-md-4">
+                        <div class="ratings">
+                            <span>
+                                <svg width="99" height="21" viewbox="0 0 99 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9.88976 0.5L12.1102 7.40983H19.2955L13.4824 11.6803L15.7028 18.5902L9.88976 14.3197L4.07671 18.5902L6.2971 11.6803L0.484039 7.40983H7.66937L9.88976 0.5Z" fill="#FFA800"></path>
+                                    <path d="M29.671 0.5L31.8914 7.40983H39.0767L33.2637 11.6803L35.4841 18.5902L29.671 14.3197L23.858 18.5902L26.0783 11.6803L20.2653 7.40983H27.4506L29.671 0.5Z" fill="#FFA800"></path>
+                                    <path d="M49.4484 0.5L51.6687 7.40983H58.8541L53.041 11.6803L55.2614 18.5902L49.4484 14.3197L43.6353 18.5902L45.8557 11.6803L40.0426 7.40983H47.228L49.4484 0.5Z" fill="#FFA800"></path>
+                                    <path d="M69.2296 0.5L71.45 7.40983H78.6353L72.8223 11.6803L75.0427 18.5902L69.2296 14.3197L63.4166 18.5902L65.6369 11.6803L59.8239 7.40983H67.0092L69.2296 0.5Z" fill="#FFA800"></path>
+                                    <path d="M89.007 0.5L91.2273 7.40983H98.4127L92.5996 11.6803L94.82 18.5902L89.007 14.3197L83.1939 18.5902L85.4143 11.6803L79.6012 7.40983H86.7866L89.007 0.5Z" fill="#FFA800"></path>
+                                </svg>
 
-                        </span>
-                        <span class="text">(4.7)</span>
-                    </div>
-                    <p class="testimonial-details">Almost every imaginable design is possible and customizations
-                        are allowed on every level. Some features could make use of better controls. If you know
-                        how to operate your mouse, then you are all set to use this pagebuilder.
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo rerum accusamus asperiores
-                        hic repellendus ipsum aliquid ab nihil nisi reprehenderit!. Lorem ipsum dolor sit amet.
-                    </p>
-                    <div class="divider"></div>
-                    <div class="testimonial-info">
-                        <div class="testimonial-img">
-                            <img src="../images/homepage-one/about/testimonial-img-2.webp" alt="img">
+                            </span>
+                            <span class="text">(4.7)</span>
                         </div>
-                        <div class="testimonial-info-details">
-                            <h5 class="testimonial-name">Mohammad Sajjad Hossain</h5>
-                            <p class="testimonial-title">CFO OF <span class="title-inner">DesginX</span></p>
+                        <p class="testimonial-details">Almost every imaginable design is possible and customizations
+                            are allowed on every level. Some features could make use of better controls. If you know
+                            how to operate your mouse, then you are all set to use this pagebuilder.
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo rerum accusamus asperiores
+                            hic repellendus ipsum aliquid ab nihil nisi reprehenderit!. Lorem ipsum dolor sit amet.
+                        </p>
+                        <div class="divider"></div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-img">
+                                <img src="../images/homepage-one/about/testimonial-img-2.webp" alt="img">
+                            </div>
+                            <div class="testimonial-info-details">
+                                <h5 class="testimonial-name">Mohammad Sajjad Hossain</h5>
+                                <p class="testimonial-title">CFO OF <span class="title-inner">DesginX</span></p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="swiper-slide testimonial-wrapper">
-                    <div class="ratings">
-                        <span>
-                            <svg width="99" height="21" viewbox="0 0 99 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.88976 0.5L12.1102 7.40983H19.2955L13.4824 11.6803L15.7028 18.5902L9.88976 14.3197L4.07671 18.5902L6.2971 11.6803L0.484039 7.40983H7.66937L9.88976 0.5Z" fill="#FFA800"></path>
-                                <path d="M29.671 0.5L31.8914 7.40983H39.0767L33.2637 11.6803L35.4841 18.5902L29.671 14.3197L23.858 18.5902L26.0783 11.6803L20.2653 7.40983H27.4506L29.671 0.5Z" fill="#FFA800"></path>
-                                <path d="M49.4484 0.5L51.6687 7.40983H58.8541L53.041 11.6803L55.2614 18.5902L49.4484 14.3197L43.6353 18.5902L45.8557 11.6803L40.0426 7.40983H47.228L49.4484 0.5Z" fill="#FFA800"></path>
-                                <path d="M69.2296 0.5L71.45 7.40983H78.6353L72.8223 11.6803L75.0427 18.5902L69.2296 14.3197L63.4166 18.5902L65.6369 11.6803L59.8239 7.40983H67.0092L69.2296 0.5Z" fill="#FFA800"></path>
-                                <path d="M89.007 0.5L91.2273 7.40983H98.4127L92.5996 11.6803L94.82 18.5902L89.007 14.3197L83.1939 18.5902L85.4143 11.6803L79.6012 7.40983H86.7866L89.007 0.5Z" fill="#FFA800"></path>
-                            </svg>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="testimonial-wrapper border p-3 p-md-4">
+                        <div class="ratings">
+                            <span>
+                                <svg width="99" height="21" viewbox="0 0 99 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9.88976 0.5L12.1102 7.40983H19.2955L13.4824 11.6803L15.7028 18.5902L9.88976 14.3197L4.07671 18.5902L6.2971 11.6803L0.484039 7.40983H7.66937L9.88976 0.5Z" fill="#FFA800"></path>
+                                    <path d="M29.671 0.5L31.8914 7.40983H39.0767L33.2637 11.6803L35.4841 18.5902L29.671 14.3197L23.858 18.5902L26.0783 11.6803L20.2653 7.40983H27.4506L29.671 0.5Z" fill="#FFA800"></path>
+                                    <path d="M49.4484 0.5L51.6687 7.40983H58.8541L53.041 11.6803L55.2614 18.5902L49.4484 14.3197L43.6353 18.5902L45.8557 11.6803L40.0426 7.40983H47.228L49.4484 0.5Z" fill="#FFA800"></path>
+                                    <path d="M69.2296 0.5L71.45 7.40983H78.6353L72.8223 11.6803L75.0427 18.5902L69.2296 14.3197L63.4166 18.5902L65.6369 11.6803L59.8239 7.40983H67.0092L69.2296 0.5Z" fill="#FFA800"></path>
+                                    <path d="M89.007 0.5L91.2273 7.40983H98.4127L92.5996 11.6803L94.82 18.5902L89.007 14.3197L83.1939 18.5902L85.4143 11.6803L79.6012 7.40983H86.7866L89.007 0.5Z" fill="#FFA800"></path>
+                                </svg>
 
-                        </span>
-                        <span class="text">(4.5)</span>
-                    </div>
-                    <p class="testimonial-details">As a digital marketing agency our team works day in and day
-                        out on websites of all kinds. Some of the most common errors we see are websites not
-                        optimized for SEO because of old, boring, or out of date website themes or designs.corporis
-                        similique consectetur aspernatur illum incidunt exercitationem
-                        iusto hic possimus nihil, ipsum at delectus. Quas ipsam a quidem tempora, aliquid adipisci
-                        enim.
-                    </p>
-                    <div class="divider"></div>
-                    <div class="testimonial-info">
-                        <div class="testimonial-img">
-                            <img src="../images/homepage-one/about/testimonial-img-3.webp" alt="img">
+                            </span>
+                            <span class="text">(4.5)</span>
                         </div>
-                        <div class="testimonial-info-details">
-                            <h5 class="testimonial-name">Stefhen Hoking</h5>
-                            <p class="testimonial-title">HR OF <span class="title-inner">Desgin360</span></p>
+                        <p class="testimonial-details">As a digital marketing agency our team works day in and day
+                            out on websites of all kinds. Some of the most common errors we see are websites not
+                            optimized for SEO because of old, boring, or out of date website themes or designs.corporis
+                            similique consectetur aspernatur illum incidunt exercitationem
+                            iusto hic possimus nihil, ipsum at delectus. Quas ipsam a quidem tempora, aliquid adipisci
+                            enim.
+                        </p>
+                        <div class="divider"></div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-img">
+                                <img src="../images/homepage-one/about/testimonial-img-3.webp" alt="img">
+                            </div>
+                            <div class="testimonial-info-details">
+                                <h5 class="testimonial-name">Stefhen Hoking</h5>
+                                <p class="testimonial-title">HR OF <span class="title-inner">Desgin360</span></p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="swiper-slide testimonial-wrapper">
-                    <div class="ratings">
-                        <span>
-                            <svg width="99" height="21" viewbox="0 0 99 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.88976 0.5L12.1102 7.40983H19.2955L13.4824 11.6803L15.7028 18.5902L9.88976 14.3197L4.07671 18.5902L6.2971 11.6803L0.484039 7.40983H7.66937L9.88976 0.5Z" fill="#FFA800"></path>
-                                <path d="M29.671 0.5L31.8914 7.40983H39.0767L33.2637 11.6803L35.4841 18.5902L29.671 14.3197L23.858 18.5902L26.0783 11.6803L20.2653 7.40983H27.4506L29.671 0.5Z" fill="#FFA800"></path>
-                                <path d="M49.4484 0.5L51.6687 7.40983H58.8541L53.041 11.6803L55.2614 18.5902L49.4484 14.3197L43.6353 18.5902L45.8557 11.6803L40.0426 7.40983H47.228L49.4484 0.5Z" fill="#FFA800"></path>
-                                <path d="M69.2296 0.5L71.45 7.40983H78.6353L72.8223 11.6803L75.0427 18.5902L69.2296 14.3197L63.4166 18.5902L65.6369 11.6803L59.8239 7.40983H67.0092L69.2296 0.5Z" fill="#FFA800"></path>
-                                <path d="M89.007 0.5L91.2273 7.40983H98.4127L92.5996 11.6803L94.82 18.5902L89.007 14.3197L83.1939 18.5902L85.4143 11.6803L79.6012 7.40983H86.7866L89.007 0.5Z" fill="#FFA800"></path>
-                            </svg>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="testimonial-wrapper border p-3 p-md-4">
+                        <div class="ratings">
+                            <span>
+                                <svg width="99" height="21" viewbox="0 0 99 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9.88976 0.5L12.1102 7.40983H19.2955L13.4824 11.6803L15.7028 18.5902L9.88976 14.3197L4.07671 18.5902L6.2971 11.6803L0.484039 7.40983H7.66937L9.88976 0.5Z" fill="#FFA800"></path>
+                                    <path d="M29.671 0.5L31.8914 7.40983H39.0767L33.2637 11.6803L35.4841 18.5902L29.671 14.3197L23.858 18.5902L26.0783 11.6803L20.2653 7.40983H27.4506L29.671 0.5Z" fill="#FFA800"></path>
+                                    <path d="M49.4484 0.5L51.6687 7.40983H58.8541L53.041 11.6803L55.2614 18.5902L49.4484 14.3197L43.6353 18.5902L45.8557 11.6803L40.0426 7.40983H47.228L49.4484 0.5Z" fill="#FFA800"></path>
+                                    <path d="M69.2296 0.5L71.45 7.40983H78.6353L72.8223 11.6803L75.0427 18.5902L69.2296 14.3197L63.4166 18.5902L65.6369 11.6803L59.8239 7.40983H67.0092L69.2296 0.5Z" fill="#FFA800"></path>
+                                    <path d="M89.007 0.5L91.2273 7.40983H98.4127L92.5996 11.6803L94.82 18.5902L89.007 14.3197L83.1939 18.5902L85.4143 11.6803L79.6012 7.40983H86.7866L89.007 0.5Z" fill="#FFA800"></path>
+                                </svg>
 
-                        </span>
-                        <span class="text">(4.7)</span>
-                    </div>
-                    <p class="testimonial-details">It is a long established fact that a reader will be
-                        distracted by the readable content of a page when looking at its layout. The point of
-                        using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as
-                        opposed to using 'Content here, content here', making it look like readable English. Lorem
-                        ipsum dolor sit amet consectetur adipisicing elit. Qui ipsam quae repellat commodi maxime
-                        officiis minima architecto fuga, eum animi.
-                    </p>
-                    <div class="divider"></div>
-                    <div class="testimonial-info">
-                        <div class="testimonial-img">
-                            <img src="../images/homepage-one/about/testimonial-img-1.webp" alt="img">
+                            </span>
+                            <span class="text">(4.7)</span>
                         </div>
-                        <div class="testimonial-info-details">
-                            <h5 class="testimonial-name">Abdullah Al Mamun</h5>
-                            <p class="testimonial-title">Designer OF <span class="title-inner">DesginCode</span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide testimonial-wrapper">
-                    <div class="ratings">
-                        <span>
-                            <svg width="99" height="21" viewbox="0 0 99 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.88976 0.5L12.1102 7.40983H19.2955L13.4824 11.6803L15.7028 18.5902L9.88976 14.3197L4.07671 18.5902L6.2971 11.6803L0.484039 7.40983H7.66937L9.88976 0.5Z" fill="#FFA800"></path>
-                                <path d="M29.671 0.5L31.8914 7.40983H39.0767L33.2637 11.6803L35.4841 18.5902L29.671 14.3197L23.858 18.5902L26.0783 11.6803L20.2653 7.40983H27.4506L29.671 0.5Z" fill="#FFA800"></path>
-                                <path d="M49.4484 0.5L51.6687 7.40983H58.8541L53.041 11.6803L55.2614 18.5902L49.4484 14.3197L43.6353 18.5902L45.8557 11.6803L40.0426 7.40983H47.228L49.4484 0.5Z" fill="#FFA800"></path>
-                                <path d="M69.2296 0.5L71.45 7.40983H78.6353L72.8223 11.6803L75.0427 18.5902L69.2296 14.3197L63.4166 18.5902L65.6369 11.6803L59.8239 7.40983H67.0092L69.2296 0.5Z" fill="#FFA800"></path>
-                                <path d="M89.007 0.5L91.2273 7.40983H98.4127L92.5996 11.6803L94.82 18.5902L89.007 14.3197L83.1939 18.5902L85.4143 11.6803L79.6012 7.40983H86.7866L89.007 0.5Z" fill="#FFA800"></path>
-                            </svg>
-
-                        </span>
-                        <span class="text">(4.9)</span>
-                    </div>
-                    <p class="testimonial-details">Build the perfect online store using our high-converting
-                        Brandstore website template. Totam ipsam autem itaque
-                        exercitationem distinctio adipisci perspiciatis veritatis doloremque non impedit sint quia
-                        aut error rem minima, iste veniam porro modi! Accusantium possimus corporis velit harum,
-                        ducimus dicta facere quaerat aliquid totam magnam minus esse non neque asperiores itaque
-                        suscipit hic molestiae. Ad, quibusdam eligendi cupiditate quod sunt vero atque, magni,
-                        incidunt voluptatem harum exercitationem dignissimos odit labore!
-                    </p>
-                    <div class="divider"></div>
-                    <div class="testimonial-info">
-                        <div class="testimonial-img">
-                            <img src="../images/homepage-one/about/testimonial-img-1.webp" alt="img">
-                        </div>
-                        <div class="testimonial-info-details">
-                            <h5 class="testimonial-name">Mohammad Rashed Khan</h5>
-                            <p class="testimonial-title">CEO OF <span class="title-inner">DesginLab</span></p>
+                        <p class="testimonial-details">It is a long established fact that a reader will be
+                            distracted by the readable content of a page when looking at its layout. The point of
+                            using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as
+                            opposed to using 'Content here, content here', making it look like readable English. Lorem
+                            ipsum dolor sit amet consectetur adipisicing elit. Qui ipsam quae repellat commodi maxime
+                            officiis minima architecto fuga, eum animi.
+                        </p>
+                        <div class="divider"></div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-img">
+                                <img src="../images/homepage-one/about/testimonial-img-1.webp" alt="img">
+                            </div>
+                            <div class="testimonial-info-details">
+                                <h5 class="testimonial-name">Abdullah Al Mamun</h5>
+                                <p class="testimonial-title">Designer OF <span class="title-inner">DesginCode</span>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="swiper-slide testimonial-wrapper">
-                    <div class="ratings">
-                        <span>
-                            <svg width="99" height="21" viewbox="0 0 99 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.88976 0.5L12.1102 7.40983H19.2955L13.4824 11.6803L15.7028 18.5902L9.88976 14.3197L4.07671 18.5902L6.2971 11.6803L0.484039 7.40983H7.66937L9.88976 0.5Z" fill="#FFA800"></path>
-                                <path d="M29.671 0.5L31.8914 7.40983H39.0767L33.2637 11.6803L35.4841 18.5902L29.671 14.3197L23.858 18.5902L26.0783 11.6803L20.2653 7.40983H27.4506L29.671 0.5Z" fill="#FFA800"></path>
-                                <path d="M49.4484 0.5L51.6687 7.40983H58.8541L53.041 11.6803L55.2614 18.5902L49.4484 14.3197L43.6353 18.5902L45.8557 11.6803L40.0426 7.40983H47.228L49.4484 0.5Z" fill="#FFA800"></path>
-                                <path d="M69.2296 0.5L71.45 7.40983H78.6353L72.8223 11.6803L75.0427 18.5902L69.2296 14.3197L63.4166 18.5902L65.6369 11.6803L59.8239 7.40983H67.0092L69.2296 0.5Z" fill="#FFA800"></path>
-                                <path d="M89.007 0.5L91.2273 7.40983H98.4127L92.5996 11.6803L94.82 18.5902L89.007 14.3197L83.1939 18.5902L85.4143 11.6803L79.6012 7.40983H86.7866L89.007 0.5Z" fill="#FFA800"></path>
-                            </svg>
-
-                        </span>
-                        <span class="text">(5)</span>
-                    </div>
-                    <p class="testimonial-details">The lightweight and fully responsive eCommerce website
-                        templates are built for speed and conversion, helping you sell more with little extra
-                        effort. Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum eius consequatur fugiat
-                        soluta, necessitatibus quaerat totam ea cupiditate dignissimos deleniti nostrum ipsa id,
-                        recusandae, quasi ad. Tempore explicabo et possimus. Lorem ipsum dolor sit amet consectetur
-                        adipisicing elit. Distinctio, nostrum. ut quam dignissimos optio suscipit? Nostrum expedita
-                        quis voluptates alias reprehenderit, quo quos vel accusantium. Non ducimus odit
-                        reprehenderit hic dolorem.
-                    </p>
-                    <div class="divider"></div>
-                    <div class="testimonial-info">
-                        <div class="testimonial-img">
-                            <img src="../images/homepage-one/about/testimonial-img-1.webp" alt="img">
-                        </div>
-                        <div class="testimonial-info-details">
-                            <h5 class="testimonial-name">Shuvo Raihan</h5>
-                            <p class="testimonial-title">Developer OF <span class="title-inner">DesginUX</span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="swiper-buttons">
-            <div class="swiper-button-prev">
-                <span>
-                    <svg width="8" height="14" viewbox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6.76953 12.5388L1.23107 7.00038L6.76953 1.46191" stroke-width="1.75" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg>
-                </span>
-            </div>
-            <div class="swiper-button-next">
-                <span>
-                    <svg width="8" height="14" viewbox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1 1.92308L6.53846 7.46154L1 13" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg>
-
-                </span>
-            </div>
+                </ng-template>
+                <ng-template carouselSlide></ng-template>
+            </owl-carousel-o>
         </div>
     </div>
 
@@ -569,3 +494,4 @@
     </div>
 </section>
 <!--------------- latest-news-section-end---------------->
+}
