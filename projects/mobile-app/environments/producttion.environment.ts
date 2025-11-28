@@ -8,6 +8,8 @@ export const environment = {
 'GLOBAL_AUTH': 'TEST_VALUE',
 'APPLICATION':'CONSOLE',
 'VERSION':'v1',
-'API_URL':'https://api.demohandler.in/'
+'API_URL_NEW':'https://api.demohandler.in/api/v1/',
+'API_URL':'https://api.demohandler.in/',
+'DOMAIN':'https://api.demohandler.in'
 };
 

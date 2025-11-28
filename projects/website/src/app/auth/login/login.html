@@ -4,7 +4,8 @@
         <div class="login-section">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <div class="login-form">
+                    @if (!isSignUp) {
+                    <div class="login-form" [formGroup]="loginform">
                         <div class="review-form  box-shadows">
                             <div class="review-form-text">
                                 <h5 class="comment-title">Log In</h5>
@@ -13,11 +14,11 @@
                             <div class="review-inner-form ">
                                 <div class="review-form-name">
                                     <label for="email" class="form-label">Email Address**</label>
-                                    <input type="email" id="email" class="form-control" placeholder="Email">
+                                    <input formControlName="email" id="email" class="form-control" placeholder="Email">
                                 </div>
                                 <div class="review-form-name">
                                     <label for="password" class="form-label">Password*</label>
-                                    <input type="password" id="password" class="form-control" placeholder="password">
+                                    <input formControlName="password" type="password" id="password" class="form-control" placeholder="password">
                                 </div>
                                 <div class="review-form-name checkbox">
                                     <div class="checkbox-item">
@@ -31,12 +32,76 @@
                                 </div>
                             </div>
                             <div class="login-btn text-center">
-                                <a href="#" class="shop-btn">Log In</a>
-                                <span class="shop-account">Dont't have an account ?<a href="create-account.html">Sign Up
+                                <a class="shop-btn" (click)="loginUser()">Log In</a>
+                                <span class="shop-account">Dont't have an account ?<a (click)="enableDisableSignUp()">Sign Up
                                         Free</a></span>
                             </div>
                         </div>
                     </div>
+                }
+
+
+                    @if (isSignUp) {
+                      <div class="signup-form" [formGroup]="signupForm">
+    <div class="review-form box-shadows">
+        <div class="review-form-text">
+            <h5 class="comment-title">SignUp</h5>
+            <img src="../images/homepage-one/vector-line.png" alt="img">
+        </div>
+
+        <div class="review-inner-form">
+
+            <!-- Name -->
+            <div class="review-form-name">
+                <label for="name" class="form-label">Name</label>
+                <input formControlName="name" id="name" class="form-control" placeholder="Eles Rose">
+            </div>
+
+            <!-- Email -->
+            <div class="review-form-name">
+                <label for="email" class="form-label">Email Address**</label>
+                <input formControlName="email" id="email" class="form-control" placeholder="Email">
+            </div>
+
+            <!-- Phone -->
+            <div class="review-form-name">
+                <label for="phone" class="form-label">Phone</label>
+                <input formControlName="phone" id="phone" class="form-control" placeholder="phone no.">
+            </div>
+
+            <!-- Password -->
+            <div class="review-form-name">
+                <label for="password" class="form-label">Password*</label>
+                <input formControlName="password" type="password" id="password" class="form-control" placeholder="password">
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="review-form-name">
+                <label for="confirmPassword" class="form-label">Confirm Password*</label>
+                <input formControlName="password_confirmation" type="password" id="confirmPassword" class="form-control" placeholder="confirm password">
+            </div>
+
+            <!-- Remember -->
+            <div class="review-form-name checkbox">
+                <div class="checkbox-item">
+                    <input type="checkbox" formControlName="remember">
+                    <span class="address">Remember Me</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="login-btn text-center">
+            <button class="shop-btn" (click)="register()">Register</button>
+            <span class="shop-account">
+                <a (click)="enableDisableSignUp()">Login Up Free</a>
+            </span>
+        </div>
+
+    </div>
+</div>
+
+                    }
                 </div>
                 <div class="col-lg-6">
                     <div class="login-img">

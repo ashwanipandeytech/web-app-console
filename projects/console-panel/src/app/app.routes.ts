@@ -8,6 +8,7 @@ import { AllProducts } from './modules/products/all-products';
 import { Order } from './modules/order/order';
 import { Category } from './modules/category/category';
 import { SettingsComponent } from './modules/settings/settings.component';
+import { authGuard } from './app.guard';
 
 export const routes: Routes = [
     // {
@@ -30,40 +31,49 @@ export const routes: Routes = [
     {
         path: '',
         loadComponent: () =>
-        import('./auth/login/login').then(c => c.Login)
+        import('./auth/login/login').then(c => c.Login),
+        canActivate: [authGuard]
     },
     {
         path: 'login',
         loadComponent: () =>
-        import('./auth/login/login').then(c => c.Login)
+        import('./auth/login/login').then(c => c.Login),
+        canActivate: [authGuard]
     },
     {
         path: 'dashboard',
-        component: Dashboard
+        component: Dashboard,
+        canActivate: [authGuard]
     },
     {
         path: 'all-customers',
-        component: Customers
+        component: Customers,
+        canActivate: [authGuard]
     },
     {
         path: 'all-products',
-        component: AllProducts
+        component: AllProducts,
+        canActivate: [authGuard]
     },
     {
         path: 'add-product',
-        component: AddProduct
+        component: AddProduct,
+        canActivate: [authGuard]
     },
     {
         path: 'orders',
-        component: Order
+        component: Order,
+        canActivate: [authGuard]
     },
     {
         path: 'category',
-        component: Category
+        component: Category,
+        canActivate: [authGuard]
     },
       {
         path: 'settings',
-        component: SettingsComponent
+        component: SettingsComponent,
+        canActivate: [authGuard]
     },
    
 ];

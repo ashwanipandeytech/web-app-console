@@ -2,27 +2,13 @@
     <!-- Category Icons -->
      <div class="category-icon-wrapper position-sticky top-0">
          <div class="category-icons bg-white">
-             <button type="button" class="btn p-1">
-                 <img src="assets/images/svg/feeders.svg" alt="Feeders">
-                 <span class="small">Feeders</span>
-             </button>
-             <button type="button" class="btn p-1">
-                 <img src="assets/images/svg/egg-washer.svg" alt="Egg washer">
-                 <span class="small">Egg washer</span>
-             </button>
-             <button type="button" class="btn p-1">
-                 <img src="assets/images/svg/incubator.svg" alt="Incubator">
-                 <span class="small">Incubator</span>
-             </button>
-             <button type="button" class="btn p-1">
-                 <img src="assets/images/svg/drinkers.svg" alt="Drinkers">
-                 <span class="small">Drinkers</span>
-             </button>
-             <button type="button" class="btn p-1">
-                 <img src="assets/images/svg/brooders.svg" alt="Brooders">
-                 <span class="small">Brooders</span>
-             </button>
-         </div>
+                @for (control of categoryListData; track $index) {
+                <button type="button" class="btn p-1">
+                    <img src="{{control.thumbnail}}" alt="{{control.name}}">
+                      <span class="small">{{control.name}}</span>
+                </button>
+                }
+            </div>
      </div>
     
     <div class="px-3" >
@@ -45,27 +31,29 @@
         
             <div class="row g-3">
                 <!-- Product 1 -->
+                @for (item of productListData; track $index) {
                 <div class="col-4">
-                    <div class="product-image position-relative text-center bg-light rounded mb-2">
-                        <img src="assets/images/image1.png" class="img-fluid" alt="Product">
-                        <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
-                    </div>
-                    <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
-                    <div class="product-price">₹652</div>
-                </div>
+                           <div class="product-image position-relative text-center bg-light rounded mb-2">
+                               <img [src]="item?.images[0]?.url" class="img-fluid" alt="Product">
+                               <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
+                           </div>
+                           <div class="fs-12 fw-semibold text-muted">{{item.title}}</div>
+                           <div class="product-price">{{item.price_data.regularPrice}}</div>
+                        </div>
+                    }
         
                 <!-- Product 2 -->
-                <div class="col-4">
+                <!-- <div class="col-4">
                     <div class="product-image position-relative text-center bg-light rounded mb-2">
                         <img src="assets/images/image2.png" class="img-fluid" alt="Product">
                         <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
                     </div>
                     <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
                     <div class="product-price">₹652</div>
-                </div>
+                </div> -->
         
                 <!-- Product 3 -->
-                <div class="col-4">
+                <!-- <div class="col-4">
                     <div class="product-image position-relative text-center bg-light rounded mb-2">
                         <img src="assets/images/image3.png" class="img-fluid" alt="Product">
                         <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
@@ -75,30 +63,30 @@
                         <div class="product-price">₹652</div>
                         <div class="discount">50% off</div>
                     </div>
-                </div>
+                </div> -->
         
                 <!-- Product 4 -->
-                <div class="col-4">
+                <!-- <div class="col-4">
                     <div class="product-image position-relative text-center bg-light rounded mb-2">
                         <img src="assets/images/image1.png" class="img-fluid" alt="Product">
                         <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
                     </div>
                     <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
                     <div class="product-price">₹652</div>
-                </div>
+                </div> -->
         
                 <!-- Product 5 -->
-                <div class="col-4">
+                <!-- <div class="col-4">
                     <div class="product-image position-relative text-center bg-light rounded mb-2">
                         <img src="assets/images/image2.png" class="img-fluid" alt="Product">
                         <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
                     </div>
                     <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
                     <div class="product-price">₹652</div>
-                </div>
+                </div> -->
         
                 <!-- Product 6 -->
-                <div class="col-4">
+                <!-- <div class="col-4">
                     <div class="product-image position-relative text-center bg-light rounded mb-2">
                         <img src="assets/images/image3.png" class="img-fluid" alt="Product">
                         <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
@@ -108,30 +96,30 @@
                         <div class="product-price">₹652</div>
                         <div class="discount">50% off</div>
                     </div>
-                </div>
+                </div> -->
                 
                 <!-- Product 7 -->
-                <div class="col-4">
+                <!-- <div class="col-4">
                     <div class="product-image position-relative text-center bg-light rounded mb-2">
                         <img src="assets/images/image1.png" class="img-fluid" alt="Product">
                         <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
                     </div>
                     <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
                     <div class="product-price">₹652</div>
-                </div>
+                </div> -->
         
                 <!-- Product 7 -->
-                <div class="col-4">
+                <!-- <div class="col-4">
                     <div class="product-image position-relative text-center bg-light rounded mb-2">
                         <img src="assets/images/image2.png" class="img-fluid" alt="Product">
                         <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
                     </div>
                     <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
                     <div class="product-price">₹652</div>
-                </div>
+                </div> -->
         
                 <!-- Product 9 -->
-                <div class="col-4">
+                <!-- <div class="col-4">
                     <div class="product-image position-relative text-center bg-light rounded mb-2">
                         <img src="assets/images/image3.png" class="img-fluid" alt="Product">
                         <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
@@ -141,30 +129,30 @@
                         <div class="product-price">₹652</div>
                         <div class="discount">50% off</div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Product 10 -->
-                <div class="col-4">
+                <!-- <div class="col-4">
                     <div class="product-image position-relative text-center bg-light rounded mb-2">
                         <img src="assets/images/image1.png" class="img-fluid" alt="Product">
                         <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
                     </div>
                     <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
                     <div class="product-price">₹652</div>
-                </div>
+                </div> -->
         
                 <!-- Product 11 -->
-                <div class="col-4">
+                <!-- <div class="col-4">
                     <div class="product-image position-relative text-center bg-light rounded mb-2">
                         <img src="assets/images/image2.png" class="img-fluid" alt="Product">
                         <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
                     </div>
                     <div class="fs-12 fw-semibold text-muted">Product name will go here</div>
                     <div class="product-price">₹652</div>
-                </div>
+                </div> -->
         
                 <!-- Product 12 -->
-                <div class="col-4">
+                <!-- <div class="col-4">
                     <div class="product-image position-relative text-center bg-light rounded mb-2">
                         <img src="assets/images/image3.png" class="img-fluid" alt="Product">
                         <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold position-absolute end-0 bottom-0 bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
@@ -174,7 +162,7 @@
                         <div class="product-price">₹652</div>
                         <div class="discount">50% off</div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </section>
     </div>
