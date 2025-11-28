@@ -1,7 +1,7 @@
 @use '../../../scss/variable' as *;
 
 .product-info {
-  background: $primary-color;
+  // background: $primary-color;
 
   @media #{$sm} {
     .product-info-content {

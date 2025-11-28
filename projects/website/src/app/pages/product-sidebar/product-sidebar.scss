@@ -21,15 +21,14 @@
 
         li {
             @include flexItem($justify: flex-start, $gap: 1rem);
+            border-radius: .5rem;
             img {
-                width: 75px;
+                width: 50px;
                 aspect-ratio: 1;
                 object-fit: cover;
                 border-radius: .5rem;
             }
-            span { 
-                font-size: 1.75rem;
-            }
+            span { font-size: 1.75rem; }
             &:hover {
                 background-color: color-mix(in srgb, $theme-color 10%, $primary-color);
             }
@@ -37,6 +36,7 @@
                 flex-direction: column;
                 gap: .35rem;
                 img { width: 100%; }
+                span { font-size: 1.25rem; }
             }
         }
       }
@@ -153,6 +153,8 @@
     background: $primary-color;
     padding: 1rem;
     border-radius: 0.5rem;
+    white-space: nowrap;
+    overflow-x: auto;
     // margin-bottom: 2rem;
 
     p {
