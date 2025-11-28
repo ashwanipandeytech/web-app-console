@@ -2818,7 +2818,7 @@ hr {
   background: #f8f8f8;
 }
 
-.sidebar-section {
+/* .sidebar-section {
   background: #ffffff;
   border-radius: 0.5rem;
   padding: 4rem 2rem;
@@ -2913,7 +2913,7 @@ hr {
     display: none;
   }
 }
-
+ 
 .deal-btn {
   background-color: transparent;
   margin-top: 6rem;
@@ -3011,6 +3011,7 @@ hr {
   text-align: center;
   margin-bottom: 0;
 }
+*/
 
 .blogs-wrapper {
   border: none;
