@@ -8,17 +8,9 @@ export const environment = {
 'GLOBAL_AUTH': 'TEST_VALUE',
 'APPLICATION':'CONSOLE',
 'VERSION':'v1',
-
-
+'API_URL':'https://api.demohandler.in/api/v1/',
 'RAZORPAY_KEY_ID':'rzp_test_Rkp1Rm8aI8wDkH',
 
-
-
-
-
-
-
-'API_URL':'https://api.demohandler.in/',
 
 };
 

@@ -2,7 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
-import { environment } from 'environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';

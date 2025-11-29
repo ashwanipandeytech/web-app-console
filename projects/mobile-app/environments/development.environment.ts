@@ -9,11 +9,9 @@ export const environment = {
 'APPLICATION':'CONSOLE',
 'VERSION':'v1',
 
-'API_URL_NEW':'https://api.demohandler.in/api/v1/',
-
-
+'API_URL':'https://api.demohandler.in/api/v1/',
+'DOMAIN':'https://api.demohandler.in',
 'RAZORPAY_KEY_ID':'rzp_test_Rkp1Rm8aI8wDkH',
 
-'DOMAIN':'https://api.demohandler.in'
 };
 
