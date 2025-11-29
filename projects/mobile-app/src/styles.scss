@@ -255,29 +255,6 @@
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: white;
-    border-top: 1px solid #ddd;
-    display: flex;
-    justify-content: space-around;
-    padding: 12px 0;
-}
-
-.bottom-nav a {
-    text-align: center;
-    font-size: 12px;
-    color: #444;
-    text-decoration: none;
-}
-
-.bottom-nav a.active {
-    color: #0093DD;
-}
-
 .product-price {
     color: #0093DD;
     font-weight: 600;
