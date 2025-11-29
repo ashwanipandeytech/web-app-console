@@ -14,63 +14,85 @@ import { Wishlist } from './account/wishlist/wishlist';
 import { Compaire } from './account/compaire/compaire';
 import { Category } from './pages/category/category';
 import { ProductInfo } from './pages/product-info/product-info';
+import { authGuard } from './app.guard';
 
 export const routes: Routes = [
     {
         path: '',
-        component: LandingPage
+        component: LandingPage,
+        
+    },
+     {
+        path: 'landing',
+        component: LandingPage,
+        
     },
     {
         path: 'login',
-        component: Login
+        component: Login,
+        canActivate: [authGuard]
+         
     },
     {
         path: 'about-us',
-        component: AboutUs
+        component: AboutUs,
+         
     },
     {
         path: 'category',
-        component: Category
+        component: Category,
+         
     },
     {
         path: 'product-sidebar',
-        component: ProductSidebar
+        component: ProductSidebar,
+         
     },
         {
         path: 'product-info/:id',
-        component: ProductInfo
+        component: ProductInfo,
+         
         },
     {
         path: 'cart',
-        component: Cart
+        component: Cart,
+         
     },   
     {
         path: 'user-profile',
-        component: UserProfile
+        component: UserProfile,
+        canActivate: [authGuard]
+         
     },
     {
         path: 'wishlist',
-        component: Wishlist
+        component: Wishlist,
+         
     },
     {
         path: 'compaire',
-        component: Compaire
+        component: Compaire,
+         
     },
     {
         path: 'checkout',
-        component: Checkout
+        component: Checkout,
+         
     },
     {
         path: 'terms',
-        component: Terms
+        component: Terms,
+         
     },
     {
         path: 'privacy',
-        component: Privacy
+        component: Privacy,
+         
     },
     {
         path: 'contact-us',
-        component: ContactUs
+        component: ContactUs,
+         
     }
     // {
     //     path: '',

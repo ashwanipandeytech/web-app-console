@@ -32,6 +32,8 @@ export class DataService {
   
       })
     };
+
+    // website
   
     callApi(data: any, apiEndPoint: any) {
      
@@ -43,8 +45,10 @@ export class DataService {
       const consolecolor = 'font-size:12px; font-weight: bold;padding:3px 2px;color:';
       // console.log('%c' + apiEndPoint + ':', consolecolor + 'green');
       // console.dir(apiEndPoint + ':' + JSON.stringify(requestPayload, null, 2));
-      return this.http.post<Commonresponseobject>(environment.API_URL + apiEndPoint, data, this.httpOptions);
+      return this.http.post<Commonresponseobject>(environment.API_URL_NEW + apiEndPoint, data, this.httpOptions);
     }
+
+    // console-admin 
    callApiNew(data: any, apiEndPoint: any) {
             const httpHeaders = new HttpHeaders({
           'Authorization': `Bearer ${this.authToken}`

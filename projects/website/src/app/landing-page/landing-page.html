@@ -111,16 +111,16 @@
         </div>
         <div class="category-section">
             @for (control of categoryListData; track $index) {
-            <div class="product-wrapper" data-aos="fade-right" data-aos-duration="100">
-                <div class="wrapper-img">
-                    <a href="product-sidebar.html">
+            <a href="/product-sidebar">
+                <div class="product-wrapper" data-aos="fade-right" data-aos-duration="100">
+                    <div class="wrapper-img">
                         <img src="{{control.thumbnail}}" width="75px" alt="Feeders">
-                    </a>
+                    </div>
+                    <div class="wrapper-info">
+                        <span class="wrapper-details">{{control.name}}</span>
+                    </div>
                 </div>
-                <div class="wrapper-info">
-                    <a href="product-sidebar.html" class="wrapper-details">{{control.name}}</a>
-                </div>
-            </div>
+            </a>
             }
             <!-- <div class="product-wrapper" data-aos="fade-right" data-aos-duration="200">
                 <div class="wrapper-img">
@@ -429,7 +429,8 @@
                             </div>
                             <div class="product-info">
                                 <div class="product-cart-btn">
-                                    <a href="/cart" class="product-btn">
+                                    <!-- href="/cart" -->
+                                    <a class="product-btn" (click)="addToCart(item)">
                                         @if(false) {
                                             <span>
                                                 <svg width="14" height="14" viewbox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">

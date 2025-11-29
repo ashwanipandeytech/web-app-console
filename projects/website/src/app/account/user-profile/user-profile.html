@@ -173,9 +173,11 @@
                                     </defs>
                                 </svg>
                             </span>
-                            <span class="text">
-                                Logout
-                            </span>
+                            @if (isLoggedIn) {
+                                <span class="text" (click)="logout()">
+                                    Logout
+                                </span>
+                            }
                         </a>
                     </div>
 

@@ -5,6 +5,7 @@ import { DataService } from 'shared-lib';
 import { environment } from 'environments/environment';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 declare var $:any;
 @Component({
   selector: 'web-landing-page',
@@ -14,7 +15,8 @@ declare var $:any;
   standalone:true,
 })
 export class LandingPage {
-  public dataService:any= inject(DataService);
+ public dataService:any= inject(DataService);
+ snackBar = inject(MatSnackBar);
   categoryListData:any;
   productListData: any=[];
   baseURL: string;
@@ -140,5 +142,42 @@ export class LandingPage {
       this.cd.detectChanges();
       // this.categoryListData = res.data;
     });
+  }
+
+
+  addToCart(data:any){
+    let finalData = {
+    "product_id": data.id,
+    "quantity": "1"
+    }
+    console.log('finalData==.',finalData);
+    // return;
+     this.dataService.callApi(finalData, 'cart')
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+            setTimeout(() => {
+          this.showSnackbar(err);
+        }, 100);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+
+        if (res.success ==true) {   
+
+          this.showSnackbar(res);
+}
+        })
+
+  }
+  showSnackbar(response:any){
+     this.snackBar.open(response.message, 'OK', {
+            duration: 3000,
+           horizontalPosition: 'end',
+           verticalPosition: 'top',
+           panelClass: [response.success ? 'snackbar-success' : 'snackbar-error']
+          });
   }
 }

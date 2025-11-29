@@ -12,41 +12,41 @@ import { DataService } from 'shared-lib';
 })
 export class Category {
   categoryListData: any;
-   public dataService:any= inject(DataService);
+  public dataService:any= inject(DataService);
 
- constructor(private cd:ChangeDetectorRef, private router: Router){
+  constructor(private cd:ChangeDetectorRef, private router: Router) {}
 
- }
- ngOnInit(){
-  this.getCategoryList();
- }
-    getCategoryList() {
-      this.categoryListData = [];
-      this.dataService.callGetApi('categories')
-        .pipe(
-          catchError(err => {
-            console.error('Error:', err);
-            return of(null);
-          })
-        )
-        .subscribe((res: any) => {
-          console.log('Response:', res);
-          if (res.data) {
+  ngOnInit(){
+    this.getCategoryList();
+  }
   
-            for (let i = 0; i < res.data.length; i++) {
-              const element = res.data[i];
-              console.log('element==>', element.thumbnail);
-              if (element?.thumbnail != null) {
-                console.log('environment.API_URL==>', environment.API_URL);
-                element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
-              }
-              this.categoryListData.push(element);
+  getCategoryList() {
+    this.categoryListData = [];
+    this.dataService.callGetApi('categories')
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+        if (res.data) {
+
+          for (let i = 0; i < res.data.length; i++) {
+            const element = res.data[i];
+            console.log('element==>', element.thumbnail);
+            if (element?.thumbnail != null) {
+              console.log('environment.API_URL==>', environment.API_URL);
+              element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
             }
+            this.categoryListData.push(element);
           }
-          console.log('categoryListData==>', this.categoryListData);
-  
-          this.cd.detectChanges();
-          // this.categoryListData = res.data;
-        });
-    }
+        }
+        console.log('categoryListData==>', this.categoryListData);
+
+        this.cd.detectChanges();
+        // this.categoryListData = res.data;
+      });
+  }
 }

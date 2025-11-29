@@ -1,4 +1,4 @@
-<div class="p-3 vh-100">
+<div class="p-3 vh-100" style=" background: #0093DD; background: linear-gradient(180deg, rgba(0, 147, 221, 1) 0%, rgb(134 208 254) 52%, rgb(172 220 255) 100%); ">
     <ng-container *ngIf="isSignUp">
         <div class="py-3">
             <!-- Sign up form -->
@@ -57,7 +57,7 @@
 
     <ng-container *ngIf="isLogin">
         <div class="d-flex flex-column h-100">
-            <div class="text-center my-5">
+            <div class="text-center text-white my-5">
                 <h2 class="display-1 fw-semibold">Safure</h2>
                 <h4 class="display-6">Everything delivered in 10 minutes</h4>
             </div>
@@ -71,8 +71,8 @@
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <div class="input-group">
-                        <input type="password" class="form-control" id="password" placeholder="Enter password">
-                        <span class="input-group-text position-absolute end-0 z-3"><i class="bi bi-eye"></i></span>
+                        <input type="password" class="form-control rounded-3 z-1" id="password" placeholder="Enter password">
+                        <span class="input-group-text position-absolute end-0 z-2"><i class="bi bi-eye"></i></span>
                     </div>
                 </div>
     

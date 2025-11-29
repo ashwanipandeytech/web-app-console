@@ -22,6 +22,7 @@ export class Login {
   private activatedRoute= inject(ActivatedRoute);
   public router=inject(Router)
   submitted: boolean=false;
+  showPassword: boolean=false;
   constructor(public fb:FormBuilder){
 this.loginFormGrp();
   }
@@ -92,5 +93,8 @@ this.loginFormGrp();
   }
   get f() {
     return this.loginForm.controls;
+  }
+  passwordToggle(){
+    this.showPassword = !this.showPassword;
   }
 }

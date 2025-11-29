@@ -5,7 +5,7 @@
             <div class="logo text-primary">
               Safure
             </div>
-            <a href="index.html"><i class="fa-duotone fa-house-chimney"></i></a>
+            <a ><i class="fa-duotone fa-house-chimney"></i></a>
         </div>
         <div class="bottom">
             <h3 class="panel-title">Login</h3>
@@ -28,12 +28,12 @@
               <div class="input-group mb-20">
                 <span class="input-group-text"><i class="fa-regular fa-lock"></i></span>
                 <input
-                  type="password"
+                  [type]="showPassword?'text':'password'"
                   class="form-control rounded-end"
                   formControlName="password"
                   placeholder="Password"
                 />
-                <a role="button" class="password-show"><i class="fa-duotone fa-eye"></i></a>
+                <a role="button" class="password-show" (click)="passwordToggle()"><i class="fa-duotone fa-eye"></i></a>
               </div>
 
               @if (submitted && f['password'].errors) {
