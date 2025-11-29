@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
-import { environment } from 'environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { Router } from '@angular/router';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 
@@ -50,6 +50,7 @@ export class LandingPage {
   // }
 
   getCategoryList() {
+    console.log('environment.API_URL==>', environment);
     this.categoryListData = [];
     this.dataService.callGetApi('categories')
     .pipe(
@@ -66,7 +67,7 @@ export class LandingPage {
           const element = res.data[i];
           console.log('element==>', element.thumbnail);
           if (element?.thumbnail != null) {
-            console.log('environment.API_URL==>', environment.API_URL);
+           
             element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
           }
           this.categoryListData.push(element);
