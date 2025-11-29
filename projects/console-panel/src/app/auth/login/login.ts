@@ -29,7 +29,7 @@ this.loginFormGrp();
  //add toastr library private activatedRoute= inject(ActivatedRoute);
   // email:any='superadmin@demohandler.com'
   // password:any='R9!hQ7k$2Pm@A1eZx4LwT8uV#cN0sBf'
-  // password:Admin@12345
+// password:      
   // callLogin() {
 
   //   const loginData = {
@@ -69,7 +69,7 @@ this.loginFormGrp();
     if (this.loginForm.invalid) {
       return;
     }
-    this.dataService.callApi(this.loginForm.value, 'login').pipe(
+    this.dataService.callApi(this.loginForm.value, 'auth/login').pipe(
       catchError((error) => {
         console.error('Error occurred during login:', error);
        //add toaserfnc alert('Login failed: ' + response.message);
