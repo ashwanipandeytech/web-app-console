@@ -5,6 +5,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { BrowserModule } from '@angular/platform-browser';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
+import {AddAddressModal} from 'shared-lib/model/add-address-modal/add-address-modal';
+import { MatDialog } from '@angular/material/dialog';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 declare const google: any;
 
 @Component({
@@ -16,6 +19,9 @@ declare const google: any;
 export class Cart {
     @ViewChild('addressInput') addressInput!: ElementRef<HTMLInputElement>;
    private dataService:any = inject(DataService);
+  readonly dialog = inject(MatDialog);
+  readonly ngbModal = inject(NgbModal)
+
   // selectedAddress: string = '';
    searchText = '';
   suggestions: any[] = [];
@@ -169,6 +175,24 @@ if (response.success == true) {
 
     })
   }
+
+  openAddresspopup(){
+
+
+ const modalRef: NgbModalRef = this.ngbModal.open(AddAddressModal,{windowClass:'mobile-modal'});
+
+    // You can access and set properties on the modal's component instance
+    // modalRef.componentInstance.title = 'My Dialog';
+    // modalRef.componentInstance.body = 'This is the message for the modal.';
+
+    // Handle the result from the modal after it's closed
+    modalRef.result.then((result) => {
+      console.log('Modal closed with result:', result);
+    }).catch((reason) => {
+      console.log('Modal dismissed:', reason);
+    });
+  }
+
   // address payload
 // 'type' => 'home',
 //             'label' => 'Home',

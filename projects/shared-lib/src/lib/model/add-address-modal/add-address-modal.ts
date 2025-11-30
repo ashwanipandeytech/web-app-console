@@ -9,7 +9,7 @@ declare const google: any;
 
 @Component({
   selector: 'lib-add-address-modal',
-  imports: [],
+  imports: [CommonModule,ReactiveFormsModule],
   templateUrl: './add-address-modal.html',
   styleUrl: './add-address-modal.scss'
 })
@@ -30,7 +30,9 @@ export class AddAddressModal {
     this.getAddressList();
   }
 
-
+  newAddress() {
+    this.isNewAddress=true;
+  }
   searchAddress(event: any) {
     const query = event.target.value;
 
