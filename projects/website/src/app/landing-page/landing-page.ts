@@ -91,7 +91,7 @@ export class LandingPage {
   }
 
   openProduct(id: number) {
-    this.router.navigate(['/product-info', id]);
+    this.router.navigate(['/product-details', id]);
   }
 
   callAllProductList() {
