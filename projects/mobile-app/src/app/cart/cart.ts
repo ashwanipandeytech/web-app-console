@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { catchError, of } from 'rxjs';
@@ -24,8 +24,10 @@ export class Cart {
   addressForm!: FormGroup;
   lat: any;
   lng: any;
-constructor(private http: HttpClient,private fb: FormBuilder){
+  addressListData: any=[];
+constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDetectorRef){
   this.addAddressForm();
+  this.getAddressList();
 }
   newAddress() {
     this.isNewAddress=true;
@@ -119,9 +121,16 @@ searchAddress(event: any) {
     if (this.addressForm.valid) {
       console.log(this.addressForm.value);
       let fullAddrress = this.addressForm.value;
-      fullAddrress.location = [{
+      if (this.lat && this.lng) {
+          fullAddrress.location = [{
         lat:this.lat,lng:this.lng
-      }],
+      }]
+      }
+      else{
+        fullAddrress.location = '';
+      }
+    
+      fullAddrress.label = this.addressForm.value.type;
        this.dataService.callApiNew(fullAddrress, 'addresses')
             .pipe(
               catchError(err => {
@@ -141,6 +150,24 @@ searchAddress(event: any) {
     } else {
       this.addressForm.markAllAsTouched();
     }
+  }
+
+onSelectAddress(item: any) {
+  console.log("Selected:", item);
+}
+  getAddressList(){
+       this.dataService.callGetApi('addresses').pipe(
+      catchError((error) => {
+        return of(null); // or you can return a default value if needed
+      })
+    ).subscribe((response: any) => {
+console.log('response==>',response);
+if (response.success == true) {
+  this.addressListData = response.data;
+  this.cd.detectChanges();
+}
+
+    })
   }
   // address payload
 // 'type' => 'home',
