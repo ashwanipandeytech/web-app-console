@@ -10,13 +10,13 @@ declare var $:any;
 @Component({
   selector: 'web-landing-page',
   templateUrl: './landing-page.html',
-  imports:[CarouselModule],
+  imports:[ CarouselModule ],
   styleUrl: './landing-page.scss',
   standalone:true,
 })
 export class LandingPage {
- public dataService:any= inject(DataService);
- snackBar = inject(MatSnackBar);
+  public dataService:any= inject(DataService);
+  snackBar = inject(MatSnackBar);
   categoryListData:any;
   productListData: any=[];
   baseURL: string;
@@ -144,7 +144,6 @@ export class LandingPage {
     });
   }
 
-
   addToCart(data:any){
     let finalData = {
     "product_id": data.id,
@@ -172,12 +171,13 @@ export class LandingPage {
         })
 
   }
+
   showSnackbar(response:any){
-     this.snackBar.open(response.message, 'OK', {
-            duration: 3000,
-           horizontalPosition: 'end',
-           verticalPosition: 'top',
-           panelClass: [response.success ? 'snackbar-success' : 'snackbar-error']
-          });
+    this.snackBar.open(response.message, 'OK', {
+      duration: 3000,
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+      panelClass: [response.success ? 'snackbar-success' : 'snackbar-error']
+    });
   }
 }
