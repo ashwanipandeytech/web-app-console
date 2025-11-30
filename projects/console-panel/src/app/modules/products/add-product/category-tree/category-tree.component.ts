@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,7 +10,7 @@ import { QuillModule } from 'ngx-quill';
   selector: 'app-category-tree',
   templateUrl: './category-tree.component.html',
   standalone:true,
-   imports: [ ReactiveFormsModule, CommonModule, FormsModule,MatButtonModule,MatIconModule],
+   imports: [ReactiveFormsModule, FormsModule, MatButtonModule, MatIconModule],
   styleUrls: ['./category-tree.component.scss']
 })
 export class CategoryTreeComponent implements OnInit {

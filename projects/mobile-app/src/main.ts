@@ -1,3 +1,4 @@
+import { provideZoneChangeDetection } from "@angular/core";
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app';
@@ -9,7 +10,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
   bootstrapApplication(AppComponent, {
   ...appConfig,
   providers: [
-    ...(appConfig.providers ?? []),
-    provideAnimationsAsync(),   // ✅ Correct for Angular 17–20
+  ...(appConfig.providers ?? []),
+    provideAnimationsAsync(),
   ],
 }).catch((err) => console.error(err));

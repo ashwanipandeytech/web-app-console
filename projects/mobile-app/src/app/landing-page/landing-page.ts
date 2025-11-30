@@ -7,11 +7,11 @@ import { Router, RouterLink } from '@angular/router';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AddAddressModal } from 'shared-lib/model/add-address-modal/add-address-modal';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-landing-page',
-  imports: [CarouselModule, RouterLink,CommonModule],
+  imports: [CarouselModule, RouterLink],
   templateUrl: './landing-page.html',
   styleUrl: './landing-page.scss',
   standalone:true

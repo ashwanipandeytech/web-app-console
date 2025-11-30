@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -13,7 +13,7 @@ declare const google: any;
 
 @Component({
   selector: 'app-cart',
-  imports: [ CommonModule,ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './cart.html',
   styleUrl: './cart.scss'
 })

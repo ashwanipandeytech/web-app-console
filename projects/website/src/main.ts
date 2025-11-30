@@ -6,7 +6,7 @@ import { App } from './app/app';
 bootstrapApplication(App, {
   ...appConfig,
   providers: [
-    ...(appConfig.providers ?? []),
-    provideAnimationsAsync(),   // ✅ Correct for Angular 17–20
+    ...(appConfig.providers ?? []),   // keep everything from appConfig
+    provideAnimationsAsync(),         // animation provider is fine
   ],
 }).catch((err) => console.error(err));

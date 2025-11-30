@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -8,9 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-dynamicPopup',
   templateUrl: './confirmationPopup.component.html',
-   imports: [ ReactiveFormsModule, CommonModule, FormsModule,MatDialogModule, MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule],
+   imports: [ReactiveFormsModule, FormsModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule],
   styleUrls: ['./confirmationPopup.component.scss'],
   standalone:true
 })

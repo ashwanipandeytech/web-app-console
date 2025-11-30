@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -9,7 +9,7 @@ declare const google: any;
 
 @Component({
   selector: 'lib-add-address-modal',
-  imports: [CommonModule,ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './add-address-modal.html',
   styleUrl: './add-address-modal.scss'
 })
