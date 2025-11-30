@@ -41,13 +41,12 @@ if (this.searchQuery == '') {
   this.suggestions = [];
 }
     // if (query.length < 3) return;
-setTimeout(() => {
-  
+// setTimeout(() => {
   this.http.get(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=in&q=${this.searchQuery}`)
     .subscribe((res: any) => {
       this.suggestions = res;
     });
-}, 100);
+// }, 100);
   }
 
   selectSuggestion(item: any) {
@@ -71,6 +70,7 @@ setTimeout(() => {
         .subscribe((res: any) => {
           this.selectedAddress = res.display_name;
           console.log('this.selectedAddress===>',this.selectedAddress);
+          this.cd.detectChanges();
           
         });
     });
