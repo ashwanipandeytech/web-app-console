@@ -6,7 +6,7 @@ import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 
 @Component({
-  selector: 'app-product-detail',
+  selector: 'app-product-detail-common',
   imports: [CommonModule,CarouselModule],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.scss'

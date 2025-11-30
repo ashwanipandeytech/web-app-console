@@ -15,6 +15,12 @@ import { Compaire } from './account/compaire/compaire';
 import { Category } from './pages/category/category';
 import { ProductInfo } from './pages/product-info/product-info';
 import { authGuard } from './app.guard';
+import { ProductDetailCommon} from 'shared-lib/components/product-info/product-info';
+import { ProductSidebarCommon} from 'shared-lib/components/product-sidebar/product-sidebar';
+import { CategoryCommon} from 'shared-lib/components/category/category';
+
+
+import { CartCommon } from 'shared-lib/components/cart/cart';
 
 export const routes: Routes = [
     {
@@ -40,24 +46,39 @@ export const routes: Routes = [
     },
     {
         path: 'category',
-        component: Category,
+        component: CategoryCommon,
          
     },
-    {
+    // {
+    //     path: 'product-sidebar',
+    //     component: ProductSidebar,
+         
+    // },
+      {
         path: 'product-sidebar',
-        component: ProductSidebar,
+        component: ProductSidebarCommon,
          
     },
-        {
-        path: 'product-info/:id',
-        component: ProductInfo,
+        // {
+        // path: 'product-info/:id',
+        // component: ProductInfo,
+         
+        // },
+         {
+       path: 'product-details/:id',
+        component: ProductDetailCommon,
          
         },
-    {
-        path: 'cart',
-        component: Cart,
+    // {
+    //     path: 'cart',
+    //     component: Cart,
          
-    },   
+    // },   
+      {
+        path: 'cart',
+        component: CartCommon,
+         
+    }, 
     {
         path: 'user-profile',
         component: UserProfile,
@@ -94,6 +115,7 @@ export const routes: Routes = [
         component: ContactUs,
          
     }
+
     // {
     //     path: '',
     //     pathMatch: 'full',

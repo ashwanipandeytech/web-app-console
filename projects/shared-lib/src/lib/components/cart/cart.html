@@ -247,7 +247,44 @@
               
                 </tbody>
             </table>
+            {{grandTotal}}
         </div>
+
+
+
+           <!-- Coupon -->
+            <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2">
+                <span class="fw-semibold">Have a coupon?</span>
+                <button type="button" class="btn text-primary fw-semibold p-0" data-bs-toggle="modal" data-bs-target="#couponModal">Apply</button>
+            </div>
+    
+            <!-- Bill details -->
+            <div class="bg-white px-3 py-2 mt-2">
+                <p class="fw-semibold mb-2">Bill details</p>
+                <div class="d-flex justify-content-between mb-1"><span>Items total</span><span>₹{{grandTotal}}</span></div>
+                <div class="d-flex justify-content-between mb-1"><span>Delivery charge</span><span>₹40</span></div>
+                <div class="d-flex justify-content-between mb-1"><span>Handling fees</span><span>₹16</span></div>
+                <div class="d-flex justify-content-between border-bottom pb-2 mb-2"><span>GST total</span><span>₹9</span></div>
+                <div class="d-flex justify-content-between fw-semibold mb-2"><span>Grand total</span><span>₹1458</span></div>
+                <div class="summary-box text-center">Total savings on this order ₹236</div>
+            </div>
+    
+            <!-- Delivery -->
+            <div class="bg-white px-3 pt-2 pb-4 mt-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="fw-semibold mb-0">Delivering to:</p>
+                    <button type="button" class="btn text-primary fw-semibold p-0" (click)="openAddressPopup()">Change</button>
+                </div>
+                <small class="text-muted">Address here 256, Street 65/4</small>
+                <!-- Button -->
+                <div class="mt-2">
+                    <button class="btn btn-primary w-100">Continue to Pay</button>
+                </div>
+            </div>
+
+
+
+
         <div class="wishlist-btn cart-btn">
             <a href="empty-cart.html" class="clean-btn">Clear Cart</a>
             <a href="#" class="shop-btn update-btn">Update Cart</a>
