@@ -8,7 +8,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'app-landing-page',
-  imports: [CarouselModule],
+  imports: [ CarouselModule ],
   templateUrl: './landing-page.html',
   styleUrl: './landing-page.scss',
   standalone:true
@@ -26,7 +26,7 @@ export class LandingPage {
   }
 
   openProduct(id: number) {
-    this.router.navigate(['/product-info', id]);
+    this.router.navigate(['/product-detail', id]);
   }
 
   // callAllProductList() {
@@ -83,7 +83,8 @@ export class LandingPage {
   getProductDetails() {
     this.router.navigate(['/product-detail']);
   }
-   callAllProductList() {
+
+  callAllProductList() {
 
     // const payload = {
     //   email: this.email,
@@ -107,33 +108,34 @@ export class LandingPage {
     });
     
   }
-//  getCategoryList() {
-//     this.categoryListData = [];
-//     this.dataService.callGetApi('categories')
-//       .pipe(
-//         catchError(err => {
-//           console.error('Error:', err);
-//           return of(null);
-//         })
-//       )
-//       .subscribe((res: any) => {
-//         console.log('Response:', res);
-//         if (res.data) {
 
-//           for (let i = 0; i < res.data.length; i++) {
-//             const element = res.data[i];
-//             console.log('element==>', element.thumbnail);
-//             if (element?.thumbnail != null) {
-//               console.log('environment.API_URL==>', environment.API_URL);
-//               element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
-//             }
-//             this.categoryListData.push(element);
-//           }
-//         }
-//         console.log('categoryListData==>', this.categoryListData);
+  //  getCategoryList() {
+  //     this.categoryListData = [];
+  //     this.dataService.callGetApi('categories')
+  //       .pipe(
+  //         catchError(err => {
+  //           console.error('Error:', err);
+  //           return of(null);
+  //         })
+  //       )
+  //       .subscribe((res: any) => {
+  //         console.log('Response:', res);
+  //         if (res.data) {
 
-//         this.cd.detectChanges();
-//         // this.categoryListData = res.data;
-//       });
-//   }
+  //           for (let i = 0; i < res.data.length; i++) {
+  //             const element = res.data[i];
+  //             console.log('element==>', element.thumbnail);
+  //             if (element?.thumbnail != null) {
+  //               console.log('environment.API_URL==>', environment.API_URL);
+  //               element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
+  //             }
+  //             this.categoryListData.push(element);
+  //           }
+  //         }
+  //         console.log('categoryListData==>', this.categoryListData);
+
+  //         this.cd.detectChanges();
+  //         // this.categoryListData = res.data;
+  //       });
+  //   }
 }

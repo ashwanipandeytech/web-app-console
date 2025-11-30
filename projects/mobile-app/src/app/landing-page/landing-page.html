@@ -25,14 +25,14 @@
                 @for (control of categoryListData; track $index) {
                 <button type="button" class="btn py-0">
                     <img src="{{control.thumbnail}}" alt="{{control.name}}">
-                        <span class="small d-block">{{control.name}}</span>
+                    <span class="small d-block">{{control.name}}</span>
                 </button>
                 }
             </div>
         </div>
     </header>
         
-    <div class="d-flex flex-column overflow-auto bg-light py-3" style="margin-bottom: 66px;">
+    <div class="d-flex flex-column overflow-auto bg-light py-3" style="margin-bottom: 54px;">
         <div class="px-3" >
             <!-- Banner -->
             <div class="banner">
@@ -54,13 +54,13 @@
                 <div class="row g-3">
                     @for (item of productListData; track $index) {
                     <div class="col-4">
-                        <div class="product-image position-relative text-center bg-light rounded mb-2"
+                        <figure class="product-image position-relative text-center bg-white rounded mb-2"
                         (click)="openProduct(item.id)">
                             <img [src]="item?.images[0]?.url" class="img-fluid" alt="">
-                        </div>
-                        <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold bg-light px-12 m-1" (click)="getProductDetails()">Add</button>
+                        </figure>
+                        <button class="btn btn-sm btn-outline-primary fs-12 fw-semibold bg-light px-12 mb-2" (click)="getProductDetails()">Add</button>
+                        <div class="product-price">₹ {{item.price_data.regularPrice}}</div>
                         <div class="fs-12 fw-semibold text-muted" (click)="openProduct(item.id)">{{item.title}}</div>
-                        <!-- <div class="product-price">₹652</div> -->
                     </div>
                     }
             

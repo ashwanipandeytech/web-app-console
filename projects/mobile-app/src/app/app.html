@@ -1,18 +1,2 @@
-<!-- <app-header *ngIf="!isHomeScreenOpen"></app-header> -->
 <router-outlet />
-<ng-container *ngIf="isHomeScreenOpen">
-    <div class="hero-section">
-        <div class="app-logo">SAFURE</div>
-    
-        <div class="overlay-box">
-        <h2 class="fw-bold mb-2">Welcome!</h2>
-        <p class="text-muted mb-4">This is the best place to fulfil your poultry equipment needs.</p>
-    
-        <div class="d-grid gap-3">
-            <button type="button" class="btn btn-primary btn-lg" (click)="openSignUp()">Sign up now &rarr;</button>
-            
-            <a href="#" class="btn btn-outline-lightgray btn-lg" (click)="goToHome()">Do it later</a>
-        </div>
-        </div>
-    </div>
-</ng-container>
+
