@@ -1,6 +1,7 @@
 @use 'scss/variable' as *;
 @use 'scss/global' as *;
 
+.razorpay-container { z-index: 0 !important; }
 
 // :root {
 //     --bs-font-sans-serif: "Inter", sans-serif;
