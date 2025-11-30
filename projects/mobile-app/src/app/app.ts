@@ -6,8 +6,7 @@ import { Header } from './header/header';
 import { CommonModule } from '@angular/common';
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
-import { StatusBar, Style } from '@capacitor/status-bar';
-import { EdgeToEdge } from '@capawesome/capacitor-android-edge-to-edge-support';
+
 @Component({
   selector: 'conceptfit-root',
   templateUrl: './app.html',
@@ -28,13 +27,15 @@ export class AppComponent {
         this.currentUrl = event.url;
       };
     });
+  
+   //alert(Capacitor.isNativePlatform())
     if (Capacitor.isNativePlatform()) {
       this.initializeApp();
     }
   }
   initializeApp() {
     this.addAppListeners();
-    this.configureStatusbar();
+  
   }
   addAppListeners() {
     try {
@@ -57,14 +58,8 @@ export class AppComponent {
       // console.log('Error in App Listener');
     }
   }
-  async configureStatusbar() {
-    await StatusBar.setOverlaysWebView({ overlay: false });
-    await EdgeToEdge.setBackgroundColor({ color: '#000000' });
-    // await StatusBar.setStyle({ style: Style.Dark });
-    // await StatusBar.getInfo().then(info => {
-    //   console.log('Status Bar Info : ', info);
-    // })
-  }
+
+  
 
   openSignUp() {
     this.isHomeScreenOpen = false;
