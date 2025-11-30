@@ -1,117 +1,139 @@
 <div class="modal-header">
-    <input 
-    type="text" 
-    (input)="searchAddress($event)"
-    [value]="searchText"
-    class="form-control"
-    placeholder="Enter address..." >
-    @if (suggestions.length) {
-    <select>
-        @for (s of suggestions; track $index) {
-        <option (click)="selectSuggestion(s)"> {{ s.display_name }} </option>
-        }
-    </select>
-    }
-
-    <button class="btn btn-primary mt-2" (click)="getCurrentLocation()">
-    Use Current Location
-    </button>
-
     <h1 class="modal-title fs-5" id="addressModalLabel">New address details</h1>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
+
 <div class="modal-body">
+    <div class="search-bar">
+        <input type="text" (input)="searchAddress($event)" [value]="searchText" class="form-control" placeholder="Enter address..." >
+        <!-- @if (suggestions.length) {
+        <select>
+            @for (s of suggestions; track $index) {
+            <option (click)="selectSuggestion(s)"> {{ s.display_name }} </option>
+            }
+        </select>
+        } -->
+    </div>
+
+    @if (suggestions.length) {
+    <ul class="list-group mt-2">
+        @for (s of suggestions; track $index) {
+        <li class="list-group-item" aria-current="true" (click)="selectSuggestion(s)"> {{ s.display_name }}</li>
+        }
+    </ul>
+    }
+    @if(suggestions.length == 0) {
+        <div class="d-flex align-items-center bg-light rounded gap-2 my-2 px-2">
+            <div class="d-flex align-items-center gap-2">
+                <div class="cDvsYG">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><g fill="#101418" fill-rule="evenodd" clip-rule="evenodd"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zM10 12a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/><path d="M12.75 2.75a.75.75 0 0 0-1.5 0v2.063c0 .08.013.158.037.231a7.003 7.003 0 0 0-6.247 6.212.758.758 0 0 0-.04-.001H2.75a.75.75 0 0 0 0 1.5H5l.04-.001a7.003 7.003 0 0 0 6.233 6.217.751.751 0 0 0-.023.185v2.103a.75.75 0 0 0 1.5 0v-2.103a.752.752 0 0 0-.023-.185 7.002 7.002 0 0 0 6.234-6.216h2.297a.75.75 0 1 0 0-1.5H18.96a7.003 7.003 0 0 0-6.247-6.21.747.747 0 0 0 .037-.232zm4.75 9.259a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></g></svg>
+                </div>
+                <div class="cIArQh">
+                    <div class="ck03O3">
+                        <div class="c4ZmYS" data-size="small">
+                            <span class="nfVqo">Use My Current Location</span>
+                        </div>
+                    </div>
+                    <div class="ctyATk" data-size="small">Enable your current location for better services</div>
+                </div>
+            </div>
+            <div class="__78jF3">
+                <button class="btn btn-primary p-2" (click)="getCurrentLocation()">Enable</button>
+            </div>
+        </div>
+    }
+
 
     @if (isNewAddress) {
-        <ng-container>
-            <div class="d-flex align-items-start bg-primary-light rounded p-3 mb-3">
-                <img src="assets/images/svg/indictor.svg" alt="" class="pt-1">
-                <p class="fs-14 ms-1 mb-0">
-                    <span class="d-block">Area name</span>
-                    <span class="fs-12">Address here 256, Street 65/4, Address here 256, Street 65/4</span>
-                </p>
+    <ng-container>
+        <div class="d-flex align-items-start bg-primary-light rounded p-3 mb-3">
+            <img src="assets/images/svg/indictor.svg" alt="" class="pt-1">
+            <p class="fs-14 ms-1 mb-0">
+                <span class="d-block">Area name</span>
+                <span class="fs-12">Address here 256, Street 65/4, Address here 256, Street 65/4</span>
+            </p>
+        </div>
+
+        <!-- Reactive Form -->
+        <form [formGroup]="addressForm">
+            <div class="mb-3">
+                <label class="form-label fw-semibold mb-1">Full name</label>
+                <input type="text" class="form-control" formControlName="name">
             </div>
-    
-            <!-- Reactive Form -->
-            <form [formGroup]="addressForm">
-                <div class="mb-3">
-                    <label class="form-label fw-semibold mb-1">Full name</label>
-                    <input type="text" class="form-control" formControlName="name">
+            <div class="mb-3">
+                <label class="form-label fw-semibold mb-1">Phone</label>
+                <input type="text" class="form-control" formControlName="phone">
+            </div>
+            <div class="mb-3">
+                <label class="form-label mb-1">
+                    <span class="fw-semibold">Street</span>
+                </label>
+                <input type="text" class="form-control" formControlName="street">
+            </div>
+            <div class="mb-3">
+                <label class="form-label mb-1">
+                    <span class="fw-semibold">City</span>
+                </label>
+                <input type="text" class="form-control" formControlName="city">
+            </div>
+            <div class="mb-3">
+                <label class="form-label mb-1">
+                    <span class="fw-semibold">State</span> 
+                </label>
+                <input type="text" class="form-control" formControlName="state">
+            </div>
+            <div class="mb-3">
+                <label class="form-label mb-1">
+                    <span class="fw-semibold">Postal Code</span> 
+                </label>
+                <input type="text" class="form-control" formControlName="postal_code">
+            </div>
+            <div class="mb-3">
+                <label class="form-label mb-1">
+                    <span class="fw-semibold">Country</span> 
+                </label>
+                <input type="text" class="form-control" formControlName="country">
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold mb-1">Address type</label>
+
+                <div class="d-flex gap-2">
+                    <button 
+                        type="button" 
+                        class="btn"
+                        [class.btn-outline-primary]="addressForm.value.type === 'home'"
+                        [class.bg-light]="addressForm.value.type !== 'home'"
+                        (click)="setAddressType('home')">
+                        Home
+                    </button>
+
+                    <button 
+                        type="button" 
+                        class="btn"
+                        [class.btn-outline-primary]="addressForm.value.type === 'work'"
+                        [class.bg-light]="addressForm.value.type !== 'work'"
+                        (click)="setAddressType('work')">
+                        Office
+                    </button>
+
+                    <button 
+                        type="button" 
+                        class="btn"
+                        [class.btn-outline-primary]="addressForm.value.type === 'other'"
+                        [class.bg-light]="addressForm.value.type !== 'other'"
+                        (click)="setAddressType('other')">
+                        Others
+                    </button>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label fw-semibold mb-1">Phone</label>
-                    <input type="text" class="form-control" formControlName="phone">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label mb-1">
-                        <span class="fw-semibold">Street</span>
-                    </label>
-                    <input type="text" class="form-control" formControlName="street">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label mb-1">
-                        <span class="fw-semibold">City</span>
-                    </label>
-                    <input type="text" class="form-control" formControlName="city">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label mb-1">
-                        <span class="fw-semibold">State</span> 
-                    </label>
-                    <input type="text" class="form-control" formControlName="state">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label mb-1">
-                        <span class="fw-semibold">Postal Code</span> 
-                    </label>
-                    <input type="text" class="form-control" formControlName="postal_code">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label mb-1">
-                        <span class="fw-semibold">Country</span> 
-                    </label>
-                    <input type="text" class="form-control" formControlName="country">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label fw-semibold mb-1">Address type</label>
-    
-                    <div class="d-flex gap-2">
-                        <button 
-                            type="button" 
-                            class="btn"
-                            [class.btn-outline-primary]="addressForm.value.type === 'home'"
-                            [class.bg-light]="addressForm.value.type !== 'home'"
-                            (click)="setAddressType('home')">
-                            Home
-                        </button>
-    
-                        <button 
-                            type="button" 
-                            class="btn"
-                            [class.btn-outline-primary]="addressForm.value.type === 'work'"
-                            [class.bg-light]="addressForm.value.type !== 'work'"
-                            (click)="setAddressType('work')">
-                            Office
-                        </button>
-    
-                        <button 
-                            type="button" 
-                            class="btn"
-                            [class.btn-outline-primary]="addressForm.value.type === 'other'"
-                            [class.bg-light]="addressForm.value.type !== 'other'"
-                            (click)="setAddressType('other')">
-                            Others
-                        </button>
-                    </div>
-                </div>
-    
-                <button class="btn btn-primary mt-2" type="submit" (click)="submitForm()">
-                    Save Address
-                </button>
-            </form>
-        </ng-container>
+            </div>
+
+            <button class="btn btn-primary mt-2" type="submit" (click)="submitForm()">
+                Save Address
+            </button>
+        </form>
+    </ng-container>
     }
-@if (!isNewAddress) {
+    @if (!isNewAddress) {
 
     <ng-container *ngIf="!isNewAddress">
         <button class="btn bg-primary-light text-primary w-100" (click)="newAddress()">
@@ -146,8 +168,9 @@
             </div> -->
         </div>
     </ng-container>
-}
+    }
 </div>
+
 <div class="modal-footer" *ngIf="isNewAddress">
     <button type="button" class="btn btn-primary w-100">Save address</button>
 </div>

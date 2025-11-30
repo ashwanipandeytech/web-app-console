@@ -1,20 +1,25 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { environment } from '../../../../../environments/environment';
 import { Router, RouterLink } from '@angular/router';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { AddAddressModal } from 'shared-lib/model/add-address-modal/add-address-modal';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-landing-page',
-  imports: [CarouselModule, RouterLink],
+  imports: [CarouselModule, RouterLink,CommonModule],
   templateUrl: './landing-page.html',
   styleUrl: './landing-page.scss',
   standalone:true
 })
 export class LandingPage {
+   @ViewChild('addressInput') addressInput!: ElementRef<HTMLInputElement>;
   public dataService:any= inject(DataService);
+  readonly ngbModal = inject(NgbModal)
   categoryListData:any;
   productListData: any=[];
   baseURL: string;
@@ -109,7 +114,7 @@ export class LandingPage {
     
   }
 goToCart(){
-  this.router.navigate(['/cart'])
+  this.router.navigate(['/cart']);
 }
   //  getCategoryList() {
   //     this.categoryListData = [];
@@ -140,4 +145,16 @@ goToCart(){
   //         // this.categoryListData = res.data;
   //       });
   //   }
+   openAddressPopup(){
+    const modalRef: NgbModalRef = this.ngbModal.open( AddAddressModal,
+      { windowClass:'mobile-modal',
+        scrollable: true
+      }
+    );
+    modalRef.result.then((result) => {
+      console.log('Modal closed with result:', result);
+    }).catch((reason) => {
+      console.log('Modal dismissed:', reason);
+    });
+  }
 }

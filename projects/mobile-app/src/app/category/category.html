@@ -1,3 +1,22 @@
 <div class="d-flex align-items-center bg-light  p-1">
-    <button class="btn btn-light" (click)="back()"> Back </button>
+    <button class="btn btn-light d-flex align-items-center" (click)="back()"> 
+        <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" style="height: 1.5rem; width: 1.5rem; color: black;"><path d="M15.5 19L8.5 12L15.5 5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
+        <span class="d-inline-block" style="height: 24px; line-height: 24px;">Back</span>
+    </button>
+</div>
+
+<div class="category-icon-wrapper container-fluid py-3">
+    <div class="row g-2">
+        @for (control of categoryListData; track $index) {
+        <div class="col-4 col-md-3 col-lg-2">
+            <button type="button" class="btn p-0">
+                <figure class="aspect-ratio-1 mb-0">
+                    <img src="{{control.thumbnail}}" alt="{{control.name}}" class="w-100 h-100 object-fit-contain bg-light rounded">
+                    <figcaption>{{control.name}}</figcaption>
+                </figure>
+                <!-- <span class="small d-block">{{control.name}}</span> -->
+            </button>
+        </div>
+        }
+    </div>
 </div>
