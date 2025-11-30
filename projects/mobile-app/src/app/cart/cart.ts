@@ -8,6 +8,7 @@ import { DataService } from 'shared-lib';
 import {AddAddressModal} from 'shared-lib/model/add-address-modal/add-address-modal';
 import { MatDialog } from '@angular/material/dialog';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import {DynamicPopup} from 'shared-lib/components/confirmationPopup/confirmationPopup.component'
 declare const google: any;
 
 @Component({
@@ -31,10 +32,13 @@ export class Cart {
   lat: any;
   lng: any;
   addressListData: any=[];
-  constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDetectorRef){
-    this.addAddressForm();
-    this.getAddressList();
-  }
+  cartListData: any=[];
+  grandTotal: number=0;
+constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDetectorRef){
+  this.addAddressForm();
+  this.getAddressList();
+  this.carList();
+}
   newAddress() {
     this.isNewAddress=true;
   }
@@ -183,6 +187,110 @@ export class Cart {
     });
   }
 
+  carList(){
+     this.dataService.callGetApi('cart').pipe(
+      catchError((error) => {
+        return of(null); // or you can return a default value if needed
+      })
+    ).subscribe((response: any) => {
+console.log('response==>',response);
+if (response.success == true) {
+  this.cartListData = response.data.data;
+  for (let i = 0; i < this.cartListData.length; i++) {
+    const element = this.cartListData[i];
+    // if (element.) {
+      
+    // }
+    element.product.price_data['finalPrice'] = element?.product.price_data?.regularPrice;
+      this.calculatePrice(element.quantity,i,element.product.price_data.regularPrice);
+
+  }
+  this.calculateGrandTotal();
+  this.cd.detectChanges();
+}
+
+    })
+  }
+  increase(quantity:any,index:any) {
+    this.cartListData[index].quantity++;
+    let productQuantity = this.cartListData[index].quantity;
+    this.calculatePrice(productQuantity,index,this.cartListData[index].product.price_data.regularPrice);
+  }
+
+  decrease(quantity:any,index:any) {
+    if (quantity > 1) {
+      this.cartListData[index].quantity--;
+      let productQuantity = this.cartListData[index].quantity;
+      this.calculatePrice(productQuantity,index,this.cartListData[index].product.price_data.regularPrice);
+    }
+  }
+     calculatePrice(quantity:any,index:any,price:any){
+      let productQuantity:any = null;
+      let regularPrice = null;
+      productQuantity = quantity;
+      regularPrice = price;
+      this.cartListData[index].product.price_data.finalPrice = quantity * regularPrice;
+      this.calculateGrandTotal();
+    // this.selectedProduct.price_data.regularPrice = this.productPrice * this.quantity;
+    this.cd.detectChanges();
+      }
+      calculateGrandTotal(){
+        // this.grandTotal = 0;
+      this.grandTotal = 0;
+
+      for (let i = 0; i < this.cartListData.length; i++) {
+        const element = this.cartListData[i];
+        this.grandTotal += element.product.price_data.finalPrice;
+      }
+        // console.log('this.grandTotal==>',this.grandTotal);
+      }
+
+      // deleteItem(id:any){
+
+
+         deleteItem(id: any): void {
+    let popupData = {
+      title: 'Cart Item',
+      description: 'Are you sure, you want to delete Item',
+      id: id
+    }
+    let dialogRef = this.dialog.open(DynamicPopup, {
+      width: '250px',
+      data: popupData,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed with:', result);
+
+      if (result.action === 'ok') {
+        this.deleteCartItem(id);
+
+      }
+    })
+  // }
+      }
+
+       deleteCartItem(id: any) {
+    this.dataService.callDeleteApi('cart', id)
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+           setTimeout(() => {
+          // this.globalService.showMsgSnackBar(err);
+        }, 100);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+        if (res.success == true) {
+          // this.calculateGrandTotal();
+          this.carList();
+          this.cd.detectChanges();
+        }
+        // this.getCategoryList();
+        // this.categoryListData = res.data;
+      });
+  }
   // address payload
   // 'type' => 'home',
   // 'label' => 'Home',
