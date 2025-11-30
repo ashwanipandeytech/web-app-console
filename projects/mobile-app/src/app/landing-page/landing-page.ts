@@ -3,12 +3,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { environment } from '../../../../../environments/environment';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'app-landing-page',
-  imports: [ CarouselModule ],
+  imports: [CarouselModule, RouterLink],
   templateUrl: './landing-page.html',
   styleUrl: './landing-page.scss',
   standalone:true
@@ -108,7 +108,9 @@ export class LandingPage {
     });
     
   }
-
+goToCart(){
+  this.router.navigate(['/cart'])
+}
   //  getCategoryList() {
   //     this.categoryListData = [];
   //     this.dataService.callGetApi('categories')
