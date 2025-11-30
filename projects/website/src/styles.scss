@@ -4,7 +4,36 @@
 @import "ngx-owl-carousel-o/lib/styles/scss/owl.theme.default";
 
 :root {
-  --bs-light-rgb: 235, 235, 235;
+  --bs-light-rgb: 240, 240, 240;
+}
+.aspect-ratio-1 {
+  aspect-ratio: 1;
+}
+
+@media screen and (max-width: 576px) {
+    .modal {
+        &.mobile-modal {
+            --bs-modal-margin: 0;
+            .modal-dialog {
+                transform: none;
+                    display: flex;
+                    align-items: end;
+                    height: 85%;
+                    min-height: 100%;
+                .modal-content {
+                    margin-bottom: -10%;
+                    border-radius: .75rem .75rem 0 0;
+                    transition: margin-bottom .3s ease-out;
+                }
+            }
+            &.show {
+                .modal-content {
+                    max-height: 85%;
+                    margin-bottom: 0 !important;
+                }
+            }
+        }
+    }
 }
 
 .hero {

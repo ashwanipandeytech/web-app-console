@@ -81,4 +81,8 @@ export class ProductSidebarCommon {
         // this.categoryListData = res.data;
       });
   }
+
+  back(){
+    window.history.back();
+  }
 }
