@@ -1,3 +1,10 @@
+<div class="d-flex d-sm-none align-items-center bg-light  p-1">
+    <button class="btn btn-light d-flex align-items-center" (click)="back()"> 
+        <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" style="height: 1.5rem; width: 1.5rem; color: black;"><path d="M15.5 19L8.5 12L15.5 5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
+        <span class="d-inline-block" style="height: 24px; line-height: 24px;">Back</span>
+    </button>
+</div>
+
 <!--------------- products-info-section--------------->
 <section class="product-info bg-light pt-3">
     <div class="container">
@@ -148,7 +155,7 @@
                                     </div>
                                     <hr class="border-dark">
                                     <div class="product-details">
-                                        <p class="category">Category : <span class="inner-text">Kitchen</span></p>
+                                        <p class="category">Category : <span class="inner-text">{{item.category.name}}</span></p>
                                         <p class="tags">Tags : <span class="inner-text">Beer, Foamer</span></p>
                                         <p class="sku">SKU : <span class="inner-text">KE-91039</span></p>
                                     </div>

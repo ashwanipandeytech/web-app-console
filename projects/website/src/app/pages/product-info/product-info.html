@@ -9,13 +9,13 @@
             <span><a href="#">Product Details</a></span>
         </div>
 
-        <div class="product-info-section mt-0">
+        <div class="product-info-section  mt-0">
             @if (productDetails && productDetails.data.length>0) {
                 @for (item of productDetails.data; track $index) {
                     @if (productId == item.id) {
                         <div class="row ">
                             <div class="col-md-6">
-                                <div class="product-info-img" data-aos="fade-right">
+                                <div class="product-info-img bg-white rounded" data-aos="fade-right">
                                     <div class="product-discount-content">
                                         <h4>-50%</h4>
                                     </div>
@@ -148,7 +148,7 @@
                                     </div>
                                     <hr class="border-dark">
                                     <div class="product-details">
-                                        <p class="category">Category : <span class="inner-text">Kitchen</span></p>
+                                        <p class="category">Category : <span class="inner-text">{{item.category.name}}</span></p>
                                         <p class="tags">Tags : <span class="inner-text">Beer, Foamer</span></p>
                                         <p class="sku">SKU : <span class="inner-text">KE-91039</span></p>
                                     </div>

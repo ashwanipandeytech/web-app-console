@@ -3,6 +3,13 @@
 @import "ngx-owl-carousel-o/lib/styles/scss/owl.carousel";
 @import "ngx-owl-carousel-o/lib/styles/scss/owl.theme.default";
 
+.aspect-ratio-1 {
+    aspect-ratio: 1;
+}
+
+.bg-primary-light {
+   background-color: #CCE9F8;
+}
 
 .hero {
 //   background: url("https://a2zlivestock.com/wp-content/uploads/2025/01/Making-Livestock-Care-Simple-Safe-Effective-7.png") no-repeat top right/cover;

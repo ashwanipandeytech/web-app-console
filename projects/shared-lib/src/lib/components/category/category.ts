@@ -49,4 +49,7 @@ export class CategoryCommon {
         // this.categoryListData = res.data;
       });
   }
+  back(){
+    window.history.back();
+  }
 }
