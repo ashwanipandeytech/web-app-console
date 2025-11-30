@@ -54,6 +54,7 @@ export class Auth {
   //     description: 'Do you want to loggedIn',
   //   }
         if (res.success == true) {   
+             localStorage.setItem('user', JSON.stringify(res.data));
            this.router.navigate(['/home']); 
   // let dialogRef = this.dialog.open(DynamicPopup, {
   //     width: '250px',

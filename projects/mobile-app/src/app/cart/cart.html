@@ -1,6 +1,7 @@
 <div class="cart-page bg-light">
     <div class="cart-card mx-auto pt-2">
         <div class="bg-white">
+            <button (click)="back()"><= Back</button>
             <div class="border-bottom px-3 py-2 mb-2">Products in cart</div>
             <!-- Products -->
             <div class="cart-item d-flex align-items-center justify-content-between gap-1 border-bottom px-3 pb-2 mb-2">
@@ -88,45 +89,147 @@
     <div class="modal-dialog modal-dialog-end modal-dialog-scrollable">
         <div class="modal-content">
         <div class="modal-header">
+
+            <input 
+  type="text" 
+  (input)="searchAddress($event)"
+  [value]="searchText"
+  class="form-control"
+  placeholder="Enter address..."
+>
+@if (suggestions.length) {
+
+    <select>
+    @for (s of suggestions; track $index) {
+    <option (click)="selectSuggestion(s)">
+  {{ s.display_name }}
+    </option>
+}
+</select>
+}
+
+<button class="btn btn-primary mt-2" (click)="getCurrentLocation()">
+  Use Current Location
+</button>
+
+<!-- <input 
+  type="text" 
+  #addressInput 
+  class="form-control"
+  placeholder="Enter address..."
+>
+
+<button class="btn btn-primary mt-2" (click)="getCurrentLocation()">
+  Use Current Location
+</button>
+
+<p *ngIf="selectedAddress">Selected: {{ selectedAddress }}</p>
+
+
+
+
+ -->
+
             <h1 class="modal-title fs-5" id="addressModalLabel">New address details</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <ng-container *ngIf="isNewAddress">
-                <div class="d-flex align-items-start bg-primary-light rounded p-3 mb-3">
-                    <img src="assets/images/svg/indictor.svg" alt="" class="pt-1">
-                    <p class="fs-14 ms-1 mb-0">
-                        <span class="d-block">Area name</span>
-                        <span class="fs-12">Address here 256, Street 65/4, Address here 256, Street 65/4</span>
-                    </p>
-                </div>
-                <form>
-                    <div class="mb-3">
-                        <label for="buildingName" class="form-label fw-semibold mb-1">Flat/House no./Building name</label>
-                        <input type="text" class="form-control" id="buildingName">
-                    </div>
-                    <div class="mb-3">
-                        <label for="fullName" class="form-label fw-semibold mb-1">Full name</label>
-                        <input type="text" class="form-control" id="fullName">
-                    </div>
-                    <div class="mb-3">
-                        <label for="phoneNo" class="form-label fw-semibold mb-1">Phone</label>
-                        <input type="text" class="form-control" id="phoneNo">
-                    </div>
-                    <div class="mb-3">
-                        <label for="landmark" class="form-label mb-1"><span class="fw-semibold">Landmark</span> (Optional)</label>
-                        <input type="text" class="form-control" id="landmark">
-                    </div>
-                    <div class="mb-3">
-                        <label for="landmark" class="form-label fw-semibold mb-1">Address type</label>
-                        <div class="d-flex gap-2">
-                            <button type="button" class="btn btn-outline-primary">Home</button>
-                            <button type="button" class="btn bg-light">Office</button>
-                            <button type="button" class="btn bg-light">Others</button>
-                        </div>
-                    </div>
-                </form>
-            </ng-container>
+          <ng-container *ngIf="isNewAddress">
+    <div class="d-flex align-items-start bg-primary-light rounded p-3 mb-3">
+        <img src="assets/images/svg/indictor.svg" alt="" class="pt-1">
+        <p class="fs-14 ms-1 mb-0">
+            <span class="d-block">Area name</span>
+            <span class="fs-12">Address here 256, Street 65/4, Address here 256, Street 65/4</span>
+        </p>
+    </div>
+
+    <!-- Reactive Form -->
+    <form [formGroup]="addressForm">
+
+        <!-- <div class="mb-3">
+            <label class="form-label fw-semibold mb-1">Flat/House no./Building name</label>
+            <input type="text" class="form-control" formControlName="buildingName">
+        </div> -->
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold mb-1">Full name</label>
+            <input type="text" class="form-control" formControlName="name">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold mb-1">Phone</label>
+            <input type="text" class="form-control" formControlName="phone">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label mb-1">
+                <span class="fw-semibold">Street</span>
+            </label>
+            <input type="text" class="form-control" formControlName="street">
+        </div>
+ <div class="mb-3">
+            <label class="form-label mb-1">
+                <span class="fw-semibold">City</span>
+            </label>
+            <input type="text" class="form-control" formControlName="city">
+        </div>
+         <div class="mb-3">
+            <label class="form-label mb-1">
+                <span class="fw-semibold">State</span> 
+            </label>
+            <input type="text" class="form-control" formControlName="state">
+        </div>
+           <div class="mb-3">
+            <label class="form-label mb-1">
+                <span class="fw-semibold">Postal Code</span> 
+            </label>
+            <input type="text" class="form-control" formControlName="postal_code">
+        </div>
+          <div class="mb-3">
+            <label class="form-label mb-1">
+                <span class="fw-semibold">Country</span> 
+            </label>
+            <input type="text" class="form-control" formControlName="country">
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold mb-1">Address type</label>
+
+            <div class="d-flex gap-2">
+                <button 
+                    type="button" 
+                    class="btn"
+                    [class.btn-outline-primary]="addressForm.value.type === 'Home'"
+                    [class.bg-light]="addressForm.value.type !== 'Home'"
+                    (click)="setAddressType('Home')">
+                    Home
+                </button>
+
+                <button 
+                    type="button" 
+                    class="btn"
+                    [class.btn-outline-primary]="addressForm.value.type === 'Office'"
+                    [class.bg-light]="addressForm.value.type !== 'Office'"
+                    (click)="setAddressType('Office')">
+                    Office
+                </button>
+
+                <button 
+                    type="button" 
+                    class="btn"
+                    [class.btn-outline-primary]="addressForm.value.type === 'Others'"
+                    [class.bg-light]="addressForm.value.type !== 'Others'"
+                    (click)="setAddressType('Others')">
+                    Others
+                </button>
+            </div>
+        </div>
+
+        <button class="btn btn-primary mt-2" type="submit" (click)="submitForm()">
+            Save Address
+        </button>
+    </form>
+</ng-container>
+
 
             <ng-container *ngIf="!isNewAddress">
                 <button class="btn bg-primary-light text-primary w-100" (click)="newAddress()">

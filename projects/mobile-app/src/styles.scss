@@ -294,3 +294,25 @@
     color: #0093DD;
     text-decoration: none;
 }
+.owl-theme .owl-nav button {
+  background: #000 !important;
+  color: #fff !important;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 22px !important;
+  line-height: 40px;
+  transition: 0.3s;
+}
+
+.owl-theme .owl-nav button:hover {
+  background: #333 !important;
+}
+
+/* dots */
+.owl-theme .owl-dots .owl-dot span {
+  background: #bbb !important;
+}
+.owl-theme .owl-dots .owl-dot.active span {
+  background: #000 !important;
+}
