@@ -22,7 +22,8 @@
         }
     </ul>
     }
-    @if(suggestions.length == 0) {
+    {{selectedAddress}}
+    @if(searchText=='' && selectedAddress == '') {
         <div class="d-flex align-items-center bg-light rounded gap-2 my-2 px-2">
             <div class="d-flex align-items-center gap-2">
                 <div class="cDvsYG">

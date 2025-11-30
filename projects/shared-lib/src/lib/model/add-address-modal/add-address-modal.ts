@@ -25,6 +25,7 @@ export class AddAddressModal {
   lat: any;
   lng: any;
   addressListData: any=[];
+  searchQuery: any;
   constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDetectorRef){
     this.addAddressForm();
     this.getAddressList();
@@ -34,19 +35,31 @@ export class AddAddressModal {
     this.isNewAddress=true;
   }
   searchAddress(event: any) {
-    const query = event.target.value;
-
-    if (query.length < 3) return;
-
-    this.http.get(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=in&q=${query}`)
-      .subscribe((res: any) => {
-        this.suggestions = res;
-      });
+   this.searchQuery = event.target.value;
+  this.searchText = this.searchQuery;
+if (this.searchQuery == '') {
+  this.suggestions = [];
+}
+    // if (query.length < 3) return;
+setTimeout(() => {
+  
+  this.http.get(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=in&q=${this.searchQuery}`)
+    .subscribe((res: any) => {
+      this.suggestions = res;
+    });
+}, 100);
   }
 
   selectSuggestion(item: any) {
+    console.log('searchText==>',this.searchQuery);
+      this.searchText = '';   // 👈 input ko blank kar diya
+  this.suggestions = [];
     this.selectedAddress = item.display_name;
     this.suggestions = [];
+    this.searchQuery ='';
+    console.log('    this.searchText==>',    this.searchText);
+    
+    this.cd.detectChanges();
   }
 
   getCurrentLocation() {
