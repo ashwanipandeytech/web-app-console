@@ -1,0 +1,222 @@
+@use '../../scss/variable' as *;
+
+.container-fluid {
+    max-width: 1440px;
+}
+.sidebar-section {
+  background: $primary-color;
+  border-radius: 0.5rem;
+  padding: .5rem;
+
+  .sidebar-wrapper {
+    .wrapper-heading {
+      font-size: 1.8rem;
+      margin-bottom: 3rem;
+      font-weight: 600;
+    }
+
+    .sidebar-item {
+      .sidebar-list {
+        @include flexItem($align: flex-start, $direction: column, $gap: 1rem);
+
+        li {
+            @include flexItem($justify: flex-start, $gap: 1rem);
+            border-radius: .5rem;
+            img {
+                width: 50px;
+                aspect-ratio: 1;
+                object-fit: cover;
+                border-radius: .5rem;
+            }
+            span { font-size: 1.75rem; }
+            &:hover {
+                background-color: color-mix(in srgb, $theme-color 10%, $primary-color);
+            }
+            @media #{$md} {
+                flex-direction: column;
+                gap: .35rem;
+                img { width: 100%; }
+                span { font-size: 1.25rem; }
+            }
+        }
+      }
+    }
+  }
+
+  hr {
+    margin: 4rem 0;
+  }
+
+  .sidebar-range {
+    .price {
+      display: unset;
+
+      span {
+        font-size: 1.2rem;
+        color: $heading;
+        font-weight: 500;
+      }
+    }
+
+    .slider-range {
+      height: 6px;
+      margin: 2.5rem 0;
+      border-radius: 30px;
+    }
+
+    .noUi-target {
+      background: #d4d4d4;
+      box-shadow: none;
+      border: none;
+    }
+
+    .noUi-handle {
+      border-radius: 50%;
+      height: 1.6rem;
+      width: 1.6rem;
+      right: -1.4rem;
+      filter: drop-shadow(0px 3px 10px #ccc);
+      border: 1 px solid #ccc;
+
+      &::before {
+        display: none;
+      }
+
+      &::after {
+        display: none;
+      }
+
+      @media #{$sm} {
+        top: -5px;
+      }
+    }
+
+    .noUi-connect {
+      background: $theme-color;
+    }
+
+    .example-val {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.sidebar-shop-section {
+//   background: url("../images/homepage-one/sidebar-img.png") no-repeat center / cover;
+  padding: 3rem;
+  margin-top: 3rem;
+  height: 29.5rem;
+  border-radius: 0.5rem;
+
+  .wrapper-subtitle {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: $primary-color;
+  }
+  .wrapper-heading {
+    color: $primary-color;
+  }
+  @media #{$mdx} {
+    display: none;
+  }
+}
+
+.deal-btn {
+  background-color: transparent;
+  margin-top: 6rem;
+  padding: 0;
+  color: $primary-color;
+  overflow: unset;
+  &::after {
+    padding: 0;
+    background: $theme-color;
+    width: 0;
+    height: 2px;
+    top: 2rem;
+    visibility: hidden;
+  }
+  &:hover {
+    background: none;
+    &::after {
+      width: 100%;
+      transform: scale(1);
+      opacity: 1;
+      visibility: visible;
+      background-color: red;
+    }
+  }
+}
+
+.product-sidebar-section {
+  .product-sorting-section {
+    @include flexBetween();
+    background: $primary-color;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    white-space: nowrap;
+    overflow-x: auto;
+    // margin-bottom: 2rem;
+
+    p {
+      font-size: 1.3rem;
+      color: $heading;
+    }
+    .product-sorting {
+      @include flexItem($gap: 1rem);
+      position: relative;
+      span {
+        font-size: 1.3rem;
+      }
+      .default {
+        color: $paragraph;
+      }
+
+      .slectbox-body {
+        .country-options {
+          width: auto;
+          top: 4rem;
+          left: 4rem;
+        }
+      }
+    }
+  }
+
+  @media #{$sm} {
+    .product-sorting-section {
+      padding: 1rem;
+    }
+  }
+}
+
+.product-deal-section {
+  padding: 3rem;
+  border-radius: 0.5rem;
+  @include flexItem($direction: column, $gap: 2rem);
+//   background: url("../../images/homepage-one/product-deal-.webp") no-repeat center / cover;
+
+  .wrapper-heading {
+    color: $primary-color;
+  }
+  .shop-btn {
+    margin: 0;
+    padding: 1.5rem 3rem;
+    background: $secondary-theme;
+    color: $heading;
+    &::after {
+      background-color: $secondary-theme;
+    }
+  }
+}
+
+// seller-sidebar
+
+.seller-sidebar {
+  .seller-wrapper {
+    padding: 4rem;
+    align-items: center;
+    .ratings {
+      text-align: center;
+      margin-bottom: 0;
+    }
+  }
+}

@@ -1,0 +1,394 @@
+@use './variable' as *;
+
+/* google-font */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=League+Spartan:wght@100;200;300;400;500;600;700;800;900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 10px;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $nunito;
+  box-sizing: border-box;
+  background: #fff;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: $heading;
+  // font-family: $spartan;
+  font-family: $nunito;
+  font-weight: 700;
+  margin: 0;
+}
+
+h1 {
+  font-size: 5.5rem;
+  @media #{$sm} {
+    font-size: 4rem;
+  }
+}
+
+h2 {
+  font-size: 3.5rem;
+}
+
+h3 {
+  font-size: 2.5rem;
+}
+
+h4 {
+  font-size: 1.8rem;
+}
+
+h5 {
+  font-size: 1.3rem;
+  margin-bottom: 0;
+}
+
+a {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $heading;
+  text-decoration: none;
+  font-family: $nunito;
+
+  .list-text {
+    color: $primary-color;
+    font-size: 1.6rem;
+  }
+
+  span {
+    font-size: 14px;
+    font-weight: 500;
+    @media #{$md} {
+      font-size: 12px;
+    }
+  }
+}
+
+p {
+  font-size: 15px;
+  color: $paragraph;
+  font-weight: 400;
+  font-family: $nunito;
+  margin-bottom: 0;
+}
+
+ul {
+  padding-left: 0;
+  margin: 0;
+}
+
+li {
+  list-style: none;
+}
+
+img {
+  vertical-align: middle;
+  max-width: 100%;
+}
+
+iframe {
+  width: 100%;
+}
+
+// .container {
+//   max-width: 132.1rem;
+//   @media #{$mdx} {
+//     padding: 0 2rem;
+//   }
+// }
+.box-shadows {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+input,
+button {
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+input {
+  font-size: 1.3rem;
+}
+
+input[type="checkbox"] {
+  accent-color: $theme-color;
+}
+
+button {
+  @include buttons();
+}
+
+.shop-btn {
+  @include shopBtn();
+  z-index: 1;
+}
+
+.product {
+  padding: 4rem 0;
+
+  @media #{$md} {
+    padding: 2rem 0;
+  }
+}
+
+// wrapper------
+.product-wrapper {
+  @include wrapper($hg: 100%, $pd: 0, $br: 0);
+  position: relative;
+  transition: all 0.2s;
+  //border: 1px solid $primary-color;
+  overflow: hidden;
+
+  .product-img {
+    @include flexItem();
+    background-color: $primary-color;
+    height: 21rem;
+    // padding-top: 3.2rem;
+    margin-bottom: 1.5rem;
+    border-radius: 1rem;
+    position: relative;
+    overflow: hidden;
+    @media #{$sm} {
+      height: initial;
+    }
+
+    img {
+      transform: scale(1);
+      // height: 100%;
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: contain;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .product-cart-items {
+      @include flexItem($direction: column, $gap: 1rem);
+      position: absolute;
+      top: 1rem;
+      right: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s;
+
+      .cart-item {
+        svg {
+          rect {
+            fill: currentColor;
+            fill: #d6eedd;
+            transition: all 0.2s linear;
+          }
+          path {
+            fill: currentColor;
+            fill: $heading;
+          }
+        }
+        &:hover {
+          svg {
+            rect {
+              fill: currentColor;
+              fill: $theme-color;
+            }
+            path {
+              fill: currentColor;
+              fill: $primary-color;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .product-info {
+    @include flexItem($direction: column, $align: flex-start);
+    margin: 0rem;
+    // text-align: center;
+    padding: 0 1rem 1rem;
+    background-color: transparent !important;
+    position: relative;
+    .ratings {  
+      margin: 0.6rem 0;
+    }
+  }
+
+  .product-details {
+    // font-family: $spartan;
+    font-family: $nunito;
+    font-size: 1.25rem;
+  }
+  .product-cart-btn {
+    transition: all 0.4s;
+    width: 100%;
+    .product-btn {
+      width: fit-content;
+      @include flexItem($gap: 1rem);
+      // position: absolute;
+      // top: -52px;
+      // right: 7px;
+      // padding: .5rem .5rem;
+      @media #{$md} {
+        @include flexItem($gap: .5rem);
+      }
+      .btn-text {
+        font-weight: 500;
+      }
+    }
+  }
+
+  &:hover {
+    //border: 1px solid $theme-color;
+    .product-img {
+      img {
+        transform: scale(1.1);
+      }
+    }
+
+    .product-cart-items {
+      right: 1rem;
+      opacity: 1;
+      visibility: visible;
+
+      .product-cart-btn {
+        border-bottom-right-radius: 1.2rem;
+      }
+    }
+  }
+
+  @media #{$sm} {
+    .price {
+      @include flexItem($gap: 1rem);
+      @media #{$sm} {
+        span {
+          font-size: 2rem;
+        }
+      }
+    }
+  }
+}
+
+.price {
+  @include flexItem($gap: 1rem);
+  margin: 1rem 0;
+
+  .price-cut {
+    text-decoration: line-through;
+  }
+
+  .new-price {
+    color: $btn-bg-1;
+  }
+
+  span {
+    font-family: $nunito;
+    font-size: 2rem;
+    color: $paragraph;
+    font-weight: 600;
+  }
+}
+
+.product-btn {
+  @include productBtn($bg: $theme-color, $color: $primary-color);
+  transition: all 0.4s;
+  svg {
+    fill: $primary-color
+  }
+}
+
+.section-title {
+  margin-bottom: 2rem;
+  @include flexBetween();
+
+  h3 {
+    font-weight: 600;
+  }
+  .view {
+    @include view();
+  }
+
+  @media #{$sm} {
+    h3 {
+      font-size: 2rem;
+    }
+  }
+}
+
+// blog---
+.blog-item,
+.cart-content {
+  @include flexItem($direction: column, $gap: 2.5rem);
+  text-align: center;
+
+  p {
+    font-size: 2rem;
+    color: $heading;
+    font-weight: 600;
+  }
+
+  .shop-btn {
+    margin: 0;
+  }
+}
+
+// modal------
+.modal-wrapper {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.modal-wrapper .anywhere-away {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.37);
+  width: 100%;
+  height: 100%;
+}
+
+.modal-main {
+  position: relative;
+  background: $primary-color;
+  @include flexItem();
+
+  .wrapper-close-btn {
+    position: absolute;
+    right: 3rem;
+    top: 3rem;
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+    svg {
+      fill: currentColor;
+      fill: red;
+      stroke: red;
+    }
+  }
+  .wrapper-main {
+    .divider {
+      height: 3rem;
+      width: 1px;
+      background: #e8e8e8;
+    }
+  }
+}

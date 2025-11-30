@@ -126,7 +126,7 @@
               }
             ],
             "styles": [
-              "projects/mobile-app/src/styles.scss"
+              "projects/website/src/styles.scss"
             ]
           
           },
