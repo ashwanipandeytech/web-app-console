@@ -113,6 +113,7 @@ export class LandingPage {
     });
     
   }
+
 goToCart(){
   this.router.navigate(['/cart']);
 }
@@ -147,10 +148,9 @@ goToCart(){
   //   }
    openAddressPopup(){
     const modalRef: NgbModalRef = this.ngbModal.open( AddAddressModal,
-      { windowClass:'mobile-modal',
-        scrollable: true
-      }
-    );
+    { windowClass:'mobile-modal',
+      scrollable: true
+    });
     modalRef.result.then((result) => {
       console.log('Modal closed with result:', result);
     }).catch((reason) => {
