@@ -3,12 +3,8 @@
 @import "ngx-owl-carousel-o/lib/styles/scss/owl.carousel";
 @import "ngx-owl-carousel-o/lib/styles/scss/owl.theme.default";
 
-.aspect-ratio-1 {
-    aspect-ratio: 1;
-}
-
-.bg-primary-light {
-   background-color: #CCE9F8;
+:root {
+  --bs-light-rgb: 235, 235, 235;
 }
 
 .hero {
