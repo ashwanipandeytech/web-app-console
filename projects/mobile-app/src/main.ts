@@ -10,7 +10,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
   bootstrapApplication(AppComponent, {
   ...appConfig,
   providers: [
-    provideZoneChangeDetection(),...(appConfig.providers ?? []),
-    provideAnimationsAsync(),   // ✅ Correct for Angular 17–20
+  ...(appConfig.providers ?? []),
+    provideAnimationsAsync(),
   ],
 }).catch((err) => console.error(err));
