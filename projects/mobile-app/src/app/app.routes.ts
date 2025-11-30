@@ -34,7 +34,7 @@ export const routes: Routes = [
     // { path: 'cart', component: Cart },
     { path: 'cart', component: CartCommon },
 
- { path: 'product-details/:id', component: ProductDetailCommon },
+ { path: 'product-detail/:id', component: ProductDetailCommon },
  { path: 'product-sidebar', component: ProductSidebarCommon },
    { path: 'category',component: CategoryCommon },
 
