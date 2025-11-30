@@ -1,12 +1,9 @@
 @use 'scss/variable' as *;
 @use 'scss/global' as *;
 
-.razorpay-container { z-index: 0 !important; }
-
-// :root {
-//     --bs-font-sans-serif: "Inter", sans-serif;
-//     --bs-body-color: #141414;
-// }
+.aspect-ratio-1 {
+    aspect-ratio: 1;
+}
 
 .bg-primary-light {
    background-color: #CCE9F8;
@@ -31,12 +28,17 @@
             // }
             .modal-dialog {
                 transform: none;
-                &.modal-dialog-end {
+                // .modal-dialog-centered {
+                //     display: flex;
+                //     align-items: center;
+                //     min-height: calc(100% - var(--bs-modal-margin) * 2);
+                // }
+                // &.modal-dialog-end {
                     display: flex;
                     align-items: end;
                     height: 85%;
                     min-height: 100%;
-                }
+                // }
                 .modal-content {
                     margin-bottom: -10%;
                     border-radius: .75rem .75rem 0 0;
