@@ -3,7 +3,7 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { environment } from '#environments';
 import { PageContentFetcher } from 'shared-lib';
 import { Header } from './header/header';
-import { CommonModule } from '@angular/common';
+
 import { Capacitor } from '@capacitor/core';
 import { App } from '@capacitor/app';
 
@@ -11,7 +11,7 @@ import { App } from '@capacitor/app';
   selector: 'conceptfit-root',
   templateUrl: './app.html',
   styleUrl: './app.scss',
-  imports: [CommonModule, RouterOutlet, Header]
+  imports: [RouterOutlet, Header]
 })
 export class AppComponent {
   protected readonly title = signal('conceptfit');

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@
 import { Sidebar } from "../../layout/sidebar/sidebar";
 import { Header } from "../../layout/header/header";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { DataService } from 'shared-lib';
 import { catchError, of } from 'rxjs';
 import { environment } from 'environments/environment';

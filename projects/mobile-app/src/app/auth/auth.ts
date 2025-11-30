@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -7,7 +7,7 @@ import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-auth',
-  imports: [ CommonModule,CommonModule,FormsModule,ReactiveFormsModule ],
+  imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './auth.html',
   styleUrl: './auth.scss'
 })

@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  imports:[ReactiveFormsModule,CommonModule,FormsModule],
+  imports: [ReactiveFormsModule, FormsModule],
   styleUrls: ['./settings.component.scss'],
   standalone:true
 })

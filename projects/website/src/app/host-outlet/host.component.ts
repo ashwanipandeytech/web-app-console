@@ -1,11 +1,11 @@
-import { AsyncPipe, NgComponentOutlet, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgComponentOutlet } from '@angular/common';
 import { Component, inject, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PageComponentFactory } from 'shared-lib';
 @Component({
   selector: 'host-outlet',
   standalone: true,
-  imports: [NgComponentOutlet, NgIf,NgFor],
+  imports: [NgComponentOutlet],
   templateUrl: './host-outlet.component.html',
   styleUrl: './host-outlet.component.scss'
 })

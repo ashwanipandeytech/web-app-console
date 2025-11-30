@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { catchError, of } from 'rxjs';
@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 @Component({
   selector: 'web-login',
-  imports: [CommonModule,FormsModule,ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
