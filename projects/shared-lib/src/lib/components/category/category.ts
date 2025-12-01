@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
+import { PlatformDetectionService } from '../../services/platform-detection';
 
 @Component({
   selector: 'web-category',
@@ -12,9 +13,14 @@ import { DataService } from '../../services/data-service';
 })
 export class CategoryCommon {
   categoryListData: any;
+  platFormType:string;
   public dataService:any= inject(DataService);
+  public platformDetectionService:any= inject(PlatformDetectionService);
 
-  constructor(private cd:ChangeDetectorRef, private router: Router) {}
+  constructor(private cd:ChangeDetectorRef, private router: Router) {
+    this.platFormType= this.platformDetectionService.getActivePlatform()
+    console.info('this.platFormType',this.platFormType)
+  }
 
   ngOnInit(){
     this.getCategoryList();

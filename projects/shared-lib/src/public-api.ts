@@ -7,3 +7,4 @@ export * from './lib/services/page-mark-up';
 export * from './lib/services/page-component-factory';
 export * from './lib/services/data-service';
 export * from './lib/services/payment-razor';
+export * from './lib/services/platform-detection';

@@ -3,31 +3,31 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "website": {
+    "frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
         }
       },
-      "root": "projects/website",
-      "sourceRoot": "projects/website/src",
+      "root": "projects/frontend",
+      "sourceRoot": "projects/frontend/src",
       "prefix": "web",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "browser": "projects/website/src/main.ts",
-            "tsConfig": "projects/website/tsconfig.app.json",
+            "browser": "projects/frontend/src/main.ts",
+            "tsConfig": "projects/frontend/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/website/public"
+                "input": "projects/frontend/public"
               }
             ],
             "styles": [
-              "projects/website/src/styles.scss"
+              "projects/frontend/src/styles.scss"
             ]
             
           },
@@ -36,7 +36,7 @@
               "fileReplacements": [
                 {
                   "replace": "environments/environment.ts",
-                  "with": "projects/website/environments/production.environment.ts"
+                  "with": "projects/frontend/environments/production.environment.ts"
                 }
 
               ],
@@ -58,7 +58,7 @@
               "fileReplacements": [
                 {
                   "replace": "environments/environment.ts",
-                  "with": "projects/website/environments/development.environment.ts"
+                  "with": "projects/frontend/environments/development.environment.ts"
                 }
 
               ],
@@ -73,10 +73,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "web-production": {
-              "buildTarget": "website:build:web-production"
+              "buildTarget": "frontend:build:web-production"
             },
             "web-development": {
-              "buildTarget": "website:build:web-development"
+              "buildTarget": "frontend:build:web-development"
             }
           },
           "defaultConfiguration": "web-development"
@@ -87,120 +87,22 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "tsConfig": "projects/website/tsconfig.spec.json",
+            "tsConfig": "projects/frontend/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/website/public"
+                "input": "projects/frontend/public"
               }
             ],
             "styles": [
-              "projects/website/src/styles.scss"
+              "projects/frontend/src/styles.scss"
             ]
           }
         }
       }
     },
-    "mobile-app": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
-      "root": "projects/mobile-app",
-      "sourceRoot": "projects/mobile-app/src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular/build:application",
-          "options": {
-            "browser": "projects/mobile-app/src/main.ts",
-            "tsConfig": "projects/mobile-app/tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/mobile-app/public"
-              }
-            ],
-            "styles": [
-              "projects/website/src/styles.scss"
-            ]
-          
-          },
-          "configurations": {
-            "mobile-production": {
-              "fileReplacements": [
-                {
-                  "replace": "environments/environment.ts",
-                  "with": "projects/mobile-app/environments/production.environment.ts"
-                }
-
-              ],
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "mobile-development": {
-              "fileReplacements": [
-                {
-                  "replace": "environments/environment.ts",
-                  "with": "projects/mobile-app/environments/development.environment.ts"
-                }
-
-              ],
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
-            }
-          },
-          "defaultConfiguration": "mobile-development"
-        },
-        "serve": {
-          "builder": "@angular/build:dev-server",
-          "configurations": {
-            "mobile-production": {
-              "buildTarget": "mobile-app:build:mobile-production"
-            },
-            "mobile-development": {
-              "buildTarget": "mobile-app:build:mobile-development"
-            }
-          },
-          "defaultConfiguration": "mobile-development"
-        },
-        "extract-i18n": {
-          "builder": "@angular/build:extract-i18n"
-        },
-        "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "tsConfig": "projects/mobile-app/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/mobile-app/public"
-              }
-            ],
-            "styles": [
-              "projects/mobile-app/src/styles.scss"
-            ]
-          }
-        }
-      }
-    },
+   
     "console-panel": {
       "projectType": "application",
       "schematics": {

@@ -3,7 +3,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'com.example.app',
   appName: 'demo_app',
-  webDir: 'dist/website/browser',
+  webDir: 'dist/frontend/browser',
   android: {
     adjustMarginsForEdgeToEdge: 'auto',  // Enforces edge-to-edge handling
   },

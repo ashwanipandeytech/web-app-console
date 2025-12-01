@@ -1,10 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { PageContentFetcher } from 'shared-lib';
+
 import { Header } from './layout/header/header';
 import { Footer } from './layout/footer/footer';
 import { RazorpayService } from 'shared-lib';
+import { PlatformDetectionService } from 'shared-lib';
 declare var Razorpay: any;
 @Component({
   selector: 'safure-root',
@@ -16,10 +17,14 @@ declare var Razorpay: any;
 export class App {
  
   protected readonly title = signal('Safure');
+  protected readonly platFormType:string;
 
   public razorpayService:any= inject(RazorpayService);
+  public platformDetectionService:any= inject(PlatformDetectionService);
   constructor(){
-   // console.info('Environment', environment);
+   this.platFormType= this.platformDetectionService.getActivePlatform()
+   console.info('this.platFormType',this.platFormType)
+  
   }
 
 
