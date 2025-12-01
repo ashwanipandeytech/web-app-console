@@ -5,16 +5,27 @@
 
   @media #{$sm} {
     .product-info-content {
-      padding: 0;
+      padding: 1rem 0 0;
+      &-price {
+        padding: 1.6rem;
+        background-color: #f2f9ff;
+      }
     }
   }
 }
 
 .product-info-section {
-  margin-top: 2.5rem;
+  // margin-top: 2.5rem;
 
   .row > * {
     --bs-gutter-y: 1rem;
+  }
+  @media #{$sm} {
+    margin-top: 0;
+    .row > * {
+      --bs-gutter-y: initial;
+    }
+
   }
 }
 
@@ -238,7 +249,7 @@
 
   .product-quantity {
     @include flexItem($gap: 2rem);
-
+    margin-top: 2rem;
     .quantity-wrapper {
       @include flexItem($justify: space-between, $gap: 2rem);
     }
@@ -324,8 +335,8 @@
 
   @media #{$mdl} {
     .product-quantity {
-      flex-direction: column;
-      margin-top: 2rem;
+      // flex-direction: column;
+      // margin-top: 2rem;
 
       .shop-btn {
         margin-top: 0;

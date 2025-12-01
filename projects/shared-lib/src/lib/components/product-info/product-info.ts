@@ -34,7 +34,7 @@ export class ProductDetailCommon {
     margin: 8,
     responsive: {
       0: {
-        items: 2
+        items: 3
       },
       576: {
         items: 5

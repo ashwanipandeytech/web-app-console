@@ -1,3 +1,16 @@
+<div class="d-block d-sm-none bg-primary px-3 py-2">
+    <div class="dropdown">
+        <button class="btn text-white dropdown-toggle" type="button" (click)="openAddressPopup()">
+            Address here 256, Street 65/4
+        </button>
+    </div>
+
+    <!-- Search -->
+    <div class="search-bar">
+        <input type="text" class="form-control" placeholder="Search">
+    </div>
+</div>
+
 <!--------------- hero-section --------------->
 <section id="hero" class="hero d-none d-sm-block">
     <div class="hero-section">
@@ -98,8 +111,6 @@
         <!-- </div> -->
     </div>
 </section>
-
-
 <!--------------- hero-section-end --------------->
 
 <!--------------- category-section--------------->
@@ -1362,4 +1373,24 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Mobile Bottom Navigation -->
+<div class="bottom-nav d-flex d-sm-none align-items-center position-fixed start-0 end-0 bottom-0 shadow bg-white p-3">
+    <a href="/" class="active">
+        <img src="../images/svg/home.svg" alt="home">
+        <span class="d-block">Home</span>
+    </a>
+    <a href="/category">
+        <img src="../images/svg/categories.svg" alt="categories">
+        <span class="d-block">Categories</span>
+    </a>
+    <a href="#">
+        <img src="../images/svg/recyle.svg" alt="categories">
+        <span class="d-block">Buy again</span>
+    </a>
+    <a href="#">
+        <img src="../images/svg/profile.svg" alt="categories">
+        <span class="d-block">Profile</span>
+    </a>
 </div>

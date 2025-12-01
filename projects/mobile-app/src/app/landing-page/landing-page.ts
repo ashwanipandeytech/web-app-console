@@ -17,7 +17,7 @@ import { AddAddressModal } from 'shared-lib/model/add-address-modal/add-address-
   standalone:true
 })
 export class LandingPage {
-   @ViewChild('addressInput') addressInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('addressInput') addressInput!: ElementRef<HTMLInputElement>;
   public dataService:any= inject(DataService);
   readonly ngbModal = inject(NgbModal)
   categoryListData:any;
@@ -146,7 +146,7 @@ goToCart(){
   //         // this.categoryListData = res.data;
   //       });
   //   }
-   openAddressPopup(){
+  openAddressPopup(){
     const modalRef: NgbModalRef = this.ngbModal.open( AddAddressModal,
     { windowClass:'mobile-modal',
       scrollable: true
