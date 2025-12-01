@@ -22,14 +22,14 @@
                     @if (productId == item.id) {
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="product-info-img" data-aos="fade-right">
+                                <div class="product-info-img rounded-4 w-100" data-aos="fade-right">
                                     <div class="product-discount-content">
                                         <h4>-50%</h4>
                                     </div>
                                     <owl-carousel-o [options]="productInfoSectionOptions">
                                         @for (item of item.images; track $index) {
                                         <ng-template carouselSlide>
-                                            <img src="{{item.url}}" alt="img" class="object-fit-contain rounded-4"
+                                            <img src="{{item.url}}" alt="img" class="object-fit-contain"
                                             [ngStyle]="{'aspect-ratio':'1'}">
                                         </ng-template>
                                         }
