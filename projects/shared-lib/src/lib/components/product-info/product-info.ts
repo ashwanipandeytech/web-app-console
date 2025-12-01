@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, ElementRef, inject, Renderer2, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CarouselModule } from 'ngx-owl-carousel-o';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
+import { SlickCarouselModule  } from 'ngx-slick-carousel';
 
 @Component({
   selector: 'web-product-info',
-  imports: [CommonModule, CarouselModule],
+  imports: [CommonModule, SlickCarouselModule],
   templateUrl: './product-info.html',
   styleUrl: './product-info.scss'
 })
@@ -20,7 +20,14 @@ export class ProductDetailCommon {
   productDetails: any;
   productId: any;
   quantity: any=1;
-
+  slideConfig = {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    dots: true,
+    arrows: true,
+  };
   productInfoSectionOptions = {
     items: 1,
     loop: true,
@@ -99,12 +106,14 @@ export class ProductDetailCommon {
     this.renderer.appendChild(this.descBox.nativeElement, div);
   }
   ngAfterViewInit() {
-    for (let index = 0; index < this.productDetails.length; index++) {
-      const element = this.productDetails[index];
-      if (element.id == this.productId) {
-        this.renderDescription(element.description);
-        this.cd.detectChanges();
-
+    if (this.productDetails) {  
+      for (let index = 0; index < this.productDetails.length; index++) {
+        const element = this.productDetails[index];
+        if (element.id == this.productId) {
+          this.renderDescription(element.description);
+          this.cd.detectChanges();
+  
+        }
       }
     }
   }

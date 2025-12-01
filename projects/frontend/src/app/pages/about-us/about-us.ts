@@ -1,13 +1,22 @@
 import { Component } from '@angular/core';
-import { CarouselModule } from 'ngx-owl-carousel-o';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @Component({
   selector: 'web-about-us',
-  imports: [CarouselModule],
+  imports: [SlickCarouselModule],
   templateUrl: './about-us.html',
   styleUrl: './about-us.scss'
 })
 export class AboutUs {
+
+    slideConfig = {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    dots: true,
+    arrows: true,
+  };
   testimonialSectionOptions = {
     loop: true,
     // nav: false,

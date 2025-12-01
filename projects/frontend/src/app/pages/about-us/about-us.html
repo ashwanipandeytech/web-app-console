@@ -184,9 +184,17 @@
     </div>
     <div class="position-relative container">
         <div class="swiper about-swiper">
-            <owl-carousel-o [options]="testimonialSectionOptions">
-                <ng-template carouselSlide>
-                    <div class="testimonial-wrapper border p-3 p-md-4">
+
+
+                                      
+
+
+            <ngx-slick-carousel
+                                        id="slick-carousel"
+                                        class="slick-carousel"
+                                        [config]="slideConfig">
+               
+                    <div class="testimonial-wrapper border p-3 p-md-4" ngxSlickItem>
                         <div class="ratings">
                             <span>
                                 <svg width="99" height="21" viewbox="0 0 99 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -218,9 +226,7 @@
                             </div>
                         </div>
                     </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <div class="testimonial-wrapper border p-3 p-md-4">
+                    <div class="testimonial-wrapper border p-3 p-md-4" ngxSlickItem>
                         <div class="ratings">
                             <span>
                                 <svg width="99" height="21" viewbox="0 0 99 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -251,9 +257,7 @@
                             </div>
                         </div>
                     </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <div class="testimonial-wrapper border p-3 p-md-4">
+                    <div class="testimonial-wrapper border p-3 p-md-4" ngxSlickItem>
                         <div class="ratings">
                             <span>
                                 <svg width="99" height="21" viewbox="0 0 99 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -285,9 +289,7 @@
                             </div>
                         </div>
                     </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <div class="testimonial-wrapper border p-3 p-md-4">
+                    <div class="testimonial-wrapper border p-3 p-md-4" ngxSlickItem>
                         <div class="ratings">
                             <span>
                                 <svg width="99" height="21" viewbox="0 0 99 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -320,9 +322,8 @@
                             </div>
                         </div>
                     </div>
-                </ng-template>
-                <ng-template carouselSlide></ng-template>
-            </owl-carousel-o>
+                <!-- <ng-template ></ng-template> -->
+             </ngx-slick-carousel>
         </div>
     </div>
 

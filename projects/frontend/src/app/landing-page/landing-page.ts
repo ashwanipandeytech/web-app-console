@@ -1,23 +1,25 @@
 import { HttpClientModule } from '@angular/common/http';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { environment } from '../../../../../environments/environment';
-import { CarouselModule } from 'ngx-owl-carousel-o';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AddAddressModal } from 'shared-lib/model/add-address-modal/add-address-modal';
+import { SlickCarouselModule  } from 'ngx-slick-carousel';
 
 declare var $:any;
 @Component({
   selector: 'web-landing-page',
   templateUrl: './landing-page.html',
-  imports:[ CarouselModule ],
+  imports:[SlickCarouselModule  ],
   styleUrl: './landing-page.scss',
   standalone:true,
 })
 export class LandingPage {
+  @ViewChild('slickModal') slickModal: any;
+  // @ViewChild('slickModal') slickModal!: SlickCarouselComponent;
   public dataService:any= inject(DataService);
   readonly ngbModal = inject(NgbModal)
   snackBar = inject(MatSnackBar);
@@ -66,29 +68,113 @@ export class LandingPage {
     // nav: false,
     dots: true,
     margin: 8,
-    responsive: {
-      0: {
-        items: 3
-      },
-      576: {
-        items: 5
-      },
-      768: {
-        items: 6
-      },
-      992: {
-        items: 8,
-        dots: true,
+    responsive: [
+    {
+      breakpoint: 992,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 6
       }
     },
+    {
+      breakpoint: 768,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 4
+      }
+    },
+    {
+      breakpoint: 576,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '16px',
+        slidesToShow: 3
+      }
+    }
+  ]
   }
 
+  productSectionSlideConfig = {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    dots: true,
+    arrows: true,
+        responsive: [
+    {
+      breakpoint: 992,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 6
+      }
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 4
+      }
+    },
+    {
+      breakpoint: 576,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '16px',
+        slidesToShow: 3
+      }
+    }
+  ]
+  };
+
+  slideConfig = {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    dots: true,
+    arrows: true,
+  };
+//  slideConfig = {
+//     slidesToShow: 1,
+//     infinite: false,
+//     slidesToScroll: 1,
+//     arrows: true,
+//     fade: false,
+//     respondTo: 'slider',
+
+//     "responsive": [
+//       {
+//         breakpoint: 575,
+//         settings: {
+//           slidesToShow: 1,
+//           slidesToScroll: 1,
+//           fade: false,
+//           arrows: false
+//         }
+//       }
+//     ]
+//   };
   constructor(private cd:ChangeDetectorRef, private router: Router){
     this.callAllProductList();
     this.baseURL=environment.DOMAIN;
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+     setTimeout(() => {
+      this.slickModal?.initSlick();
+    }, 0);
+  }
 
   ngOnInit(){
     this.getCategoryList();

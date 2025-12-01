@@ -13,7 +13,6 @@ import { UserProfile } from './account/user-profile/user-profile';
 import { Wishlist } from './account/wishlist/wishlist';
 import { Compaire } from './account/compaire/compaire';
 import { Category } from './pages/category/category';
-import { ProductInfo } from './pages/product-info/product-info';
 import { authGuard } from './app.guard';
 import { ProductDetailCommon} from 'shared-lib/components/product-info/product-info';
 import { ProductSidebarCommon} from 'shared-lib/components/product-sidebar/product-sidebar';

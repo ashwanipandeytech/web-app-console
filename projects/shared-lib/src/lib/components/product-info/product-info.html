@@ -26,14 +26,17 @@
                                     <div class="product-discount-content">
                                         <h4>-50%</h4>
                                     </div>
-                                    <owl-carousel-o [options]="productInfoSectionOptions">
+                                         <ngx-slick-carousel
+                                        id="slick-carousel"
+                                        class="slick-carousel"
+                                        [config]="slideConfig">
                                         @for (item of item.images; track $index) {
-                                        <ng-template carouselSlide>
+                                     <div ngxSlickItem>
                                             <img src="{{item.url}}" alt="img" class="object-fit-contain"
                                             [ngStyle]="{'aspect-ratio':'1'}">
-                                        </ng-template>
+                                </div>
                                         }
-                                    </owl-carousel-o>
+                                    </ngx-slick-carousel>
                                     <!-- <div class="swiper product-top">
                                     <div class="product-top">
                                         @for (item of item.images; track $index) {
@@ -362,9 +365,12 @@
             <a href="/product-sidebar" class="view">View All</a>
         </div>
         <div class="weekly-sale-section">
-            <owl-carousel-o [options]="productSectionOptions">
+               <ngx-slick-carousel
+                                        id="slick-carousel"
+                                        class="slick-carousel"
+                                        [config]="slideConfig">
                 @for (item of productListData; track $index) {
-                    <ng-template carouselSlide>
+                   <div ngxSlickItem>
                         <div class="product-wrapper" data-aos="fade-up">
                             <div class="product-img">
                                 
@@ -445,11 +451,11 @@
                                 </div>
                             </div>
                         </div>
-                    </ng-template>
+                   </div>
                 <!-- <ng-container>
                 </ng-container> -->
                 }
-            </owl-carousel-o>
+            </ngx-slick-carousel>
             @if(false) {
                 <div class="row g-5">
                     @for (item of productListData; track $index) {
