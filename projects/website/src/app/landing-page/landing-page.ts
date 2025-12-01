@@ -6,6 +6,9 @@ import { environment } from '../../../../../environments/environment';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { AddAddressModal } from 'shared-lib/model/add-address-modal/add-address-modal';
+
 declare var $:any;
 @Component({
   selector: 'web-landing-page',
@@ -16,6 +19,7 @@ declare var $:any;
 })
 export class LandingPage {
   public dataService:any= inject(DataService);
+  readonly ngbModal = inject(NgbModal)
   snackBar = inject(MatSnackBar);
   categoryListData:any;
   productListData: any=[];
@@ -178,6 +182,18 @@ export class LandingPage {
       horizontalPosition: 'end',
       verticalPosition: 'top',
       panelClass: [response.success ? 'snackbar-success' : 'snackbar-error']
+    });
+  }
+
+  openAddressPopup(){
+    const modalRef: NgbModalRef = this.ngbModal.open( AddAddressModal,
+    { windowClass:'mobile-modal',
+      scrollable: true
+    });
+    modalRef.result.then((result) => {
+      console.log('Modal closed with result:', result);
+    }).catch((reason) => {
+      console.log('Modal dismissed:', reason);
     });
   }
 }
