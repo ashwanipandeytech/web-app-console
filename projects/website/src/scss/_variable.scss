@@ -161,6 +161,7 @@ $spartan: "League Spartan", sans-serif;
   font-family: $nunito;
   position: relative;
   font-weight: 600;
+  color: $theme-color;
   &::before {
     content: "";
     position: absolute;

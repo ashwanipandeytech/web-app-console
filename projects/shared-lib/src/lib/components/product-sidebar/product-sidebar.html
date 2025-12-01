@@ -24,9 +24,9 @@
 <!--------------- blog-tittle-section-end---------------->
 
 <!--------------- products-sidebar-section--------------->
-<section class="product-sidebar bg-light pt-3">
-    <div class="container-fluid">
-        <div class="row">
+<section class="product-sidebar bg-light pt-1">
+    <div class="container-fluid px-1">
+        <div class="row g-1">
             <div class="col-2">
                 <div class="sidebar" data-aos="fade-right">
                     <div class="sidebar-section">
@@ -188,7 +188,7 @@
                             </div>
                         </div>
                         @for (item of productListData; track $index) {
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                        <div class="col-lg-2 col-md-3 col-4">
                             <div class="product-wrapper" data-aos="fade-up">
                                 <div class="product-img">
                                     <a (click)="openProduct(item.id)">
