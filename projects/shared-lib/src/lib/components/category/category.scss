@@ -1,0 +1,7 @@
+@use '../../scss/variable' as *;
+
+@media #{$sm} {
+    .blog {
+        display: none;
+    }
+}
