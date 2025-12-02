@@ -1,7 +1,11 @@
 @use '../../scss/variable' as *;
 
 .hero {
-//   background: url("../../../images/homepage-one/hero-bg.webp") no-repeat center / cover;
+  .hero-section {
+    .slide-img {
+      height: 450px;
+    }
+  }
 
   .swiper-pagination-bullets {
     bottom: 3rem;
@@ -9,8 +13,10 @@
 
   @media #{$sm} {
     .hero-section {
-      .hero-wrapper {
+      .slide-img {
         height: 57rem;
+      }
+      .hero-wrapper {
       }
       .hero-slide {
         .hero-wrapper-slide {

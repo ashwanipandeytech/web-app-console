@@ -158,7 +158,7 @@ button {
   .product-img {
     @include flexItem();
     background-color: $primary-color;
-    height: 21rem;
+    // height: 21rem;
     // padding-top: 3.2rem;
     margin-bottom: 1rem;
     border-radius: 1rem;
