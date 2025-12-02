@@ -68,8 +68,18 @@ if (this.searchQuery == '') {
 
       this.http.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${this.lat}&lon=${this.lng}`)
         .subscribe((res: any) => {
+          console.log('res==>',res);
+         this.addressForm.patchValue({
+          state: res.address.state,
+          country: res.address.country,
+          postal_code: res.address.postcode,
+          street: res.address.state_district
+});
+
+
           this.selectedAddress = res.display_name;
           console.log('this.selectedAddress===>',this.selectedAddress);
+          this.isNewAddress = true;
           this.cd.detectChanges();
           
         });

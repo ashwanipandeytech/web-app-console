@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { SlickCarouselModule  } from 'ngx-slick-carousel';
+import { GlobaCommonlService } from '../../../../../global-common.service';
 
 @Component({
   selector: 'web-product-info',
@@ -15,6 +16,7 @@ import { SlickCarouselModule  } from 'ngx-slick-carousel';
 export class ProductDetailCommon {
   @ViewChild('descBox') descBox!: ElementRef;
   public dataService:any= inject(DataService);
+  public globalService:any= inject(GlobaCommonlService);
   isWishlisted = false;
   productListData: any=[];
   productDetails: any;
@@ -41,7 +43,7 @@ export class ProductDetailCommon {
     centerPadding: '12px',
     responsive: [
       {
-        breakpoint: 1440,
+        breakpoint: 1320,
         settings: {
           centerPadding: '40px',
           slidesToShow: 7,
@@ -129,7 +131,11 @@ export class ProductDetailCommon {
     }
   }
     addToCart() {
-
+      console.log('localStorage.getItem -====',localStorage.getItem('user'));
+      
+if (localStorage.getItem('user') == null) {
+  this.router.navigate(['/login']);
+}
     let cartPayload = {
       product_id:this.selectedProduct.id,
       quantity:this.quantity
@@ -139,13 +145,26 @@ export class ProductDetailCommon {
         catchError(err => {
           console.error('Error:', err);
 
-          return of(null);
+          return of(err);
         })
       )
       .subscribe((res: any) => {
         console.log('Response:', res);
-        if (res.success == true) {   
+  if (res.success ==true) {
+          this.globalService.showMsgSnackBar(res);
           this.router.navigate(['/cart']);
+        // window.location.reload();
+        }
+        else if (res.error && res.error.message) {
+          this.globalService.showMsgSnackBar(res.error);
+        }
+
+
+
+
+
+        if (res.success == true) {   
+        
         }
       });
 

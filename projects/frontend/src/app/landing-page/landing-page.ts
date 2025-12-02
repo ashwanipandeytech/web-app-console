@@ -42,6 +42,7 @@ export class LandingPage {
   };
 
   bannerSlideConfig = {
+    slidesToShow: 2,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
@@ -49,9 +50,8 @@ export class LandingPage {
     centerMode: true,
     responsive: [
       {
-        breakpoint: 1440,
+        breakpoint: 1320,
         settings: {
-          slidesToShow: 2,
           centerPadding: '80px'
         }
       },
@@ -73,6 +73,7 @@ export class LandingPage {
   };
 
   productSectionSlideConfig = {
+    slidesToShow: 7,
     // slidesToScroll: 1,
     autoplaySpeed: 2000,
     dots: true,
@@ -81,10 +82,9 @@ export class LandingPage {
     centerPadding: '12px',
     responsive: [
       {
-        breakpoint: 1440,
+        breakpoint: 1320,
         settings: {
           centerPadding: '40px',
-          slidesToShow: 7,
         }
       },
       {

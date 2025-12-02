@@ -4,6 +4,9 @@
         <div class="login-section">
             <div class="row align-items-center">
                 <div class="col-lg-6">
+                         Login Credentials:<br/>
+                               Email: demo-web@gmail.com <br/>
+                               Password: Demo@1234
                     @if (!isSignUp) {
                     <div class="login-form" [formGroup]="loginform">
                         <div class="review-form  box-shadows">
@@ -16,10 +19,30 @@
                                     <label for="email" class="form-label">Email Address**</label>
                                     <input formControlName="email" id="email" class="form-control" placeholder="Email">
                                 </div>
+                                                    @if (submitted && f['email'].errors) {
+                                <div class="text-danger fs-14 mb-2">
+                                    @if (f['email'].errors['required']) {
+                                    <small>Email is required.</small>
+                                    }
+                                    @if (f['email'].errors['email']) {
+                                    <small>Please enter a valid email address.</small>
+                                    }
+                                </div>
+                                }
                                 <div class="review-form-name">
                                     <label for="password" class="form-label">Password*</label>
                                     <input formControlName="password" type="password" id="password" class="form-control" placeholder="password">
                                 </div>
+                                                    @if (submitted && f['password'].errors) {
+                                    <div class="text-danger fs-14 mb-2">
+                                    @if (f['password'].errors['required']) {
+                                        <small>Password is required.</small>
+                                    }
+                                    @if (f['password'].errors['minlength']) {
+                                        <small>Password must be at least 6 characters.</small>
+                                    }
+                                    </div>
+                                }
                                 <div class="review-form-name checkbox">
                                     <div class="checkbox-item">
                                         <input type="checkbox">
@@ -56,30 +79,68 @@
                 <label for="name" class="form-label">Name</label>
                 <input formControlName="name" id="name" class="form-control" placeholder="Eles Rose">
             </div>
+                                @if (submitted && s['name'].errors) {
+                                <div class="text-danger fs-14 mb-2">
+                                    @if (s['name'].errors['required']) {
+                                    <small>Name is required.</small>
+                                    }
+                                </div>
+                                }
 
             <!-- Email -->
             <div class="review-form-name">
                 <label for="email" class="form-label">Email Address**</label>
                 <input formControlName="email" id="email" class="form-control" placeholder="Email">
             </div>
+                                @if (submitted && s['email'].errors) {
+                                <div class="text-danger fs-14 mb-2">
+                                    @if (s['email'].errors['required']) {
+                                    <small>Email is required.</small>
+                                    }
+                                    @if (s['email'].errors['email']) {
+                                    <small>Please enter a valid email address.</small>
+                                    }
+                                </div>
+                                }
 
             <!-- Phone -->
             <div class="review-form-name">
                 <label for="phone" class="form-label">Phone</label>
                 <input formControlName="phone" id="phone" class="form-control" placeholder="phone no.">
             </div>
+               @if (submitted && s['phone'].errors) {
+                                <div class="text-danger fs-14 mb-2">
+                                    @if (s['phone'].errors['pattern']) {
+                                    <small>Phone number must be exactly 10 digits.</small>
+                                    }
+                                </div>
+                                }
 
             <!-- Password -->
             <div class="review-form-name">
                 <label for="password" class="form-label">Password*</label>
                 <input formControlName="password" type="password" id="password" class="form-control" placeholder="password">
             </div>
+              @if (submitted && s['password'].errors) {
+                                <div class="text-danger fs-14 mb-2">
+                                    @if (s['password'].errors['required']) {
+                                    <small>Password is required.</small>
+                                    }
+                                </div>
+                                }
 
             <!-- Confirm Password -->
             <div class="review-form-name">
                 <label for="confirmPassword" class="form-label">Confirm Password*</label>
                 <input formControlName="password_confirmation" type="password" id="confirmPassword" class="form-control" placeholder="confirm password">
             </div>
+             @if (submitted && s['password_confirmation'].errors) {
+                                <div class="text-danger fs-14 mb-2">
+                                    @if (s['password_confirmation'].errors['required']) {
+                                    <small>Confirm Password is required.</small>
+                                    }
+                                </div>
+                                }
 
             <!-- Remember -->
             <div class="review-form-name checkbox">

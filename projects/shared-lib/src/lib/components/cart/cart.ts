@@ -9,6 +9,7 @@ import {AddAddressModal} from '../../model/add-address-modal/add-address-modal';
 import { MatDialog } from '@angular/material/dialog';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import {DynamicPopup} from '../confirmationPopup/confirmationPopup.component'
+import { GlobaCommonlService } from '../../../../../global-common.service';
 declare const google: any;
 
 @Component({
@@ -20,6 +21,8 @@ declare const google: any;
 export class CartCommon {
   @ViewChild('addressInput') addressInput!: ElementRef<HTMLInputElement>;
   private dataService:any = inject(DataService);
+  private globalService:any = inject(GlobaCommonlService);
+
   readonly dialog = inject(MatDialog);
   readonly ngbModal = inject(NgbModal)
 
@@ -213,16 +216,45 @@ if (response.success == true) {
   }
   increase(quantity:any,index:any) {
     this.cartListData[index].quantity++;
+      let id = this.cartListData[index].id;
     let productQuantity = this.cartListData[index].quantity;
     this.calculatePrice(productQuantity,index,this.cartListData[index].product.price_data.regularPrice);
+    this.updateCartList(productQuantity,id);
   }
 
   decrease(quantity:any,index:any) {
     if (quantity > 1) {
       this.cartListData[index].quantity--;
+      let id = this.cartListData[index].id;
       let productQuantity = this.cartListData[index].quantity;
       this.calculatePrice(productQuantity,index,this.cartListData[index].product.price_data.regularPrice);
+    this.updateCartList(productQuantity,id);
+
     }
+  }
+  updateCartList(quantity:any,id:any){
+    let data = {
+      quantity:quantity
+    }
+      this.dataService.callPatchApi('cart', data,id)
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+           setTimeout(() => {
+          this.globalService.showMsgSnackBar(err);
+        }, 100);
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+         if (res && res.error && res.error.message) {
+        console.log('error  :', res.error.message);
+          this.globalService.showMsgSnackBar(res.error);
+        }
+        this.cd.detectChanges();
+        // this.categoryListData = res.data;
+      });
   }
      calculatePrice(quantity:any,index:any,price:any){
       let productQuantity:any = null;
@@ -277,15 +309,23 @@ if (response.success == true) {
            setTimeout(() => {
           // this.globalService.showMsgSnackBar(err);
         }, 100);
-          return of(null);
+          return of(err);
         })
       )
       .subscribe((res: any) => {
         console.log('Response:', res);
-        if (res.success == true) {
-          // this.calculateGrandTotal();
+
+
+
+        if (res.success ==true) {
+          this.globalService.showMsgSnackBar(res);
+
           this.carList();
           this.cd.detectChanges();
+        }
+        else if (res.error && res.error.message) {
+        console.log('error  :', res.error.message);
+          this.globalService.showMsgSnackBar(res.error);
         }
         // this.getCategoryList();
         // this.categoryListData = res.data;
