@@ -13,16 +13,23 @@
 
 <!--------------- hero-section --------------->
 <section id="hero" class="hero d-none d-sm-block">
-    <div class="hero-section">
-        <ngx-slick-carousel id="slick-carousel" class="slick-carousel" [config]="slideConfig">
+    <!-- <div class="hero-section"> -->
+        <ngx-slick-carousel id="slick-carousel" class="slick-carousel" [config]="bannerSlideConfig">
             @for (slide of slides; track slide.img) {
             <div ngxSlickItem class="slide position-relative">
+                 <img
+                        [ngSrc]="slide.img"
+                        width="400"
+                        height="500"
+                        loading="lazy"
+  />
                 <!-- <img [src]="slide.img" class="img-fluid" /> -->
-                <img [ngSrc]="slide.img" class="slide-img img-fluid">
+                <!-- <img [ngSrc]="slide.img" class="slide-img img-fluid"> -->
             </div>
+            
             }
         </ngx-slick-carousel>
-    </div>
+    <!-- </div> -->
 </section>
 <!--------------- hero-section-end --------------->
 
@@ -119,7 +126,7 @@
     </div>
 </section>
 
-<!--------------- top-sell-section--data-aos="fade-up"------------->
+<!--------------- top-sell-section--data-aos-offset="50" data-aos="fade-up"------------->
 <section class="product bg-light">
     <div class="container">
         <div class="section-title">

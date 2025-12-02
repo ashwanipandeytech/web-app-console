@@ -14,7 +14,7 @@ declare var $:any;
 @Component({
   selector: 'web-landing-page',
   templateUrl: './landing-page.html',
-  imports:[SlickCarouselModule, NgOptimizedImage],
+  imports:[SlickCarouselModule,NgOptimizedImage],
   styleUrl: './landing-page.scss',
   standalone:true,
 })
@@ -28,8 +28,14 @@ export class LandingPage {
   baseURL: string;
 
   slides = [
-    { id: 1, img: '../../../images/Making-Livestock-Care-Simple-Safe-Effective-7.png' },
-    { id: 1, img: '../../../images/Making-Livestock-Care-Simple-Safe-Effective-16.png' }
+
+  {img: '/images/Making-Livestock-Care-Simple-Safe-Effective-7-min.png'},
+    {img:'/images/Making-Livestock-Care-Simple-Safe-Effective-16-min.png'},
+    // { id: 1, img: 'https://a2zlivestock.com/wp-content/uploads/2025/01/Making-Livestock-Care-Simple-Safe-Effective-7.png' },
+    // { id: 2, img: 'https://a2zlivestock.com/wp-content/uploads/2025/01/Making-Livestock-Care-Simple-Safe-Effective-7.png' },
+
+
+
   ];
 
   slideConfig = {
@@ -41,36 +47,16 @@ export class LandingPage {
     arrows: true,
   };
 
-  bannerSlideConfig = {
-    slidesToShow: 2,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    dots: true,
-    centerMode: true,
-    responsive: [
-      {
-        breakpoint: 1320,
-        settings: {
-          centerPadding: '80px'
-        }
-      },
-      {
-        breakpoint: 992,
-        settings: {
-          slidesToShow: 2,
-          centerPadding: '40px'
-        }
-      },
-      {
-        breakpoint: 576,
-        settings: {
-          slidesToShow: 1,
-          centerPadding: '30px'
-        }
-      }
-    ]
-  };
+bannerSlideConfig = {
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 2000,
+  dots: true,
+  // centerMode: true,
+  // centerPadding: '50px',  // MUST have 'px' or '%'
+  lazyLoad: 'ondemand',
+};
 
   productSectionSlideConfig = {
     slidesToShow: 7,

@@ -21,6 +21,7 @@ isSignUp = false;
 signupForm!:FormGroup;
 loginform!:FormGroup;
 submitted: boolean=false;
+submittedRegister: boolean=false;
   enableDisableSignUp(){
 this.isSignUp = !this.isSignUp;
   }
@@ -52,7 +53,7 @@ this.loginForm();
   }
   register() {
     console.log('this.signupForm==>',this.signupForm.invalid);
-    this.submitted = true;
+    this.submittedRegister = true;
     if (this.signupForm.invalid) {
       // this.signupForm.markAllAsTouched();
       return;

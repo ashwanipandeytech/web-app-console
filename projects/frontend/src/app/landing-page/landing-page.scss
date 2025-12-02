@@ -231,3 +231,14 @@
     }
   }
 }
+
+// .slick-slide {
+//   padding: 5px 50px; /* Add horizontal padding to slides */
+//   box-sizing: border-box;
+// }
+
+.slick-slide img {
+  width: 100%;
+  display: block;
+  border-radius: 6px; /* optional, for nicer edges */
+}
