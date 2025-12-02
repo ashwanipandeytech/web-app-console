@@ -20,6 +20,9 @@ export class ProductDetailCommon {
   productDetails: any;
   productId: any;
   quantity: any=1;
+  selectedProduct: any;
+  productPrice: any;
+
   slideConfig = {
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -28,35 +31,43 @@ export class ProductDetailCommon {
     dots: true,
     arrows: true,
   };
-  productInfoSectionOptions = {
-    items: 1,
-    loop: true,
-    dots: true
-  }
 
-  productSectionOptions = {
-    loop: true,
-    // nav: false,
+  productSectionSlideConfig = {
+    // slidesToScroll: 1,
+    autoplaySpeed: 2000,
     dots: true,
-    margin: 8,
-    responsive: {
-      0: {
-        items: 3
+    // centerMode: true,
+    lazyLoad: 'ondemand',
+    centerPadding: '12px',
+    responsive: [
+      {
+        breakpoint: 1440,
+        settings: {
+          centerPadding: '40px',
+          slidesToShow: 7,
+        }
       },
-      576: {
-        items: 5
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 6
+        }
       },
-      768: {
-        items: 6
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 5
+        }
       },
-      992: {
-        items: 8,
-        dots: true,
+      {
+        breakpoint: 540,
+        settings: {
+          slidesToShow: 3,
+          centerPadding: '8px'
+        }
       }
-    },
-  }
-  selectedProduct: any;
-  productPrice: any;
+    ]
+  };
 
   constructor(private cd:ChangeDetectorRef,private route:ActivatedRoute, private sanitizer: DomSanitizer, private renderer: Renderer2,private router: Router){
     this.callAllProductList();
