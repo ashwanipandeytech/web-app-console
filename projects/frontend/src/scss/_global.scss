@@ -137,13 +137,14 @@ button {
 .shop-btn {
   @include shopBtn();
   z-index: 1;
+  cursor: pointer;
 }
 
 .product {
-  padding: 4rem 0;
+  padding: 2.5rem 0;
 
   @media #{$md} {
-    padding: 2rem 0;
+    padding: 1.6rem 0;
   }
 }
 
@@ -222,7 +223,7 @@ button {
     background-color: transparent !important;
     position: relative;
     .ratings {  
-      margin: 0.6rem 0;
+      margin: 0.6rem 0 0;
     }
   }
 

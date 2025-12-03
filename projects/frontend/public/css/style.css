@@ -3801,7 +3801,7 @@ table .ticket-row:hover {
   width: auto;
 }
 
-.login-section .review-form {
+/* .login-section .review-form {
   width: 51.2rem;
   height: 63rem;
   background-color: #ffffff;
@@ -3848,7 +3848,7 @@ table .ticket-row:hover {
   .login-section .login-img {
     text-align: center;
   }
-}
+} */
 
 .checkbox {
   display: flex;
@@ -4430,34 +4430,7 @@ table .ticket-row:hover {
   font-weight: 600;
 } */
 
-.blog {
-  background: url("../../images/homepage-one/page-title-banner.png") no-repeat center/cover;
-  padding: 6rem 0;
-}
-.blog .heading {
-  font-size: 3.6rem;
-  text-align: center;
-}
 
-.blog-bradcrum span {
-  font-size: 1.5rem;
-  color: #1d1d1d;
-}
-.blog-bradcrum a {
-  font-size: 1.5rem;
-  color: #1d1d1d;
-  font-weight: 300;
-  font-family: "Inter", sans-serif;
-}
-@media (max-width:767px) {
-  /* .blog-bradcrum {
-    text-align: center;
-    margin-bottom: 3rem;
-  } */
-  .blog-bradcrum a {
-    font-size: 1.5rem;
-  }
-}
 
 .about {
   padding: 8rem 0 5rem 0;
