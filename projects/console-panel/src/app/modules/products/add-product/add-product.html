@@ -13,7 +13,13 @@
             <div class="panel mb-30">
                 <div class="panel-body product-title-input">
                     <label class="form-label">Product Title</label>
-                    <input type="text" formControlName="productTitle" class="form-control" id="productTitle" placeholder="Title for product">
+                    <input type="text" formControlName="productTitle" class="form-control" id="productTitle" placeholder="Title for product" [class.is-invalid]="addProductDetailsValidation['productTitle'].touched && addProductDetailsValidation['productTitle'].invalid">
+                  @if (addProductDetailsValidation['productTitle'].touched && addProductDetailsValidation['productTitle'].errors?.['required']) {
+
+                    <div class="text-danger mt-1">
+                        Product title is required.
+                      </div>
+                  }
                     <p class="perma-txt" hidden>
                         Permalink: <span data-link="https://example.com/" class="site-link text-primary" id="productPermalink">https://example.com/</span>
                         <input type="text" class="form-control form-control-sm" hidden id="editPermalink">

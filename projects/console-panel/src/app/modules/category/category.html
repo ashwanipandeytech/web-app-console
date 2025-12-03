@@ -14,90 +14,149 @@
                         <i class="fa-light fa-arrows-rotate"></i>
                     </button>
                 </div>
-                <form [formGroup]="addCategory">
-                <div class="panel-body">
-                    <div class="row gx-3 gy-5">
-                        <div class="col-12">
-                            <label class="form-label">Category Name</label>
-                            <input type="text" class="form-control form-control-sm" formControlName="name" id="categoryTitle">
-                            <p class="perma-txt" hidden>
-                                Permalink: <span data-link="https://example.com/" class="site-link text-primary" id="categoryPermalink">https://example.com/</span><input type="text" class="form-control form-control-sm" hidden="" id="editPermalink">
-                                <button class="btn-flush bg-primary" id="editPermaBtn">Edit</button>
-                                <button class="btn-flush bg-success" id="createPerma" hidden="">OK</button>
-                                <button class="btn-flush bg-danger" id="cancelPerma" hidden="">Cancel</button>
-                            </p>
-                        </div>
-                        @if(false){
+             <form [formGroup]="addCategory">
 
-                            <div class="col-sm-6">
-                                <label class="form-label">Main Category</label>
-                                <select class="form-select" formControlName="parent_id">
-                                    <option value="">Select</option>
-                                    @for(item of categoryListData; let i = $index; track i){
-                                    <option [value]="item.id">{{item.name}}</option>
-                                    }
-                                </select>
-                            </div>
-                        }
-                        <div class="col-6">
-                            <label class="form-label">Show in menu</label>
-                            <input class="form-check-input" type="checkbox" formControlName="is_menu">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">Allow On</label>
-                            <select class="form-select" formControlName="allow_on">
-                                <option value="">Default</option>
-                                <option value="Web">Web</option>
-                                <option value="Mobile">Mobile</option>
-                                <option value="both">both</option>
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Description</label>
-                            <textarea rows="5" class="form-control form-control-sm" formControlName="description"></textarea>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Select parent category</label>
-                            <select class="form-select" formControlName="display_type">
-                                <option value="">Default</option>
-                                <option value="farming">Farming1</option>
-                                <option value="Farming2">Farming2</option>
-                                <!-- <option value="Both">Both</option> -->
-                            </select>
-                        </div>
-                       <div class="col-12">
-                        <div class="upload-category-thumbnail">
-                            <label class="form-label" for="thumbUpload">Add Category Image</label>
-                            <input class="form-control" type="file" (change)="onImageChange($event)" accept="image/*" />
+  <div class="panel-body">
+    <div class="row gx-3 gy-5">
 
-                            <!-- Preview Image -->
-                            @if(imagePreview){
-                            <div class="mt-2">
-                                <img src="{{imagePreview}}" alt="Thumbnail Preview" width="120" height="120" style="border-radius:8px;">
-                            </div>
-                            }
-                        </div>
-</div>
+      <!-- Category Name -->
+      <div class="col-12">
+        <label class="form-label">Category Name</label>
+        <input type="text" class="form-control form-control-sm"
+               formControlName="name"
+               [class.is-invalid]="f['name'].touched && f['name'].invalid">
 
-                        <div class="col-12 d-flex justify-content-end">
-                            <div class="btn-box">
-                                @if(isEdit){
+        <div class="text-danger mt-1" *ngIf="f['name'].touched && f['name'].errors?.['required']">
+          Category Name is required.
+        </div>
+        <div class="text-danger mt-1" *ngIf="f['name'].touched && f['name'].errors?.['minlength']">
+          Minimum 3 characters required.
+        </div>
+      </div>
 
-                                    <button class="btn btn-sm btn-primary" (click)="updatecategory()">Update Category</button>
-                                }
-                               
-                                @if(!isEdit){
-                                    <button class="btn btn-sm btn-primary" (click)="saveCategoryData()">Add Category</button>
-                                
-                                }
-                                <!-- <button class="btn btn-sm btn-primary" (click)="saveCategoryData()">
-                                {{ isEdit ? 'Update Category' : 'Save Category' }}
-                                </button> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </form>
+      <!-- Parent Category -->
+      <div class="col-sm-6" *ngIf="false">
+        <label class="form-label">Main Category</label>
+        <select class="form-select"
+                formControlName="parent_id"
+                [class.is-invalid]="f['parent_id'].touched && f['parent_id'].invalid">
+          <option value="">Select</option>
+          <option *ngFor="let item of categoryListData" [value]="item.id">{{item.name}}</option>
+        </select>
+
+        <div class="text-danger mt-1" *ngIf="f['parent_id'].touched && f['parent_id'].errors?.['required']">
+          Please select a parent category.
+        </div>
+      </div>
+
+      <!-- Show in menu -->
+      <div class="col-6">
+        <label class="form-label">Show in menu</label>
+        <input class="form-check-input"
+               type="checkbox"
+               formControlName="is_menu"
+               [class.is-invalid]="f['is_menu'].touched && f['is_menu'].invalid">
+
+        <div class="text-danger mt-1" *ngIf="f['is_menu'].touched && f['is_menu'].errors?.['required']">
+          Must be checked to show in menu.
+        </div>
+      </div>
+
+      <!-- Allow On -->
+      <div class="col-6">
+        <label class="form-label">Allow On</label>
+        <select class="form-select"
+                formControlName="allow_on"
+                [class.is-invalid]="f['allow_on'].touched && f['allow_on'].invalid">
+          <option value="">Default</option>
+          <option value="web">Web</option>
+          <option value="mobile">Mobile</option>
+          <option value="both">Both</option>
+        </select>
+
+        <div class="text-danger mt-1" *ngIf="f['allow_on'].touched && f['allow_on'].errors?.['required']">
+          Please choose an option.
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="col-12">
+        <label class="form-label">Description</label>
+        <textarea rows="5"
+                  class="form-control form-control-sm"
+                  formControlName="description"
+                  ></textarea>
+
+        <!-- <div class="text-danger mt-1" *ngIf="f['description'].touched && f['description'].errors?.['required']">
+          Description is required.
+        </div>
+        <div class="text-danger mt-1" *ngIf="f['description'].touched && f['description'].errors?.['minlength']">
+          Minimum 30 characters required.
+        </div> -->
+      </div>
+
+      <!-- Display Type -->
+      <!-- <div class="col-12">
+        <label class="form-label">Select parent category</label>
+        <select class="form-select"
+                formControlName="display_type"
+                [class.is-invalid]="f['display_type'].touched && f['display_type'].invalid">
+          <option value="">Default</option>
+          <option value="farming">Farming1</option>
+          <option value="Farming2">Farming2</option>
+        </select>
+
+        <div class="text-danger mt-1" *ngIf="f['display_type'].touched && f['display_type'].errors?.['required']">
+          Display type is required.
+        </div>
+      </div> -->
+
+      <!-- Category Image -->
+      <div class="col-12">
+        <div class="upload-category-thumbnail">
+          <label class="form-label" for="thumbUpload">Add Category Image</label>
+          <input class="form-control"
+                 #fileInput
+                 type="file"
+                 accept="image/*"
+                 (change)="onImageChange($event)"
+                 [class.is-invalid]="f['categoryThumbnail'].touched && f['categoryThumbnail'].invalid">
+
+          <div class="text-danger mt-1" *ngIf="f['categoryThumbnail'].touched && f['categoryThumbnail'].errors?.['required']">
+            Category image is required.
+          </div>
+
+          <div class="mt-2" *ngIf="imagePreview">
+            <img [src]="imagePreview" width="120" height="120" alt="Preview" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="col-12 d-flex justify-content-end">
+        <div class="btn-box">
+
+          <button class="btn btn-sm btn-primary"
+                  *ngIf="isEdit"
+                  (click)="updatecategory()"
+                  [disabled]="addCategory.invalid">
+            Update Category
+          </button>
+
+          <button class="btn btn-sm btn-primary"
+                  *ngIf="!isEdit"
+                  (click)="saveCategoryData()"
+                  [disabled]="addCategory.invalid">
+            Add Category
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>
+
             </div>
         </div>
         <div class="col-xxl-8 col-md-7">

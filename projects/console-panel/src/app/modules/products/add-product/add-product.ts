@@ -122,10 +122,13 @@ categories = [
 
   addProductDetails(){
     this.productDetails = this.fb.group({
-      productTitle:[''],
+      productTitle:['',Validators.required],
       productDescription:[''],
     })
   }
+  get addProductDetailsValidation() {
+  return this.productDetails.controls;
+}
   productOptionType(){
     this.productOptionData = this.fb.group({
       generalProductData:[false],
@@ -491,15 +494,18 @@ getProductDetails(){
         catchError(err => {
           console.error('Error:', err);
             setTimeout(() => {
-          this.globalService.showMsgSnackBar(err);
+          // this.globalService.showMsgSnackBar(err);
         }, 100);
-          return of(null);
+          return of(err);
         })
       )
       .subscribe((res: any) => {
         console.log('Response:', res);
-
-        if (res.success ==true) {    
+          if (res.error) {
+            this.globalService.showMsgSnackBar(res.error);
+            return;
+          }
+       else if (res.success ==true) {    
           let id = res.data.id;
             if (this.selectedThumbImg){
 
@@ -524,14 +530,15 @@ getProductDetails(){
 
   this.callUploadnediaSection(formData);
 }
+  setTimeout(() => {
+          this.globalService.showMsgSnackBar(res);
+        }, 100);
         }
         // this.addCategory.reset();
         // this.imagePreview = '';
         // this.imageFile = null;
         // this.getCategoryList();
-        setTimeout(() => {
-          this.globalService.showMsgSnackBar(res);
-        }, 100);
+      
       });
 
 
