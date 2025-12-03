@@ -13,23 +13,15 @@
 
 <!--------------- hero-section --------------->
 <section id="hero" class="hero d-none d-sm-block">
-    <!-- <div class="hero-section"> -->
-        <ngx-slick-carousel id="slick-carousel" class="slick-carousel" [config]="bannerSlideConfig">
+    <div class="hero-section">
+        <ngx-slick-carousel id="slick-carousel" class="hero-slider slick-carousel" [config]="heroBannerSlideConfig">
             @for (slide of slides; track slide.img) {
             <div ngxSlickItem class="slide position-relative">
-                 <img
-                        [ngSrc]="slide.img"
-                        width="400"
-                        height="500"
-                        loading="lazy"
-  />
-                <!-- <img [src]="slide.img" class="img-fluid" /> -->
-                <!-- <img [ngSrc]="slide.img" class="slide-img img-fluid"> -->
+                <img [ngSrc]="slide.img" width="400" height="500" loading="lazy" />
             </div>
-            
             }
         </ngx-slick-carousel>
-    <!-- </div> -->
+    </div>
 </section>
 <!--------------- hero-section-end --------------->
 
@@ -65,7 +57,7 @@
 
 <section class="product px-2">
     <div class="grocery-section container">
-        <ngx-slick-carousel #slickModal="slick-carousel" id="slick-carousel" class="slick-carousel" [config]="bannerSlideConfig">
+        <ngx-slick-carousel #slickModal="slick-carousel" id="slick-carousel" class="slick-carousel" [config]="promoBannerSlideConfig">
             <!-- Slide 1 -->
             <div class="product-wrapper wrapper-left mx-2" ngxSlickItem>
                 <div class="wrapper-info">
@@ -126,8 +118,8 @@
     </div>
 </section>
 
-<!--------------- top-sell-section--data-aos-offset="50" data-aos="fade-up"------------->
-<section class="product bg-light">
+<!--------------- top-sell-section--------------->
+<section class="product bg-light" data-aos="fade-up">
     <div class="container">
         <div class="section-title">
             <h3>Top Selling Prodcuts</h3>

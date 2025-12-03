@@ -47,19 +47,40 @@ export class LandingPage {
     arrows: true,
   };
 
-bannerSlideConfig = {
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  autoplay: true,
-  autoplaySpeed: 2000,
-  dots: true,
-  // centerMode: true,
-  // centerPadding: '50px',  // MUST have 'px' or '%'
-  lazyLoad: 'ondemand',
-};
+  heroBannerSlideConfig = {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    dots: true,
+    // centerMode: true,
+    // centerPadding: '50px',  // MUST have 'px' or '%'
+    lazyLoad: 'ondemand',
+  };
+  
+  promoBannerSlideConfig = {
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    dots: true,
+    // centerMode: true,
+    centerPadding: '20px',  // MUST have 'px' or '%'
+    lazyLoad: 'ondemand',
+    responsive: [
+      {
+        breakpoint: 540,
+        settings: {
+          slidesToShow: 1,
+          centerPadding: '8px',
+          arrows: false,
+        }
+      }
+    ]
+  };
 
   productSectionSlideConfig = {
-    slidesToShow: 7,
+    slidesToShow: 9,
     // slidesToScroll: 1,
     autoplaySpeed: 2000,
     dots: true,
