@@ -1,7 +1,11 @@
 @use '../../scss/variable' as *;
 
 .hero {
-//   background: url("../../../images/homepage-one/hero-bg.webp") no-repeat center / cover;
+  .hero-section {
+    .slide-img {
+      height: 450px;
+    }
+  }
 
   .swiper-pagination-bullets {
     bottom: 3rem;
@@ -9,8 +13,10 @@
 
   @media #{$sm} {
     .hero-section {
-      .hero-wrapper {
+      .slide-img {
         height: 57rem;
+      }
+      .hero-wrapper {
       }
       .hero-slide {
         .hero-wrapper-slide {
@@ -151,56 +157,11 @@
 }
 
 // slider-pagination----------
-.swiper-slide {
-  z-index: 2;
-}
-
-.swiper-slide-active {
-  z-index: 999;
-}
-
-.swiper-pagination {
-  text-align: left;
-}
-.swiper-pagination-bullet {
-  width: 2.2rem;
-  height: 7px;
-  border-radius: 30px;
-}
-
-.swiper-pagination-bullet-active {
-  background-color: $theme-color;
-}
-
 .slide-img {
   width: 10%;
   height: 20px;
   object-fit: cover;
   border-radius: 10px;
-}
-
-/* navigation buttons */
-.owl-theme .owl-nav button {
-  background: #000 !important;
-  color: #fff !important;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-size: 22px !important;
-  line-height: 40px;
-  transition: 0.3s;
-}
-
-.owl-theme .owl-nav button:hover {
-  background: #333 !important;
-}
-
-/* dots */
-.owl-theme .owl-dots .owl-dot span {
-  background: #bbb !important;
-}
-.owl-theme .owl-dots .owl-dot.active span {
-  background: #000 !important;
 }
 
 @media #{$sm} {
@@ -222,6 +183,20 @@
           }
         }
       }
+    }
+  }
+}
+
+
+.slick-carousel {
+  img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+  }
+  &:not(.hero-slider) {
+    img {
+      border-radius: 6px;
     }
   }
 }

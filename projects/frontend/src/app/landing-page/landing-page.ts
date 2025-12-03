@@ -1,5 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { environment } from '../../../../../environments/environment';
@@ -13,129 +14,29 @@ declare var $:any;
 @Component({
   selector: 'web-landing-page',
   templateUrl: './landing-page.html',
-  imports:[SlickCarouselModule  ],
+  imports:[SlickCarouselModule,NgOptimizedImage],
   styleUrl: './landing-page.scss',
   standalone:true,
 })
 export class LandingPage {
   @ViewChild('slickModal') slickModal: any;
-  // @ViewChild('slickModal') slickModal!: SlickCarouselComponent;
   public dataService:any= inject(DataService);
   readonly ngbModal = inject(NgbModal)
   snackBar = inject(MatSnackBar);
   categoryListData:any;
   productListData: any=[];
   baseURL: string;
+
   slides = [
-    { id: 1, img: 'https://a2zlivestock.com/wp-content/uploads/2025/01/Making-Livestock-Care-Simple-Safe-Effective-7.png' },
-    { id: 1, img: 'https://a2zlivestock.com/wp-content/uploads/2025/04/Making-Livestock-Care-Simple-Safe-Effective-16.png' }
+
+  {img: '/images/Making-Livestock-Care-Simple-Safe-Effective-7-min.png'},
+    {img:'/images/Making-Livestock-Care-Simple-Safe-Effective-16-min.png'},
+    // { id: 1, img: 'https://a2zlivestock.com/wp-content/uploads/2025/01/Making-Livestock-Care-Simple-Safe-Effective-7.png' },
+    // { id: 2, img: 'https://a2zlivestock.com/wp-content/uploads/2025/01/Making-Livestock-Care-Simple-Safe-Effective-7.png' },
+
+
+
   ];
-
-  heroSectionOptions = {
-    autoHeight: true,
-    autoWidth: true,
-    loop: true,
-    nav: false,
-    dots: true,
-    items: 1,
-    autoplay: true,
-  };
-
-  bannerSectionOptions = {
-    loop: true,
-    // nav: false,
-    dots: true,
-    margin: 8,
-    responsive: {
-      0: {
-        items: 1
-      },
-      576: {
-        items: 2
-      },
-      768: {
-        items: 3
-      },
-      992: {
-        items: 4,
-        dots: true,
-      }
-    },
-  }
-  
-  productSectionOptions = {
-    loop: true,
-    // nav: false,
-    dots: true,
-    margin: 8,
-    responsive: [
-    {
-      breakpoint: 992,
-      settings: {
-        arrows: false,
-        centerMode: true,
-        centerPadding: '40px',
-        slidesToShow: 6
-      }
-    },
-    {
-      breakpoint: 768,
-      settings: {
-        arrows: false,
-        centerMode: true,
-        centerPadding: '40px',
-        slidesToShow: 4
-      }
-    },
-    {
-      breakpoint: 576,
-      settings: {
-        arrows: false,
-        centerMode: true,
-        centerPadding: '16px',
-        slidesToShow: 3
-      }
-    }
-  ]
-  }
-
-  productSectionSlideConfig = {
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    dots: true,
-    arrows: true,
-        responsive: [
-    {
-      breakpoint: 992,
-      settings: {
-        arrows: false,
-        centerMode: true,
-        centerPadding: '40px',
-        slidesToShow: 6
-      }
-    },
-    {
-      breakpoint: 768,
-      settings: {
-        arrows: false,
-        centerMode: true,
-        centerPadding: '40px',
-        slidesToShow: 4
-      }
-    },
-    {
-      breakpoint: 576,
-      settings: {
-        arrows: false,
-        centerMode: true,
-        centerPadding: '16px',
-        slidesToShow: 3
-      }
-    }
-  ]
-  };
 
   slideConfig = {
     slidesToShow: 1,
@@ -145,33 +46,83 @@ export class LandingPage {
     dots: true,
     arrows: true,
   };
-//  slideConfig = {
-//     slidesToShow: 1,
-//     infinite: false,
-//     slidesToScroll: 1,
-//     arrows: true,
-//     fade: false,
-//     respondTo: 'slider',
 
-//     "responsive": [
-//       {
-//         breakpoint: 575,
-//         settings: {
-//           slidesToShow: 1,
-//           slidesToScroll: 1,
-//           fade: false,
-//           arrows: false
-//         }
-//       }
-//     ]
-//   };
+  heroBannerSlideConfig = {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    dots: true,
+    // centerMode: true,
+    // centerPadding: '50px',  // MUST have 'px' or '%'
+    lazyLoad: 'ondemand',
+  };
+  
+  promoBannerSlideConfig = {
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    dots: true,
+    // centerMode: true,
+    centerPadding: '20px',  // MUST have 'px' or '%'
+    lazyLoad: 'ondemand',
+    responsive: [
+      {
+        breakpoint: 540,
+        settings: {
+          slidesToShow: 1,
+          centerPadding: '8px',
+          arrows: false,
+        }
+      }
+    ]
+  };
+
+  productSectionSlideConfig = {
+    slidesToShow: 9,
+    // slidesToScroll: 1,
+    autoplaySpeed: 2000,
+    dots: true,
+    // centerMode: true,
+    lazyLoad: 'ondemand',
+    centerPadding: '12px',
+    responsive: [
+      {
+        breakpoint: 1320,
+        settings: {
+          centerPadding: '40px',
+        }
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 6
+        }
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 5
+        }
+      },
+      {
+        breakpoint: 540,
+        settings: {
+          slidesToShow: 3,
+          centerPadding: '8px'
+        }
+      }
+    ]
+  };
+
   constructor(private cd:ChangeDetectorRef, private router: Router){
     this.callAllProductList();
     this.baseURL=environment.DOMAIN;
   }
 
   ngAfterViewInit() {
-     setTimeout(() => {
+    setTimeout(() => {
       this.slickModal?.initSlick();
     }, 0);
   }

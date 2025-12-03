@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { SlickCarouselModule  } from 'ngx-slick-carousel';
+import { GlobaCommonlService } from '../../../../../global-common.service';
 
 @Component({
   selector: 'web-product-info',
@@ -15,11 +16,15 @@ import { SlickCarouselModule  } from 'ngx-slick-carousel';
 export class ProductDetailCommon {
   @ViewChild('descBox') descBox!: ElementRef;
   public dataService:any= inject(DataService);
+  public globalService:any= inject(GlobaCommonlService);
   isWishlisted = false;
   productListData: any=[];
   productDetails: any;
   productId: any;
   quantity: any=1;
+  selectedProduct: any;
+  productPrice: any;
+
   slideConfig = {
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -28,35 +33,43 @@ export class ProductDetailCommon {
     dots: true,
     arrows: true,
   };
-  productInfoSectionOptions = {
-    items: 1,
-    loop: true,
-    dots: true
-  }
 
-  productSectionOptions = {
-    loop: true,
-    // nav: false,
+  productSectionSlideConfig = {
+    // slidesToScroll: 1,
+    autoplaySpeed: 2000,
     dots: true,
-    margin: 8,
-    responsive: {
-      0: {
-        items: 3
+    // centerMode: true,
+    lazyLoad: 'ondemand',
+    centerPadding: '12px',
+    responsive: [
+      {
+        breakpoint: 1320,
+        settings: {
+          centerPadding: '40px',
+          slidesToShow: 7,
+        }
       },
-      576: {
-        items: 5
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 6
+        }
       },
-      768: {
-        items: 6
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 5
+        }
       },
-      992: {
-        items: 8,
-        dots: true,
+      {
+        breakpoint: 540,
+        settings: {
+          slidesToShow: 3,
+          centerPadding: '8px'
+        }
       }
-    },
-  }
-  selectedProduct: any;
-  productPrice: any;
+    ]
+  };
 
   constructor(private cd:ChangeDetectorRef,private route:ActivatedRoute, private sanitizer: DomSanitizer, private renderer: Renderer2,private router: Router){
     this.callAllProductList();
@@ -118,7 +131,11 @@ export class ProductDetailCommon {
     }
   }
     addToCart() {
-
+      console.log('localStorage.getItem -====',localStorage.getItem('user'));
+      
+if (localStorage.getItem('user') == null) {
+  this.router.navigate(['/login']);
+}
     let cartPayload = {
       product_id:this.selectedProduct.id,
       quantity:this.quantity
@@ -128,13 +145,26 @@ export class ProductDetailCommon {
         catchError(err => {
           console.error('Error:', err);
 
-          return of(null);
+          return of(err);
         })
       )
       .subscribe((res: any) => {
         console.log('Response:', res);
-        if (res.success == true) {   
+  if (res.success ==true) {
+          this.globalService.showMsgSnackBar(res);
           this.router.navigate(['/cart']);
+        // window.location.reload();
+        }
+        else if (res.error && res.error.message) {
+          this.globalService.showMsgSnackBar(res.error);
+        }
+
+
+
+
+
+        if (res.success == true) {   
+        
         }
       });
 

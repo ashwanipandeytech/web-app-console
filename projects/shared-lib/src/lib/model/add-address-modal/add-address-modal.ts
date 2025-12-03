@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { BrowserModule } from '@angular/platform-browser';
 import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 declare const google: any;
 
 @Component({
@@ -26,7 +27,7 @@ export class AddAddressModal {
   lng: any;
   addressListData: any=[];
   searchQuery: any;
-  constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDetectorRef){
+  constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDetectorRef,private activeModal:NgbActiveModal){
     this.addAddressForm();
     this.getAddressList();
   }
@@ -68,8 +69,18 @@ if (this.searchQuery == '') {
 
       this.http.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${this.lat}&lon=${this.lng}`)
         .subscribe((res: any) => {
+          console.log('res==>',res);
+         this.addressForm.patchValue({
+          state: res.address.state,
+          country: res.address.country,
+          postal_code: res.address.postcode,
+          street: res.address.state_district
+});
+
+
           this.selectedAddress = res.display_name;
           console.log('this.selectedAddress===>',this.selectedAddress);
+          this.isNewAddress = true;
           this.cd.detectChanges();
           
         });
@@ -77,17 +88,35 @@ if (this.searchQuery == '') {
   }
 
   addAddressForm(){
-     this.addressForm = this.fb.group({
-      name: ['', Validators.required],
-      phone: ['', [Validators.pattern(/^[0-9]{10}$/)]],
-      landmark: [''],
-      street: [''],
-      city: [''],
-      state: [''],
-      postal_code: [''],
-      country: [''],
-      type:[''],
-    });
+    this.addressForm = this.fb.group({
+  name: ['', [Validators.required, Validators.minLength(2)]],
+
+  phone: [
+    '',
+    [
+      Validators.required,
+      Validators.pattern(/^[0-9]{10}$/)  // 10 digit phone number
+    ]
+  ],
+
+  street: ['', Validators.required],
+  city: ['', Validators.required],
+
+  state: ['', Validators.required],
+
+  postal_code: [
+    '',
+    [
+      Validators.required,
+      Validators.pattern(/^[0-9]{4,10}$/)   // adjust for your country
+    ]
+  ],
+
+  country: ['', Validators.required],
+
+  type: ['', Validators.required]
+});
+
   }
  setAddressType(type: string) {
     this.addressForm.patchValue({ type: type });
@@ -146,4 +175,17 @@ if (response.success == true) {
     })
   }
 
+
+  get name() { return this.addressForm.get('name'); }
+get phone() { return this.addressForm.get('phone'); }
+get street() { return this.addressForm.get('street'); }
+get city() { return this.addressForm.get('city'); }
+get state() { return this.addressForm.get('state'); }
+get postal_code() { return this.addressForm.get('postal_code'); }
+get country() { return this.addressForm.get('country'); }
+get type() { return this.addressForm.get('type'); }
+
+closePopup(){
+  this.activeModal.close();
+}
 }

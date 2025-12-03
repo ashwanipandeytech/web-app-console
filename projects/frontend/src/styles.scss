@@ -3,6 +3,8 @@
 
 :root {
   --bs-light-rgb: 240, 240, 240;
+  --bs-body-font-size: 1.4rem;
+  --bs-primary-rgb: 0, 147, 221;
 }
 .aspect-ratio-1 {
   aspect-ratio: 1;
@@ -53,6 +55,10 @@
   }
 }
 
+.slick-prev:before, .slick-next:before {
+  color: $theme-color !important;
+}
+
 .hero {
 //   background: url("https://a2zlivestock.com/wp-content/uploads/2025/01/Making-Livestock-Care-Simple-Safe-Effective-7.png") no-repeat top right/cover;
   .owl-dots {
@@ -62,7 +68,7 @@
 }
 
 .category-section {
-  @include gridItem();
+  @include gridItem($grid: repeat(10, minmax(0, 1fr)), $gap: 1rem);
 
   .product-wrapper {
     @include flexItem($direction: column, $gap: .5rem);
@@ -79,7 +85,7 @@
       border-radius: 1.2rem;
       border: 1px solid $theme-bg;
       transition: all 0.3s;
-      background: $theme-bg;
+      background: white;
       height: 10rem;
       overflow: hidden;
       img {
@@ -94,18 +100,18 @@
     }
 
     .wrapper-details {
-      font-size: 2rem;
+      font-size: 1.6rem;
       font-weight: 500;
       color: $paragraph;
     }
   }
 
   @media #{$sm} {
-    @include gridItem($grid: repeat(2, minmax(0, 1fr)), $gap: 2rem);
+    @include gridItem($grid: repeat(2, minmax(0, 1fr)));
 
     .product-wrapper {
       .wrapper-img {
-        height: 10rem;
+        height: 8rem;
         img { max-width: 70px; }
       }
       .wrapper-details {
@@ -115,7 +121,7 @@
   }
 
   @media #{$mdx} {
-    @include gridItem($grid: repeat(4, minmax(0, 1fr)), $gap: 2rem);
+    @include gridItem($grid: repeat(4, minmax(0, 1fr)));
   }
 }
 
@@ -665,38 +671,485 @@
   }
 }
 
+.blog {
+  // background: url("../assets/images/homepage-one/page-title-banner.png") no-repeat center / cover;
 
-// brand-section------------
+  padding: 6rem 0;
 
-// .brand-section {
-//   @include gridItem($grid: repeat(6, minmax(0, 1fr)), $gap: 0);
-//   border: 1px solid $theme-bg;
+  .heading {
+    font-size: 3.6rem;
+    text-align: center;
+  }
 
-//   .product-wrapper {
-//     @include flexItem();
-//     @include wrapper($hg: 13rem, $pd: 0, $br: 0);
-//     background: $primary-color;
-//     border: 1px solid $theme-bg;
-//     box-shadow: none;
+  @media #{$sm} {
+    display: none;
+  }
+}
 
-//     .wrapper-img {
-//       transition: all 0.2s;
-//       filter: grayscale(1);
-//     }
+.blog-bradcrum {
+  span {
+    font-size: 1.5rem;
+    color: $heading;
+  }
+  a {
+    font-size: 1.5rem;
+    color: $heading;
+    font-weight: 300;
+    font-family: $inter;
+  }
 
-//     &:hover {
-//       .wrapper-img {
-//         filter: none;
-//       }
-//     }
-//   }
+  @media #{$sm} {
+    text-align: center;
+    margin-bottom: 3rem;
 
-//   @media #{$sm} {
-//     @include gridItem($grid: repeat(2, minmax(0, 1fr)), $gap: 0);
-//   }
-//   @media #{$md} {
-//     .product-wrapper {
-//       padding: 1rem;
-//     }
-//   }
-// }
+    a {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.product-cart {
+  background: $primary-color;
+
+  .cart-btn {
+    justify-content: flex-start;
+  }
+
+  @media #{$exs} {
+    .cart-btn {
+      flex-direction: column;
+
+      .shop-btn {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.cart-section {
+  border: 1px solid rgba($color: $theme-color, $alpha: 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  .table-row {
+    .table-wrapper {
+      .wrapper-img {
+        width: 8rem;
+        height: 8rem;
+        border: 1px solid rgba($theme-color, 0.2);
+        border-radius: 0.5rem;
+        background: $primary-color;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+
+      .heading {
+        font-size: 1.6rem;
+
+        &:hover {
+          color: $theme-color;
+        }
+      }
+    }
+
+    .wrapper-product {
+      width: 38rem;
+      padding: 2rem 0 2rem 4rem;
+    }
+
+    .wrapper-total {
+      width: 20rem;
+    }
+  }
+
+  @media #{$md} {
+    overflow-x: scroll;
+    border: 1px solid $theme-bg;
+  }
+}
+
+// table------
+
+table {
+  width: 100%;
+
+  .ticket-row {
+    background: $primary-color;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: $theme-bg;
+    }
+  }
+
+  @media #{$md} {
+    .table-wrapper {
+      min-width: 25rem;
+    }
+  }
+}
+
+.table-row {
+  background: $theme-bg;
+  &:not(:last-child) {
+    border-bottom: 1px solid #e9e7e7;
+  }
+
+  .table-wrapper {
+    padding: 2rem 0;
+
+    .wrapper {
+      @include flexItem($justify: flex-start, $gap: 2rem);
+    }
+
+    .wrapper-img {
+      width: 8rem;
+      height: 8rem;
+      border: 1px solid $theme-bg;
+      border-radius: 0.5rem;
+      background: $primary-color;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+    .wrapper-content {
+      flex: 1 1 0%;
+    }
+
+    .heading {
+      font-size: 1.6rem;
+      font-weight: 600;
+
+      &:hover {
+        color: $theme-color;
+      }
+    }
+
+    .table-heading {
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+
+    p {
+      font-weight: 500;
+    }
+
+    .ticker-number {
+      color: $heading;
+      font-size: 1.8rem;
+    }
+
+    .inner-text {
+      display: block;
+    }
+  }
+
+  .wrapper-product {
+    width: 38rem;
+    padding: 2rem 0 2rem 4rem;
+  }
+
+  .wrapper-total {
+    width: 20rem;
+  }
+
+  .table-wrapper-center {
+    @include flexItem();
+    text-align: center;
+
+    path {
+      fill: currentColor;
+      fill: $paragraph;
+      transition: all 0.2s;
+
+      &:hover {
+        fill: $theme-color;
+      }
+    }
+  }
+
+  .table-wrapper-img {
+    gap: 1rem;
+  }
+}
+
+.quantity {
+  @include flexItem($gap: 1rem);
+  width: 12rem;
+  height: 4rem;
+  padding: 0 4rem;
+  border: 1px solid rgba($theme-color, 0.15);
+  border-radius: 0.5rem;
+
+  .plus,
+  .minus {
+    color: $paragraph;
+  }
+  .number {
+    color: $heading;
+  }
+
+  span {
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+}
+
+.close-btn {
+  svg {
+    width: 1rem;
+    height: 1rem;
+    fill: currentColor;
+    fill: $paragraph;
+
+    &:hover {
+      fill: red;
+    }
+  }
+}
+
+// wishlist--------------------
+
+.wishlist-section {
+  .table-wrapper {
+    width: 38rem;
+  }
+
+  @media #{$sm} {
+    overflow-x: scroll;
+  }
+}
+
+.wishlist-btn {
+  @include flexItem($justify: flex-end, $gap: 2rem);
+  margin-top: 2rem;
+
+  .shop-btn {
+    margin: 0;
+    &::after {
+      display: none;
+    }
+  }
+
+  .clean-btn {
+    color: red;
+    font-size: 1.5rem;
+  }
+  .update-btn {
+    background-color: #e8e8e8;
+    color: $heading;
+  }
+}
+
+// checkout--------------------
+
+.checkout {
+  background: $primary-color;
+  padding-top: 6rem;
+
+  .row > * {
+    --bs-gutter-x: 3rem;
+  }
+
+  .billing-section {
+    margin-top: 0;
+    padding: 4rem;
+
+    .wrapper-heading {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .checkbox-item {
+    .form-label {
+      margin-bottom: 0;
+    }
+  }
+  @media #{$sm} {
+    .checkout-wrapper {
+      .wrapper-heading {
+        font-size: 2.5rem;
+      }
+
+      .account-inner-form {
+        flex-direction: column;
+      }
+    }
+
+    .order-summery {
+      .wrapper-heading {
+        font-size: 1.8rem;
+      }
+
+      .subtotal {
+        .product-list {
+          li {
+            align-items: flex-start;
+          }
+        }
+      }
+      .payment-type {
+        .wrapper-heading {
+          margin-bottom: 1rem;
+        }
+        .checkbox-item {
+          padding: 2rem 0;
+        }
+      }
+    }
+    .billing-section {
+      padding: 3rem 2rem;
+      .review-form {
+        padding: 0;
+      }
+    }
+  }
+}
+
+.checkout-wrapper {
+  .shop-btn {
+    margin: 0;
+    width: 100%;
+    border-radius: 0.5rem;
+
+    &::after {
+      display: none;
+    }
+  }
+}
+
+.billing-section {
+  background: transparent;
+  padding: 2rem;
+  margin-top: 2.5rem;
+  border: 1px solid $theme-bg;
+  border-radius: 0.5rem;
+
+  .review-form {
+    width: auto !important;
+    height: auto !important;
+  }
+}
+
+.order-summery {
+  .wrapper-heading {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  .subtotal {
+    margin: 2rem 0;
+    @include flexBetween();
+
+    .product-list {
+      @include flexItem($direction: column, $align: flex-start, $gap: 3rem);
+      width: 100%;
+
+      li {
+        width: 100%;
+        @include flexBetween();
+      }
+
+      .product-info {
+        @include flexItem($align: flex-start, $direction: column, $gap: 1rem);
+
+        .wrapper-heading {
+          font-size: 1.5rem;
+          font-weight: 400;
+        }
+
+        .paragraph {
+          font-size: 1.3rem;
+        }
+      }
+    }
+  }
+
+  .total {
+    .wrapper-heading {
+      font-size: 2.5rem;
+    }
+
+    .price {
+      color: $theme-color;
+    }
+  }
+
+  .payment-type {
+    @include flexItem($direction: column, $align: flex-start);
+
+    .wrapper-heading {
+      font-size: 2rem;
+    }
+
+    .checkbox-item {
+      gap: 2rem;
+      width: 100%;
+      border-radius: 0.5rem;
+      transition: all 0.3s;
+      padding: 2rem;
+
+      input {
+        accent-color: $theme-color;
+      }
+
+      &:hover {
+        background-color: $theme-bg;
+      }
+    }
+
+    .inner-text {
+      display: block;
+      color: $paragraph;
+    }
+  }
+}
+
+// order--------------------
+
+.order {
+  background: $primary-color;
+
+  .order-section {
+    margin-top: 3rem;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+    .review-form {
+      width: 100% !important;
+      height: auto;
+      padding: 0;
+      margin-top: 1rem;
+
+      .shop-btn {
+        width: auto;
+      }
+    }
+  }
+}
+
+
+.snackbar-success {
+  background: #4caf50 !important; /* green */
+  color: #fff !important;
+   z-index: 9999;
+}
+
+.snackbar-error {
+  background: #f44336 !important; /* red */
+  color: #fff !important;
+   z-index: 9999;
+}
+
+.snackbar-warning {
+  background: #ff9800 !important; /* orange */
+  color: #000 !important;
+   z-index: 9999;
+}

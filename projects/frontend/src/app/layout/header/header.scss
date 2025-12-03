@@ -558,6 +558,9 @@
     .open-dropdown {
       max-height: var(--max-height);
     }
+    .dropdown-menu.category-list {
+      inset: -2px auto auto 0px !important;
+    }
   }
 
   .list-text {
@@ -717,4 +720,13 @@
     font-size: 1.6rem;
     color: $primary-color;
   }
+}
+
+
+.icon-badge {
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  top: -4px;
+  right: -4px;
 }

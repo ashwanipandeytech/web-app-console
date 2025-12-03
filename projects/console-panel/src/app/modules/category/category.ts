@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { Sidebar } from "../../layout/sidebar/sidebar";
 import { Header } from "../../layout/header/header";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -19,6 +19,7 @@ import { GlobalService } from '../../global.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Category {
+  @ViewChild('fileInput') fileInput!: ElementRef;
   isEdit:boolean=false;
   readonly dialog = inject(MatDialog);
   public dataService: any = inject(DataService);
@@ -31,21 +32,28 @@ export class Category {
     this.addCategoryForm();
   }
   addCategoryForm() {
-    this.addCategory = this.fb.group({
-      name: ['', [Validators.required]],
-      parent_id: ['', Validators.required],
-      categoryThumbnail: [''],
-      customCategoryIcon: [''],
-      description: ['', [Validators.minLength(30)]],
-      display_type: ['', Validators.required],
-      is_menu:[false,Validators.required],
-      allow_on:['',Validators.required]
+   this.addCategory = this.fb.group({
+  name: ['', [Validators.required, Validators.minLength(3)]],
 
-    });
+  // parent_id: ['', Validators.required],
+
+  categoryThumbnail: ['', Validators.required], // for file upload
+  customCategoryIcon: [''],
+
+  description: [''],
+
+  // display_type: ['', Validators.required],
+
+  is_menu: [false, Validators.requiredTrue], // checkbox must be checked
+
+  allow_on: ['', Validators.required]
+});
   }
   onImageChange(event: any): void {
     const file = event.target.files?.[0];
     if (file) {
+      this.addCategory.patchValue({ categoryThumbnail: file });
+    this.addCategory.get('categoryThumbnail')?.updateValueAndValidity();
       this.imageFile = file;
       const objectURL = URL.createObjectURL(file);
       this.imagePreview = objectURL;
@@ -82,6 +90,9 @@ export class Category {
       .subscribe((res: any) => {
         console.log('Response:', res);
         this.addCategory.reset();
+          if (this.fileInput) {
+    this.fileInput.nativeElement.value = '';
+  }
         this.imagePreview = '';
         this.imageFile = null;
         this.getCategoryList();
@@ -192,16 +203,26 @@ export class Category {
            setTimeout(() => {
           this.globalService.showMsgSnackBar(err);
         }, 100);
-          return of(null);
+          return of(err);
         })
       )
       .subscribe((res: any) => {
         console.log('Response:', res);
+        if (res.error) {
+          this.globalService.showMsgSnackBar(res.err);
+          
+        }
+
+else{
+  
         this.getCategoryList();
-         setTimeout(() => {
+        setTimeout(() => {
           this.globalService.showMsgSnackBar(res);
         }, 100);
         this.cd.detectChanges();
+}
+
+
         // this.categoryListData = res.data;
       });
   }
@@ -228,6 +249,13 @@ export class Category {
   }
   clearForm(){
     this.addCategory.reset();
+  if (this.fileInput) {
+    this.fileInput.nativeElement.value = '';
+    this.imagePreview = '';
+  }
     this.isEdit = false;
   }
+  get f() {
+  return this.addCategory.controls;
+}
 }

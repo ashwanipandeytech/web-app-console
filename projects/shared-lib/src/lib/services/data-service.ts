@@ -123,5 +123,16 @@ export class DataService {
       // console.log('httpHeaders==>',httpHeaders);
       //   return this.http.post(environment.API_URL + apiEndPoint + '/' + data.id,data,{ headers: httpHeaders });
     }
+
+
+
+
+    callPatchApi(apiEndPoint: any,data: any,id:any){
+       const httpHeaders = new HttpHeaders({
+          'Authorization': `Bearer ${this.authToken}`
+        });
+      console.log('httpHeaders==>',httpHeaders);
+        return this.http.patch(environment.API_URL + apiEndPoint + '/' + id,data,{ headers: httpHeaders });
+    }
   }
 

@@ -1,5 +1,4 @@
 @if (false) {
-
     <div class="cart-page bg-light">
         <div class="cart-card mx-auto pt-2">
             <div class="bg-white">
@@ -116,44 +115,17 @@
             </div>
         </div>
     </div>
-    
-    
-    <!-- Modal -->
-    <div class="modal fade" id="couponModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-primary-light">
-                    <button type="button" class="btn-close text-primary" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <p class="position-relative bg-white rounded-circle mx-auto" style="width: fit-content;margin-top: -15%;">
-                        <img src="assets/images/svg/coupon.svg" alt="" style="filter: drop-shadow(0 11px 15px);">
-                    </p>
-                    <h4 class="text-primary">Coupon applied!</h4>     
-                    <p class="fs-12 text-muted">KDVND6565FDVDSDF</p>
-                    <div class="alert alert-success mb-0" role="alert">
-                        <p class="fw-semibold text-success mb-0">Saved ₹652</p>
-                        <span class="fs-12">You have saved total ₹652 on this order!</span>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-                    <button type="button" class="btn btn-outline-primary w-100">Okay!</button>
-                </div>
-            </div>
-        </div>
-    </div>
 }
 
 
-<div class="d-flex d-sm-none align-items-center bg-light  p-1">
+<div class="d-flex d-sm-none align-items-center bg-light p-1">
     <button class="btn btn-light d-flex align-items-center" (click)="back()"> 
         <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" style="height: 1.5rem; width: 1.5rem; color: black;"><path d="M15.5 19L8.5 12L15.5 5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
         <span class="d-inline-block" style="height: 24px; line-height: 24px;">Back</span>
     </button>
 </div>
 <!--------------- blog-tittle-section---------------->
-<section class="blog about-blog">
+<section class="blog">
     <div class="container">
         <div class="blog-bradcrum">
             <span><a href="/">Home</a></span>
@@ -253,7 +225,7 @@
               
                 </tbody>
             </table>
-            {{grandTotal}}
+            <!-- {{grandTotal}} -->
         </div>
 
 
@@ -268,11 +240,11 @@
             <div class="bg-white px-3 py-2 mt-2">
                 <p class="fw-semibold mb-2">Bill details</p>
                 <div class="d-flex justify-content-between mb-1"><span>Items total</span><span>₹{{grandTotal}}</span></div>
-                <div class="d-flex justify-content-between mb-1"><span>Delivery charge</span><span>₹40</span></div>
+                <!-- <div class="d-flex justify-content-between mb-1"><span>Delivery charge</span><span>₹40</span></div>
                 <div class="d-flex justify-content-between mb-1"><span>Handling fees</span><span>₹16</span></div>
                 <div class="d-flex justify-content-between border-bottom pb-2 mb-2"><span>GST total</span><span>₹9</span></div>
                 <div class="d-flex justify-content-between fw-semibold mb-2"><span>Grand total</span><span>₹1458</span></div>
-                <div class="summary-box text-center">Total savings on this order ₹236</div>
+                <div class="summary-box text-center">Total savings on this order ₹236</div> -->
             </div>
     
             <!-- Delivery -->
@@ -281,21 +253,48 @@
                     <p class="fw-semibold mb-0">Delivering to:</p>
                     <button type="button" class="btn text-primary fw-semibold p-0" (click)="openAddressPopup()">Change</button>
                 </div>
-                <small class="text-muted">Address here 256, Street 65/4</small>
+                <!-- <small class="text-muted">Address here 256, Street 65/4</small> -->
                 <!-- Button -->
-                <div class="mt-2">
+
+                <!-- <div class="mt-2">
                     <button class="btn btn-primary w-100">Continue to Pay</button>
-                </div>
+                </div> -->
             </div>
 
 
 
 
         <div class="wishlist-btn cart-btn">
-            <a href="empty-cart.html" class="clean-btn">Clear Cart</a>
+            <!-- <a href="empty-cart.html" class="clean-btn">Clear Cart</a> -->
             <a href="#" class="shop-btn update-btn">Update Cart</a>
             <a href="/checkout" class="shop-btn">Proceed to Checkout</a>
         </div>
     </div>
 </section>
 <!--------------- cart-section-end---------------->
+
+<!-- Modal -->
+<div class="modal fade" id="couponModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary-light">
+                <button type="button" class="btn-close text-primary" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p class="position-relative bg-white rounded-circle mx-auto" style="width: fit-content;margin-top: -15%;">
+                    <img src="assets/images/svg/coupon.svg" alt="" style="filter: drop-shadow(0 11px 15px);">
+                </p>
+                <h4 class="text-primary">Coupon applied!</h4>     
+                <p class="fs-12 text-muted">KDVND6565FDVDSDF</p>
+                <div class="alert alert-success mb-0" role="alert">
+                    <p class="fw-semibold text-success mb-0">Saved ₹652</p>
+                    <span class="fs-12">You have saved total ₹652 on this order!</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                <button type="button" class="btn btn-outline-primary w-100">Okay!</button>
+            </div>
+        </div>
+    </div>
+</div>
