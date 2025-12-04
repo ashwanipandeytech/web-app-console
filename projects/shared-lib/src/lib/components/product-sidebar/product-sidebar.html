@@ -6,9 +6,9 @@
 </div>
 
 <!--------------- blog-tittle-section---------------->
-<section class="p-2">
+<section class="p-2 d-none d-sm-block">
     <div class="container">
-        <div class="blog-bradcrum d-none d-sm-block">
+        <div class="blog-bradcrum">
             <span><a href="/">Home</a></span>
             <span class="devider px-2">/</span>
             <span><a href="/category">Category</a></span>
@@ -24,9 +24,9 @@
 <!--------------- blog-tittle-section-end---------------->
 
 <!--------------- products-sidebar-section--------------->
-<section class="product-sidebar bg-light pt-1 pt-lg-3">
-    <div class="container-fluid px-1 px-lg-3">
-        <div class="row g-1 g-lg-3">
+<section class="product-sidebar bg-light pt-2 pt-lg-3">
+    <div class="container-fluid px-2 px-lg-3">
+        <div class="row g-2 g-lg-3">
             <div class="col-2">
                 <div class="sidebar h-100" data-aos="fade-right">
                     <div class="sidebar-section h-100">
@@ -37,7 +37,7 @@
                                     @for (control of categoryListData; track $index) {
                                     <li class="w-100 p-2 p-lg-1">
                                         <img src="{{control.thumbnail}}" alt="">
-                                        <span class="fw-semibold">{{control.name}}</span>
+                                        <span class="fw-semibold lh-1">{{control.name}}</span>
                                     </li>
                                     }
                                 </ul>

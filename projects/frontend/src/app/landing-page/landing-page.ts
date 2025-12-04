@@ -110,7 +110,8 @@ export class LandingPage {
         breakpoint: 540,
         settings: {
           slidesToShow: 3,
-          centerPadding: '8px'
+          centerPadding: '16px',
+          arrows: false,
         }
       }
     ]

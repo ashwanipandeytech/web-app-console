@@ -84,9 +84,9 @@
                 toggleFullscreen();
                 $(this).toggleClass('full-screen');
                 if ($(this).hasClass('full-screen')) {
-                    $(this).html('<i class="fa-light fa-compress"></i>');
+                    $(this).html('<i class="fa fa-compress"></i>');
                 } else {
-                    $(this).html('<i class="fa-light fa-expand"></i>');
+                    $(this).html('<i class="fa fa-expand"></i>');
                 }
             });
         }
@@ -102,11 +102,11 @@
             $('body').addClass('light-theme');
             $('.theme-color-btn').addClass('light-mode');
             if ($('.theme-color-btn').hasClass('light-mode')) {
-                $('.theme-color-btn').html('<i class="fa-light fa-cloud-moon"></i>');
+                $('.theme-color-btn').html('<i class="fa fa-cloud-moon"></i>');
                 $('#lightTheme').addClass('active').parent().siblings().find('.icon').removeClass('active');
                 $('.header .main-logo .logo-big img, .mobile-logo img, .logo img').attr('src', 'assets/images/logo-black.png');
             } else {
-                $('.theme-color-btn').html('<i class="fa-light fa-sun-bright"></i>');
+                $('.theme-color-btn').html('<i class="fa fa-sun-bright"></i>');
                 $('#lightTheme').removeClass('active');
                 if($('body').hasClass('dark-theme')){
                     $('#darkTheme').addClass('active');
@@ -120,7 +120,7 @@
             $('body').removeClass('light-theme');
             $('.theme-color-btn').removeClass('light-mode');
             if (!$('.theme-color-btn').hasClass('light-mode')) {
-                $('.theme-color-btn').html('<i class="fa-light fa-sun-bright"></i>');
+                $('.theme-color-btn').html('<i class="fa fa-sun-bright"></i>');
                 $('#lightTheme').removeClass('active');
                 if($('body').hasClass('dark-theme')){
                     $('#darkTheme').addClass('active');
@@ -129,7 +129,7 @@
                 }
                 $('.header .main-logo .logo-big img, .mobile-logo img, .logo img').attr('src', 'assets/images/logo-big.png');
             } else {
-                $('.theme-color-btn').html('<i class="fa-light fa-cloud-moon"></i>');
+                $('.theme-color-btn').html('<i class="fa fa-cloud-moon"></i>');
                 $('#lightTheme').addClass('active').parent().siblings().find('.icon').removeClass('active');
             }
             localStorage.setItem("lightMode", null);
@@ -168,9 +168,9 @@
             $('.header .main-logo .logo-big img, .mobile-logo img, .logo img').attr('src', 'assets/images/logo-big.png');
             $('.theme-color-btn').removeClass('light-mode');
             if ($('.theme-color-btn').hasClass('light-mode')) {
-                $('.theme-color-btn').html('<i class="fa-light fa-cloud-moon"></i>');
+                $('.theme-color-btn').html('<i class="fa fa-cloud-moon"></i>');
             } else {
-                $('.theme-color-btn').html('<i class="fa-light fa-sun-bright"></i>');
+                $('.theme-color-btn').html('<i class="fa fa-sun-bright"></i>');
             }
             localStorage.setItem("darkMode", "enabled");
         };
@@ -182,9 +182,9 @@
                 $('.theme-color-btn').addClass('light-mode');
             }
             if ($('.theme-color-btn').hasClass('light-mode')) {
-                $('.theme-color-btn').html('<i class="fa-light fa-cloud-moon"></i>');
+                $('.theme-color-btn').html('<i class="fa fa-cloud-moon"></i>');
             } else {
-                $('.theme-color-btn').html('<i class="fa-light fa-sun-bright"></i>');
+                $('.theme-color-btn').html('<i class="fa fa-sun-bright"></i>');
             }
             localStorage.setItem("darkMode", null);
         };
@@ -842,7 +842,7 @@
         //------------------------------------------------------------------------------------------------------------------
         // Dropzone File Uploader Button
         //------------------------------------------------------------------------------------------------------------------
-        $('.dz-button').html('<i class="fa-light fa-cloud-arrow-up"></i><span>Drop a file here or click to upload</span>');
+        $('.dz-button').html('<i class="fa fa-cloud-arrow-up"></i><span>Drop a file here or click to upload</span>');
 
 
 
@@ -853,9 +853,9 @@
             $(this).toggleClass('collapsed');
             $(this).parents('.panel').toggleClass('collapsed').find('.panel-body').slideToggle();
             if ($(this).hasClass('collapsed')) {
-                $(this).html('<i class="fa-light fa-angle-down"></i>');
+                $(this).html('<i class="fa fa-angle-down"></i>');
             } else {
-                $(this).html('<i class="fa-light fa-angle-up"></i>');
+                $(this).html('<i class="fa fa-angle-up"></i>');
             }
         });
 
@@ -938,7 +938,7 @@
                 dots: false,
                 nav: true,
                 autoWidth: true,
-                navText: ['<i class="fa-light fa-angle-left"></i>', '<i class="fa-light fa-angle-right"></i>'],
+                navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
                 loop: true,
             });
 
