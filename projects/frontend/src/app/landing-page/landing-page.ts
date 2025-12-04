@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AddAddressModal } from 'shared-lib/model/add-address-modal/add-address-modal';
 import { SlickCarouselModule  } from 'ngx-slick-carousel';
+import { GlobaCommonlService } from '../../../../global-common.service';
 
 declare var $:any;
 @Component({
@@ -21,6 +22,7 @@ declare var $:any;
 export class LandingPage {
   @ViewChild('slickModal') slickModal: any;
   public dataService:any= inject(DataService);
+  public globalService:any= inject(GlobaCommonlService);
   readonly ngbModal = inject(NgbModal)
   snackBar = inject(MatSnackBar);
   categoryListData:any;
@@ -191,25 +193,31 @@ export class LandingPage {
     "product_id": data.id,
     "quantity": "1"
     }
-    console.log('finalData==.',finalData);
+    // console.log('finalData==.',finalData);
     // return;
-     this.dataService.callApi(finalData, 'cart')
+     this.dataService.callApiNew(finalData, 'cart')
       .pipe(
         catchError(err => {
-          console.error('Error:', err);
-            setTimeout(() => {
-          this.showSnackbar(err);
-        }, 100);
-          return of(null);
+          return of(err);
         })
       )
       .subscribe((res: any) => {
         console.log('Response:', res);
+          if (res.success ==true) {
+          this.globalService.showMsgSnackBar(res);
+          // this.router.navigate(['/cart']);
+        // window.location.reload();
+        }
+        else if (res.error && res.error.message) {
+          this.globalService.showMsgSnackBar(res.error);
+        }
+  //  if (res.success ==true) {   
+  //   this.showSnackbar(res);
+  //    }
+//         if (res.success ==true) {   
 
-        if (res.success ==true) {   
-
-          this.showSnackbar(res);
-}
+//           this.showSnackbar(res);
+// }
         })
 
   }
