@@ -72,8 +72,8 @@ this.loginForm();
         if (res.success ==true) {
           this.globalService.showMsgSnackBar(res);
         localStorage.setItem('user', JSON.stringify(res.data));
-        this.router.navigate(['/landing']);
         window.location.reload();
+        this.router.navigate(['/landing']);
         }
         else if (res.error && res.error.message) {
         console.log('error  :', res.error.message);
