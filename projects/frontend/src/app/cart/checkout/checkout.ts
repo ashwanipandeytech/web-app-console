@@ -1,11 +1,306 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { DataService } from '../../../../../shared-lib/src/lib/services/data-service';
+import { catchError, map, of } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { RazorpayService } from 'shared-lib';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { GlobaCommonlService } from '../../../../../global-common.service';
 
 @Component({
   selector: 'web-checkout',
-  imports: [],
+  imports: [CommonModule,ReactiveFormsModule,FormsModule],
   templateUrl: './checkout.html',
   styleUrl: './checkout.scss'
 })
 export class Checkout {
+private dataService = inject(DataService);
+private globalService = inject(GlobaCommonlService);
+private http = inject(HttpClient);
+private cd = inject(ChangeDetectorRef);
+private fb = inject(FormBuilder);
+cartListData:any=[];
+grandTotal=0;
+subTotal: any=0;
+checkoutForm!: FormGroup;
+ public razorpayService:any= inject(RazorpayService);
+  countries: any=[];
+  cities: any=[];
+  states: any;
+  email: any;
+  selectedPaymentMethod: any=false;
+  isSelectPaymentMethodInput: boolean=true;
+  fullAddrress: any={};
 
+ngOnInit(){
+  let userString: any = localStorage.getItem('user'); // this is a string
+if (userString) {
+  let userObj = JSON.parse(userString);            // convert to object
+  this.email = userObj.user.email;                  // access email
+  console.log('Email:', this.email);
+}
+  this.createCheckoutBillingForm();
+  this.carList();
+  this.loadCountries();
+
+ let user:any = JSON.stringify(localStorage.getItem('user'));
+  
+}
+
+ carList(){
+      this.dataService.callGetApi('cart').pipe(
+       catchError((error) => {
+         return of(null); // or you can return a default value if needed
+       })
+     ).subscribe((response: any) => {
+ console.log('response==>',response);
+ if (response.success == true) {
+   this.cartListData = response.data.data;
+  //  for (let i = 0; i < this.cartListData.length; i++) {
+  //    const element = this.cartListData[i];
+  //    // if (element.) {
+       
+  //    // }
+  //    element.product.price_data['finalPrice'] = element?.product.price_data?.regularPrice;
+  //      this.calculatePrice(element.quantity,i,element.product.price_data.regularPrice);
+ 
+  //  }
+   this.calculateSubTotal();
+   this.cd.detectChanges();
+ }
+ 
+     })
+   }
+
+      calculateSubTotal(){
+        // this.grandTotal = 0;
+      this.subTotal = 0;
+console.log('this.cartListData==>',this.cartListData);
+
+      for (let i = 0; i < this.cartListData.length; i++) {
+        const element = this.cartListData[i];
+        this.subTotal += element.product.price_data.regularPrice;
+      }
+      this.calculateGrandTotal();
+        // console.log('this.grandTotal==>',this.grandTotal);
+      }
+         calculateGrandTotal(){
+        let shippingCharge = 0;
+        this.grandTotal = shippingCharge + this.subTotal;
+      }
+        openCheckout(addressId:any) {
+    //   if (this.checkoutForm.invalid) {
+    //   this.checkoutForm.markAllAsTouched();
+    //   return;
+    // }
+    // else{
+console.log('this.selectedPaymentMethod==>',this.selectedPaymentMethod);
+
+          if (this.selectedPaymentMethod == 'onCash') {
+            this.orderSubmit(addressId);
+          }
+          else{
+            this.orderSubmit(addressId);
+            this.razorpayService.openCheckout(this.grandTotal);
+          }
+    // }
+        }
+
+        orderSubmit(addressId:any){
+        let OrderSubmitPayload = {
+          items:this.cartListData,
+          total_amount: this.grandTotal,
+          address_id: addressId,
+          payment_method:this.selectedPaymentMethod,
+          shipping_address:this.fullAddrress
+        }
+        this.dataService.callApiNew(OrderSubmitPayload, 'orders')
+            .pipe(
+              catchError(err => {
+                console.error('Error:', err);
+                return of(err);
+              })
+            )
+            .subscribe((res: any) => {
+              if (res.success == true) { 
+                console.log('Response:', res);
+                this.globalService.showMsgSnackBar(res);
+              // this.razorpayService.openCheckout(this.grandTotal);
+                // this.router.navigate(['/cart']);
+              }
+              else {
+                if (res.err) {
+                  this.globalService.showMsgSnackBar(res.err);
+                }
+              }
+            });
+
+
+
+
+
+//           {
+//     "items": [],
+//     "items.product_id": [],
+//     "items.quantity": [],
+//     "total_amount": 10,
+//     "address_id": "address_id sample value",
+//     "payment_method": "payment_method sample value",
+//     "shipping_address": "shipping_address sample value"
+// }
+
+        }
+  submitAddress(){
+    if (this.selectedPaymentMethod == false) {
+      this.isSelectPaymentMethodInput = false;
+       if (this.checkoutForm.invalid) {
+        this.checkoutForm.markAllAsTouched();
+      }
+      return;
+    }
+       if (this.checkoutForm.invalid) {
+        this.checkoutForm.markAllAsTouched();
+        return;
+      }
+      else if (this.checkoutForm.valid) {
+      console.log(this.checkoutForm.value);
+      this.fullAddrress = this.checkoutForm.value;
+       this.fullAddrress.label = this.checkoutForm.value.type;
+       this.fullAddrress.name = this.checkoutForm.value.fname + ' ' + this.checkoutForm.value.lname;
+       this.dataService.callApiNew(this.fullAddrress, 'addresses')
+            .pipe(
+              catchError(err => {
+                console.error('Error:', err);
+                return of(err);
+              })
+            )
+            .subscribe((res: any) => {
+              console.log('Response:', res);
+              if (res.success == true) { 
+
+                this.openCheckout(res.data.id);
+              // this.razorpayService.openCheckout(this.grandTotal);
+                // this.router.navigate(['/cart']);
+              }
+              else {
+                if (res.err) {
+                  this.globalService.showMsgSnackBar(res.err);
+                }
+              }
+            });
+ }
+        }
+        createCheckoutBillingForm(){
+    this.checkoutForm = this.fb.group({
+      fname: ['', [Validators.required, Validators.minLength(2)]],
+      lname: ['', [Validators.required, Validators.minLength(2)]],
+      email: [this.email, [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern(/^[0-9+\-\s]*$/)]],
+      country: [98, Validators.required],
+      state: ['', Validators.required],
+      city: ['', Validators.required],
+      postal_code: ['', [Validators.required]],
+      type: ['', Validators.required],
+      street: ['', Validators.required],
+      location:[''],
+      account: [false],
+      remember: [false],
+    });
+
+
+//      this.addressForm = this.fb.group({
+//      fname: ['', [Validators.required, Validators.minLength(2)]],
+//      lname: ['', [Validators.required, Validators.minLength(2)]],
+//      phone: [ '',[Validators.required,Validators.pattern(/^[0-9]{10}$/)]],
+//      street: ['', Validators.required],
+//      city: ['', Validators.required],
+//      state: ['', Validators.required],
+//      country: ['', Validators.required],
+     
+//   postal_code: [
+//     '',
+//     [
+//       Validators.required,
+//       Validators.pattern(/^[0-9]{4,10}$/)   // adjust for your country
+//     ]
+//   ],
+
+//   // country: ['', Validators.required],
+
+//   type: ['', Validators.required]
+// })
+
+    }
+     hasError(field: string, error: string) {
+    return (
+      this.checkoutForm.get(field)?.hasError(error) &&
+      (this.checkoutForm.get(field)?.dirty ||
+        this.checkoutForm.get(field)?.touched)
+    );
+  }
+
+
+loadCountries() {
+
+  this.getCountries().subscribe((res:any)=>{
+    this.countries = res.data;
+    console.log('res====>',this.countries);
+this.states = this.countries[98].states;
+
+
+  })
+  // this.getCountries().subscribe({
+  //   next: (data) => {
+  //     this.countries = data
+  //   },
+  //   error: () => console.error("Failed to load countries");
+  //   this.cd.detectChanges();
+  // });
+
+}
+
+onStateChange(event: Event){
+  const value = (event.target as HTMLSelectElement).value;
+  console.log('Selected index:', value);
+   this.getCities("India", value)
+    .subscribe(cities => {
+      this.cities = cities;
+    });
+}
+
+onCountryChange(event: Event) {
+  const index = Number((event.target as HTMLSelectElement).value);
+  console.log('Selected index:', index);
+this.states = this.countries[index].states;
+console.log('this.cities===>',this.states);
+
+  // Example: load cities dynamically
+  // this.loadCities(selectedCountry);
+}
+setAddressType(type: string) {
+    this.checkoutForm.patchValue({ type: type });
+  }
+  // common public api 
+
+ getCountries() {
+  return this.http.get<any>(
+    'https://countriesnow.space/api/v0.1/countries/states'
+  ).pipe(
+    map((res) => res)
+  );
+}
+  getCities(country: string, state: string) {
+    return this.http.post<any>(
+       'https://countriesnow.space/api/v0.1/countries/state/cities',
+      // `https://countriesnow.space/api/v0.1/countries/${state}/${country}/cities`,
+      { country, state }
+    ).pipe(
+      map(res => res.data)
+    );
+  }
+choosePaymentMethod(method:any){
+this.selectedPaymentMethod = method;
+console.log('menthodi==.',method);
+
+}
 }

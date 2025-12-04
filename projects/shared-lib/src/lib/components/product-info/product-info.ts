@@ -70,6 +70,7 @@ export class ProductDetailCommon {
       }
     ]
   };
+  loading: boolean=true;
 
   constructor(private cd:ChangeDetectorRef,private route:ActivatedRoute, private sanitizer: DomSanitizer, private renderer: Renderer2,private router: Router){
     this.callAllProductList();
@@ -171,6 +172,7 @@ if (localStorage.getItem('user') == null) {
   }
 
     callAllProductList() {
+      this.loading = true;  // show loader
     this.dataService.callGetApi('products/search','web').pipe(
       catchError((error) => {
         return of(null); // or you can return a default value if needed
@@ -187,7 +189,7 @@ if (localStorage.getItem('user') == null) {
       
     }
     console.log('productListData==>',this.productListData);
-    
+    this.loading = false;
     this.cd.detectChanges();
       if (response && response.success) {
       
