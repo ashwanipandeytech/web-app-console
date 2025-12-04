@@ -17,8 +17,10 @@
 
     .sidebar-item {
       .sidebar-list {
-        @include flexItem($align: flex-start, $direction: column, $gap: 1rem);
+        @include flexItem($align: flex-start, $direction: column, $gap: .5rem);
+        @media #{$md} {
 
+        }
         li {
             @include flexItem($justify: flex-start, $gap: 1rem);
             border-radius: .5rem;
@@ -29,14 +31,14 @@
                 border-radius: .5rem;
             }
             span { font-size: 1.75rem; }
-            &:hover {
+            &:hover, &.active, &:first-child {
                 background-color: color-mix(in srgb, $theme-color 10%, $primary-color);
             }
             @media #{$md} {
                 flex-direction: column;
                 gap: .35rem;
                 img { width: 100%; }
-                span { font-size: 1.25rem; }
+                span { font-size: 1rem; }
             }
         }
       }

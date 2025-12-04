@@ -4,7 +4,7 @@ document.getElementById("saBasic") && document.getElementById("saBasic").addEven
         confirmButtonClass: "btn btn-sm btn-primary",
         buttonsStyling: !1,
         showCloseButton: !0,
-        closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+        closeButtonHtml: "<i class='fa fa-xmark'></i>",
         customClass: {
             closeButton: 'btn btn-sm btn-icon btn-danger',
         },
@@ -17,7 +17,7 @@ document.getElementById("saBasic") && document.getElementById("saBasic").addEven
         confirmButtonClass: "btn btn-sm btn-primary",
         buttonsStyling: !1,
         showCloseButton: !0,
-        closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+        closeButtonHtml: "<i class='fa fa-xmark'></i>",
         customClass: {
             closeButton: 'btn btn-sm btn-icon btn-danger',
         },
@@ -32,7 +32,7 @@ document.getElementById("saBasic") && document.getElementById("saBasic").addEven
         cancelButtonClass: "btn btn-sm btn-danger",
         buttonsStyling: !1,
         showCloseButton: !0,
-        closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+        closeButtonHtml: "<i class='fa fa-xmark'></i>",
         customClass: {
             closeButton: 'btn btn-sm btn-icon btn-danger',
         },
@@ -46,7 +46,7 @@ document.getElementById("saBasic") && document.getElementById("saBasic").addEven
         buttonsStyling: !1,
         footer: '<a href="#">Why do I have this issue?</a>',
         showCloseButton: !0,
-        closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+        closeButtonHtml: "<i class='fa fa-xmark'></i>",
         customClass: {
             closeButton: 'btn btn-sm btn-icon btn-danger',
         },
@@ -59,7 +59,7 @@ document.getElementById("saBasic") && document.getElementById("saBasic").addEven
         confirmButtonClass: "btn btn-sm btn-primary",
         buttonsStyling: !1,
         showCloseButton: !0,
-        closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+        closeButtonHtml: "<i class='fa fa-xmark'></i>",
         customClass: {
             closeButton: 'btn btn-sm btn-icon btn-danger',
         },
@@ -75,7 +75,7 @@ document.getElementById("saBasic") && document.getElementById("saBasic").addEven
         confirmButtonText: "Yes, delete it!",
         buttonsStyling: !1,
         showCloseButton: !0,
-        closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+        closeButtonHtml: "<i class='fa fa-xmark'></i>",
         customClass: {
             closeButton: 'btn btn-sm btn-icon btn-danger',
         },
@@ -100,7 +100,7 @@ document.getElementById("saBasic") && document.getElementById("saBasic").addEven
         cancelButtonClass: "btn btn-sm btn-danger",
         buttonsStyling: !1,
         showCloseButton: !0,
-        closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+        closeButtonHtml: "<i class='fa fa-xmark'></i>",
         customClass: {
             closeButton: 'btn btn-sm btn-icon btn-danger',
         },
@@ -129,7 +129,7 @@ document.getElementById("saBasic") && document.getElementById("saBasic").addEven
         buttonsStyling: !1,
         animation: !1,
         showCloseButton: !0,
-        closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+        closeButtonHtml: "<i class='fa fa-xmark'></i>",
         customClass: {
             closeButton: 'btn btn-sm btn-icon btn-danger',
         },
@@ -166,9 +166,9 @@ document.getElementById("saBasic") && document.getElementById("saBasic").addEven
         confirmButtonClass: "btn btn-sm btn-success",
         cancelButtonClass: "btn btn-sm btn-danger",
         buttonsStyling: !1,
-        confirmButtonText: '<i class="fa-light fa-thumbs-up"></i> Great!',
-        cancelButtonText: '<i class="fa-light fa-thumbs-down"></i>',
-        closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+        confirmButtonText: '<i class="fa fa-thumbs-up"></i> Great!',
+        cancelButtonText: '<i class="fa fa-thumbs-down"></i>',
+        closeButtonHtml: "<i class='fa fa-xmark'></i>",
         customClass: {
             closeButton: 'btn btn-sm btn-icon btn-danger',
         },
@@ -185,7 +185,7 @@ document.getElementById("saBasic") && document.getElementById("saBasic").addEven
         buttonsStyling: !1,
         denyButtonText: "Don't save",
         showCloseButton: !0,
-        closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+        closeButtonHtml: "<i class='fa fa-xmark'></i>",
         customClass: {
             closeButton: 'btn btn-sm btn-icon btn-danger',
         },
@@ -210,7 +210,7 @@ document.getElementById("saBasic") && document.getElementById("saBasic").addEven
         showConfirmButton: !1,
         timer: 1500,
         showCloseButton: !0,
-        closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+        closeButtonHtml: "<i class='fa fa-xmark'></i>",
         customClass: {
             closeButton: 'btn btn-sm btn-icon btn-danger',
         },
@@ -256,7 +256,7 @@ document.getElementById("saBasic") && document.getElementById("saBasic").addEven
         cancelButtonClass: "btn btn-sm btn-danger",
         buttonsStyling: !1,
         showCloseButton: !0,
-        closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+        closeButtonHtml: "<i class='fa fa-xmark'></i>",
         customClass: {
             closeButton: 'btn btn-sm btn-icon btn-danger',
             input: 'form-control form-control-sm',
