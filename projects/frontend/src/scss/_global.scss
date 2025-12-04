@@ -138,6 +138,9 @@ button {
   @include shopBtn();
   z-index: 1;
   cursor: pointer;
+  @media #{$sm} {
+    @include shopBtn($padding: .5rem 1.5rem);
+  }
 }
 
 .product {
@@ -181,15 +184,19 @@ button {
     .product-cart-items {
       @include flexItem($direction: column, $gap: 1rem);
       position: absolute;
-      top: 1rem;
-      right: 0;
+      top: .5rem;
+      right: .5rem;
       opacity: 0;
       visibility: hidden;
       transition: all 0.4s;
 
       .cart-item {
         svg {
+          width: 16px;
+          height: 16px;
           rect {
+            width: 16px;
+            height: 16px;
             fill: currentColor;
             fill: #d6eedd;
             transition: all 0.2s linear;
@@ -197,6 +204,7 @@ button {
           path {
             fill: currentColor;
             fill: $heading;
+            transform: scale(0.6) translate(-6px, -7px);
           }
         }
         &:hover {
@@ -228,9 +236,10 @@ button {
   }
 
   .product-details {
-    // font-family: $spartan;
     font-family: $nunito;
     font-size: 1rem;
+    line-height: normal;
+    display: inline-block;
   }
   .product-cart-btn {
     transition: all 0.4s;
@@ -260,7 +269,7 @@ button {
     }
 
     .product-cart-items {
-      right: 1rem;
+      // right: 1rem;s
       opacity: 1;
       visibility: visible;
 

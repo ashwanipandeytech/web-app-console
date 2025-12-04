@@ -53,7 +53,7 @@
         $('#thumbUpload').uploader({
             ajaxConfig: ajaxConfig,
         });
-        $('.jquery-uploader .upload-button').html('<i class="fa-light fa-image"></i><br/><span>Recommended: 300 * 300</a>');
+        $('.jquery-uploader .upload-button').html('<i class="fa fa-image"></i><br/><span>Recommended: 300 * 300</a>');
     
     
         $('#addCatThumb').on('click', function(){

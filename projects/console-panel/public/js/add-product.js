@@ -60,7 +60,7 @@
             ajaxConfig: ajaxConfig,
             multiple: true,
         });
-        $('.jquery-uploader .upload-button').html('<i class="fa-light fa-image"></i><br/><span>Recommended: 800 * 800</a>');
+        $('.jquery-uploader .upload-button').html('<i class="fa fa-image"></i><br/><span>Recommended: 800 * 800</a>');
 
         $('#addAttr').on('click', function(){
             $(this).parent().after(`
@@ -81,7 +81,7 @@
                                     <textarea class="form-control" placeholder="Enter some text, or some attributes by '|' separating values."></textarea>
                                 </div>
                                 <div class="col-1 col-xs-2 d-flex justify-content-end">
-                                    <button class="btn btn-sm btn-icon btn-danger remove-option w-100"><i class="fa-light fa-trash-can"></i></button>
+                                    <button class="btn btn-sm btn-icon btn-danger remove-option w-100"><i class="fa fa-trash-can"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -160,7 +160,7 @@
                 }
             }
         }).on('change', function(){
-            $('.selectize-control .item[data-value]').append('<span class="close-tag"><i class="fa-regular fa-xmark"></i></span>');
+            $('.selectize-control .item[data-value]').append('<span class="close-tag"><i class="fa fa-xmark"></i></span>');
             $('.selectize-control .item[data-value]').prependTo('#allTags');
             $('#allTags').addClass('active');
         });
