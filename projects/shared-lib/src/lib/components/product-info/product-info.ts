@@ -35,6 +35,7 @@ export class ProductDetailCommon {
   };
 
   productSectionSlideConfig = {
+    slidesToShow: 6,
     // slidesToScroll: 1,
     autoplaySpeed: 2000,
     dots: true,
@@ -46,13 +47,6 @@ export class ProductDetailCommon {
         breakpoint: 1320,
         settings: {
           centerPadding: '40px',
-          slidesToShow: 7,
-        }
-      },
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 6
         }
       },
       {
@@ -65,11 +59,13 @@ export class ProductDetailCommon {
         breakpoint: 540,
         settings: {
           slidesToShow: 3,
-          centerPadding: '8px'
+          centerPadding: '16px',
+          arrows: false,
         }
       }
     ]
   };
+  
   loading: boolean=true;
 
   constructor(private cd:ChangeDetectorRef,private route:ActivatedRoute, private sanitizer: DomSanitizer, private renderer: Renderer2,private router: Router){

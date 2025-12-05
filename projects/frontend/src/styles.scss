@@ -59,6 +59,10 @@
   color: $theme-color !important;
 }
 
+.loader {
+  min-height: 75vh;
+}
+
 .hero {
 //   background: url("https://a2zlivestock.com/wp-content/uploads/2025/01/Making-Livestock-Care-Simple-Safe-Effective-7.png") no-repeat top right/cover;
   .owl-dots {
@@ -491,7 +495,7 @@
 
   @media #{$md} {
     .product-wrapper {
-      height: 100%;
+      height: 15rem;
 
       background-position: left;
 
