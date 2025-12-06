@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from '../../../../../../environments/environment';
 declare const google: any;
 
 @Component({
@@ -36,29 +37,59 @@ export class AddAddressModal {
     this.isNewAddress=true;
   }
   searchAddress(event: any) {
-   this.searchQuery = event.target.value;
+ const apiKey = environment.ADDRESS_API_KEY;
+  const query = event.target.value;
+
+  // if (!query) return;
+// not included state api 
+  // const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(query)}&filter=countrycode:in&apiKey=${apiKey}`;
+//  filter by state up 
+  const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(query)}&filter=rect:77.09,23.82,84.67,30.41&apiKey=${apiKey}`;
+  
+  
+// }, 100);
+  
+  this.searchQuery = event.target.value;
   this.searchText = this.searchQuery;
 if (this.searchQuery == '') {
   this.suggestions = [];
 }
     // if (query.length < 3) return;
-// setTimeout(() => {
-  this.http.get(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=in&q=${this.searchQuery}`)
+
+     this.http.get(url)
     .subscribe((res: any) => {
-      this.suggestions = res;
+      console.log('res===>',res);
+      this.suggestions = res.features;
+      console.log('this.suggestions==>',this.suggestions);
+      this.cd.detectChanges();
+      // properties.formatted
     });
+// setTimeout(() => {
+  // this.http.get(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=in&q=${this.searchQuery}`)
+  //   .subscribe((res: any) => {
+  //     this.suggestions = res;
+  //   });
 // }, 100);
   }
 
   selectSuggestion(item: any) {
-    console.log('searchText==>',this.searchQuery);
-      this.searchText = '';   // 👈 input ko blank kar diya
+    // console.log('searchText==>',item);
+      this.searchText = '';
   this.suggestions = [];
-    this.selectedAddress = item.display_name;
+    this.selectedAddress = item.properties.formatted;
     this.suggestions = [];
     this.searchQuery ='';
     console.log('    this.searchText==>',    this.searchText);
-    
+    // patch values into form values 
+
+     this.addressForm.patchValue({
+    street: item.properties.county || item.properties.address_line1 || '',
+    city: item.properties.city || item.properties.town || '',
+    state: item.properties.state || '',
+    postal_code: item.properties.postcode || item.properties.postal_code || '',
+    country: item.properties.country || '',
+    // location:[{ lat:item.properties.lat,lng:item.properties.lon}]
+  });
     this.cd.detectChanges();
   }
 
@@ -74,7 +105,7 @@ if (this.searchQuery == '') {
           state: res.address.state,
           country: res.address.country,
           postal_code: res.address.postcode,
-          street: res.address.state_district
+          street: res.address.state_district,
 });
 
 

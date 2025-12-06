@@ -14,5 +14,7 @@ export const environment = {
 'RAZORPAY_KEY_ID':'rzp_test_Rkp1Rm8aI8wDkH',
 
 'API_URL':'https://api.demohandler.in/api/',
+'ADDRESS_API_KEY':'25d261a6a2cc45deb0954b14270ac706'
+
 };
 

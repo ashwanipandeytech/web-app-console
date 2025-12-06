@@ -107,9 +107,8 @@ export class ProductDetailCommon {
   //   this.router.navigate(['/product-details', id]);
   // }
 
-  addToCart() {
+  addToCart(action:any='') {
     console.log('localStorage.getItem -====',localStorage.getItem('user'));
-      
     if (localStorage.getItem('user') == null) {
       this.router.navigate(['/login']);
     }
@@ -129,6 +128,10 @@ export class ProductDetailCommon {
         console.log('Response:', res);
         if (res.success ==true) {
           this.globalService.showMsgSnackBar(res);
+          if (action == 'buy') {
+          this.router.navigate(['/checkout']);
+            return;
+          }
           this.router.navigate(['/cart']);
         // window.location.reload();
         }

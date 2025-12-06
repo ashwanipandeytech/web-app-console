@@ -18,7 +18,7 @@
   @if (suggestions.length) {
     <ul class="list-group mt-2">
       @for (s of suggestions; track $index) {
-        <li class="list-group-item" aria-current="true" (click)="selectSuggestion(s)"> {{ s.display_name }}</li>
+        <li class="list-group-item" aria-current="true" (click)="selectSuggestion(s)"> {{ s.properties.formatted }}</li>
       }
     </ul>
   }
@@ -64,9 +64,11 @@
     <input type="text" class="form-control"
            formControlName="name"
            [class.is-invalid]="name?.invalid && name?.touched">
-    <div class="text-danger mt-1" *ngIf="name?.invalid && name?.touched">
-      Name is required (min 2 characters)
-    </div>
+           @if(name?.invalid && name?.touched){
+             <div class="text-danger mt-1">
+               Name is required (min 2 characters)
+             </div>
+           }
   </div>
 
   <!-- PHONE -->
@@ -75,13 +77,16 @@
     <input type="text" class="form-control"
            formControlName="phone"
            [class.is-invalid]="phone?.invalid && phone?.touched">
-
-    <div class="text-danger mt-1" *ngIf="phone?.errors?.['required'] && phone?.touched">
-      Phone number is required.
-    </div>
-    <div class="text-danger mt-1" *ngIf="phone?.errors?.['pattern'] && phone?.touched">
-      Enter a valid 10-digit phone number.
-    </div>
+          @if(phone?.errors?.['required'] && phone?.touched){
+            <div class="text-danger mt-1">
+              Phone number is required.
+            </div>
+          }
+          @if(phone?.errors?.['pattern'] && phone?.touched){
+            <div class="text-danger mt-1">
+              Enter a valid 10-digit phone number.
+            </div>
+          }
   </div>
 
   <!-- STREET -->
@@ -90,10 +95,12 @@
     <input type="text" class="form-control"
            formControlName="street"
            [class.is-invalid]="street?.invalid && street?.touched">
+      @if(street?.invalid && street?.touched){
 
-    <div class="text-danger mt-1" *ngIf="street?.invalid && street?.touched">
-      Street is required.
-    </div>
+        <div class="text-danger mt-1">
+          Street is required.
+        </div>
+      }
   </div>
 
   <!-- CITY -->
@@ -102,10 +109,11 @@
     <input type="text" class="form-control"
            formControlName="city"
            [class.is-invalid]="city?.invalid && city?.touched">
-
-    <div class="text-danger mt-1" *ngIf="city?.invalid && city?.touched">
-      City is required.
-    </div>
+        @if(city?.invalid && city?.touched){
+          <div class="text-danger mt-1">
+            City is required.
+          </div>
+        }
   </div>
 
   <!-- STATE -->
@@ -114,10 +122,12 @@
     <input type="text" class="form-control"
            formControlName="state"
            [class.is-invalid]="state?.invalid && state?.touched">
+            @if(state?.invalid && state?.touched){
 
-    <div class="text-danger mt-1" *ngIf="state?.invalid && state?.touched">
-      State is required.
-    </div>
+              <div class="text-danger mt-1">
+                State is required.
+              </div>
+            }
   </div>
 
   <!-- POSTAL CODE -->
@@ -126,13 +136,17 @@
     <input type="text" class="form-control"
            formControlName="postal_code"
            [class.is-invalid]="postal_code?.invalid && postal_code?.touched">
+          @if(postal_code?.errors?.['required'] && postal_code?.touched){
 
-    <div class="text-danger mt-1" *ngIf="postal_code?.errors?.['required'] && postal_code?.touched">
-      Postal code is required.
-    </div>
-    <div class="text-danger mt-1" *ngIf="postal_code?.errors?.['pattern'] && postal_code?.touched">
-      Enter a valid postal code.
-    </div>
+            <div class="text-danger mt-1">
+              Postal code is required.
+            </div>
+          }
+              @if(postal_code?.errors?.['pattern'] && postal_code?.touched){
+                <div class="text-danger mt-1">
+                  Enter a valid postal code.
+                </div>
+          }
   </div>
 
   <!-- COUNTRY -->
@@ -141,10 +155,11 @@
     <input type="text" class="form-control"
            formControlName="country"
            [class.is-invalid]="country?.invalid && country?.touched">
-
-    <div class="text-danger mt-1" *ngIf="country?.invalid && country?.touched">
-      Country is required.
-    </div>
+            @if(country?.invalid && country?.touched){
+              <div class="text-danger mt-1">
+                Country is required.
+              </div>
+            }
   </div>
 
   <!-- ADDRESS TYPE -->
@@ -179,10 +194,12 @@
         Others
       </button>
     </div>
-
-    <div class="text-danger mt-1" *ngIf="type?.invalid && type?.touched">
-      Please select an address type.
-    </div>
+        @if(type?.invalid && type?.touched){
+          
+          <div class="text-danger mt-1">
+            Please select an address type.
+          </div>
+        }
   </div>
 
   <button class="btn btn-primary mt-2" type="submit">
