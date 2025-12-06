@@ -82,7 +82,7 @@ export class LandingPage {
   };
 
   productSectionSlideConfig = {
-    slidesToShow: 6,
+    slidesToShow: 5,
     // slidesToScroll: 1,
     autoplaySpeed: 2000,
     dots: true,

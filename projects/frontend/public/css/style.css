@@ -125,7 +125,7 @@ button {
   background: transparent;
 } */
 
-.shop-btn {
+/* .shop-btn {
   padding: 1.2rem 3.4rem;
   margin: 4rem 0;
   text-align: center;
@@ -179,16 +179,16 @@ button {
 }
 .shop-btn:hover span {
   color: #ffffff;
-}
+} */
 
-.product {
+/* .product {
   padding: 7rem 0 8rem 0;
 }
 @media (max-width:1023px) {
   .product {
     padding: 3rem 0;
   }
-}
+} */
 
 /* .product-wrapper {
   width: 100%;
@@ -312,7 +312,7 @@ button {
   }
 } */
 
-.price {
+/* .price {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -331,9 +331,9 @@ button {
   font-size: 2rem;
   color: #797979;
   font-weight: 600;
-}
+} */
 
-.product-btn {
+/* .product-btn {
   padding: 1.2rem 1.6rem 1.2rem 2.5rem;
   background: rgba(52, 168, 83, 0.2);
   color: #34a853;
@@ -461,7 +461,7 @@ button {
   height: 3rem;
   width: 1px;
   background: #e8e8e8;
-}
+} */
 
 /* .header-top-section {
   border-bottom: 1px solid rgba(52, 168, 83, 0.06);
@@ -1340,11 +1340,11 @@ button {
   color: #ffffff;
 } */
 
-.hero {
+/* .hero { */
   /* background: url("../../images/homepage-one/hero-bg.webp") no-repeat center/cover; */
   /* background: url("https://a2zlivestock.com/wp-content/uploads/2025/01/Making-Livestock-Care-Simple-Safe-Effective-7.png") no-repeat top/contain; */
-}
-.hero .swiper-pagination-bullets {
+/* } */
+/* .hero .swiper-pagination-bullets {
   bottom: 3rem;
 }
 @media (max-width:767px) {
@@ -2045,7 +2045,7 @@ button {
     height: 12rem;
     width: 12rem;
   }
-}
+} */
 
 /* .grocery-section {
   padding-top: 6rem;
@@ -2097,7 +2097,7 @@ button {
   }
 } */
 
-.best-product {
+/* .best-product {
   background: url("../../images/homepage-one/best-deal-bg.webp") no-repeat center/cover;
   padding-bottom: 11.2rem;
   height: 36.5rem;
@@ -2238,7 +2238,7 @@ button {
 
 .footer-top-section {
   background: url("../images/homepage-one/footer-top-bg.webp") no-repeat center/cover;
-}
+} */
 /* .footer {
   background: #1d1d1d;
   padding-bottom: 0;
@@ -2739,7 +2739,7 @@ button {
   }
 } */
 
-hr {
+/* hr {
   color: rgba(52, 168, 83, 0.06);
 }
 
@@ -2816,7 +2816,7 @@ hr {
 
 .product-weekly {
   background: #f8f8f8;
-}
+} */
 
 /* .sidebar-section {
   background: #ffffff;
@@ -3013,7 +3013,7 @@ hr {
 }
 */
 
-.blogs-wrapper {
+/* .blogs-wrapper {
   border: none;
   border-radius: 0;
   height: auto;
@@ -3799,7 +3799,7 @@ table .ticket-row:hover {
 }
 .order .order-section .review-form .shop-btn {
   width: auto;
-}
+} */
 
 /* .login-section .review-form {
   width: 51.2rem;
@@ -3850,7 +3850,7 @@ table .ticket-row:hover {
   }
 } */
 
-.checkbox {
+/* .checkbox {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -4335,7 +4335,7 @@ table .ticket-row:hover {
   .contact-section .login-section .review-form {
     padding: 2rem 1.5rem;
   }
-}
+} */
 
 /* .product-compair .comment-title {
   font-size: 1.8rem;
@@ -4432,7 +4432,7 @@ table .ticket-row:hover {
 
 
 
-.about {
+/* .about {
   padding: 8rem 0 5rem 0;
   background: #ffffff;
 }
@@ -5325,4 +5325,4 @@ table .ticket-row:hover {
 }
 .user-dashboard .nav-content .modal-wrapper.active {
   display: flex;
-}/*# sourceMappingURL=style.css.map */
+}# sourceMappingURL=style.css.map */

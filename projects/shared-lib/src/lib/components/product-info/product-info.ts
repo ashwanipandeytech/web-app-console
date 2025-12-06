@@ -35,7 +35,7 @@ export class ProductDetailCommon {
   };
 
   productSectionSlideConfig = {
-    slidesToShow: 6,
+    slidesToShow: 5,
     // slidesToScroll: 1,
     autoplaySpeed: 2000,
     dots: true,
@@ -72,33 +72,6 @@ export class ProductDetailCommon {
     this.callAllProductList();
   }
 
-  // callAllProductList() {
-
-  //   // const payload = {
-  //   //   email: this.email,
-  //   //   password: this.password
-  //   // };
-
-    
-  //   this.dataService.callGetApi('products/search','web').pipe(
-  //     catchError((error) => {
-  //       // console.error('Error occurred during login:', error);
-  //      //add toaserfnc alert('Login failed: ' + response.message);
-  //       // Optionally, you can return an observable to prevent further execution
-  //       return of(null); // or you can return a default value if needed
-  //     })
-  //   ).subscribe((response: any) => {
-  //     // console.log('Response:', response);
-  //   this.productListData = response.data.data;
-  //   this.cd.detectChanges();
-  //     if (response && response.success) {
-      
-  //     } else if (response) {
-  //      //add toaserfnc alert('Login failed: ' + response.message);
-  //     }
-  //   });
-    
-  // }
   ngOnInit() {
     window.scrollTo(0,0);
     this.productId = this.route.snapshot.paramMap.get('id');
@@ -109,12 +82,14 @@ export class ProductDetailCommon {
       this.cd.detectChanges();
     });
   }
+
   renderDescription(html: string) {
     const safeHtml = this.sanitizer.bypassSecurityTrustHtml(html);
     const div = this.renderer.createElement('div');
     div.innerHTML = safeHtml as string;
     this.renderer.appendChild(this.descBox.nativeElement, div);
   }
+
   ngAfterViewInit() {
     if (this.productDetails) {  
       for (let index = 0; index < this.productDetails.length; index++) {
@@ -127,17 +102,22 @@ export class ProductDetailCommon {
       }
     }
   }
-    addToCart() {
-      console.log('localStorage.getItem -====',localStorage.getItem('user'));
+
+  // openProduct(id: number) {
+  //   this.router.navigate(['/product-details', id]);
+  // }
+
+  addToCart() {
+    console.log('localStorage.getItem -====',localStorage.getItem('user'));
       
-if (localStorage.getItem('user') == null) {
-  this.router.navigate(['/login']);
-}
+    if (localStorage.getItem('user') == null) {
+      this.router.navigate(['/login']);
+    }
     let cartPayload = {
       product_id:this.selectedProduct.id,
       quantity:this.quantity
     }
-  this.dataService.callApiNew(cartPayload, 'cart')
+    this.dataService.callApiNew(cartPayload, 'cart')
       .pipe(
         catchError(err => {
           console.error('Error:', err);
@@ -147,7 +127,7 @@ if (localStorage.getItem('user') == null) {
       )
       .subscribe((res: any) => {
         console.log('Response:', res);
-  if (res.success ==true) {
+        if (res.success ==true) {
           this.globalService.showMsgSnackBar(res);
           this.router.navigate(['/cart']);
         // window.location.reload();
@@ -167,7 +147,7 @@ if (localStorage.getItem('user') == null) {
 
   }
 
-    callAllProductList() {
+  callAllProductList() {
       this.loading = true;  // show loader
     this.dataService.callGetApi('products/search','web').pipe(
       catchError((error) => {
@@ -196,16 +176,7 @@ if (localStorage.getItem('user') == null) {
     
   }
   
-  //  ngAfterViewInit() {
-  //   for (let index = 0; index < this.productDetails.length; index++) {
-  //     const element = this.productDetails[index];
-  //     if (element.id == this.productId) {
-  //       // this.cd.detectChanges();
-
-  //     }
-  //   }
-  // }
-   increase() {
+  increase() {
     this.quantity++;
     this.calculatePrice();
   }
@@ -216,13 +187,16 @@ if (localStorage.getItem('user') == null) {
       this.calculatePrice();
     }
   }
+
   toggleHeart() {
     this.isWishlisted = !this.isWishlisted;
   }
-      calculatePrice(){
+
+  calculatePrice(){
     this.selectedProduct.price_data.regularPrice = this.productPrice * this.quantity;
     this.cd.detectChanges();
-      }
+  }
+
   back(){
     window.history.back();
   }
