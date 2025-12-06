@@ -1,15 +1,20 @@
 @use '../../scss/variable' as *;
 
+.devider {
+  padding: 0 1rem;
+}
+
 .product-info {
-  // background: $primary-color;
+  min-height: 40vh;
 
   @media #{$sm} {
     .product-info-content {
-      padding: 1rem 0 0;
-      &-price {
-        padding: 1.6rem;
-        background-color: #f2f9ff;
-      }
+      padding: 1rem;
+      margin-top: 1.4rem;
+      // &-price {
+      //   padding: 1.6rem;
+      //   background-color: #f2f9ff;
+      // }
     }
   }
 }
@@ -114,7 +119,7 @@
 
 // product-info-content
 .product-info-content {
-  padding: 0 5rem;
+  padding: 2rem 5rem;
 
   .wrapper-subtitle {
     color: $paragraph;

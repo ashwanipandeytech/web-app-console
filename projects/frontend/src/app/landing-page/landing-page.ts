@@ -82,7 +82,7 @@ export class LandingPage {
   };
 
   productSectionSlideConfig = {
-    slidesToShow: 9,
+    slidesToShow: 5,
     // slidesToScroll: 1,
     autoplaySpeed: 2000,
     dots: true,
@@ -94,12 +94,6 @@ export class LandingPage {
         breakpoint: 1320,
         settings: {
           centerPadding: '40px',
-        }
-      },
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 6
         }
       },
       {

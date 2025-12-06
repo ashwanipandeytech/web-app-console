@@ -198,7 +198,7 @@ button {
             width: 16px;
             height: 16px;
             fill: currentColor;
-            fill: #d6eedd;
+            fill: #fff;
             transition: all 0.2s linear;
           }
           path {
@@ -237,7 +237,7 @@ button {
 
   .product-details {
     font-family: $nunito;
-    font-size: 1rem;
+    font-size: 1.4rem;
     line-height: normal;
     display: inline-block;
   }
@@ -292,8 +292,8 @@ button {
 }
 
 .price {
-  @include flexItem($gap: 1rem);
-  margin: 1rem 0;
+  @include flexItem($gap: 1rem, $justify: start);
+  margin: 0;
 
   .price-cut {
     text-decoration: line-through;
@@ -305,7 +305,7 @@ button {
 
   span {
     font-family: $nunito;
-    font-size: 2rem;
+    font-size: 1.4rem;
     color: $paragraph;
     font-weight: 600;
   }

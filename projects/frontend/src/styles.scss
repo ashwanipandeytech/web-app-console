@@ -6,9 +6,9 @@
   --bs-body-font-size: 1.4rem;
   --bs-primary-rgb: 0, 147, 221;
 }
-.aspect-ratio-1 {
-  aspect-ratio: 1;
-}
+
+.container-fluid, .container  { max-width: 1400px; }
+.aspect-ratio-1 { aspect-ratio: 1; }
 
 @media screen and (max-width: 576px) {
     .modal {
@@ -57,6 +57,10 @@
 
 .slick-prev:before, .slick-next:before {
   color: $theme-color !important;
+}
+
+.loader {
+  min-height: 75vh;
 }
 
 .hero {
@@ -120,9 +124,9 @@
     }
   }
 
-  @media #{$mdx} {
-    @include gridItem($grid: repeat(4, minmax(0, 1fr)));
-  }
+  // @media #{$mdx} {
+  //   @include gridItem($grid: repeat(4, minmax(0, 1fr)));
+  // }
 }
 
 .healthy-section {
@@ -491,7 +495,7 @@
 
   @media #{$md} {
     .product-wrapper {
-      height: 100%;
+      height: 15rem;
 
       background-position: left;
 
