@@ -23,6 +23,13 @@ export class RazorpayService {
         alert('Payment ID: ' + response.razorpay_payment_id);
         // Success! You can save this ID
       },
+      onpaymenterror: (error: any) => {
+      console.log('Payment FAILED:', error);
+      alert(`Payment Failed: ${error.description || 'Unknown error'}`);
+      
+      // Common error codes you can handle:
+      // error.code, error.description, error.source, error.step, error.reason
+    },
       prefill: {
         name: 'John Doe',
         email: 'john@example.com',
@@ -36,4 +43,38 @@ export class RazorpayService {
     const rzp = new Razorpay(options);
     rzp.open();
   }
+
+
+  // Example: Node.js/Express
+// app.post('/webhook/razorpay', express.raw({type: 'application/json'}), (req, res) => {
+//   const signature = req.headers['x-razorpay-signature'];
+//   const webhookSecret = 'your_webhook_secret';
+
+//   const isValid = Razorpay.validateWebhookSignature(
+//     req.body.toString(), 
+//     signature, 
+//     webhookSecret
+//   );
+
+//   if (!isValid) {
+//     return res.status(400).send('Invalid signature');
+//   }
+
+//   const event = JSON.parse(req.body);
+
+//   if (event.event === 'payment.captured') {
+//     const paymentId = event.payload.payment.entity.id;
+//     const orderId = event.payload.payment.entity.order_id;
+//     const amount = event.payload.payment.entity.amount;
+
+//     // THIS IS 100% CONFIRMED SUCCESS
+//     console.log('Payment successful:', paymentId);
+    
+//     // Update your database, give access to user, etc.
+//   }
+
+//   res.status(200).send('OK');
+// });
+
+
 }
