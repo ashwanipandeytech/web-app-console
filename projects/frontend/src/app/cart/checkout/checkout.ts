@@ -58,16 +58,17 @@ if (userString) {
  console.log('response==>',response);
  if (response.success == true) {
    this.cartListData = response.data.data;
-  //  for (let i = 0; i < this.cartListData.length; i++) {
-  //    const element = this.cartListData[i];
-  //    // if (element.) {
-       
-  //    // }
-  //    element.product.price_data['finalPrice'] = element?.product.price_data?.regularPrice;
-  //      this.calculatePrice(element.quantity,i,element.product.price_data.regularPrice);
+   for (let i = 0; i < this.cartListData.length; i++) {
+     const element = this.cartListData[i];
+     // if (element.) {
+        this.globalService.calculatePrice(element.quantity,i,element.product.price_data.regularPrice,this.cartListData);
+   
+        // }
+    //  element.product.price_data['finalPrice'] = element?.product.price_data?.regularPrice;
+    //    this.calculatePrice(element.quantity,i,element.product.price_data.regularPrice);
  
-  //  }
-   this.calculateSubTotal();
+   }
+  this.grandTotal = this.globalService.calculateGrandTotal(this.cartListData);
    this.cd.detectChanges();
  }
  
