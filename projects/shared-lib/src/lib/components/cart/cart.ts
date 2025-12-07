@@ -210,6 +210,7 @@ if (response.success == true) {
       this.globalService.calculatePrice(element.quantity,i,element.product.price_data.regularPrice,this.cartListData);
   }
   this.grandTotal = this.globalService.calculateGrandTotal(this.cartListData);
+  this.loading = false;
   this.cd.detectChanges();
 }
 

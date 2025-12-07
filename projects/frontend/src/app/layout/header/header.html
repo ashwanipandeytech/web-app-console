@@ -56,7 +56,9 @@
               </span>
             </a>
           </div>
-          <div class="user-name">Hello, {{userName}}</div>
+          @if(isLoggedIn){
+            <div class="user-name">Hello, {{userName}}</div>
+          }
           <div class="header-cart">
             <a [href]="isLoggedIn?'/cart':'/login'" class="cart-item position-relative">
               <span>
