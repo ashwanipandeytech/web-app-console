@@ -10,6 +10,8 @@
 .container-fluid, .container  { max-width: 1400px; }
 .aspect-ratio-1 { aspect-ratio: 1; }
 
+.blog-bradcrum .devider { padding: 0 1rem; }
+
 @media screen and (max-width: 576px) {
     .modal {
         &.mobile-modal {
@@ -225,6 +227,7 @@
 .flash-sale {
   background-color: rgba($primary-color, 0.4);
 }
+
 .flash-sale-section {
   background: url("/images/homepage-one/flash_sale.webp") no-repeat center / cover;
   height: 38rem;
@@ -919,7 +922,6 @@ table {
 }
 
 // wishlist--------------------
-
 .wishlist-section {
   .table-wrapper {
     width: 38rem;
@@ -952,22 +954,21 @@ table {
 }
 
 // checkout--------------------
-
 .checkout {
   background: $primary-color;
-  padding-top: 6rem;
+  // padding-top: 6rem;
 
-  .row > * {
-    --bs-gutter-x: 3rem;
-  }
+  // .row > * {
+  //   --bs-gutter-x: 3rem;
+  // }
 
   .billing-section {
     margin-top: 0;
     padding: 4rem;
 
-    .wrapper-heading {
-      margin-bottom: 1rem;
-    }
+    // .wrapper-heading {
+    //   margin-bottom: 1rem;
+    // }
   }
 
   .checkbox-item {
@@ -1052,12 +1053,13 @@ table {
     @include flexBetween();
 
     .product-list {
-      @include flexItem($direction: column, $align: flex-start, $gap: 3rem);
+      @include flexItem($direction: column, $align: flex-start, $gap: 1rem);
       width: 100%;
 
       li {
         width: 100%;
         @include flexBetween();
+        align-items: flex-start;
       }
 
       .product-info {
@@ -1097,7 +1099,7 @@ table {
       width: 100%;
       border-radius: 0.5rem;
       transition: all 0.3s;
-      padding: 2rem;
+      padding: 1.4rem;
 
       input {
         accent-color: $theme-color;
@@ -1116,7 +1118,6 @@ table {
 }
 
 // order--------------------
-
 .order {
   background: $primary-color;
 
@@ -1139,7 +1140,6 @@ table {
   }
 }
 
-
 .snackbar-success {
   background: #4caf50 !important; /* green */
   color: #fff !important;
@@ -1157,3 +1157,538 @@ table {
   color: #000 !important;
    z-index: 9999;
 }
+
+//blogs----------------
+.blogs-wrapper {
+  border: none;
+  border-radius: 0;
+  height: auto;
+  padding: 0;
+  overflow: hidden;
+
+  &:hover {
+    border: none;
+
+    img {
+      transform: scale(1.1);
+    }
+  }
+
+  .wrapper-img {
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      transition: all 0.3s;
+    }
+  }
+
+  .wrapper-info {
+    padding: 2rem 3rem;
+
+    .wrapper-data {
+      @include flexItem($justify: flex-start, $gap: 4.2rem);
+      margin-bottom: 1rem;
+
+      .wrapper-item {
+        @include flexItem($justify: flex-start, $gap: 7px);
+
+        .icon {
+          svg {
+            fill: currentColor;
+            fill: $theme-color;
+          }
+        }
+        .text {
+          font-size: 1.4rem;
+          color: $paragraph;
+        }
+      }
+    }
+    .divider {
+      background: rgba($theme-color, 0.2);
+    }
+  }
+
+  .shop-btn {
+    margin: 0;
+    @include shopBtn(
+      $padding: 0,
+      $btn-bg: transparent,
+      $bf-color: $theme-color,
+      $margin: 0,
+      $text: 1.8rem
+    );
+
+    overflow: unset;
+    svg {
+      fill: currentColor;
+      fill: $theme-color;
+    }
+    &:hover {
+      color: $theme-color;
+      svg {
+        fill: $theme-color;
+      }
+    }
+    &::after {
+      display: none;
+    }
+  }
+
+  @media #{$sm} {
+    .wrapper-info {
+      padding: 2rem 3rem;
+
+      .wrapper-data {
+        @include flexItem($justify: flex-start, $gap: 2rem);
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
+
+//blog-details------------------
+.blog-details {
+  background: #f8f8f8;
+
+  .row > * {
+    --bs-gutter-x: 3rem;
+  }
+
+  hr {
+    margin: 3rem 0;
+  }
+
+  .wrapper-img {
+    height: 45.7rem;
+
+    img {
+      object-fit: cover;
+    }
+  }
+  .blog-details-heading {
+    margin-top: 2rem;
+  }
+
+  .blogs-form-section {
+    .social-item {
+      @include flexItem($justify: flex-start, $gap: 2rem);
+
+      a {
+        @include flexItem();
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 50%;
+        background: $theme-color;
+        transition: all 0.2s;
+        border: 1px solid $theme-color;
+
+        svg {
+          fill: currentColor;
+          fill: $primary-color;
+        }
+
+        &:hover {
+          border-radius: 20%;
+          background: $primary-color;
+
+          svg {
+            fill: $theme-color;
+          }
+        }
+      }
+    }
+    .review-form {
+      padding: 3rem 0 0 0;
+      .comment-title {
+        text-align: left;
+      }
+    }
+  }
+
+  @media #{$sm} {
+    .blogs-wrapper {
+      .wrapper-img {
+        height: auto;
+      }
+      .wrapper-info {
+        padding: 2rem 0;
+      }
+
+      .wrapper-details {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+  }
+}
+
+.review-form {
+  .review-form-text {
+    @include flexItem;
+    margin-bottom: 2rem;
+    position: relative;
+    img {
+      position: absolute;
+      top: 4rem;
+    }
+  }
+
+  .comment-title {
+    margin-bottom: 3rem;
+    font-family: $inter;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .form-control,
+  .form-select {
+    border: 1px solid rgba($theme-color, 0.2);
+    box-shadow: none;
+    color: $heading;
+
+    &::placeholder {
+      color: $paragraph;
+      font-family: $inter;
+    }
+  }
+
+  label {
+    font-family: $inter;
+    font-size: 1.5rem;
+    color: $paragraph;
+    margin-bottom: 0.5rem;
+  }
+
+  .review-inner-form {
+    @include flexItem($justify: space-between, $gap: 2rem);
+
+    .review-form-name {
+      margin-bottom: 2rem;
+      width: 100%;
+    }
+  }
+
+  input {
+    height: 5rem;
+  }
+
+  input,
+  textarea,
+  select {
+    padding: 1rem 2rem;
+    font-size: 1.4rem;
+
+    &::placeholder {
+      color: $paragraph;
+      font-family: $inter;
+      font-size: 1.4rem;
+    }
+  }
+
+  textarea {
+    padding: 3rem;
+  }
+
+  .review-btn {
+    @include flexItem($justify: flex-end);
+
+    .shop-btn {
+      width: 30rem;
+      margin: 2rem 0 0 0;
+
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+  @media #{$sm} {
+    .comment-title {
+      font-size: 2rem;
+    }
+    .review-inner-form {
+      flex-direction: column;
+    }
+  }
+}
+
+.blog-post-section {
+  width: 33.5rem;
+
+  .post-details {
+    font-size: 2rem;
+  }
+
+  hr {
+    margin: 1.8rem 0;
+  }
+
+  .blog-post {
+    background-color: $primary-color;
+    padding: 2.5rem;
+    border-radius: 0.6rem;
+
+    hr {
+      color: $theme-color;
+    }
+
+    .search-btn {
+      background: $theme-bg;
+      @include flexBetween();
+      padding: 0.8rem 3rem;
+      border-radius: 0.6rem;
+
+      input {
+        border: none;
+        background: transparent;
+        padding: 1rem 0;
+        outline: none;
+
+        &::placeholder {
+          font-size: 1.5rem;
+        }
+      }
+    }
+
+    .blogs-wrapper {
+      @include flexItem(
+        $justify: space-between,
+        $align: flex-start,
+        $gap: 2rem
+      );
+      box-shadow: none;
+      &:not(:last-child) {
+        margin-bottom: 2rem;
+      }
+
+      .wrapper-img {
+        width: 8.5rem;
+        height: 9.2rem;
+        border-radius: 0.5rem;
+      }
+
+      .wrapper-info {
+        padding: 0;
+        flex: 1 1 0%;
+
+        .wrapper-details {
+          font-size: 1.8rem;
+          font-weight: 500;
+          line-height: 2.4rem;
+          margin-bottom: 0;
+          font-family: $inter;
+        }
+
+        .wrapper-item {
+          margin-top: 1rem;
+        }
+
+        svg {
+          fill: currentColor;
+          fill: $theme-color;
+        }
+      }
+    }
+
+    .category-list {
+      @include flexItem($direction: column, $gap: 2rem, $align: flex-start);
+
+      a {
+        font-size: 1.5rem;
+        font-weight: 400;
+        color: $paragraph;
+
+        &:hover {
+          color: $theme-color;
+        }
+      }
+    }
+  }
+
+  .newsletter {
+    // background: url("../assets/images/homepage-one/newsletter.webp") no-repeat center / cover;
+
+    .post-details,
+    .blog-paragraph {
+      color: $primary-color;
+    }
+
+    .blog-paragraph {
+      margin: 1rem 0 4rem 0;
+    }
+
+    hr {
+      color: $primary-color;
+    }
+
+    input {
+      background: $primary-color;
+    }
+
+    input,
+    .shop-btn {
+      width: 100%;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      outline: none;
+      border: none;
+    }
+
+    .shop-btn {
+      margin: 1rem 0;
+      background: $secondary-theme;
+      color: $heading;
+
+      &::after {
+        display: none;
+      }
+    }
+  }
+}
+
+@media #{$md} {
+  .blog-post-section {
+    width: 100%;
+  }
+}
+
+
+.login-section {
+  .review-form {
+    width: 51.2rem;
+    height: 63rem;
+    background-color: $primary-color;
+    padding: 4rem;
+    border-radius: 0.5rem;
+
+    .review-inner-form {
+      display: block;
+      width: 100%;
+    }
+
+    .shop-btn {
+      width: 100%;
+      margin: 0 0 2rem 0;
+
+      &::after {
+        display: none;
+      }
+    }
+
+    .shop-account {
+      color: $paragraph;
+      font-size: 1.3rem;
+
+      a {
+        font-size: 1.3rem;
+        margin-left: 0.5rem;
+        font-weight: 400;
+      }
+    }
+  }
+
+  .review-form-text {
+    img {
+      top: 4rem;
+    }
+  }
+
+  @media #{$sm} {
+    .review-form {
+      padding: 2rem;
+      height: auto;
+      width: auto;
+      .review-form-text {
+        img {
+          top: 3.5rem;
+        }
+      }
+    }
+  }
+  @media #{$mdl} {
+    .review-form {
+      width: 100%;
+    }
+    .login-img {
+      text-align: center;
+    }
+  }
+}
+
+.checkbox {
+  @include flexBetween();
+
+  .forget-pass {
+    p {
+      color: $theme-color;
+    }
+  }
+}
+
+.checkbox-item {
+  @include flexItem($justify: flex-start, $gap: 1rem);
+
+  p {
+    margin-bottom: 0;
+    color: $paragraph;
+
+    .inner-text {
+      color: $heading;
+    }
+  }
+  .address {
+    font-size: 1.5rem;
+    color: $heading;
+  }
+}
+
+// create-account
+.account-section {
+  .review-form {
+    width: 57.2rem;
+  }
+  .review-form-text {
+    img {
+      top: 2.5rem;
+    }
+  }
+  .account-inner-form {
+    @include flexItem($gap: 2rem);
+    margin-bottom: 2rem;
+
+    .review-form-name {
+      width: 100%;
+    }
+  }
+  .city-inner-form {
+    margin-bottom: 0;
+  }
+
+  .address-form {
+    margin: 2rem 0;
+  }
+
+  @media #{$sm} {
+    .review-form {
+      padding: 2rem;
+      height: auto;
+    }
+    .account-inner-form {
+      flex-direction: column;
+    }
+    .checkbox-item {
+      margin: 1rem;
+    }
+  }
+  @media #{$mdl} {
+    .review-form {
+      width: 100%;
+    }
+  }
+}
+

@@ -137,6 +137,9 @@ button {
 .shop-btn {
   @include shopBtn();
   z-index: 1;
+  &-warning {
+    background: #ffbb38;
+  }
   cursor: pointer;
   @media #{$sm} {
     @include shopBtn($padding: .5rem 1.5rem);
