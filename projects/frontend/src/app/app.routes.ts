@@ -20,6 +20,7 @@ import { CategoryCommon} from 'shared-lib/components/category/category';
 
 
 import { CartCommon } from 'shared-lib/components/cart/cart';
+import { Thankyou } from './pages/thankyou/thankyou';
 
 export const routes: Routes = [
     {
@@ -113,8 +114,12 @@ export const routes: Routes = [
         path: 'contact-us',
         component: ContactUs,
          
+    },
+  {
+        path: 'thank-you',
+        component: Thankyou,
+         
     }
-
     // {
     //     path: '',
     //     pathMatch: 'full',
