@@ -118,6 +118,8 @@
 }
 
 
+
+
 <div class="d-flex d-sm-none align-items-center bg-light p-1">
     <button class="btn btn-light d-flex align-items-center" (click)="back()"> 
         <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" style="height: 1.5rem; width: 1.5rem; color: black;"><path d="M15.5 19L8.5 12L15.5 5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
@@ -137,6 +139,12 @@
         </div> -->
     </div>
 </section>
+
+@if(loading){
+<div class="loader position-relative">
+    <div class="spinner position-absolute top-50 start-50 translate-middle"></div>
+</div>
+}
 <!--------------- blog-tittle-section-end---------------->
 
 <!--------------- cart-section---------------->

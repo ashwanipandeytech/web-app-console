@@ -37,6 +37,7 @@ export class CartCommon {
   addressListData: any=[];
   cartListData: any=[];
   grandTotal: number=0;
+  loading: boolean=true;
 constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDetectorRef){
   this.addAddressForm();
   this.getAddressList();
@@ -191,6 +192,7 @@ constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDe
   }
 
   carList(){
+    this.loading = true;
      this.dataService.callGetApi('cart').pipe(
       catchError((error) => {
         return of(null); // or you can return a default value if needed
@@ -274,6 +276,8 @@ if (response.success == true) {
         const element = this.cartListData[i];
         this.grandTotal += element.product.price_data.finalPrice;
       }
+    this.loading = false;
+
         // console.log('this.grandTotal==>',this.grandTotal);
       }
 
