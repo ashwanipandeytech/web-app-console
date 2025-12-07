@@ -6,6 +6,7 @@ import { RazorpayService } from 'shared-lib';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { GlobaCommonlService } from '../../../../../global-common.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'web-checkout',
@@ -15,6 +16,7 @@ import { GlobaCommonlService } from '../../../../../global-common.service';
 })
 export class Checkout {
 private dataService = inject(DataService);
+private router = inject(Router);
 private globalService = inject(GlobaCommonlService);
 private http = inject(HttpClient);
 private cd = inject(ChangeDetectorRef);
@@ -56,16 +58,17 @@ if (userString) {
  console.log('response==>',response);
  if (response.success == true) {
    this.cartListData = response.data.data;
-  //  for (let i = 0; i < this.cartListData.length; i++) {
-  //    const element = this.cartListData[i];
-  //    // if (element.) {
-       
-  //    // }
-  //    element.product.price_data['finalPrice'] = element?.product.price_data?.regularPrice;
-  //      this.calculatePrice(element.quantity,i,element.product.price_data.regularPrice);
+   for (let i = 0; i < this.cartListData.length; i++) {
+     const element = this.cartListData[i];
+     // if (element.) {
+        this.globalService.calculatePrice(element.quantity,i,element.product.price_data.regularPrice,this.cartListData);
+   
+        // }
+    //  element.product.price_data['finalPrice'] = element?.product.price_data?.regularPrice;
+    //    this.calculatePrice(element.quantity,i,element.product.price_data.regularPrice);
  
-  //  }
-   this.calculateSubTotal();
+   }
+  this.grandTotal = this.globalService.calculateGrandTotal(this.cartListData);
    this.cd.detectChanges();
  }
  
@@ -97,16 +100,50 @@ console.log('this.cartListData==>',this.cartListData);
 console.log('this.selectedPaymentMethod==>',this.selectedPaymentMethod);
 
           if (this.selectedPaymentMethod == 'onCash') {
-            this.orderSubmit(addressId);
+                this.router.navigate(['/thank-you'])  
+
+            // this.orderSubmit(addressId);
           }
           else{
-            this.orderSubmit(addressId);
-            this.razorpayService.openCheckout(this.grandTotal);
+            let checkoutPaymentData = {
+              amount:this.grandTotal,
+              name:this.checkoutForm.value.fname + ' ' + this.checkoutForm.value.lname,
+              email:this.checkoutForm.value.email,
+              phone:this.checkoutForm.value.phone
+            }
+            // this.orderSubmit(addressId);
+         this.razorpayService.openCheckout(checkoutPaymentData)
+          .subscribe({
+            next: (response:any) => {
+              if (response.success) {
+                // this.orderSubmit(addressId);
+                console.log("Payment Success:", response);
+                this.router.navigate(['/thank-you'])  
+              }
+            },
+            error: (error:any) => {
+              if (error.error) {
+                console.error("Payment Failed:", error);
+              }
+            }
+          });
+
           }
     // }
         }
 
         orderSubmit(addressId:any){
+        this.cartListData.filter((item:any)=>{
+            delete item.product.description;
+            delete item.product.inventory
+            delete item.product.media
+            delete item.product.uploadedImages
+            delete item.product.offer
+            delete item.product.shipping_config
+            delete item.product.shipping_info
+             
+          })
+          console.log('cartList==>',this.cartListData);
         let OrderSubmitPayload = {
           items:this.cartListData,
           total_amount: this.grandTotal,

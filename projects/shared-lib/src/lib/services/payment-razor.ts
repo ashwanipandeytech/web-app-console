@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
+import { Observable } from 'rxjs';
 declare var Razorpay: any;
 
 @Injectable({
@@ -11,38 +12,38 @@ export class RazorpayService {
   constructor(private http: HttpClient) { }
 
  
-  openCheckout(amount: number) {
-    const options = {
-      key: environment.RAZORPAY_KEY_ID,  // Your Test Key
-      amount: amount * 100,            // in paise
-      currency: 'INR',
-      name: 'Your App Name',
-      description: 'Test Payment',
-      image: 'https://your-logo.png',
-      handler: (response: any) => {
-        alert('Payment ID: ' + response.razorpay_payment_id);
-        // Success! You can save this ID
-      },
-      onpaymenterror: (error: any) => {
-      console.log('Payment FAILED:', error);
-      alert(`Payment Failed: ${error.description || 'Unknown error'}`);
+  // openCheckout(payload: any) {
+  //   const options = {
+  //     key: environment.RAZORPAY_KEY_ID,  // Your Test Key
+  //     amount: payload.amount * 100,            // in paise
+  //     currency: 'INR',
+  //     name: 'Your App Name',
+  //     description: 'Test Payment',
+  //     image: 'https://your-logo.png',
+  //     handler: (response: any) => {
+  //       alert('Payment ID: ' + response.razorpay_payment_id);
+  //       // Success! You can save this ID
+  //     },
+  //     onpaymenterror: (error: any) => {
+  //     console.log('Payment FAILED:', error);
+  //     alert(`Payment Failed: ${error.description || 'Unknown error'}`);
       
-      // Common error codes you can handle:
-      // error.code, error.description, error.source, error.step, error.reason
-    },
-      prefill: {
-        name: 'John Doe',
-        email: 'john@example.com',
-        contact: '9999999999'
-      },
-      theme: {
-        color: '#3399cc'
-      }
-    };
+  //     // Common error codes you can handle:
+  //     // error.code, error.description, error.source, error.step, error.reason
+  //   },
+  //     prefill: {
+  //       name: payload.name,
+  //       email: payload.email,
+  //       contact: payload.phone
+  //     },
+  //     theme: {
+  //       color: '#3399cc'
+  //     }
+  //   };
   
-    const rzp = new Razorpay(options);
-    rzp.open();
-  }
+  //   const rzp = new Razorpay(options);
+  //   rzp.open();
+  // }
 
 
   // Example: Node.js/Express
@@ -75,6 +76,46 @@ export class RazorpayService {
 
 //   res.status(200).send('OK');
 // });
+openCheckout(payload: any): Observable<any> {
+  return new Observable((observer) => {
+    const options: any = {
+      key: environment.RAZORPAY_KEY_ID,
+      amount: payload.amount * 100,
+      currency: 'INR',
+      name: 'Safure',
+      description: 'Test Payment',
+      image: 'projects/frontend/public/images/logos/logo.webp',
 
+      handler: (response: any) => {
+        // Payment Success
+        observer.next({ success: true, data: response });
+        observer.complete();
+      },
+
+      onpaymenterror: (error: any) => {
+        // Payment Failed
+        observer.error({ success: false, error });
+      },
+
+      prefill: {
+        name: payload.name,
+        email: payload.email,
+        contact: payload.phone
+      },
+
+      theme: {
+        color: '#3399cc'
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+
+    // Optional: Close event
+    rzp.on('payment.failed', (err: any) => {
+      observer.error(err);
+    });
+  });
+}
 
 }

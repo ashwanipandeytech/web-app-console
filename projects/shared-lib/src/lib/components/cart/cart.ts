@@ -37,6 +37,7 @@ export class CartCommon {
   addressListData: any=[];
   cartListData: any=[];
   grandTotal: number=0;
+  loading: boolean=true;
 constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDetectorRef){
   this.addAddressForm();
   this.getAddressList();
@@ -191,6 +192,7 @@ constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDe
   }
 
   carList(){
+    this.loading = true;
      this.dataService.callGetApi('cart').pipe(
       catchError((error) => {
         return of(null); // or you can return a default value if needed
@@ -205,10 +207,9 @@ if (response.success == true) {
       
     // }
     element.product.price_data['finalPrice'] = element?.product.price_data?.regularPrice;
-      this.calculatePrice(element.quantity,i,element.product.price_data.regularPrice);
-
+      this.globalService.calculatePrice(element.quantity,i,element.product.price_data.regularPrice,this.cartListData);
   }
-  this.calculateGrandTotal();
+  this.grandTotal = this.globalService.calculateGrandTotal(this.cartListData);
   this.cd.detectChanges();
 }
 
@@ -218,7 +219,7 @@ if (response.success == true) {
     this.cartListData[index].quantity++;
       let id = this.cartListData[index].id;
     let productQuantity = this.cartListData[index].quantity;
-    this.calculatePrice(productQuantity,index,this.cartListData[index].product.price_data.regularPrice);
+    this.globalService.calculatePrice(productQuantity,index,this.cartListData[index].product.price_data.regularPrice,this.cartListData);
     this.updateCartList(productQuantity,id);
   }
 
@@ -227,8 +228,8 @@ if (response.success == true) {
       this.cartListData[index].quantity--;
       let id = this.cartListData[index].id;
       let productQuantity = this.cartListData[index].quantity;
-      this.calculatePrice(productQuantity,index,this.cartListData[index].product.price_data.regularPrice);
-    this.updateCartList(productQuantity,id);
+      this.globalService.calculatePrice(productQuantity,index,this.cartListData[index].product.price_data.regularPrice,this.cartListData);   
+      this.updateCartList(productQuantity,id);
 
     }
   }
@@ -247,8 +248,11 @@ if (response.success == true) {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
-         if (res && res.error && res.error.message) {
+        // console.log('Response:', res);
+        if (res.success) {
+        this.grandTotal = this.globalService.calculateGrandTotal(this.cartListData);     
+        }
+         else if (res && res.error && res.error.message) {
         console.log('error  :', res.error.message);
           this.globalService.showMsgSnackBar(res.error);
         }
@@ -256,16 +260,16 @@ if (response.success == true) {
         // this.categoryListData = res.data;
       });
   }
-     calculatePrice(quantity:any,index:any,price:any){
-      let productQuantity:any = null;
-      let regularPrice = null;
-      productQuantity = quantity;
-      regularPrice = price;
-      this.cartListData[index].product.price_data.finalPrice = quantity * regularPrice;
-      this.calculateGrandTotal();
-    // this.selectedProduct.price_data.regularPrice = this.productPrice * this.quantity;
-    this.cd.detectChanges();
-      }
+    //  calculatePrice(quantity:any,index:any,price:any){
+    //   let productQuantity:any = null;
+    //   let regularPrice = null;
+    //   productQuantity = quantity;
+    //   regularPrice = price;
+    //   this.cartListData[index].product.price_data.finalPrice = quantity * regularPrice;
+    //   this.calculateGrandTotal();
+    // // this.selectedProduct.price_data.regularPrice = this.productPrice * this.quantity;
+    // this.cd.detectChanges();
+    //   }
       calculateGrandTotal(){
         // this.grandTotal = 0;
       this.grandTotal = 0;
@@ -274,6 +278,8 @@ if (response.success == true) {
         const element = this.cartListData[i];
         this.grandTotal += element.product.price_data.finalPrice;
       }
+    this.loading = false;
+
         // console.log('this.grandTotal==>',this.grandTotal);
       }
 

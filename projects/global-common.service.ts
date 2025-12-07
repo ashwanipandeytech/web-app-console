@@ -17,4 +17,28 @@ showMsgSnackBar(response:any){
            panelClass: [response.success ? 'snackbar-success' : 'snackbar-error']
           });
 }
+
+
+ calculatePrice(quantity:any,index:any,price:any,cartData:any){
+      let productQuantity:any = null;
+      let regularPrice = null;
+      productQuantity = quantity;
+      regularPrice = price;
+      cartData[index].product.price_data.finalPrice = quantity * regularPrice;
+      this.calculateGrandTotal(cartData);
+    // this.selectedProduct.price_data.regularPrice = this.productPrice * this.quantity;
+    // this.cd.detectChanges();
+      }
+       calculateGrandTotal(cartListData:any){
+        // this.grandTotal = 0;
+      let grandTotal = 0;
+
+      for (let i = 0; i < cartListData.length; i++) {
+        const element = cartListData[i];
+         grandTotal += element.product.price_data.finalPrice;
+      }
+    // this.loading = false;
+      return grandTotal;
+        // console.log('this.grandTotal==>',this.grandTotal);
+      }
 }

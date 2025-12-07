@@ -15,16 +15,19 @@ export class Header {
   readonly dataService=inject(DataService);
 isLoggedIn:any= false;
   cartItemCount: any=0;
+  userName: any;
 constructor(private cd:ChangeDetectorRef){
 
 }
   ngOnInit(){
-      let userData = localStorage.getItem('user');
+      let userData:any = localStorage.getItem('user');
     if (userData == null) {
       this.isLoggedIn = false;
     }
     else{
       this.isLoggedIn = true;
+      this.userName = JSON.parse(userData).user.name;
+      
     }
     this.carList();
   }
