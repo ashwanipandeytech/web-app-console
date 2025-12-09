@@ -5,10 +5,15 @@ import { catchError, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LoginService } from '../login-service';
+import { HttpClientModule } from '@angular/common/http';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 @Component({
   selector: 'web-login',
-  standalone:false,
-  // imports: [FormsModule, ReactiveFormsModule],
+   imports: [
+    ReactiveFormsModule,
+    HttpClientModule,
+    MatSnackBarModule
+  ],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
