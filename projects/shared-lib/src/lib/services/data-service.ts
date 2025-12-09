@@ -50,15 +50,29 @@ export class DataService {
 
     // console-admin 
    callApiNew(data: any, apiEndPoint: any) {
-            const httpHeaders = new HttpHeaders({
-          'Authorization': `Bearer ${this.authToken}`
-        });
+let httpHeaders:any;
+         httpHeaders = new HttpHeaders({
+    'Authorization': `Bearer ${this.authToken}`
+  });  
       const requestPayload = {
         application: environment.APPLICATION,
         version: environment.VERSION,
         data
       };
-      return this.http.post<Commonresponseobject>(environment.API_URL + apiEndPoint, data, { headers: httpHeaders });
+    if (apiEndPoint == 'cart') {
+      let carthttpHeaders = new HttpHeaders({
+        
+      })
+console.log('carthttpHeaders==>',carthttpHeaders);
+
+      return this.http.post<Commonresponseobject>(environment.API_URL + apiEndPoint, data);
+
+    }
+    else{
+      return this.http.post<Commonresponseobject>(environment.API_URL + apiEndPoint, data, { headers: httpHeaders});
+
+    }
+      // return this.http.post<Commonresponseobject>(environment.API_URL + apiEndPoint, data, { headers: httpHeaders,});
     }
 
       callApiWithFormData(data: any, apiEndPoint: string) {
