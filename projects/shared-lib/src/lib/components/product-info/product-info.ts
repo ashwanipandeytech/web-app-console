@@ -76,7 +76,7 @@ export class ProductDetailCommon {
     window.scrollTo(0,0);
     this.productId = this.route.snapshot.paramMap.get('id');
 
-    this.dataService.callGetById('products',this.productId).subscribe((res:any) => {
+    this.dataService.getById('products',this.productId).subscribe((res:any) => {
       this.productDetails = res.data;
       console.log('productId==>',this.productDetails);
       this.cd.detectChanges();
@@ -116,7 +116,7 @@ export class ProductDetailCommon {
       product_id:this.selectedProduct.id,
       quantity:this.quantity
     }
-    this.dataService.callApiNew(cartPayload, 'cart')
+    this.dataService.post(cartPayload, 'cart')
       .pipe(
         catchError(err => {
           console.error('Error:', err);
@@ -152,7 +152,7 @@ export class ProductDetailCommon {
 
   callAllProductList() {
       this.loading = true;  // show loader
-    this.dataService.callGetApi('products/search','web').pipe(
+    this.dataService.get('products/search','web').pipe(
       catchError((error) => {
         return of(null); // or you can return a default value if needed
       })

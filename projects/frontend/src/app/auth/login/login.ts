@@ -59,7 +59,7 @@ this.loginForm();
       return;
     }
     else{
-        this.dataService.callApiNew(this.signupForm.value, 'auth/register')
+        this.dataService.post(this.signupForm.value, 'auth/register')
       .pipe(
         catchError(err => {
           console.error('Error:', err);
@@ -101,7 +101,7 @@ this.loginForm();
       return;
     }
     else{
-        this.dataService.callApiNew(this.loginform.value, 'auth/login')
+        this.dataService.post(this.loginform.value, 'auth/login')
       .pipe(
         catchError(err => {
           console.error('Error:', err);

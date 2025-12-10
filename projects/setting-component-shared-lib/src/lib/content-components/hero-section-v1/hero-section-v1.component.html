@@ -1,0 +1,11 @@
+<section id="hero" class="hero d-none d-sm-block">
+    <div class="hero-section">
+        <ngx-slick-carousel id="slick-carousel" class="hero-slider slick-carousel" [config]="heroBannerSlideConfig">
+            @for (slide of slides; track slide.img) {
+            <div ngxSlickItem class="slide position-relative">
+                <img [src]="slide.img" loading="lazy" />
+            </div>
+            }
+        </ngx-slick-carousel>
+    </div>
+</section>

@@ -42,7 +42,7 @@ constructor(private cd:ChangeDetectorRef){
 
 
   carList(){
-       this.dataService.callGetApi('cart').pipe(
+       this.dataService.get('cart').pipe(
         catchError((error) => {
           return of(null); // or you can return a default value if needed
         })

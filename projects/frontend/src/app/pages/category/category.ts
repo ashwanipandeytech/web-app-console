@@ -22,7 +22,7 @@ export class Category {
   
   getCategoryList() {
     this.categoryListData = [];
-    this.dataService.callGetApi('categories')
+    this.dataService.get('categories')
       .pipe(
         catchError(err => {
           console.error('Error:', err);

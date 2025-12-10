@@ -50,7 +50,7 @@ if (userString) {
 }
 
  carList(){
-      this.dataService.callGetApi('cart').pipe(
+      this.dataService.get('cart').pipe(
        catchError((error) => {
          return of(null); // or you can return a default value if needed
        })
@@ -151,7 +151,7 @@ console.log('this.selectedPaymentMethod==>',this.selectedPaymentMethod);
           payment_method:this.selectedPaymentMethod,
           shipping_address:this.fullAddrress
         }
-        this.dataService.callApiNew(OrderSubmitPayload, 'orders')
+        this.dataService.post(OrderSubmitPayload, 'orders')
             .pipe(
               catchError(err => {
                 console.error('Error:', err);
@@ -204,7 +204,7 @@ console.log('this.selectedPaymentMethod==>',this.selectedPaymentMethod);
       this.fullAddrress = this.checkoutForm.value;
        this.fullAddrress.label = this.checkoutForm.value.type;
        this.fullAddrress.name = this.checkoutForm.value.fname + ' ' + this.checkoutForm.value.lname;
-       this.dataService.callApiNew(this.fullAddrress, 'addresses')
+       this.dataService.post(this.fullAddrress, 'addresses')
             .pipe(
               catchError(err => {
                 console.error('Error:', err);

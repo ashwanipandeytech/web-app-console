@@ -119,15 +119,15 @@ export const routes: Routes = [
         path: 'thank-you',
         component: Thankyou,
          
-    }
-    // {
-    //     path: '',
-    //     pathMatch: 'full',
-    //     loadComponent: () => import('./host-outlet/host.component').then(m => m.HostOutletComponent),
-    //     resolve: {
-    //         pageData: PageContentResolver
-    //     }
-    // },
+    },
+    {
+        path: 'host',
+        pathMatch: 'full',
+        loadComponent: () => import('./host-outlet/host.component').then(m => m.HostOutletComponent),
+        resolve: {
+            pageData: PageContentResolver
+        }
+    },
     // {
     //     path: 'fotobuch',  
     //     pathMatch: 'full',     

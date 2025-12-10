@@ -32,7 +32,7 @@ export class ProductSidebarCommon {
     // };
 
     
-    this.dataService.callGetApi('products/search','web').pipe(
+    this.dataService.get('products/search','web').pipe(
       catchError((error) => {
         // console.error('Error occurred during login:', error);
        //add toaserfnc alert('Login failed: ' + response.message);
@@ -54,7 +54,7 @@ export class ProductSidebarCommon {
 
   getCategoryList() {
     this.categoryListData = [];
-    this.dataService.callGetApi('categories')
+    this.dataService.get('categories')
       .pipe(
         catchError(err => {
           console.error('Error:', err);

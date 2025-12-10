@@ -19,6 +19,12 @@
     "baseUrl": ".",
     
     "paths": {
+      "login-shared-lib": [
+        "./dist/login-shared-lib"
+      ],
+      "setting-component-shared-lib": [
+        "./dist/setting-component-shared-lib"
+      ],
       "shared-lib": ["projects/shared-lib/src/public-api.ts"],
       "shared-lib/*": ["projects/shared-lib/src/lib/*"]
     }
@@ -52,6 +58,18 @@
     },
     {
       "path": "./projects/console-panel/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/login-shared-lib/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/login-shared-lib/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/setting-component-shared-lib/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/setting-component-shared-lib/tsconfig.spec.json"
     }
   ]
 }

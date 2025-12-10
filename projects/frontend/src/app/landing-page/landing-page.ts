@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { catchError, of } from 'rxjs';
@@ -10,12 +10,13 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AddAddressModal } from 'shared-lib/model/add-address-modal/add-address-modal';
 import { SlickCarouselModule  } from 'ngx-slick-carousel';
 import { GlobaCommonlService } from '../../../../global-common.service';
+import { HostOutletComponent } from '../host-outlet/host.component';
 
 declare var $:any;
 @Component({
   selector: 'web-landing-page',
   templateUrl: './landing-page.html',
-  imports:[SlickCarouselModule,NgOptimizedImage],
+  imports:[SlickCarouselModule,NgOptimizedImage,HostOutletComponent],
   styleUrl: './landing-page.scss',
   standalone:true,
 })
@@ -113,9 +114,12 @@ export class LandingPage {
     ]
   };
 
-  constructor(private cd:ChangeDetectorRef, private router: Router){
+  constructor(private cd:ChangeDetectorRef, private router: Router,private http:HttpClient){
     this.callAllProductList();
     this.baseURL=environment.DOMAIN;
+//      this.http.get('/setting.component.json').subscribe((res: any) => {
+//   console.log('res==============>',res);
+// });
   }
 
   ngAfterViewInit() {
@@ -133,7 +137,7 @@ export class LandingPage {
   }
 
   callAllProductList() {
-    this.dataService.callGetApi('products/search','web').pipe(
+    this.dataService.get('products/search','web').pipe(
       catchError((error) => {
         // console.error('Error occurred during login:', error);
        //add toaserfnc alert('Login failed: ' + response.message);
@@ -154,7 +158,7 @@ export class LandingPage {
 
   getCategoryList() {
     this.categoryListData = [];
-    this.dataService.callGetApi('categories')
+    this.dataService.get('categories')
     .pipe(
       catchError(err => {
         console.error('Error:', err);
@@ -189,7 +193,7 @@ export class LandingPage {
     }
     // console.log('finalData==.',finalData);
     // return;
-     this.dataService.callApiNew(finalData, 'cart')
+     this.dataService.post(finalData, 'cart')
       .pipe(
         catchError(err => {
           return of(err);
@@ -237,3 +241,4 @@ export class LandingPage {
     });
   }
 }
+

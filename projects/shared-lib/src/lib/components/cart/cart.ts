@@ -144,7 +144,7 @@ constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDe
       }
     
       fullAddrress.label = this.addressForm.value.type;
-      this.dataService.callApiNew(fullAddrress, 'addresses')
+      this.dataService.post(fullAddrress, 'addresses')
       .pipe(
             catchError(err => {
               console.error('Error:', err);
@@ -168,7 +168,7 @@ constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDe
   }
 
   getAddressList(){
-    this.dataService.callGetApi('addresses').pipe(
+    this.dataService.get('addresses').pipe(
     catchError((error) => {
       return of(null); // or you can return a default value if needed
       })
@@ -191,9 +191,24 @@ constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDe
     });
   }
 
+  getCookie() {
+  const value = `; ${document.cookie}`;
+  const parts = value;
+  console.log('parts===>',parts);
+  // const token = this.getCookie('token');
+// console.log('token=', token);
+  // if (parts.length === 2) return parts.pop()?.split(';').shift();
+  // return null;
+}
+
+
+
+  ngOnInit(){
+    this.getCookie();
+  }
   carList(){
     this.loading = true;
-     this.dataService.callGetApi('cart').pipe(
+     this.dataService.get('cart').pipe(
       catchError((error) => {
         return of(null); // or you can return a default value if needed
       })
@@ -238,7 +253,7 @@ if (response.success == true) {
     let data = {
       quantity:quantity
     }
-      this.dataService.callPatchApi('cart', data,id)
+      this.dataService.patch('cart', data,id)
       .pipe(
         catchError(err => {
           console.error('Error:', err);
@@ -309,7 +324,7 @@ if (response.success == true) {
       }
 
        deleteCartItem(id: any) {
-    this.dataService.callDeleteApi('cart', id)
+    this.dataService.delete('cart', id)
       .pipe(
         catchError(err => {
           console.error('Error:', err);

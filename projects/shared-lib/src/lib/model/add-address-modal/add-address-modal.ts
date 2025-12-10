@@ -167,7 +167,7 @@ if (this.searchQuery == '') {
       }
     
       fullAddrress.label = this.addressForm.value.type;
-       this.dataService.callApiNew(fullAddrress, 'addresses')
+       this.dataService.post(fullAddrress, 'addresses')
             .pipe(
               catchError(err => {
                 console.error('Error:', err);
@@ -192,7 +192,7 @@ onSelectAddress(item: any) {
   console.log("Selected:", item);
 }
   getAddressList(){
-       this.dataService.callGetApi('addresses').pipe(
+       this.dataService.get('addresses').pipe(
       catchError((error) => {
         return of(null); // or you can return a default value if needed
       })

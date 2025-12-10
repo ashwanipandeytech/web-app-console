@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Commonresponseobject } from '../model/responsemodel';
 import { environment } from '../../../../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -19,7 +18,7 @@ export class DataService {
   }
   request(method: string, endpoint: string, data?: any, options: any = {}) {
     if (endpoint === 'cart') {
-      return this.http.post<Commonresponseobject>(`${environment.API_URL}${endpoint}`, data);
+      return this.http.post<any>(`${environment.API_URL}${endpoint}`, data);
     }
     let headers = new HttpHeaders({
       'Authorization': `Bearer ${this.authToken}`
@@ -31,16 +30,16 @@ export class DataService {
     switch (method.toUpperCase()) {
 
       case 'GET':
-        return this.http.get<Commonresponseobject>(`${environment.API_URL}${endpoint}`, httpOptions);
+        return this.http.get<any>(`${environment.API_URL}${endpoint}`, httpOptions);
 
       case 'POST':
-        return this.http.post<Commonresponseobject>(`${environment.API_URL}${endpoint}`, data, httpOptions);
+        return this.http.post<any>(`${environment.API_URL}${endpoint}`, data, httpOptions);
 
       case 'PATCH':
-        return this.http.patch<Commonresponseobject>(`${environment.API_URL}${endpoint}`, data, httpOptions);
+        return this.http.patch<any>(`${environment.API_URL}${endpoint}`, data, httpOptions);
 
       case 'DELETE':
-        return this.http.delete<Commonresponseobject>(`${environment.API_URL}${endpoint}`, httpOptions);
+        return this.http.delete<any>(`${environment.API_URL}${endpoint}`, httpOptions);
 
       default:
         throw new Error(`Invalid HTTP Method: ${method}`);
@@ -49,7 +48,7 @@ export class DataService {
 
   get(endpoint: string, from: string = '') {
     if (from === 'web') {
-      return this.http.get<Commonresponseobject>(`${environment.API_URL}${endpoint}`);
+      return this.http.get<any>(`${environment.API_URL}${endpoint}`);
     }
     return this.request('GET', endpoint);
   }
