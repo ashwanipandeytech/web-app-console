@@ -9,7 +9,8 @@
     "templateCode": "Category-Component-v1"
   },
   {
-    "templateCode": "topsection"
+    "templateCode": "Hero-Section-v1",
+    "data":{"title":"Demo"}
   },
   {
     "templateCode": "topsection"

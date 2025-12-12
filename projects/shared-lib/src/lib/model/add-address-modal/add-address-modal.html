@@ -4,56 +4,62 @@
 </div>
 
 <div class="modal-body">
-  <div class="search-bar">
-    <input type="text" (input)="searchAddress($event)" [value]="searchText" class="form-control" placeholder="Enter address..." >
-    <!-- @if (suggestions.length) {
-    <select>
-      @for (s of suggestions; track $index) {
-        <option (click)="selectSuggestion(s)"> {{ s.display_name }} </option>
-      }
-    </select>
-    } -->
-  </div>
+  @if(!browser){
 
-  @if (suggestions.length) {
-    <ul class="list-group mt-2">
-      @for (s of suggestions; track $index) {
-        <li class="list-group-item" aria-current="true" (click)="selectSuggestion(s)"> {{ s.properties.formatted }}</li>
+    <ng-container>
+  
+      <div class="search-bar">
+        <input type="text" (input)="searchAddress($event)" [value]="searchText" class="form-control" placeholder="Enter address..." >
+        <!-- @if (suggestions.length) {
+        <select>
+          @for (s of suggestions; track $index) {
+            <option (click)="selectSuggestion(s)"> {{ s.display_name }} </option>
+          }
+        </select>
+        } -->
+      </div>
+    
+      @if (suggestions.length) {
+        <ul class="list-group mt-2">
+          @for (s of suggestions; track $index) {
+            <li class="list-group-item" aria-current="true" (click)="selectSuggestion(s)"> {{ s.properties.formatted }}</li>
+          }
+        </ul>
       }
-    </ul>
-  }
-  {{selectedAddress}}
-  @if(searchText=='' && selectedAddress == '') {
-    <div class="d-flex align-items-center justify-content-between bg-light rounded gap-2 my-2 px-2">
-      <div class="d-flex align-items-center gap-2">
-        <div class="cDvsYG">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><g fill="#101418" fill-rule="evenodd" clip-rule="evenodd"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zM10 12a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/><path d="M12.75 2.75a.75.75 0 0 0-1.5 0v2.063c0 .08.013.158.037.231a7.003 7.003 0 0 0-6.247 6.212.758.758 0 0 0-.04-.001H2.75a.75.75 0 0 0 0 1.5H5l.04-.001a7.003 7.003 0 0 0 6.233 6.217.751.751 0 0 0-.023.185v2.103a.75.75 0 0 0 1.5 0v-2.103a.752.752 0 0 0-.023-.185 7.002 7.002 0 0 0 6.234-6.216h2.297a.75.75 0 1 0 0-1.5H18.96a7.003 7.003 0 0 0-6.247-6.21.747.747 0 0 0 .037-.232zm4.75 9.259a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></g></svg>
-        </div>
-        <div class="cIArQh">
-          <div class="ck03O3">
-            <div class="c4ZmYS" data-size="small">
-              <span class="nfVqo">Use My Current Location</span>
+      {{selectedAddress}}
+      @if(searchText=='' && selectedAddress == '') {
+        <div class="d-flex align-items-center justify-content-between bg-light rounded gap-2 my-2 px-2">
+          <div class="d-flex align-items-center gap-2">
+            <div class="cDvsYG">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><g fill="#101418" fill-rule="evenodd" clip-rule="evenodd"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zM10 12a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/><path d="M12.75 2.75a.75.75 0 0 0-1.5 0v2.063c0 .08.013.158.037.231a7.003 7.003 0 0 0-6.247 6.212.758.758 0 0 0-.04-.001H2.75a.75.75 0 0 0 0 1.5H5l.04-.001a7.003 7.003 0 0 0 6.233 6.217.751.751 0 0 0-.023.185v2.103a.75.75 0 0 0 1.5 0v-2.103a.752.752 0 0 0-.023-.185 7.002 7.002 0 0 0 6.234-6.216h2.297a.75.75 0 1 0 0-1.5H18.96a7.003 7.003 0 0 0-6.247-6.21.747.747 0 0 0 .037-.232zm4.75 9.259a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></g></svg>
+            </div>
+            <div class="cIArQh">
+              <div class="ck03O3">
+                <div class="c4ZmYS" data-size="small">
+                  <span class="nfVqo">Use My Current Location</span>
+                </div>
+              </div>
+              <div class="ctyATk" data-size="small">Enable your current location for better services</div>
             </div>
           </div>
-          <div class="ctyATk" data-size="small">Enable your current location for better services</div>
+          <div class="__78jF3">
+            <button class="btn btn-primary p-2" (click)="getCurrentLocation()">Enable</button>
+          </div>
         </div>
-      </div>
-      <div class="__78jF3">
-        <button class="btn btn-primary p-2" (click)="getCurrentLocation()">Enable</button>
-      </div>
-    </div>
+      }
+    </ng-container>
   }
 
 
   @if (isNewAddress) {
     <ng-container>
-      <div class="d-flex align-items-start bg-primary-light rounded p-3 mb-3">
+      <!-- <div class="d-flex align-items-start bg-primary-light rounded p-3 mb-3">
         <img src="assets/images/svg/indictor.svg" alt="" class="pt-1">
         <p class="fs-14 ms-1 mb-0">
           <span class="d-block">Area name</span>
           <span class="fs-12">Address here 256, Street 65/4, Address here 256, Street 65/4</span>
         </p>
-      </div>
+      </div> -->
 
       <!-- Reactive Form -->
       <form [formGroup]="addressForm" (ngSubmit)="submitForm()">

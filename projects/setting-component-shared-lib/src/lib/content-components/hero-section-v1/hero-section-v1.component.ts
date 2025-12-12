@@ -26,7 +26,7 @@ heroBannerSlideConfig = {
   constructor() { }
 
   ngOnInit() {
-    console.log('HeroSectionV1Component load');
+    console.log('HeroSectionV1Component load',this.data);
     
   }
 

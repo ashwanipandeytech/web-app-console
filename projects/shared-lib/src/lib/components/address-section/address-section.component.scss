@@ -1,0 +1,105 @@
+@use '../../scss/variable' as *;
+   .profile-section {
+      margin-top: 3rem;
+
+      .product-wrapper {
+        @include flexItem($align: flex-start, $direction: column, $gap: 2rem);
+        height: auto;
+        padding: 2.6rem;
+        background-color: $heading;
+        border: none;
+        box-shadow: none;
+
+        svg,
+        path {
+          fill: currentColor;
+          fill: $secondary-theme;
+        }
+
+        rect {
+          fill: $primary-color;
+        }
+
+        .paragraph {
+          font-size: 2rem;
+          color: $primary-color;
+        }
+
+        .heading {
+          font-size: 4rem;
+          color: $primary-color;
+        }
+
+        &:hover {
+          background: $theme-color;
+
+          svg,
+          path {
+            fill: $theme-color;
+          }
+
+          .paragraph,
+          .heading {
+            color: $primary-color;
+          }
+        }
+      }
+
+      .info-section {
+        @include flexItem($justify: space-between);
+        padding: 4rem;
+        background: #f8f8f8;
+        border-radius: 0.5rem;
+
+        .heading {
+          margin-bottom: 2rem;
+        }
+      }
+
+      .info-list {
+        @include flexItem($justify: flex-start, $gap: 2rem);
+
+        p {
+          font-size: 1.6rem;
+        }
+
+        .info-title,
+        .info-details {
+          @include flexItem($direction: column, $align: flex-start, $gap: 2rem);
+        }
+
+        .info-details {
+          p {
+            color: $heading;
+            font-weight: 500;
+          }
+        }
+      }
+
+      .devider {
+        height: 16.4rem;
+        width: 1px;
+        background: $paragraph;
+      }
+    }
+        .address-section {
+          .seller-info {
+            background-color: $theme-bg;
+            padding: 2rem;
+
+            .info-list {
+              margin-top: 1.5rem;
+              p {
+                font-size: 1.4rem;
+              }
+            }
+          }
+
+          .shop-btn {
+            margin: 2rem 0;
+
+            &::after {
+              display: none;
+            }
+          }
+        }
