@@ -4,10 +4,10 @@
         <div class="blog-bradcrum">
             <span><a href="index.html">Home</a></span>
             <span class="devider">/</span>
-            <span><a href="#">Dashboard</a></span>
+            <span><a href="#">settings</a></span>
         </div>
         <div class="blog-heading about-heading">
-            <h1 class="heading">User Dashboard</h1>
+            <h1 class="heading">User Settings</h1>
         </div>
     </div>
 </section>
@@ -298,7 +298,10 @@
 
                     <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
                         <div class="seller-application-section">
-                            <div class="row ">
+<!-- Personal-Details Component  -->
+
+<app-personal-details ></app-personal-details>
+                            <!-- <div class="row ">
                                 <div class="col-lg-7">
                                     <div class=" account-section">
                                         <div class="review-form">
@@ -380,7 +383,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
@@ -812,7 +815,10 @@
                         </div>
                     </div>
 
-                    <div class="tab-pane fade" id="v-pills-address" role="tabpanel" aria-labelledby="v-pills-address-tab" tabindex="0">
+
+                    <!-- address -sectiob  -->
+                     <app-address-section></app-address-section>
+                    <!-- <div class="tab-pane fade" id="v-pills-address" role="tabpanel" aria-labelledby="v-pills-address-tab" tabindex="0">
                         <div class="profile-section address-section addresses ">
                             <div class="row gy-md-0 g-5">
                                 <div class="col-md-6">
@@ -860,11 +866,9 @@
                                 <div class="col-lg-6">
                                     <a href="#" class="shop-btn" onclick="modalAction('.submit')">Add New
                                         Address</a>
-                                    <!-- modal -->
                                     <div class="modal-wrapper submit">
                                         <div onclick="modalAction('.submit')" class="anywhere-away"></div>
 
-                                        <!-- change this -->
                                         <div class="login-section account-section modal-main">
                                             <div class="review-form">
                                                 <div class="review-content">
@@ -920,13 +924,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- change this -->
 
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="tab-pane fade" id="v-pills-review" role="tabpanel" aria-labelledby="v-pills-review-tab" tabindex="0">
 

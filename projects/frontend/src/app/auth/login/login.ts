@@ -113,10 +113,26 @@ this.loginForm();
         // console.log('Response:', res.error.message);
         if (res.success ==true) {
           this.globalService.showMsgSnackBar(res);
-        localStorage.setItem('user', JSON.stringify(res.data));
-        this.router.navigate(['/landing'])
-        window.location.reload();
+        // localStorage.setItem('user', JSON.stringify(res.data));
+         let isNonUserToken:any = JSON.parse(localStorage.getItem('isNonUser') || 'null');
+          console.log('isNonUserToken==>',isNonUserToken);
+          if (isNonUserToken) {
+            console.log('re===>',res.data);
+            // res.data.token = isNonUserToken;
+        //  localStorage.removeItem('isNonUser');
+            localStorage.setItem('user', JSON.stringify(res.data));
+            this.router.navigate(['/landing']);
+            // window.location.reload();
+            setTimeout(() => {
+            localStorage.removeItem('isNonUser');
+            }, 500);
         }
+        else{
+            localStorage.setItem('user', JSON.stringify(res.data));
+            this.router.navigate(['/landing']);
+            window.location.reload();
+        }
+      }
         else if (res.error && res.error.message) {
         console.log('error  :', res.error.message);
           this.globalService.showMsgSnackBar(res.error);

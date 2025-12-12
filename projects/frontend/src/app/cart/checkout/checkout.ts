@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { HttpClient } from '@angular/common/http';
 import { GlobaCommonlService } from '../../../../../global-common.service';
 import { Router } from '@angular/router';
+import { GlobalFunctionService } from '../../../../../shared-lib/src/lib/services/global-function.service';
 
 @Component({
   selector: 'web-checkout',
@@ -16,6 +17,7 @@ import { Router } from '@angular/router';
 })
 export class Checkout {
 private dataService = inject(DataService);
+private globalFunctionService = inject(GlobalFunctionService);
 private router = inject(Router);
 private globalService = inject(GlobaCommonlService);
 private http = inject(HttpClient);
@@ -78,8 +80,6 @@ if (userString) {
       calculateSubTotal(){
         // this.grandTotal = 0;
       this.subTotal = 0;
-console.log('this.cartListData==>',this.cartListData);
-
       for (let i = 0; i < this.cartListData.length; i++) {
         const element = this.cartListData[i];
         this.subTotal += element.product.price_data.regularPrice;
@@ -102,7 +102,7 @@ console.log('this.selectedPaymentMethod==>',this.selectedPaymentMethod);
           if (this.selectedPaymentMethod == 'onCash') {
                 this.router.navigate(['/thank-you'])  
 
-            // this.orderSubmit(addressId);
+            this.orderSubmit(addressId);
           }
           else{
             let checkoutPaymentData = {
@@ -116,7 +116,7 @@ console.log('this.selectedPaymentMethod==>',this.selectedPaymentMethod);
           .subscribe({
             next: (response:any) => {
               if (response.success) {
-                // this.orderSubmit(addressId);
+                this.orderSubmit(addressId);
                 console.log("Payment Success:", response);
                 this.router.navigate(['/thank-you'])  
               }
@@ -149,7 +149,7 @@ console.log('this.selectedPaymentMethod==>',this.selectedPaymentMethod);
           total_amount: this.grandTotal,
           address_id: addressId,
           payment_method:this.selectedPaymentMethod,
-          shipping_address:this.fullAddrress
+          shipping_address:String(this.fullAddrress)
         }
         this.dataService.post(OrderSubmitPayload, 'orders')
             .pipe(
@@ -279,12 +279,10 @@ console.log('this.selectedPaymentMethod==>',this.selectedPaymentMethod);
 
 loadCountries() {
 
-  this.getCountries().subscribe((res:any)=>{
+    this.globalFunctionService.getCountries().subscribe((res:any)=>{
     this.countries = res.data;
     console.log('res====>',this.countries);
-this.states = this.countries[98].states;
-
-
+    this.states = this.countries[98].states;
   })
   // this.getCountries().subscribe({
   //   next: (data) => {
@@ -299,7 +297,7 @@ this.states = this.countries[98].states;
 onStateChange(event: Event){
   const value = (event.target as HTMLSelectElement).value;
   console.log('Selected index:', value);
-   this.getCities("India", value)
+   this.globalFunctionService.getCities("India", value)
     .subscribe(cities => {
       this.cities = cities;
     });
@@ -319,22 +317,22 @@ setAddressType(type: string) {
   }
   // common public api 
 
- getCountries() {
-  return this.http.get<any>(
-    'https://countriesnow.space/api/v0.1/countries/states'
-  ).pipe(
-    map((res) => res)
-  );
-}
-  getCities(country: string, state: string) {
-    return this.http.post<any>(
-       'https://countriesnow.space/api/v0.1/countries/state/cities',
-      // `https://countriesnow.space/api/v0.1/countries/${state}/${country}/cities`,
-      { country, state }
-    ).pipe(
-      map(res => res.data)
-    );
-  }
+//  getCountries() {
+//   return this.http.get<any>(
+//     'https://countriesnow.space/api/v0.1/countries/states'
+//   ).pipe(
+//     map((res) => res)
+//   );
+// }
+  // getCities(country: string, state: string) {
+  //   return this.http.post<any>(
+  //      'https://countriesnow.space/api/v0.1/countries/state/cities',
+  //     // `https://countriesnow.space/api/v0.1/countries/${state}/${country}/cities`,
+  //     { country, state }
+  //   ).pipe(
+  //     map(res => res.data)
+  //   );
+  // }
 choosePaymentMethod(method:any){
 this.selectedPaymentMethod = method;
 console.log('menthodi==.',method);

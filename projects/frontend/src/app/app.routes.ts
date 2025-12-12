@@ -25,7 +25,7 @@ import { Thankyou } from './pages/thankyou/thankyou';
 export const routes: Routes = [
     {
         path: '',
-        component: LandingPage,
+        component: Login,
         
     },
      {

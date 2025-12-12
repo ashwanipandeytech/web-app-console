@@ -38,10 +38,19 @@ export class CartCommon {
   cartListData: any=[];
   grandTotal: number=0;
   loading: boolean=true;
+  isLoggedIn: boolean=false;
 constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDetectorRef){
   this.addAddressForm();
   this.getAddressList();
   this.carList();
+   let userData:any = localStorage.getItem('user');
+    if (userData == null) {
+      this.isLoggedIn = false;
+    }
+    else{
+      this.isLoggedIn = true;
+      
+    }
 }
   newAddress() {
     this.isNewAddress=true;
@@ -191,20 +200,20 @@ constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDe
     });
   }
 
-  getCookie() {
-  const value = `; ${document.cookie}`;
-  const parts = value;
-  console.log('parts===>',parts);
-  // const token = this.getCookie('token');
-// console.log('token=', token);
-  // if (parts.length === 2) return parts.pop()?.split(';').shift();
-  // return null;
-}
+//   getCookie() {
+//   const value = `; ${document.cookie}`;
+//   const parts = value;
+//   console.log('parts===>',parts);
+//   // const token = this.getCookie('token');
+// // console.log('token=', token);
+//   // if (parts.length === 2) return parts.pop()?.split(';').shift();
+//   // return null;
+// }
 
 
 
   ngOnInit(){
-    this.getCookie();
+    // this.getCookie();
   }
   carList(){
     this.loading = true;

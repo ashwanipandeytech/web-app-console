@@ -7,6 +7,7 @@ import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../../../environments/environment';
+import { CheckPlatformService } from '../../services/check-platform.service';
 declare const google: any;
 
 @Component({
@@ -18,6 +19,7 @@ declare const google: any;
 export class AddAddressModal {
   @ViewChild('addressInput') addressInput!: ElementRef<HTMLInputElement>;
   private dataService:any = inject(DataService);
+  private checkPlatform:any = inject(CheckPlatformService);
   // selectedAddress: string = '';
   searchText = '';
   suggestions: any[] = [];
@@ -28,9 +30,20 @@ export class AddAddressModal {
   lng: any;
   addressListData: any=[];
   searchQuery: any;
+  browser: boolean=true;
   constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDetectorRef,private activeModal:NgbActiveModal){
     this.addAddressForm();
     this.getAddressList();
+
+    let platformName = this.checkPlatform.checkPlatformType();
+    console.log('platformName==>',platformName);
+    if (platformName.Web == true) {
+      this.browser = true;
+      this.isNewAddress = true;
+    }
+    else{
+      this.browser = false;
+    }
   }
 
   newAddress() {
