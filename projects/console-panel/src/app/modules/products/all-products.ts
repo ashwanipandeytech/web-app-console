@@ -41,7 +41,7 @@ export class AllProducts {
     };
 
     
-    this.dataService.callGetApi('products').pipe(
+    this.dataService.get('products').pipe(
       catchError((error) => {
         console.error('Error occurred during login:', error);
        //add toaserfnc alert('Login failed: ' + response.message);
@@ -83,7 +83,7 @@ export class AllProducts {
       })
     }
       deleteProduct(id: any) {
-    this.dataService.callDeleteApi('products', id)
+    this.dataService.delete('products', id)
       .pipe(
         catchError(err => {
           console.error('Error:', err);

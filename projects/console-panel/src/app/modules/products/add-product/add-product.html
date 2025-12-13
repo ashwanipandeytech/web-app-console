@@ -13,22 +13,23 @@
             <div class="panel mb-30">
                 <div class="panel-body product-title-input">
                     <label class="form-label">Product Title</label>
-                    <input type="text" formControlName="productTitle" class="form-control" id="productTitle" placeholder="Title for product" [class.is-invalid]="addProductDetailsValidation['productTitle'].touched && addProductDetailsValidation['productTitle'].invalid">
+                    <input type="text" formControlName="productTitle" class="form-control" id="productTitle" placeholder="Title for product" [class.is-invalid]="addProductDetailsValidation['productTitle'].touched && addProductDetailsValidation['productTitle'].invalid" (change)="createPermalink()">
                   @if (addProductDetailsValidation['productTitle'].touched && addProductDetailsValidation['productTitle'].errors?.['required']) {
 
                     <div class="text-danger mt-1">
                         Product title is required.
                       </div>
                   }
-                    <p class="perma-txt" hidden>
-                        Permalink: <span data-link="https://example.com/" class="site-link text-primary" id="productPermalink">https://example.com/</span>
-                        <input type="text" class="form-control form-control-sm" hidden id="editPermalink">
-                        <button class="btn-flush bg-primary" id="editPermaBtn">Edit</button>
-                        <button class="btn-flush bg-success" id="createPerma" hidden>OK</button>
-                        <button class="btn-flush bg-danger" id="cancelPerma" hidden>Cancel</button>
+                    <p class="perma-txt">
+                        Permalink: <span [attr.data-link]="domain + '/'" class="site-link text-primary" id="productPermalink">{{domain}}/{{permaLink}}</span>
+                        <input type="text" class="form-control form-control-sm" [value]="permaLink" [hidden]="!isInputShow" (change)="getUpdatedValue($event)">
+                        <button class="btn-flush bg-primary"(click)="enableInput()">Edit</button>
+                        <button class="btn-flush bg-success" id="createPerma" (click)="permalinkAction('done')">OK</button>
+                        <button class="btn-flush bg-danger" id="cancelPerma" (click)="permalinkAction('cancel')">Cancel</button>
                     </p>
                 </div>
             </div>
+
             <div class="panel mb-30">
               <div class="panel-header">
                 <h5>Product Description</h5>
@@ -38,6 +39,22 @@
                 </div>
               </div>
               <quill-editor formControlName="productDescription"></quill-editor>
+            </div>
+
+
+             <div class="panel mb-30">
+                  <div class="panel-body">
+                                  <label for="pstatus" class="form-label">Product Status*</label>
+                                 <select size="4" id="pstatus" class="form-select" formControlName="productStatus">
+                                      @for(item of productStatus; track $index){
+                                        <option [value]="item">{{item}}</option>
+                                      }
+                                    </select>
+
+                                  <!-- @if (hasError('country', 'required')) {
+                                  <small class="text-danger">Country is required</small>
+                                  } -->
+                                </div>
             </div>
           </form>
  

@@ -69,7 +69,7 @@ this.loginFormGrp();
     if (this.loginForm.invalid) {
       return;
     }
-    this.dataService.callApi(this.loginForm.value, 'auth/login').pipe(
+    this.dataService.post(this.loginForm.value, 'auth/login').pipe(
       catchError((error) => {
         console.error('Error occurred during login:', error);
        //add toaserfnc alert('Login failed: ' + response.message);

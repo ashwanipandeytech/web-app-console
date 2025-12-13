@@ -11,7 +11,8 @@ import { environment } from 'environments/environment';
 import {MatIconModule} from '@angular/material/icon';
 import { SharedModule } from '../../../shared.module';
 import { CategoryTreeComponent } from './category-tree/category-tree.component';
-
+import {PRODUCT_TYPE} from 'shared-lib/constants/app-constant';
+ 
 interface FoodNode {
   name: string;
   children?: FoodNode[];
@@ -19,12 +20,12 @@ interface FoodNode {
 @Component({
   selector: 'app-add-customer',
   imports: [
-     ReactiveFormsModule,
-     QuillModule,
-     MatTreeModule,
-     MatIconModule,
-     CategoryTreeComponent
-    ],
+    ReactiveFormsModule,
+    QuillModule,
+    MatTreeModule,
+    MatIconModule,
+    CategoryTreeComponent,
+],
   templateUrl: './add-product.html',
   styleUrl: './add-product.scss'
 })
@@ -92,15 +93,21 @@ categories = [
   parentId!:Number;
   selectedThumbImg: any;
   thumbGallery: any=[];
+  permaLink: any;
+  isInputShow: boolean=false;
+  domain: string='';
+  productStatus: string[]=[];
   constructor(private fb: FormBuilder,private globalService:GlobalService,private cd:ChangeDetectorRef){
     this.initializeForms()
     this.initializeCategoryControls();
+    this.productStatus = PRODUCT_TYPE;
   }
 
    onGetId(id: number) {
     this.parentId = id;
   }
   ngOnInit(){
+    this.domain = window.location.origin;
     this.getCategoryList();
   }
   initializeForms(){
@@ -124,6 +131,7 @@ categories = [
     this.productDetails = this.fb.group({
       productTitle:['',Validators.required],
       productDescription:[''],
+      productStatus:[[]]
     })
   }
   get addProductDetailsValidation() {
@@ -136,6 +144,15 @@ categories = [
     })
   }
 
+onStatusChange(event: any) {
+  const selectedOptions = Array.from(event.target.selectedOptions).map(
+    (option: any) => option.value
+  );
+
+  this.productDetails.patchValue({
+    productStatus: selectedOptions
+  });
+}
 
   mediaForm(){
       this.productMediaSection = this.fb.group({
@@ -461,6 +478,8 @@ onGallerySelect(event: any) {
   this.galleryFiles = event.target.files;
 }
 getProductDetails(){
+  console.log('productDetails==>',this.productDetails.value);
+  
   let priceSection = this.priceSection.value;
   priceSection.priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
   priceSection.priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
@@ -489,7 +508,7 @@ getProductDetails(){
   }
     }
     console.log('finalData==>',finalData);
-    this.dataService.callApiNew(finalData, 'products')
+    this.dataService.post(finalData, 'products')
       .pipe(
         catchError(err => {
           console.error('Error:', err);
@@ -580,7 +599,7 @@ getProductDetails(){
 
 
 callUploadnediaSection(formData:any){
-    this.dataService.callApiWithFormData(formData, 'media/upload')
+    this.dataService.postForm(formData, 'media/upload')
       .pipe(
         catchError(err => {
           console.error('Error:', err);
@@ -602,7 +621,7 @@ callUploadnediaSection(formData:any){
 // get categories 
   getCategoryList() {
     this.categoryListData = [];
-    this.dataService.callGetApi('categories')
+    this.dataService.get('categories')
       .pipe(
         catchError(err => {
           console.error('Error:', err);
@@ -630,5 +649,26 @@ callUploadnediaSection(formData:any){
       });
   }
 
- 
+
+  createPermalink(){
+    this.productDetails.value.productTitle;
+    // let permaLinkValue = this.productDetails.value.productTitle.contains(' ')
+    const formatted = this.productDetails.value.productTitle.replace(/\s+/g, '-').toLowerCase();
+    this.permaLink = formatted;
+    this.cd.detectChanges();
+  }
+    enableInput(){
+      this.isInputShow = true;
+    }
+    getUpdatedValue(event:any){
+      console.log('event==>',event.target.value);
+      let value = event.target.value.replace(/\s+/g, '-').toLowerCase();;
+      this.permaLink = value;
+   }
+   permalinkAction(action:String){
+     this.isInputShow = false;   
+    if (action == 'cancel') {
+      this.permaLink = '';
+    }
+   }
 }
