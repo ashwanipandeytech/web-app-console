@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@angular/build": "^20.3.0",
-    "@angular/cli": "^20.3.0",
+    "@angular/cli": "^20.3.13",
     "@angular/compiler-cli": "^20.3.0",
     "@capacitor/cli": "^7.4.4",
     "@capacitor/core": "^7.4.4",

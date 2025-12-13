@@ -46,7 +46,7 @@ export class LandingPage {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
-    dots: true,
+    dots: false,
     arrows: true,
   };
 
@@ -55,7 +55,7 @@ export class LandingPage {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
-    dots: true,
+    dots: false,
     // centerMode: true,
     // centerPadding: '50px',  // MUST have 'px' or '%'
     lazyLoad: 'ondemand',
@@ -66,7 +66,7 @@ export class LandingPage {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
-    dots: true,
+    dots: false,
     // centerMode: true,
     centerPadding: '20px',  // MUST have 'px' or '%'
     lazyLoad: 'ondemand',
@@ -83,10 +83,10 @@ export class LandingPage {
   };
 
   productSectionSlideConfig = {
-    slidesToShow: 5,
-    // slidesToScroll: 1,
+    slidesToShow: 4.5,
+    infinite: false,
     autoplaySpeed: 2000,
-    dots: true,
+    dots: false,
     // centerMode: true,
     lazyLoad: 'ondemand',
     centerPadding: '12px',
@@ -100,13 +100,13 @@ export class LandingPage {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 5
+          slidesToShow: 4
         }
       },
       {
         breakpoint: 540,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 2,
           centerPadding: '16px',
           arrows: false,
         }

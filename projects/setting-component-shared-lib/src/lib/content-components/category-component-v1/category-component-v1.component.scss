@@ -1,0 +1,6 @@
+.product-category{
+    .category-section{
+        grid-template-columns: repeat(auto-fit, minmax(120px, max-content));
+        justify-content: center;
+    }
+}
