@@ -99,7 +99,7 @@ if (userString) {
     // else{
 console.log('this.selectedPaymentMethod==>',this.selectedPaymentMethod);
 
-          if (this.selectedPaymentMethod == 'onCash') {
+          if (this.selectedPaymentMethod == 'cod') {
                 this.router.navigate(['/thank-you'])  
 
             this.orderSubmit(addressId);
@@ -133,23 +133,28 @@ console.log('this.selectedPaymentMethod==>',this.selectedPaymentMethod);
         }
 
         orderSubmit(addressId:any){
-        this.cartListData.filter((item:any)=>{
-            delete item.product.description;
-            delete item.product.inventory
-            delete item.product.media
-            delete item.product.uploadedImages
-            delete item.product.offer
-            delete item.product.shipping_config
-            delete item.product.shipping_info
-             
-          })
+      this.cartListData = this.cartListData.map((item: any) => {
+        if (item?.product?.id) {
+          item.product.product_id = item.product.id;
+          delete item.product.id;
+        }
+
+        delete item.product.description;
+        delete item.product.inventory;
+        delete item.product.media;
+        delete item.product.uploadedImages;
+        delete item.product.offer;
+        delete item.product.shipping_config;
+        delete item.product.shipping_info;
+  return item;
+});
           console.log('cartList==>',this.cartListData);
         let OrderSubmitPayload = {
           items:this.cartListData,
           total_amount: this.grandTotal,
           address_id: addressId,
           payment_method:this.selectedPaymentMethod,
-          shipping_address:String(this.fullAddrress)
+          shipping_address:JSON.stringify(this.fullAddrress)
         }
         this.dataService.post(OrderSubmitPayload, 'orders')
             .pipe(
