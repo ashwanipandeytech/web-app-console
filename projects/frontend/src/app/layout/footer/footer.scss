@@ -1,7 +1,7 @@
 @use '../../../scss/variable' as *;
 
 .footer {
-  background: $heading;
+  background: #000;
   padding-bottom: 0;
 }
 .footer-padding {
@@ -112,7 +112,6 @@
     a {
       color: #c8c8c8;
       font-size: 1.5rem;
-      font-weight: 300;
 
       &:hover {
         color: $theme-color;

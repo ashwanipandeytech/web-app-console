@@ -9,8 +9,12 @@
     "templateCode": "Category-Component-v1"
   },
   {
-    "templateCode": "Hero-Section-v1",
-    "data":{"title":"Demo"}
+    "templateCode": "ProductComponent",
+    "data":{"title":"Top Selling Prodcuts"}
+  },
+  {
+    "templateCode": "Product-Section",
+    "data":{"title":"topSelling"}
   },
   {
     "templateCode": "topsection"

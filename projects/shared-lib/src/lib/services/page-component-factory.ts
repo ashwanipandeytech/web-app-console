@@ -1,7 +1,8 @@
 import { Injectable, Type, ViewContainerRef, Injector } from '@angular/core';
-import { blockC21v1Component } from '../components/block-c21-v1/block-c21-v1.component';
 import { HeroSectionV1Component} from '../../../../setting-component-shared-lib/src/lib/content-components/hero-section-v1/hero-section-v1.component';
 import { CategoryComponentV1Component} from '../../../../setting-component-shared-lib/src/lib/content-components/category-component-v1/category-component-v1.component';
+import { ProductComponent} from '../../../../setting-component-shared-lib/src/lib/content-components/product/product.component';
+
 // Define the component registry type for better type safety
 interface ComponentRegistry {
   [key: string]: () => Promise<Type<any>>;
@@ -12,9 +13,9 @@ interface ComponentRegistry {
 })
 export class PageComponentFactory {
   templateWiseComponents:any={
-    'Block-C-22-v1':blockC21v1Component,
     'Hero-Section-v1':HeroSectionV1Component,
-    'Category-Component-v1':CategoryComponentV1Component
+    'Category-Component-v1':CategoryComponentV1Component,
+    'ProductComponent':ProductComponent
 
   }
   // private componentsRegistry: ComponentRegistry = {

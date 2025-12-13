@@ -89,7 +89,7 @@
       @include flexItem();
       width: 100%;
       border-radius: 1.2rem;
-      border: 1px solid $theme-bg;
+      border: 2px solid $paragraph;
       transition: all 0.3s;
       background: white;
       height: 10rem;
@@ -98,7 +98,7 @@
         transition: all 0.2s ease-in-out;
       }
       &:hover {
-        border: 1px solid $theme-color;
+        border-color: $theme-color;
         img {
           transform: scale(1.2);
         }
@@ -230,7 +230,7 @@
 
 .flash-sale-section {
   background: url("/images/homepage-one/flash_sale.webp") no-repeat center / cover;
-  height: 38rem;
+  max-height: 40rem;
   border-radius: 4px;
   padding: 2rem 6rem;
   position: relative;

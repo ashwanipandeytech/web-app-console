@@ -3,7 +3,7 @@
         <ngx-slick-carousel id="slick-carousel" class="hero-slider slick-carousel" [config]="heroBannerSlideConfig">
             @for (slide of slides; track slide.img) {
             <div ngxSlickItem class="slide position-relative">
-                <img [src]="slide.img" loading="lazy" />
+                <img [src]="slide.img" loading="lazy" alt="" title="" class="w-100" />
             </div>
             }
         </ngx-slick-carousel>

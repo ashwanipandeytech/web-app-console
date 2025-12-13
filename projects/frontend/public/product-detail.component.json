@@ -1,0 +1,13 @@
+[
+
+  {
+    "templateCode": "ProductDetailCommon"
+  },
+  
+  {
+    "templateCode": "ProductComponent",
+    "data":{"title":"Top Selling Prodcuts"}
+  }
+  
+  
+]
