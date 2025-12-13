@@ -423,10 +423,13 @@ onThumbSelect(event: any) {
 
 // media upload photo fnc 
 onFileSelect(event: any) {
-   const file = event.target.files[0];
-  if (!file) return;
+
   // const file = event.target.files[0];
+  for (let i = 0; i < event.target.files.length; i++) {
+  const file = event.target.files[i];
+  if (!file) return;
   this.selectedFile.push(file);
+console.log('this.selectedFile===>',this.selectedFile);
 
   // Preview if needed
   const reader = new FileReader();
@@ -435,9 +438,14 @@ onFileSelect(event: any) {
       this.thumbGallery.push(reader.result as string);
       this.cd.detectChanges();
   };
-  reader.readAsDataURL(file);
+
+    const element = this.selectedFile[i];
+    reader.readAsDataURL(element);
+  }
   // Call upload immediately
   // this.uploadImage();
+  console.log(' this.thumbGallery===>', this.thumbGallery);
+  
 }
 
 onFileSelectThumb(event: any) {

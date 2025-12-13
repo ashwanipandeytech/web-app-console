@@ -29,7 +29,7 @@ constructor(private cd:ChangeDetectorRef){
       this.userName = JSON.parse(userData).user.name;
       
     }
-    // this.carList();
+    this.carList();
   }
   openDashboard(){
     if (this.isLoggedIn) {
