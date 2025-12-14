@@ -1,5 +1,20 @@
 .product-cart {
-    min-height: 75vh;
+    min-height: 400px;
+    .cart-section{
+      .wrapper-img{
+        img{max-height: 180px;}
+      }
+      .wrapper-content{
+        .heading{
+          width: calc(100% - 30px);
+          font-size: 14px;
+        }
+        .cancel-btn, .counter .btn{
+          &:hover{background-color: #f1f2f7;}
+        }
+        .config-title{width: 150px;}
+      }
+    }
 }
 
 .img-container{

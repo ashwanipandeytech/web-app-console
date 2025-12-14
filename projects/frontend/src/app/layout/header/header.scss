@@ -680,7 +680,6 @@
   .shop-btn {
     @include shopBtn(
       $margin: 0px,
-      $padding: 1.4rem 4rem,
       $btn-bg: $secondary-theme,
       $bf-color: $heading
     );

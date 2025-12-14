@@ -1,10 +1,10 @@
 <!--------------- blog-tittle-section---------------->
-<section class="blog py-2">
+<section class="blog py-4">
     <div class="container">
         <div class="blog-bradcrum">
             <span><a href="index.html">Home</a></span>
             <span class="devider">/</span>
-            <span><a href="#">Checkout</a></span>
+            <span><a href="#" class="fw-semibold">Checkout</a></span>
         </div>
         <div class="blog-heading about-heading">
             <h1 class="heading">Checkout</h1>
@@ -18,10 +18,10 @@
     <div class="container">
         <div class="checkout-section">
             <div class="row gy-5 gy-lg-0">
-                <div class="col-lg-6">
+                <div class="col-md-6 col-12">
                     <div class="checkout-wrapper">
-                        <div class="account-section billing-section box-shadows">
-                            <h3 class="wrapper-heading">Billings Details</h3>
+                        <div class="account-section billing-section p-4 border">
+                            <h3 class="wrapper-heading mb-4">Billings Details</h3>
                             <form [formGroup]="checkoutForm">
                               <div class="review-form">
                                 <div class="account-inner-form">
@@ -30,10 +30,10 @@
                                     <label for="fname" class="form-label">First Name*</label>
                                     <input type="text" id="fname" class="form-control" placeholder="First Name" formControlName="fname">
                                     @if (hasError('fname', 'required')) {
-                                    <small class="text-danger">First name is required</small>
+                                    <small class="text-danger position-absolute">First name is required</small>
                                     }
                                     @if (hasError('fname', 'minlength')) {
-                                      <small class="text-danger">Minimum 2 characters</small>
+                                      <small class="text-danger position-absolute">Minimum 2 characters</small>
                                     }
                                   </div>
 
@@ -42,7 +42,7 @@
                                     <label for="lname" class="form-label">Last Name*</label>
                                     <input type="text" id="lname" class="form-control" placeholder="Last Name" formControlName="lname">
                                     @if (hasError('lname', 'required')) {
-                                    <small class="text-danger">Last name is required</small>
+                                    <small class="text-danger position-absolute">Last name is required</small>
                                     }
                                   </div>
                                 </div>
@@ -53,10 +53,10 @@
                                     <label for="email" class="form-label">Email*</label>
                                     <input type="email" id="email" class="form-control" placeholder="user@gmail.com" formControlName="email">
                                     @if (hasError('email', 'required')) {
-                                    <small class="text-danger">Email is required</small>
+                                    <small class="text-danger position-absolute">Email is required</small>
                                     }
                                     @if (hasError('email', 'email')) {
-                                    <small class="text-danger">Enter a valid email</small>
+                                    <small class="text-danger position-absolute">Enter a valid email</small>
                                     }
                                   </div>
 
@@ -65,38 +65,40 @@
                                     <label for="phone" class="form-label">Phone*</label>
                                     <input type="tel" id="phone" class="form-control" placeholder="+910000000000" formControlName="phone">
                                     @if (hasError('phone', 'required')) {
-                                    <small class="text-danger">Phone is required</small>
+                                    <small class="text-danger position-absolute">Phone is required</small>
                                     }
                                   </div>
                                 </div>
 
-                                <!-- Country -->
-                                <div class="review-form-name address-form">
-                                  <label for="country" class="form-label">Country*</label>
-                                  <select id="country" class="form-select" formControlName="country" (change)="onCountryChange($event)">
-                                    <option value="">Choose...</option>
-                                    @for(item of countries; track $index){
-                                    <option [value]="$index"  [selected]="item.name === 'India'">{{item.name}}</option>
-                                    }
-                                  </select>
+                                <div class="account-inner-form">
+                                  <!-- Country -->
+                                  <div class="review-form-name address-form w-100 my-0">
+                                    <label for="country" class="form-label">Country*</label>
+                                    <select id="country" class="form-select" formControlName="country" (change)="onCountryChange($event)">
+                                      <option value="">Choose...</option>
+                                      @for(item of countries; track $index){
+                                      <option [value]="$index"  [selected]="item.name === 'India'">{{item.name}}</option>
+                                      }
+                                    </select>
 
-                                  @if (hasError('country', 'required')) {
-                                  <small class="text-danger">Country is required</small>
-                                  }
-                                </div>
-
-                                <!-- State -->
-                                <div class="review-form-name address-form">
-                                  <label for="country" class="form-label">State*</label>
-                                  <select id="country" class="form-select" formControlName="state" (change)="onStateChange($event)">
-                                    <option value="">Choose...</option>
-                                    @for(item of states; track $index){
-                                    <option>{{item.name}}</option>
+                                    @if (hasError('country', 'required')) {
+                                    <small class="text-danger position-absolute">Country is required</small>
                                     }
-                                  </select>
-                                  @if (hasError('state', 'required')) {
-                                  <small class="text-danger">state is required</small>
-                                  }
+                                  </div>
+
+                                  <!-- State -->
+                                  <div class="review-form-name address-form w-100 my-0">
+                                    <label for="country" class="form-label">State*</label>
+                                    <select id="country" class="form-select" formControlName="state" (change)="onStateChange($event)">
+                                      <option value="">Choose...</option>
+                                      @for(item of states; track $index){
+                                      <option>{{item.name}}</option>
+                                      }
+                                    </select>
+                                    @if (hasError('state', 'required')) {
+                                    <small class="text-danger position-absolute">state is required</small>
+                                    }
+                                  </div>
                                 </div>
 
                                 <!-- Street -->
@@ -104,7 +106,7 @@
                                   <label for="street" class="form-label">Street</label>
                                   <input id="street" class="form-control" formControlName="street"/>
                                   @if (hasError('state', 'required')) {
-                                  <small class="text-danger">state is required</small>
+                                  <small class="text-danger position-absolute">state is required</small>
                                   }
                                 </div>
 
@@ -137,7 +139,7 @@
                                     </select>
 
                                     @if (hasError('city', 'required')) {
-                                      <small class="text-danger">City is required</small>
+                                      <small class="text-danger position-absolute">City is required</small>
                                     }
                                   </div>
 
@@ -152,7 +154,7 @@
                                           formControlName="postal_code">
 
                                     @if (hasError('zip', 'required')) {
-                                      <small class="text-danger">ZIP is required</small>
+                                      <small class="text-danger position-absolute">ZIP is required</small>
                                     }
                                   </div>
 
@@ -160,7 +162,7 @@
 
                                 <!-- ADDRESS TYPE -->
                                 <div class="address-form">
-                                  <label class="form-label fw-semibold mb-1">Address type</label>
+                                  <label class="form-label mb-1">Address type</label>
                                   <div class="d-flex gap-2">
                                     <button type="button" class="btn"
                                     [class.btn-outline-primary]="checkoutForm.value.type === 'home'"
@@ -184,14 +186,14 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6">
+                <div class="col-md-6 col-12">
                     <div class="checkout-wrapper">
-                        <div class="account-section billing-section box-shadows">
+                        <div class="account-section billing-section p-4 border">
                             <h3 class="wrapper-heading">Order Summary</h3>
                             <div class="order-summery ">
                                 <div class="subtotal product-total">
-                                    <h5 class="wrapper-heading fw-bold">PRODUCT</h5>
-                                    <h5 class="wrapper-heading fw-bold">TOTAL</h5>
+                                    <h5 class="wrapper-heading fw-semibold">PRODUCT</h5>
+                                    <h5 class="wrapper-heading fw-semibold">TOTAL</h5>
                                 </div>
                                 <hr>
                                 <div class="subtotal product-total">
@@ -211,7 +213,7 @@
                                 </div>
                                 <hr>
                                 <div class="subtotal product-total">
-                                  <h5 class="wrapper-heading">SUBTOTAL</h5>
+                                  <h5 class="wrapper-heading fw-semibold">SUBTOTAL</h5>
                                   <h5 class="wrapper-heading">₹{{subTotal}}</h5>
                                 </div>
                                 <div class="subtotal product-total">
@@ -229,8 +231,8 @@
                                 </div>
                                 <hr>
                                 <div class="subtotal total">
-                                    <h5 class="wrapper-heading">TOTAL</h5>
-                                    <h5 class="wrapper-heading price">₹{{grandTotal}}</h5>
+                                    <h5 class="wrapper-heading fs-3 fw-bold">TOTAL</h5>
+                                    <h5 class="wrapper-heading fs-2 fw-bold">₹{{grandTotal}}</h5>
                                 </div>
                                 <div class="subtotal payment-type">
                                   <!-- <div class="checkbox-item">
@@ -245,18 +247,20 @@
                                           </p>
                                       </div>
                                   </div> -->
-                                  <div class="checkbox-item">
-                                    <input type="radio" id="cash" name="bank" (change)="choosePaymentMethod('cod')">
-                                    <div class="cash">
-                                      <h5 class="wrapper-heading">Cash on Delivery</h5>
-                                    </div>
+
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="radio" id="cash" name="bank" style="transform: scale(1.3);" (change)="choosePaymentMethod('cod')">
+                                    <label class="form-check-label fw-semibold" for="cash">
+                                      Cash on Delivery
+                                    </label>
                                   </div>
-                                  <div class="checkbox-item">
-                                    <input type="radio" id="credit" name="bank" (change)="choosePaymentMethod('online')">
-                                    <div class="credit">
-                                      <h5 class="wrapper-heading">Credit/Debit Cards or Paypal</h5>
-                                    </div>
+                                  <div class="form-check mt-3">
+                                    <input class="form-check-input" type="radio" id="credit" name="bank" style="transform: scale(1.3);" (change)="choosePaymentMethod('online')">
+                                    <label class="form-check-label fw-semibold" for="credit">
+                                      Credit/Debit Cards or Paypal
+                                    </label>
                                   </div>
+
                                   @if (!isSelectPaymentMethodInput) {
                                   <small class="text-danger">Choose Payment Method First</small>
                                   }

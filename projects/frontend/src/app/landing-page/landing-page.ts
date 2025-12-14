@@ -31,14 +31,8 @@ export class LandingPage {
   baseURL: string;
 
   slides = [
-
-  {img: '/images/Making-Livestock-Care-Simple-Safe-Effective-7-min.png'},
+    {img: '/images/Making-Livestock-Care-Simple-Safe-Effective-7-min.png'}, 
     {img:'/images/Making-Livestock-Care-Simple-Safe-Effective-16-min.png'},
-    // { id: 1, img: 'https://a2zlivestock.com/wp-content/uploads/2025/01/Making-Livestock-Care-Simple-Safe-Effective-7.png' },
-    // { id: 2, img: 'https://a2zlivestock.com/wp-content/uploads/2025/01/Making-Livestock-Care-Simple-Safe-Effective-7.png' },
-
-
-
   ];
 
   slideConfig = {

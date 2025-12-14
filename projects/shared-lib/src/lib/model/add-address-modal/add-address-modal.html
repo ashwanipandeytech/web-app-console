@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h1 class="modal-title fs-5" id="addressModalLabel">New address details</h1>
+  <h1 class="modal-title fs-3" id="addressModalLabel">New address details</h1>
   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closePopup()"></button>
 </div>
 
@@ -62,155 +62,140 @@
       </div> -->
 
       <!-- Reactive Form -->
-      <form [formGroup]="addressForm" (ngSubmit)="submitForm()">
-
-  <!-- NAME -->
-  <div class="mb-3">
-    <label class="form-label fw-semibold mb-1">Full name</label>
-    <input type="text" class="form-control"
-           formControlName="name"
-           [class.is-invalid]="name?.invalid && name?.touched">
-           @if(name?.invalid && name?.touched){
-             <div class="text-danger mt-1">
-               Name is required (min 2 characters)
-             </div>
-           }
-  </div>
-
-  <!-- PHONE -->
-  <div class="mb-3">
-    <label class="form-label fw-semibold mb-1">Phone</label>
-    <input type="text" class="form-control"
-           formControlName="phone"
-           [class.is-invalid]="phone?.invalid && phone?.touched">
-          @if(phone?.errors?.['required'] && phone?.touched){
-            <div class="text-danger mt-1">
-              Phone number is required.
-            </div>
-          }
-          @if(phone?.errors?.['pattern'] && phone?.touched){
-            <div class="text-danger mt-1">
-              Enter a valid 10-digit phone number.
-            </div>
-          }
-  </div>
-
-  <!-- STREET -->
-  <div class="mb-3">
-    <label class="form-label fw-semibold mb-1">Street</label>
-    <input type="text" class="form-control"
-           formControlName="street"
-           [class.is-invalid]="street?.invalid && street?.touched">
-      @if(street?.invalid && street?.touched){
-
-        <div class="text-danger mt-1">
-          Street is required.
+    <form [formGroup]="addressForm" (ngSubmit)="submitForm()">
+      <div class="row g-4">
+        <div class="col-12 col-sm-6">
+            <!-- NAME -->
+            <label class="form-label fw-semibold mb-1">Full name</label>
+            <input type="text" class="form-control" formControlName="name"
+                [class.is-invalid]="name?.invalid && name?.touched">
+                @if(name?.invalid && name?.touched){
+                  <div class="text-danger position-absolute">
+                      Name is required (min 2 characters)
+                  </div>
+                }
         </div>
-      }
-  </div>
-
-  <!-- CITY -->
-  <div class="mb-3">
-    <label class="form-label fw-semibold mb-1">City</label>
-    <input type="text" class="form-control"
-           formControlName="city"
-           [class.is-invalid]="city?.invalid && city?.touched">
-        @if(city?.invalid && city?.touched){
-          <div class="text-danger mt-1">
-            City is required.
-          </div>
-        }
-  </div>
-
-  <!-- STATE -->
-  <div class="mb-3">
-    <label class="form-label fw-semibold mb-1">State</label>
-    <input type="text" class="form-control"
-           formControlName="state"
-           [class.is-invalid]="state?.invalid && state?.touched">
-            @if(state?.invalid && state?.touched){
-
-              <div class="text-danger mt-1">
-                State is required.
-              </div>
+        <div class="col-12 col-sm-6">
+          <!-- PHONE -->
+          <label class="form-label fw-semibold mb-1">Phone</label>
+          <input type="text" class="form-control"
+                formControlName="phone"
+                [class.is-invalid]="phone?.invalid && phone?.touched">
+                @if(phone?.errors?.['required'] && phone?.touched){
+                  <div class="text-danger position-absolute">
+                    Phone number is required.
+                  </div>
+                }
+                @if(phone?.errors?.['pattern'] && phone?.touched){
+                  <div class="text-danger mt-1">
+                    Enter a valid 10-digit phone number.
+                  </div>
+                }
+        </div>
+        <div class="col-12 col-sm-6">
+            <!-- STREET -->
+          <label class="form-label fw-semibold mb-1">Street</label>
+          <input type="text" class="form-control"
+                formControlName="street"
+                [class.is-invalid]="street?.invalid && street?.touched">
+            @if(street?.invalid && street?.touched){
+              <div class="text-danger position-absolute">Street is required.</div>
             }
-  </div>
+        </div>
+        <div class="col-12 col-sm-6">
+            <!-- CITY -->
+          <label class="form-label fw-semibold mb-1">City</label>
+          <input type="text" class="form-control"
+                formControlName="city"
+                [class.is-invalid]="city?.invalid && city?.touched">
+              @if(city?.invalid && city?.touched){
+                <div class="text-danger position-absolute">City is required.</div>
+              }
+        </div>
+        <div class="col-12 col-sm-6">
+            <!-- STATE -->
+          <label class="form-label fw-semibold mb-1">State</label>
+          <input type="text" class="form-control"
+                formControlName="state"
+                [class.is-invalid]="state?.invalid && state?.touched">
+              @if(state?.invalid && state?.touched){
+                <div class="text-danger position-absolute">State is required.</div>
+              }
+        </div>
+        <div class="col-12 col-sm-6">
+             <!-- POSTAL CODE -->
+          <label class="form-label fw-semibold mb-1">Postal Code</label>
+          <input type="text" class="form-control"
+                formControlName="postal_code"
+                [class.is-invalid]="postal_code?.invalid && postal_code?.touched">
+                @if(postal_code?.errors?.['required'] && postal_code?.touched){
 
-  <!-- POSTAL CODE -->
-  <div class="mb-3">
-    <label class="form-label fw-semibold mb-1">Postal Code</label>
-    <input type="text" class="form-control"
-           formControlName="postal_code"
-           [class.is-invalid]="postal_code?.invalid && postal_code?.touched">
-          @if(postal_code?.errors?.['required'] && postal_code?.touched){
-
-            <div class="text-danger mt-1">
-              Postal code is required.
-            </div>
-          }
-              @if(postal_code?.errors?.['pattern'] && postal_code?.touched){
-                <div class="text-danger mt-1">
-                  Enter a valid postal code.
-                </div>
-          }
-  </div>
-
-  <!-- COUNTRY -->
-  <div class="mb-3">
-    <label class="form-label fw-semibold mb-1">Country</label>
-    <input type="text" class="form-control"
-           formControlName="country"
-           [class.is-invalid]="country?.invalid && country?.touched">
+                  <div class="text-danger position-absolute">
+                    Postal code is required.
+                  </div>
+                }
+                @if(postal_code?.errors?.['pattern'] && postal_code?.touched){
+                  <div class="text-danger position-absolute">Enter a valid postal code.</div>
+                }
+        </div>
+        <div class="col-12 col-sm-6">
+          <!-- COUNTRY -->  
+          <label class="form-label fw-semibold mb-1">Country</label>
+          <input type="text" class="form-control"
+              formControlName="country"
+              [class.is-invalid]="country?.invalid && country?.touched">
             @if(country?.invalid && country?.touched){
-              <div class="text-danger mt-1">
-                Country is required.
+              <div class="text-danger position-absolute">Country is required.</div>
+            }
+        </div>
+        
+        <div class="col-12 col-sm-6">
+           <!-- ADDRESS TYPE -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold mb-1">Address type</label>
+
+            <div class="d-flex gap-2">
+              <button
+                type="button"
+                class="btn"
+                [class.btn-outline-primary]="addressForm.value.type === 'home'"
+                [class.bg-light]="addressForm.value.type !== 'home'"
+                (click)="setAddressType('home')">
+                Home
+              </button>
+
+              <button
+                type="button"
+                class="btn"
+                [class.btn-outline-primary]="addressForm.value.type === 'work'"
+                [class.bg-light]="addressForm.value.type !== 'work'"
+                (click)="setAddressType('work')">
+                Office
+              </button>
+
+              <button
+                type="button"
+                class="btn"
+                [class.btn-outline-primary]="addressForm.value.type === 'other'"
+                [class.bg-light]="addressForm.value.type !== 'other'"
+                (click)="setAddressType('other')">
+                Others
+              </button>
+            </div>
+            @if(type?.invalid && type?.touched){
+              
+              <div class="text-danger position-absolute">
+                Please select an address type.
               </div>
             }
-  </div>
-
-  <!-- ADDRESS TYPE -->
-  <div class="mb-3">
-    <label class="form-label fw-semibold mb-1">Address type</label>
-
-    <div class="d-flex gap-2">
-      <button
-        type="button"
-        class="btn"
-        [class.btn-outline-primary]="addressForm.value.type === 'home'"
-        [class.bg-light]="addressForm.value.type !== 'home'"
-        (click)="setAddressType('home')">
-        Home
-      </button>
-
-      <button
-        type="button"
-        class="btn"
-        [class.btn-outline-primary]="addressForm.value.type === 'work'"
-        [class.bg-light]="addressForm.value.type !== 'work'"
-        (click)="setAddressType('work')">
-        Office
-      </button>
-
-      <button
-        type="button"
-        class="btn"
-        [class.btn-outline-primary]="addressForm.value.type === 'other'"
-        [class.bg-light]="addressForm.value.type !== 'other'"
-        (click)="setAddressType('other')">
-        Others
-      </button>
-    </div>
-        @if(type?.invalid && type?.touched){
-          
-          <div class="text-danger mt-1">
-            Please select an address type.
           </div>
-        }
-  </div>
+        </div>
+      </div>
 
-  <button class="btn btn-primary mt-2" type="submit">
+
+  <!-- <button class="btn btn-primary mt-2" type="submit">
     Save Address
-  </button>
+  </button> -->
 
 </form>
 
@@ -252,7 +237,7 @@
 </div>
 
 @if (isNewAddress) {
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary w-100">Save address</button>
+  <div class="modal-footer border-0">
+    <button type="button" class="btn fw-semibold shop-btn w-100 py-3 fs-4">Save address</button>
   </div>
 }

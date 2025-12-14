@@ -734,7 +734,7 @@
 }
 
 .cart-section {
-  border: 1px solid rgba($color: $theme-color, $alpha: 0.3);
+  border: 1px solid #e8e8e8;
   border-radius: 4px;
   overflow: hidden;
   .table-row {
@@ -964,7 +964,6 @@ table {
 
   .billing-section {
     margin-top: 0;
-    padding: 4rem;
 
     // .wrapper-heading {
     //   margin-bottom: 1rem;
@@ -1033,7 +1032,7 @@ table {
   background: transparent;
   padding: 2rem;
   margin-top: 2.5rem;
-  border: 1px solid $theme-bg;
+  // border: 1px solid $theme-bg;
   border-radius: 0.5rem;
 
   .review-form {
@@ -1327,6 +1326,14 @@ table {
   }
 }
 
+.form-control{
+  padding-block: 10px;
+  &:focus{box-shadow: none!important;}
+}
+select{
+   &:focus{box-shadow: none!important;}
+}
+
 .review-form {
   .review-form-text {
     @include flexItem;
@@ -1345,17 +1352,16 @@ table {
     text-align: center;
   }
 
-  .form-control,
-  .form-select {
-    border: 1px solid rgba($theme-color, 0.2);
-    box-shadow: none;
-    color: $heading;
+  // .form-select {
+  //   border: 1px solid rgba($theme-color, 0.2);
+  //   box-shadow: none;
+  //   color: $heading;
 
-    &::placeholder {
-      color: $paragraph;
-      font-family: $inter;
-    }
-  }
+  //   &::placeholder {
+  //     color: $paragraph;
+  //     font-family: $inter;
+  //   }
+  // }
 
   label {
     font-family: $inter;
@@ -1371,10 +1377,6 @@ table {
       margin-bottom: 2rem;
       width: 100%;
     }
-  }
-
-  input {
-    height: 5rem;
   }
 
   input,
