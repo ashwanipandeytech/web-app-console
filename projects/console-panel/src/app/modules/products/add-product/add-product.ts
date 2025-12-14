@@ -534,7 +534,9 @@ getProductDetails(){
           }
        else if (res.success ==true) {    
           let id = res.data.id;
-            if (this.selectedThumbImg){
+          console.log('this.selectedThumbImg==>',this.selectedThumbImg);
+          
+            if (this.selectedThumbImg !=undefined){
 
               const formDataThumb = new FormData();
               // for (let i = 0; i < this.selectedFile.length; i++) {
@@ -545,18 +547,36 @@ getProductDetails(){
                 formDataThumb.append("type", "thumbnail");
                 this.callUploadnediaSection(formDataThumb);
             }
-  for (let i = 0; i < this.selectedFile.length; i++) {
-  const element = this.selectedFile[i];
+            else{
 
-  const formData = new FormData();   // IMPORTANT: create new for each file
+if (this.selectedFile?.length) {
+  for (const file of this.selectedFile) {
 
-  formData.append("files", element, element.name);
-  formData.append("module", "product");
-  formData.append("module_id", id);
-  formData.append("type", "gallery");
+    const formData = new FormData();
+    formData.append('files', file);
+    formData.append('module', 'product');
+    formData.append('module_id', id);
+    formData.append('type', 'gallery');
 
-  this.callUploadnediaSection(formData);
+    this.callUploadnediaSection(formData);
+  }
 }
+
+
+            //   for (let i = 0; i < this.selectedFile.length; i++) {
+            //   const element = this.selectedFile[i];
+            
+            //   const formData = new FormData();   // IMPORTANT: create new for each file
+            
+            //   formData.append("files", element, element.name);
+            //   formData.append("module", "product");
+            //   formData.append("module_id", id);
+            //   formData.append("type", "gallery");
+            // console.log('formData==>',formData);
+            
+            //   this.callUploadnediaSection(formData);
+            // }
+            }
   setTimeout(() => {
           this.globalService.showMsgSnackBar(res);
         }, 100);
@@ -607,7 +627,9 @@ getProductDetails(){
 
 
 callUploadnediaSection(formData:any){
-    this.dataService.postForm(formData, 'media/upload')
+  console.log('formData==>',formData);
+  
+    this.dataService.postForm('media/upload',formData)
       .pipe(
         catchError(err => {
           console.error('Error:', err);

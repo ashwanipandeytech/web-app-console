@@ -77,7 +77,7 @@ export class Category {
       console.log(pair[0], pair[1]);
     }
 
-    this.dataService.callApiWithFormData(formData, 'categories')
+    this.dataService.postForm('categories',formData)
       .pipe(
         catchError(err => {
           console.error('Error:', err);
@@ -103,7 +103,7 @@ export class Category {
   }
   getCategoryList() {
     this.categoryListData = [];
-    this.dataService.callGetApi('categories')
+    this.dataService.get('categories')
       .pipe(
         catchError(err => {
           console.error('Error:', err);
@@ -196,7 +196,7 @@ export class Category {
 // if (formValue.customCategoryIcon instanceof File) {
 //   form.append('customCategoryIcon', formValue.customCategoryIcon);
 // }
-     this.dataService.callUpdateApi('categories', formData,this.updateCategoryId)
+     this.dataService.update('categories', formData,this.updateCategoryId)
       .pipe(
         catchError(err => {
           console.error('Error:', err);
@@ -227,7 +227,7 @@ else{
       });
   }
   deleteCategory(id: any) {
-    this.dataService.callDeleteApi('categories', id)
+    this.dataService.delete('categories', id)
       .pipe(
         catchError(err => {
           console.error('Error:', err);
