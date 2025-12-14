@@ -154,7 +154,7 @@ console.log('this.selectedPaymentMethod==>',this.selectedPaymentMethod);
           total_amount: this.grandTotal,
           address_id: addressId,
           payment_method:this.selectedPaymentMethod,
-          shipping_address:JSON.stringify(this.fullAddrress)
+          shipping_address:addressId
         }
         this.dataService.post(OrderSubmitPayload, 'orders')
             .pipe(
