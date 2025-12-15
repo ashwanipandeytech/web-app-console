@@ -41,18 +41,12 @@
   "rootDir": ".",
   "files": [],
   "references": [
-    {
-      "path": "./projects/website/tsconfig.app.json"
-    },
-    {
-      "path": "./projects/website/tsconfig.spec.json"
-    },
-    {
-      "path": "./projects/mobile-app/tsconfig.app.json"
-    },
-    {
-      "path": "./projects/mobile-app/tsconfig.spec.json"
-    },
+   {
+    "path": "./projects/frontend/tsconfig.app.json"
+   },
+   {
+"path": "./projects/frontend/tsconfig.spec.json"
+   },
     {
       "path": "./projects/console-panel/tsconfig.app.json"
     },

@@ -16,13 +16,10 @@ export class HostOutletComponent {
   private activatedRoute= inject(ActivatedRoute);
   private http  = inject(HttpClient);
   allInOnePageSections:any=[]
-
-  @ViewChild('hostContainer', { read: ViewContainerRef, static: true })
-  hostContainer!: ViewContainerRef;
   ngOnInit(): void {    
     this.http.get('/setting.component.json').subscribe((res: any) => {
     this.allInOnePageSections = res;
-    // this.cd.detectChanges();
+    this.cd.detectChanges();
 //       res.map((item: any) => {  
 //         let  templateVersion=item.templateCode
 //         console.log('this.pageComponentFactory==>',this.pageComponentFactory);

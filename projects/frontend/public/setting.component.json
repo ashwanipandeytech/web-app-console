@@ -1,20 +1,49 @@
 [
   {
-    "templateCode": "Block-C-22-v1"
-  },
-  {
-    "templateCode": "Hero-Section-v1"
+    "templateCode": "Hero-Section-v1",
+    "data":{
+    "title":"Carousel",
+    "heroImage":[
+        {"title":"Carousel 1","img":"/images/Making-Livestock-Care-Simple-Safe-Effective-7-min.png"},
+        {"title":"Carousel 2","img":"/images/Making-Livestock-Care-Simple-Safe-Effective-16-min.png"}
+    ]
+  }
   },
   {
     "templateCode": "Category-Component-v1"
+  },
+   {
+    "templateCode": "Grid-V1"
   },
   {
     "templateCode": "ProductComponent",
     "data":{"title":"Top Selling Prodcuts"}
   },
-  {
-    "templateCode": "Product-Section",
-    "data":{"title":"topSelling"}
+   {
+    "templateCode": "Hero-Section-v1",
+    "data":{
+    "title":"Banner",
+    "heroImage":[
+        {"title":"Carousel 1","img":"/images/Banner_Flash_Sale.png"}
+    ]
+  }
+
+  },
+  
+   {
+    "templateCode": "ProductComponent",
+    "data":{"title":"Popular Sales"}
+  },
+
+   {
+    "templateCode": "Hero-Section-v1",
+    "data":{
+    "title":"Banner",
+    "heroImage":[
+        {"title":"Carousel 1","img":"/images/best-deal.png"}
+    ]
+  }
+
   },
   {
     "templateCode": "topsection"

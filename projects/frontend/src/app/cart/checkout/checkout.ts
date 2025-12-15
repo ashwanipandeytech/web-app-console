@@ -149,8 +149,15 @@ console.log('this.selectedPaymentMethod==>',this.selectedPaymentMethod);
   return item;
 });
           console.log('cartList==>',this.cartListData);
+
+
+const payload = this.cartListData.map((cartItem:any) => ({
+  product_id: cartItem.product.product_id,
+  quantity: cartItem.quantity,
+  price: cartItem.product.price_data.salePrice
+}));
         let OrderSubmitPayload = {
-          items:this.cartListData,
+          items:payload,
           total_amount: this.grandTotal,
           address_id: addressId,
           payment_method:this.selectedPaymentMethod,

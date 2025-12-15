@@ -1,13 +1,10 @@
 [
-
   {
-    "templateCode": "ProductDetailCommon"
+    "templateCode": "ProductDetails"
   },
   
   {
     "templateCode": "ProductComponent",
-    "data":{"title":"Top Selling Prodcuts"}
+    "data":{"title":"Similar product"}
   }
-  
-  
 ]

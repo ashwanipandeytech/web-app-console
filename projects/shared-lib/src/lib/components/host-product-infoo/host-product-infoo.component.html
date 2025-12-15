@@ -1,8 +1,7 @@
 
 @if(allInOnePageSections.length>0){
 @for(item of allInOnePageSections;track $index){
+
   <ng-container *ngComponentOutlet="pageComponentFactory.templateWiseComponents[item.templateCode];inputs: { data: item }"></ng-container>
 }
 }
-
-<!-- <app-host-product-infoo></app-host-product-infoo> -->

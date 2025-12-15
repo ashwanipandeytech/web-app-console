@@ -16,217 +16,36 @@ declare var $:any;
 @Component({
   selector: 'web-landing-page',
   templateUrl: './landing-page.html',
-  imports:[SlickCarouselModule,NgOptimizedImage,HostOutletComponent],
+  imports:[SlickCarouselModule,HostOutletComponent],
   styleUrl: './landing-page.scss',
   standalone:true,
 })
 export class LandingPage {
   @ViewChild('slickModal') slickModal: any;
   public dataService:any= inject(DataService);
-  public globalService:any= inject(GlobaCommonlService);
+  // public globalService:any= inject(GlobaCommonlService);
   readonly ngbModal = inject(NgbModal)
-  snackBar = inject(MatSnackBar);
   categoryListData:any;
   productListData: any=[];
   baseURL: string;
-
-  slides = [
-    {img: '/images/Making-Livestock-Care-Simple-Safe-Effective-7-min.png'}, 
-    {img:'/images/Making-Livestock-Care-Simple-Safe-Effective-16-min.png'},
-  ];
-
-  slideConfig = {
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    dots: false,
-    arrows: true,
-  };
-
-  heroBannerSlideConfig = {
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    dots: false,
-    // centerMode: true,
-    // centerPadding: '50px',  // MUST have 'px' or '%'
-    lazyLoad: 'ondemand',
-  };
-  
-  promoBannerSlideConfig = {
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    dots: false,
-    // centerMode: true,
-    centerPadding: '20px',  // MUST have 'px' or '%'
-    lazyLoad: 'ondemand',
-    responsive: [
-      {
-        breakpoint: 540,
-        settings: {
-          slidesToShow: 1,
-          centerPadding: '8px',
-          arrows: false,
-        }
-      }
-    ]
-  };
-
-  productSectionSlideConfig = {
-    slidesToShow: 4.5,
-    infinite: false,
-    autoplaySpeed: 2000,
-    dots: false,
-    // centerMode: true,
-    lazyLoad: 'ondemand',
-    centerPadding: '12px',
-    responsive: [
-      {
-        breakpoint: 1320,
-        settings: {
-          centerPadding: '40px',
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 4
-        }
-      },
-      {
-        breakpoint: 540,
-        settings: {
-          slidesToShow: 2,
-          centerPadding: '16px',
-          arrows: false,
-        }
-      }
-    ]
-  };
-
   constructor(private cd:ChangeDetectorRef, private router: Router,private http:HttpClient){
-    this.callAllProductList();
     this.baseURL=environment.DOMAIN;
-//      this.http.get('/setting.component.json').subscribe((res: any) => {
-//   console.log('res==============>',res);
-// });
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.slickModal?.initSlick();
-    }, 0);
+
   }
 
   ngOnInit(){
-    this.getCategoryList();
+    // this.getCategoryList();
   }
 
   openProduct(id: number) {
     this.router.navigate(['/product-details', id]);
   }
 
-  callAllProductList() {
-    this.dataService.get('products/search','web').pipe(
-      catchError((error) => {
-        // console.error('Error occurred during login:', error);
-       //add toaserfnc alert('Login failed: ' + response.message);
-        // Optionally, you can return an observable to prevent further execution
-        return of(null); // or you can return a default value if needed
-      })
-    ).subscribe((response: any) => {
-      // console.log('Response:', response);
-    this.productListData = response.data.data;
-    this.cd.detectChanges();
-      if (response && response.success) {
-      
-      } else if (response) {
-       //add toaserfnc alert('Login failed: ' + response.message);
-      }
-    });
-  }
 
-  getCategoryList() {
-    this.categoryListData = [];
-    this.dataService.get('categories')
-    .pipe(
-      catchError(err => {
-        console.error('Error:', err);
-        return of(null);
-      })
-    )
-    .subscribe((res: any) => {
-      console.log('Response:', res);
-      if (res.data) {
 
-        for (let i = 0; i < res.data.length; i++) {
-          const element = res.data[i];
-          console.log('element==>', element.thumbnail);
-          if (element?.thumbnail != null) {
-            console.log('environment.API_URL==>', environment.API_URL);
-            element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
-          }
-          this.categoryListData.push(element);
-        }
-      }
-      console.log('categoryListData==>', this.categoryListData);
-
-      this.cd.detectChanges();
-      // this.categoryListData = res.data;
-    });
-  }
-
-  addToCart(data:any){
-    let finalData = {
-    "product_id": data.id,
-    "quantity": "1"
-    }
-    // console.log('finalData==.',finalData);
-    // return;
-     this.dataService.post(finalData, 'cart')
-      .pipe(
-        catchError(err => {
-          return of(err);
-        })
-      )
-      .subscribe((res: any) => {
-        console.log('Response:', res);
-       console.log("🧩 x-cart-identifier:", res.headers.get('x-cart-identifier'));
-      let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
-      if (nonLoggedInUserToken) {
-       localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
-      }
-          if (res.success ==true) {
-          this.globalService.showMsgSnackBar(res);
-          // this.router.navigate(['/cart']);
-        // window.location.reload();
-        }
-        else if (res.error && res.error.message) {
-          this.globalService.showMsgSnackBar(res.error);
-        }
-  //  if (res.success ==true) {   
-  //   this.showSnackbar(res);
-  //    }
-//         if (res.success ==true) {   
-
-//           this.showSnackbar(res);
-// }
-        })
-
-  }
-
-  showSnackbar(response:any){
-    this.snackBar.open(response.message, 'OK', {
-      duration: 3000,
-      horizontalPosition: 'end',
-      verticalPosition: 'top',
-      panelClass: [response.success ? 'snackbar-success' : 'snackbar-error']
-    });
-  }
 
   openAddressPopup(){
     const modalRef: NgbModalRef = this.ngbModal.open( AddAddressModal,

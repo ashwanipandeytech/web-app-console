@@ -10,11 +10,12 @@ import { SlickCarouselModule  } from 'ngx-slick-carousel';
 })
 export class HeroSectionV1Component implements OnInit {
 @Input() data: any;
-slides = [
+// slides = [
 
-  {img: '/images/Making-Livestock-Care-Simple-Safe-Effective-7-min.png'},
-  {img:'/images/Making-Livestock-Care-Simple-Safe-Effective-16-min.png'},
-  ];
+//   {img: '/images/Making-Livestock-Care-Simple-Safe-Effective-7-min.png'},
+//   {img:'/images/Making-Livestock-Care-Simple-Safe-Effective-16-min.png'},
+//   ];
+slides:any;
 heroBannerSlideConfig = {
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -27,7 +28,7 @@ heroBannerSlideConfig = {
 
   ngOnInit() {
     console.log('HeroSectionV1Component load',this.data);
-    
+    this.slides = this.data.data.heroImage
   }
 
 }

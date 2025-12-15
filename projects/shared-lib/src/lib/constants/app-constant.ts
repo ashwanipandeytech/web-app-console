@@ -1,6 +1,25 @@
 export const PRODUCT_TYPE = ['Top Selling','Popular Sale','New Arrivals'];
 
-
+export const  promoBannerSlideConfig = {
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    dots: false,
+    // centerMode: true,
+    centerPadding: '20px',  // MUST have 'px' or '%'
+    lazyLoad: 'ondemand',
+    responsive: [
+      {
+        breakpoint: 540,
+        settings: {
+          slidesToShow: 1,
+          centerPadding: '8px',
+          arrows: false,
+        }
+      }
+    ]
+  };
  export const productSectionSlideConfig = {
     slidesToShow: 4.5,
     infinite: false,
