@@ -1,8 +1,29 @@
 @use '../../../scss/variable' as *;
 
-.user-profile {
-  margin-top: 2rem;
+.user-profile {margin-top: 2rem;}
+.w-1100{
+  max-width: 1100px;
 }
+
+// Wishlist start
+.wishlist-container {
+    min-height: 400px;
+    .wrapper-img{
+    img{max-height: 90px;}
+    }
+    .wrapper-content{
+        .heading{
+            width: calc(100% - 30px);
+            font-size: 14px;
+        }
+        .cancel-btn{
+            &:hover{background-color: #f1f2f7;}
+        }
+        .config-title{width: 150px;}
+    }
+}
+
+// Wishlist end
 
 .user-profile-section {
   background: $primary-color;
@@ -253,7 +274,7 @@
 
   .nav-item {
     width: 23.1rem;
-    border-right: 2px solid $theme-bg;
+    border-right: 2px solid #dee2e6;
     padding: 0 0 2rem 0;
     @include flexItem($direction: column, $align: flex-start, $gap: 3rem);
 
@@ -274,7 +295,7 @@
       }
     }
 
-    .nav-link.active {
+    .nav-link.active, .nav-link:hover {
       svg {
         fill: $theme-color;
         transform: scale(1.1);
@@ -288,7 +309,12 @@
 
       background-color: transparent;
     }
+    .nav-link:hover {
+      svg {fill: rgba(($theme-color), 50%);}
+      .text {color: rgba(($theme-color), 70%);}
+    }
   }
+  
 
   .nav-content {
     width: 100%;

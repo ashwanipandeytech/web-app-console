@@ -1,81 +1,39 @@
-  <div class="tab-pane fade" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab" tabindex="0">
-                        <div class="cart-section">
-                            <table>
-                                <tbody>
-                                    <tr class="table-row table-top-row">
-                                        <td class="table-wrapper wrapper-product">
-                                            <h5 class="table-heading">PRODUCT</h5>
-                                        </td>
-                                        <td class="table-wrapper">
-                                            <div class="table-wrapper-center">
-                                                <h5 class="table-heading">Total PRICE</h5>
-                                            </div>
-                                        </td>
-                                        <!-- <td class="table-wrapper">
-                                            <div class="table-wrapper-center">
-                                                <h5 class="table-heading">QUANTITY</h5>
-                                            </div>
-                                        </td> -->
-                                        <!-- <td class="table-wrapper wrapper-total">
-                                            <div class="table-wrapper-center">
-                                                <h5 class="table-heading">TOTAL</h5>
-                                            </div>
-                                        </td> -->
-                                        <td class="table-wrapper">
-                                            <div class="table-wrapper-center">
-                                                <h5 class="table-heading">ACTION</h5>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                      @for (control of orderListData; track $index) {
-
-                                        <tr class="table-row ticket-row">
-                                            <td class="table-wrapper wrapper-product">
-                                                <div class="wrapper">
-                                                    <div class="wrapper-img">
-                                                        <img [src]="control?.items[0]?.product?.media?.uploadedImages[0]?.url" alt="img">
-                                                    </div>
-                                                    <div class="wrapper-content">
-                                                        <h5 class="heading">{{control.items[0].product.title}}</h5>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="table-wrapper">
-                                                <div class="table-wrapper-center">
-                                                    <h5 class="heading main-price">₹{{control.total_amount}}</h5>
-                                                </div>
-                                            </td>
-                                            <!-- <td class="table-wrapper">
-                                                <div class="table-wrapper-center">
-                                                    <div class="quantity">
-                                                        <span class="minus">
-                                                            -
-                                                        </span>
-                                                        <span class="number">01</span>
-                                                        <span class="plus">
-                                                            +
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td> -->
-                                            <!-- <td class="table-wrapper wrapper-total">
-                                                <div class="table-wrapper-center">
-                                                    <h5 class="heading total-price">₹10.00</h5>
-                                                </div>
-                                            </td> -->
-                                            <td class="table-wrapper">
-                                                <div class="table-wrapper-center">
-                                                    <span>
-                                                        <svg width="10" height="10" viewbox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M9.7 0.3C9.3 -0.1 8.7 -0.1 8.3 0.3L5 3.6L1.7 0.3C1.3 -0.1 0.7 -0.1 0.3 0.3C-0.1 0.7 -0.1 1.3 0.3 1.7L3.6 5L0.3 8.3C-0.1 8.7 -0.1 9.3 0.3 9.7C0.7 10.1 1.3 10.1 1.7 9.7L5 6.4L8.3 9.7C8.7 10.1 9.3 10.1 9.7 9.7C10.1 9.3 10.1 8.7 9.7 8.3L6.4 5L9.7 1.7C10.1 1.3 10.1 0.7 9.7 0.3Z" fill="#AAAAAA"></path>
-                                                        </svg>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                      }
-                                </tbody>
-                            </table>
-                        </div>
+<div class="order-container">
+    @for (item of orderListData; track $index) {
+            <div class="border rounded mt-3 p-3 row">
+                <div class="col-2">
+                    <div class="wrapper-img bg-light p-2 rounded-2">
+                        <img [src]="item?.items[0]?.product?.media?.uploadedImages[0]?.url" alt="" class="object-fit-contain rounded-2 w-100">
                     </div>
+                </div>
+                <div class="col-10">
+                    <div class="wrapper-content">
+                        <div class="d-flex align-items-center">
+                            <h5 class="heading text-truncate">{{item?.items[0].product.title}}</h5>
+                            <button class="lh-0 btn cancel-btn">
+                                <svg width="10" height="10" viewbox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9.7 0.3C9.3 -0.1 8.7 -0.1 8.3 0.3L5 3.6L1.7 0.3C1.3 -0.1 0.7 -0.1 0.3 0.3C-0.1 0.7 -0.1 1.3 0.3 1.7L3.6 5L0.3 8.3C-0.1 8.7 -0.1 9.3 0.3 9.7C0.7 10.1 1.3 10.1 1.7 9.7L5 6.4L8.3 9.7C8.7 10.1 9.3 10.1 9.7 9.7C10.1 9.3 10.1 8.7 9.7 8.3L6.4 5L9.7 1.7C10.1 1.3 10.1 0.7 9.7 0.3Z" fill="#AAAAAA"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <ul>
+                            <li class="mt-md-3 mt-0">
+                                <span class="fw-semibold d-inline-block config-title">price</span>
+                                <span>₹{{item.total_amount}}</span>
+                            </li>
+                        </ul>
+                        
+                        <button type="button" class="icon-link icon-link-hover text-primary mt-3">
+                            Order detail
+                            <svg xmlns="http://www.w3.org/2000/svg" class="bi" viewBox="0 0 16 16" aria-hidden="true">
+                                <path d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                            </svg>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+    }
+    
+
+</div>
