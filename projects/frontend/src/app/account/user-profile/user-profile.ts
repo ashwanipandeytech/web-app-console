@@ -5,34 +5,34 @@ import { AddressSectionComponent } from 'shared-lib/components/address-section/a
 import { MyOrdersComponent } from 'shared-lib/components/my-orders/my-orders.component';
 import { ChangePasswordComponent } from 'shared-lib/components/change-password/change-password.component';
 
-
 @Component({
   selector: 'web-user-profile',
-  imports: [PersonalDetailsComponent,AddressSectionComponent,MyOrdersComponent,ChangePasswordComponent],
+  imports: [
+    PersonalDetailsComponent,
+    AddressSectionComponent,
+    MyOrdersComponent,
+    ChangePasswordComponent,
+  ],
   templateUrl: './user-profile.html',
-  styleUrl: './user-profile.scss'
+  styleUrl: './user-profile.scss',
 })
 export class UserProfile {
   private route = inject(Router);
-isLoggedIn:any=null;
-constructor(){
-
-}
-  ngOnInit(){
+  isLoggedIn: any = null;
+  constructor() {}
+  ngOnInit() {
     let userData = localStorage.getItem('user');
     if (userData == null) {
       this.isLoggedIn = false;
-    }
-    else{
+    } else {
       this.isLoggedIn = true;
     }
-    
   }
-  logout(){
+  logout() {
     localStorage.clear();
-    this.route.navigate(['/']).then(()=>{
+    this.route.navigate(['/']).then(() => {
       window.location.reload();
-    })
+    });
     // window.location.reload();
   }
 }
