@@ -102,7 +102,7 @@ console.log('this.selectedPaymentMethod==>',this.selectedPaymentMethod);
           if (this.selectedPaymentMethod == 'cod') {
                 this.router.navigate(['/thank-you'])  
 
-            this.orderSubmit(addressId);
+            this.orderSubmit(addressId,this.selectedPaymentMethod);
           }
           else{
             let checkoutPaymentData = {
@@ -116,8 +116,8 @@ console.log('this.selectedPaymentMethod==>',this.selectedPaymentMethod);
           .subscribe({
             next: (response:any) => {
               if (response.success) {
-                this.orderSubmit(addressId);
                 console.log("Payment Success:", response);
+                this.orderSubmit(addressId,this.selectedPaymentMethod,response);
                 this.router.navigate(['/thank-you'])  
               }
             },
@@ -132,23 +132,23 @@ console.log('this.selectedPaymentMethod==>',this.selectedPaymentMethod);
     // }
         }
 
-        orderSubmit(addressId:any){
-      this.cartListData = this.cartListData.map((item: any) => {
-        if (item?.product?.id) {
-          item.product.product_id = item.product.id;
-          delete item.product.id;
-        }
+        orderSubmit(addressId:any,paymentMethod:any,paymentResponse:any=''){
+//       this.cartListData = this.cartListData.map((item: any) => {
+//         if (item?.product?.id) {
+//           item.product.product_id = item.product.id;
+//           delete item.product.id;
+//         }
 
-        delete item.product.description;
-        delete item.product.inventory;
-        delete item.product.media;
-        delete item.product.uploadedImages;
-        delete item.product.offer;
-        delete item.product.shipping_config;
-        delete item.product.shipping_info;
-  return item;
-});
-          console.log('cartList==>',this.cartListData);
+//         delete item.product.description;
+//         delete item.product.inventory;
+//         delete item.product.media;
+//         delete item.product.uploadedImages;
+//         delete item.product.offer;
+//         delete item.product.shipping_config;
+//         delete item.product.shipping_info;
+//   return item;
+// });
+          console.log('res ----////==>',paymentResponse);
 
 
 const payload = this.cartListData.map((cartItem:any) => ({
@@ -173,7 +173,10 @@ const payload = this.cartListData.map((cartItem:any) => ({
             .subscribe((res: any) => {
               if (res.success == true) { 
                 console.log('Response:', res);
-                this.globalService.showMsgSnackBar(res);
+                  this.globalService.showMsgSnackBar(res);
+                  if (paymentMethod !='cod') {
+                    this.paymentUpdate(res,paymentResponse);
+                }
               // this.razorpayService.openCheckout(this.grandTotal);
                 // this.router.navigate(['/cart']);
               }
@@ -197,6 +200,55 @@ const payload = this.cartListData.map((cartItem:any) => ({
 //     "payment_method": "payment_method sample value",
 //     "shipping_address": "shipping_address sample value"
 // }
+
+        }
+
+        paymentUpdate(orderResponse:any,paymentUpdate:any){
+          const paymentId = 4; // dynamic value
+          const endpoint = `orders/${paymentId}/payment/update`;
+
+          let payload:any = {
+            payment_status:'success',
+            payment_details: {
+             payment_id: paymentUpdate.razorpay_payment_id,
+      //     "transaction_id": "TXN_23984723987",
+             payment_gateway: "razorpay",
+             amount: orderResponse.data.data.total_amount,
+             currency: "INR",
+             method: "card",
+            //  card_last4: "4242"
+//   }
+          }
+        }
+//           {
+//   "payment_status": "success",
+//   "payment_details": {
+//     "payment_id": "PAY_9823749823",
+//     "transaction_id": "TXN_23984723987",
+//     "payment_gateway": "razorpay",
+//     "amount": 1200,
+//     "currency": "INR",
+//     "method": "card",
+//     "card_last4": "4242"
+//   }
+// }
+             this.dataService.post(payload,endpoint)
+            .pipe(
+              catchError(err => {
+                console.error('Error:', err);
+                return of(err);
+              })
+            )
+            .subscribe((res: any) => {
+              if (res.success == true) { 
+                console.log('Response: FINAL OUTPUT', res);
+              }
+              else {
+                if (res.err) {
+                  this.globalService.showMsgSnackBar(res.err);
+                }
+              }
+            });
 
         }
   submitAddress(){

@@ -1,11 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { PersonalDetailsComponent } from '../../../../../shared-lib/src/lib/components/personal-details/personal-details.component';
-import { AddressSectionComponent } from '../../../../../shared-lib/src/lib/components/address-section/address-section.component';
+import { PersonalDetailsComponent } from 'shared-lib/components/personal-details/personal-details.component';
+import { AddressSectionComponent } from 'shared-lib/components/address-section/address-section.component';
+import { MyOrdersComponent } from 'shared-lib/components/my-orders/my-orders.component';
+import { ChangePasswordComponent } from 'shared-lib/components/change-password/change-password.component';
+
 
 @Component({
   selector: 'web-user-profile',
-  imports: [PersonalDetailsComponent,AddressSectionComponent],
+  imports: [PersonalDetailsComponent,AddressSectionComponent,MyOrdersComponent,ChangePasswordComponent],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.scss'
 })
