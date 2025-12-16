@@ -77,24 +77,25 @@ export class RazorpayService {
 //   res.status(200).send('OK');
 // });
 openCheckout(payload: any): Observable<any> {
-  return new Observable((observer) => {
+  return new Observable(observer => {
+
     const options: any = {
       key: environment.RAZORPAY_KEY_ID,
       amount: payload.amount * 100,
       currency: 'INR',
       name: 'Safure',
       description: 'Test Payment',
-      image: 'projects/frontend/public/images/logos/logo.webp',
+      image: '/images/logos/logo.webp',
 
       handler: (response: any) => {
-        // Payment Success
-        observer.next({ success: true, data: response });
+        // ✅ PAYMENT SUCCESS
+        observer.next({
+          success: true,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_signature: response.razorpay_signature
+        });
         observer.complete();
-      },
-
-      onpaymenterror: (error: any) => {
-        // Payment Failed
-        observer.error({ success: false, error });
       },
 
       prefill: {
@@ -109,13 +110,18 @@ openCheckout(payload: any): Observable<any> {
     };
 
     const rzp = new Razorpay(options);
-    rzp.open();
 
-    // Optional: Close event
-    rzp.on('payment.failed', (err: any) => {
-      observer.error(err);
+    // ❌ remove onpaymenterror (not reliable)
+    rzp.on('payment.failed', (error: any) => {
+      observer.error({
+        success: false,
+        error
+      });
     });
+
+    rzp.open();
   });
 }
+
 
 }
