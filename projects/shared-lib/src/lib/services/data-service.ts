@@ -84,6 +84,9 @@ export class DataService {
           case 'PATCH':
             return this.http.patch<Commonresponseobject>(`${environment.API_URL}${endpoint}`, data, httpOptions);
 
+          case 'PUT':
+            return this.http.put<Commonresponseobject>(`${environment.API_URL}${endpoint}`, data, httpOptions);
+
           case 'DELETE':
             return this.http.delete<Commonresponseobject>(`${environment.API_URL}${endpoint}`, httpOptions);
 
@@ -111,6 +114,9 @@ export class DataService {
 
   patch(endpoint: string, data: any, id: any) {
     return this.request('PATCH', `${endpoint}/${id}`, data);
+  }
+   put(data: any, endpoint: string) {
+    return this.request('PUT', endpoint, data);
   }
 
   delete(endpoint: string, id: any) {

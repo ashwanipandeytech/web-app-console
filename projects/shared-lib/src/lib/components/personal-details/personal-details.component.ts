@@ -17,7 +17,7 @@ export class PersonalDetailsComponent implements OnInit {
   private dataService = inject(DataService);
   private globalFunctionService = inject(GlobalFunctionService);
   currentUser:any;
-  addressListData: any=[];
+  profileListData: any=[];
   countries: any=[];
   states: any;
   cities: any=[];
@@ -25,7 +25,7 @@ export class PersonalDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.profileDetailsForm();
-    this.getAddressList();
+    this.getProfileList();
 
     this.currentUser = JSON.parse(localStorage.getItem('user') || 'null');
   }
@@ -57,11 +57,12 @@ export class PersonalDetailsComponent implements OnInit {
       if (this.profileForm.valid) {
           console.log(this.profileForm.value);
           let fullAddrress = this.profileForm.value;
-          fullAddrress.location = '';
-          fullAddrress.label = 'home';
-          fullAddrress.isDefault = 1;
+          // fullAddrress.location = '';
+          // fullAddrress.label = 'home';
+          // fullAddrress.isDefault = 1;
+          fullAddrress.name = fullAddrress.firstName + ' ' +fullAddrress.lastName;
           
-          this.dataService.post(fullAddrress, 'addresses')
+          this.dataService.put(fullAddrress, 'profile')
           .pipe(
             catchError(err => {
                     console.error('Error:', err);
@@ -79,19 +80,19 @@ export class PersonalDetailsComponent implements OnInit {
     console.log("Form Value ===>", this.profileForm.value);
   }
 
-  getAddressList(){
-       this.dataService.get('addresses').pipe(
+  getProfileList(){
+       this.dataService.get('profile').pipe(
       catchError((error) => {
         return of(null);
       })
     ).subscribe((response: any) => {
       if (response.success == true) {
-        this.addressListData = response.data;
-        console.log('addressListData==>',this.addressListData);
-        if (this.addressListData.length>0) {
-       const data = response.data[0];
+        this.profileListData = response.data.data;
+        console.log('profileListData==>',this.profileListData);
+        // if (this.profileListData.length>0) {
+       const data = this.profileListData.addresses[0];
 
-        const fullName = data.name?.trim().split(' ') || [];
+        const fullName = this.profileListData.name?.trim().split(' ') || [];
         const first = fullName[0] || '';
         const last = fullName.slice(1).join(' ') || '';
 console.log('this.userres==>',this.currentUser);
@@ -99,14 +100,14 @@ this.loadCountries();
         this.profileForm.patchValue({
           firstName: first,
           lastName: last,
-          email: this.currentUser.user.email,   // API not providing email
-          phone: data.phone,
+          email: this.profileListData.email,   // API not providing email
+          phone: this.profileListData.phone,
           country: data.country,
           address: data.street,
           city: data.city,
           postcode: data.postal_code
         });
-        }
+        // }
         
       }
 
