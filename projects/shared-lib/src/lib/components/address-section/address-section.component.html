@@ -1,57 +1,30 @@
 <div class="address-container">
     <div class="profile-section address-section addresses ">
-        <div class="row gy-md-0 g-5">
-            <a (click)="globalFunctionService.openAddressPopup()" class="shop-btn" >Add New
-                    Address</a>
+        <button type="button" (click)="globalFunctionService.openAddressPopup()" class="shop-btn ms-auto d-block mt-0" >Add New Address</button>
+        <div class="row g-4">
             @for(item of addressListData; track $index;let i= $index){
                 <div class="col-md-6">
-
-                <div class="seller-info">
-                    <h5 class="heading">Address-0{{i+1}}</h5>
-                    <div class="info-list">
-                        <div class="info-title">
-                            <p>Name:</p>
-                            <p>Email:</p>
-                            <p>Phone:</p>
-                            <p>City:</p>
-                            <p>Zip:</p>
-                        </div>
-                        <div class="info-details">
-                            <p>{{item.name}}</p>
-                            <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fc9899919399919d9590bc9b919d9590d29f9391">{{currentUser.user.email}}</a></p>
-                            <p>{{item.phone}}</p>
-                            <p>{{item.city}}</p>
-                            <p>{{item.postal_code}}</p>
+                    <div class="seller-info border rounded py-3 px-4">
+                        <h5 class="heading mb-3 d-flex align-items-center border-bottom pb-3">
+                            <span class="me-auto">Home</span>
+                            <button class="btn border"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button class="btn border ms-3"><i class="fa-solid fa-trash"></i></button>
+                        </h5>
+                        <div class="info-list">
+                            <ul class="d-flex flex-column gap-2">
+                                <li><span class="info-title d-inline-block">Name :</span> {{item.name}}</li>
+                                <li><span class="info-title d-inline-block">Email :</span>{{currentUser.user.email}}</li>
+                                <li><span class="info-title d-inline-block">Phone :</span>{{item.phone}}</li>
+                                <li><span class="info-title d-inline-block">City :</span>{{item.city}}</li>
+                                <li><span class="info-title d-inline-block">Zip :</span>{{item.postal_code}}</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                </div>
-                <br/>
-                }
-            <!-- <div class="col-md-6">
-                <div class="seller-info">
-                    <h5 class="heading">Address-02</h5>
-                    <div class="info-list">
-                        <div class="info-title">
-                            <p>Name:</p>
-                            <p>Email:</p>
-                            <p>Phone:</p>
-                            <p>City:</p>
-                            <p>Zip:</p>
-                        </div>
-                        <div class="info-details">
-                            <p>Sajjad</p>
-                            <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2a4e4f47454f474b43466a4d474b434604494547">[email&#160;protected]</a></p>
-                            <p>023 434 54354</p>
-                            <p>Haydarabad, Rord 34</p>
-                            <p>3454</p>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+            }
+         
+            
             <div class="col-lg-6">
-                <a href="#" class="shop-btn" >Add New
-                    Address</a>
                 <!-- modal -->
                 <div class="modal-wrapper submit">
                     <div class="anywhere-away"></div>
@@ -116,6 +89,7 @@
 
                 </div>
             </div>
+
         </div>
     </div>
 </div>

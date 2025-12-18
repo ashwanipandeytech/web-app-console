@@ -3,6 +3,10 @@
     "templateCode": "Hero-Section-v1",
     "data":{
     "title":"Carousel",
+    "isTitleEnable": false,
+    "classList": {
+      "class_container":""
+    },
     "heroImage":[
         {"title":"Carousel 1","img":"/images/Making-Livestock-Care-Simple-Safe-Effective-7-min.png"},
         {"title":"Carousel 2","img":"/images/Making-Livestock-Care-Simple-Safe-Effective-16-min.png"}
@@ -23,6 +27,10 @@
     "templateCode": "Hero-Section-v1",
     "data":{
     "title":"Banner",
+    "isTitleEnable": false,
+    "classList": {
+      "class_container":""
+    },
     "heroImage":[
         {"title":"Banner","img":"/images/Banner_Flash_Sale.png"}
     ]
@@ -39,6 +47,10 @@
     "templateCode": "Hero-Section-v1",
     "data":{
     "title":"Banner",
+    "isTitleEnable": false,
+    "classList": {
+      "class_container":""
+    },
     "heroImage":[
         {"title":"Banner","img":"/images/best-deal.png"}
     ]

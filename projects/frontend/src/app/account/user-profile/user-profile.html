@@ -16,7 +16,7 @@
 <!---------------user-profile-section---------------->
 <section class="user-profile footer-padding">
     <div class="w-1100 mx-auto box-shadows">
-        <div class="user-profile-section">
+        <div class="user-profile-section mb-5">
             <div class="d-none dashboard-heading ">
                 <h5 class="dashboard-title">Change Password</h5>
                 <div class="dashboard-switch">
@@ -25,9 +25,9 @@
                 </div>
             </div>
             <div class="user-dashboard">
-                <div class="nav nav-item nav-pills  me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <div class="nav nav-item nav-pills me-3">
 
-                    <button class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                    <button class="nav-link" [ngClass]="{'active' : ispersonalInfo}" (click)="openComponent('Personal_Info')">
                         <span>
                             <svg width="14" height="19" viewbox="0 0 14 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M9.96898 10.7061H3.78814C1.6967 10.7061 0.00346265 12.4028 0 14.4942V18.3481H13.7606V14.4942C13.7571 12.4028 12.0604 10.7061 9.96898 10.7061Z"></path>
@@ -37,7 +37,7 @@
                         <span class="text">Personal Info</span>
                     </button>
 
-                    <button class="d-none nav-link" id="v-pills-payment-tab" data-bs-toggle="pill" data-bs-target="#v-pills-payment" type="button" role="tab" aria-controls="v-pills-payment" aria-selected="false">
+                    <!-- <button class="d-none nav-link" id="v-pills-payment-tab" data-bs-toggle="pill" data-bs-target="#v-pills-payment" type="button" role="tab" aria-controls="v-pills-payment" aria-selected="false">
                         <span>
                             <svg width="17" height="12" viewbox="0 0 17 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12.7405 0.0107422H3.61054C1.81171 0.0136959 0.352563 1.46989 0.349609 3.27167H15.9985C15.9985 1.47284 14.5394 0.0136959 12.7405 0.0107422Z"></path>
@@ -48,9 +48,9 @@
                         <span class="text">
                             Payment Method
                         </span>
-                    </button>
+                    </button> -->
 
-                    <button class="nav-link" id="v-pills-order-tab" data-bs-toggle="pill" data-bs-target="#v-pills-order" type="button" role="tab" aria-controls="v-pills-order" aria-selected="false">
+                    <button class="nav-link"  [ngClass]="{ 'active': isOrder }" (click)="openComponent('Order')">
                         <span>
                             <svg width="15" height="18" viewbox="0 0 15 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M10.9643 15.8454C10.8728 15.8399 10.8054 15.8331 10.7381 15.8331C9.37517 15.8324 8.01229 15.8324 6.60539 15.8324C6.85294 16.5145 6.77799 17.099 6.11648 17.4676C5.68672 17.7076 5.24457 17.6615 4.86018 17.3562C4.36027 16.9594 4.3087 16.4409 4.56175 15.8317C3.82667 15.8317 3.13285 15.8406 2.43903 15.8296C1.53136 15.8152 0.910425 14.8958 1.25974 14.0638C1.34845 13.852 1.51898 13.6581 1.69295 13.502C2.43628 12.8384 3.19199 12.1872 3.95182 11.5429C4.11204 11.4075 4.16499 11.2816 4.11479 11.074C3.36389 7.96037 2.61506 4.8454 1.87999 1.72768C1.82085 1.476 1.71564 1.42512 1.48597 1.432C0.997754 1.44712 0.507472 1.43681 0 1.43681C0 1.06824 0 0.741614 0 0.390921C0.782525 0.390921 1.54786 0.377856 2.31182 0.397798C2.58825 0.405362 2.70308 0.630905 2.76772 0.885329C3.01389 1.86177 3.27725 2.83339 3.5138 3.81189C3.57775 4.07732 3.68846 4.22034 3.96901 4.19971C3.98001 4.19903 3.9917 4.20315 4.00339 4.20315C4.60369 4.21003 4.95026 4.4507 5.25488 5.03863C6.60195 7.64613 10.1907 7.96587 12.0686 5.68981C12.2206 5.50622 12.3512 5.44639 12.585 5.4904C13.0911 5.58529 13.6027 5.64855 14.1136 5.71801C14.333 5.74826 14.4306 5.85416 14.4251 6.08314C14.3839 7.93906 14.3461 9.79498 14.3144 11.6509C14.3089 11.9816 14.0937 11.9665 13.8661 11.9665C11.0819 11.9651 8.29697 11.9693 5.51274 11.9596C5.2425 11.959 5.03897 12.0291 4.8368 12.2072C4.05428 12.8962 3.25525 13.5659 2.47135 14.2536C2.37095 14.3416 2.32488 14.4908 2.25337 14.6111C2.38264 14.6552 2.51192 14.737 2.64119 14.737C6.60608 14.7439 10.571 14.7425 14.5358 14.7425C14.6823 14.7425 14.8288 14.7425 15 14.7425C15 15.1152 15 15.4514 15 15.8193C14.3426 15.8193 13.6935 15.8193 13.0127 15.8193C13.25 16.4568 13.2156 17.0055 12.6442 17.4064C12.2536 17.68 11.7406 17.6814 11.3521 17.4091C10.78 17.011 10.7339 16.4636 10.9643 15.8454Z"></path>
@@ -62,7 +62,7 @@
                         </span>
                     </button>
 
-                    <button class="nav-link" id="v-pills-wishlist-tab" data-bs-toggle="pill" data-bs-target="#v-pills-wishlist" type="button" role="tab" aria-controls="v-pills-wishlist" aria-selected="false">
+                    <button class="nav-link" [ngClass]="{'active' : isWishlist}" (click)="openComponent('Wishlist')">
                         <span>
                             <svg width="16" height="14" viewbox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g clip-path="url(#clip0_113_3017)">
@@ -80,7 +80,7 @@
                         </span>
                     </button>
 
-                    <button class="nav-link" id="v-pills-address-tab" data-bs-toggle="pill" data-bs-target="#v-pills-address" type="button" role="tab" aria-controls="v-pills-address" aria-selected="false">
+                    <button class="nav-link" [ngClass]="{ 'active': isAddress }" (click)="openComponent('Address')">
                         <span>
                             <svg width="14" height="20" viewbox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M11.864 15.9822C11.4632 12.6506 9.25877 11.1118 7.04363 11.0545C5.70166 11.0223 4.5422 11.5126 3.57598 12.4609C2.60976 13.4057 2.19465 14.5938 1.99067 16.0288C1.37873 15.7461 0.809733 15.5063 0.272945 15.2128C0.147695 15.1449 0.0582333 14.8944 0.0582333 14.7262C0.0439189 13.5631 -0.0849134 12.3822 0.0940158 11.2478C0.365988 9.54079 1.99067 8.23819 3.71555 8.05568C4.60661 7.96264 5.46547 7.9519 6.35296 8.1702C6.88617 8.3026 7.51243 8.19167 8.06711 8.05926C10.2357 7.52963 13.1559 8.64973 13.7571 10.9973C14.0577 12.1675 14.0577 13.3663 13.8751 14.5615C13.8107 14.9981 13.6068 15.3202 13.1737 15.4812C12.7336 15.6387 12.3042 15.8105 11.864 15.9822Z"></path>
@@ -96,7 +96,7 @@
                         </span>
                     </button>
 
-                    <button class="nav-link" id="v-pills-review-tab" data-bs-toggle="pill" data-bs-target="#v-pills-review" type="button" role="tab" aria-controls="v-pills-review" aria-selected="false">
+                    <button class="nav-link d-none" id="v-pills-review-tab" data-bs-toggle="pill" data-bs-target="#v-pills-review" type="button" role="tab" aria-controls="v-pills-review" aria-selected="false">
                         <span>
                             <svg width="16" height="18" viewbox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g clip-path="url(#clip0_113_3028)">
@@ -118,7 +118,7 @@
                         </span>
                     </button>
 
-                    <button class="nav-link" id="v-pills-password-tab" data-bs-toggle="pill" data-bs-target="#v-pills-password" type="button" role="tab" aria-controls="v-pills-password" aria-selected="false">
+                    <button class="nav-link" [ngClass]="{ 'active': changePassword }" (click)="openComponent('Change_Password')">
                         <span>
                             <svg width="16" height="19" viewbox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12.9919 6.43707V5.3498C12.9919 2.39616 10.5957 0 7.64208 0C4.68844 0 2.29227 2.39616 2.29227 5.3498V6.43707C0.900288 7.04304 0 8.41771 0 9.93435V14.5224C0.00346265 16.6311 1.71054 18.3417 3.82276 18.3451H11.4683C13.5771 18.3417 15.2876 16.6346 15.2911 14.5224V9.93781C15.2807 8.41771 14.3804 7.0465 12.9919 6.43707ZM8.40386 12.9953C8.40386 13.4178 8.06106 13.7606 7.63861 13.7606C7.21617 13.7606 6.87337 13.4178 6.87337 12.9953V11.4648C6.87337 11.0424 7.21617 10.6996 7.63861 10.6996C8.06106 10.6996 8.40386 11.0424 8.40386 11.4648V12.9953ZM11.4614 6.11505H3.81584V5.3498C3.81584 3.23758 5.52639 1.52703 7.63861 1.52703C9.75083 1.52703 11.4614 3.23758 11.4614 5.3498V6.11505Z"></path>
@@ -129,7 +129,7 @@
                         </span>
                     </button>
 
-                    <button class="d-none nav-link" id="v-pills-ticket-tab" data-bs-toggle="pill" data-bs-target="#v-pills-ticket" type="button" role="tab" aria-controls="v-pills-ticket" aria-selected="false">
+                    <button class="d-none nav-link">
                         <span>
                             <svg width="18" height="20" viewbox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M6.25959 11.7769C4.29097 12.7964 3.80544 13.2903 2.96997 15.1301C2.40643 14.5916 1.85349 14.0636 1.28388 13.519C1.61565 12.979 1.93756 12.4548 2.25872 11.9299C2.47914 11.5686 2.211 10.8982 1.80349 10.7967C1.20511 10.6483 0.605962 10.5051 0 10.3574C0 9.20229 0 8.06763 0 6.88903C0.588541 6.74739 1.18466 6.6065 1.77926 6.46031C2.21555 6.35276 2.48672 5.68923 2.25342 5.30671C1.93832 4.79089 1.62095 4.27582 1.31645 3.77969C2.14359 2.95179 2.95331 2.14283 3.78499 1.31191C4.28491 1.61868 4.80982 1.94211 5.33701 2.26327C5.67787 2.47081 6.35276 2.20116 6.44819 1.81713C6.59741 1.21798 6.73981 0.616567 6.88979 0C8.04263 0 9.18639 0 10.3627 0C10.5013 0.579451 10.6407 1.16496 10.7831 1.74972C10.8967 2.21555 11.5489 2.48975 11.9526 2.24206C12.4677 1.9262 12.9812 1.61034 13.4698 1.31039C14.2962 2.13677 15.0983 2.93892 15.936 3.77742C15.6391 4.26294 15.318 4.78559 14.9983 5.30974C14.7658 5.69074 15.04 6.35048 15.4778 6.45804C16.0641 6.60196 16.6526 6.74057 17.2502 6.88449C17.2502 8.04718 17.2502 9.1932 17.2502 10.3627C16.6943 10.4945 16.1428 10.624 15.5922 10.7551C14.9923 10.8982 14.7362 11.508 15.0559 12.0283C15.3521 12.5108 15.6475 12.9941 15.955 13.4948C15.4286 14.0583 14.9165 14.606 14.3689 15.1915C13.7614 13.5281 12.6692 12.4101 11.0634 11.7935C13.1335 9.92414 12.6858 7.32608 11.2823 6.01266C9.77341 4.60001 7.41092 4.6394 5.95055 6.11037C4.57047 7.50105 4.29248 10.0234 6.25959 11.7769Z"></path>
@@ -169,59 +169,24 @@
 
                 <!-- nav-content -->
                 <div class="tab-content nav-content" id="v-pills-tabContent" style="flex: 1 0%;">
-
-                    <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
+                    @if(ispersonalInfo){
                         <app-personal-details ></app-personal-details>
-                    </div>
-
-                    <div class="tab-pane fade" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab" tabindex="0">
+                    }
+                    @if(isOrder){
                         <app-my-orders></app-my-orders>
-                    </div>
+                    }
 
-                    <div class="tab-pane fade" id="v-pills-wishlist" role="tabpanel" aria-labelledby="v-pills-wishlist-tab" tabindex="0">
-
-                        <div class="wishlist-container">
-                            uncomment the code with right condition
-                            <!-- @for (item of wishlistListData; track $index) {
-                                <div class="border rounded mt-3 p-3 row">
-                                    <div class="col-2">
-                                        <div class="wrapper-img bg-light p-2 rounded-2">
-                                            <img [src]="item?.items[0]?.product?.media?.uploadedImages[0]?.url" alt="" class="object-fit-contain rounded-2 w-100">
-                                        </div>
-                                    </div>
-                                    <div class="col-10">
-                                        <div class="wrapper-content">
-                                            <div class="d-flex align-items-center">
-                                                <h5 class="heading text-truncate">{{item?.items[0].product.title}}</h5>
-                                                <button class="lh-0 btn cancel-btn">
-                                                    <svg width="10" height="10" viewbox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M9.7 0.3C9.3 -0.1 8.7 -0.1 8.3 0.3L5 3.6L1.7 0.3C1.3 -0.1 0.7 -0.1 0.3 0.3C-0.1 0.7 -0.1 1.3 0.3 1.7L3.6 5L0.3 8.3C-0.1 8.7 -0.1 9.3 0.3 9.7C0.7 10.1 1.3 10.1 1.7 9.7L5 6.4L8.3 9.7C8.7 10.1 9.3 10.1 9.7 9.7C10.1 9.3 10.1 8.7 9.7 8.3L6.4 5L9.7 1.7C10.1 1.3 10.1 0.7 9.7 0.3Z" fill="#AAAAAA"></path>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                            <ul>
-                                                <li class="mt-md-3 mt-0">
-                                                    <span class="fw-semibold d-inline-block config-title">price</span>
-                                                    <span>₹{{item.total_amount}}</span>
-                                                </li>
-                                            </ul>
-                                            
-
-                                        </div>
-                                    </div>
-                                </div>
-                            } -->
-                        </div>
-                    
-                    </div>
+                    @if(isWishlist){
+                        <web-wishlist></web-wishlist>
+                    }
 
 
-                    <!-- address -sectiob  -->
-                        <div class="tab-pane fade" id="v-pills-address" role="tabpanel" aria-labelledby="v-pills-address-tab" tabindex="0">
-                            <app-address-section></app-address-section>
-                        </div>
+                    <!-- address section  -->
+                     @if(isAddress){
+                        <app-address-section></app-address-section>
+                     }
                    
-                    <div class="tab-pane fade" id="v-pills-review" role="tabpanel" aria-labelledby="v-pills-review-tab" tabindex="0">
+                    <!-- <div  id="v-pills-review" role="tabpanel" aria-labelledby="v-pills-review-tab" tabindex="0">
 
                         <div class="top-selling-section">
                             <div class="row g-5">
@@ -329,21 +294,17 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="tab-pane fade" id="v-pills-password" role="tabpanel" aria-labelledby="v-pills-password-tab" tabindex="0">
+                    @if(changePassword){
                         <app-change-password></app-change-password>
-                    </div>
+                    }
 
-                    <div class="tab-pane fade" id="v-pills-ticket" role="tabpanel" aria-labelledby="v-pills-ticket-tab" tabindex="0">
+                    <!-- <div  id="v-pills-ticket" role="tabpanel" aria-labelledby="v-pills-ticket-tab" tabindex="0">
                         <div class="support-ticket">
                             <a href="#" class="shop-btn" onclick="modalAction('.ticket')">Add New Support</a>
-
-                            <!-- ticket-modal -->
                             <div class="modal-wrapper ticket">
                                 <div onclick="modalAction('.ticket')" class="anywhere-away"></div>
-
-                                <!-- change this -->
                                 <div class="login-section account-section modal-main">
                                     <div class="review-form">
                                         <div class="review-content">
@@ -376,7 +337,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- change this -->
 
                             </div>
                             <div class="ticket-section">
@@ -665,9 +625,10 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
-                      <div class="tab-pane fade" id="v-pills-payment" role="tabpanel" aria-labelledby="v-pills-order-tab" tabindex="0">
+
+                      <div class="d-none" id="v-pills-payment" role="tabpanel" aria-labelledby="v-pills-order-tab" tabindex="0">
                         <div class="payment-section">
                             <div class="wrapper">
                                 <div class="wrapper-item">
@@ -728,7 +689,6 @@
                             <div class="wrapper-btn">
                                 <a href="#" class="shop-btn" onclick="modalAction('.cart')">Add Cart</a>
 
-                                <!-- cart-modal -->
                                 <div class="modal-wrapper cart">
                                     <div onclick="modalAction('.cart')" class="anywhere-away"></div>
 

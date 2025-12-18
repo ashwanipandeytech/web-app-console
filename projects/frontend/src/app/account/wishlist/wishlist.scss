@@ -1,0 +1,16 @@
+.wishlist-container {
+    min-height: 400px;
+    .wrapper-img{
+    img{max-height: 90px;}
+    }
+    .wrapper-content{
+        .heading{
+            width: calc(100% - 30px);
+            font-size: 14px;
+        }
+        .cancel-btn{
+            &:hover{background-color: #f1f2f7;}
+        }
+        .config-title{width: 150px;}
+    }
+}

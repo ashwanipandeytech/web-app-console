@@ -1,4 +1,7 @@
-<section id="hero" class="hero d-none d-sm-block">
+<section id="hero" class="hero d-none d-sm-block" [ngClass]="data.data.classList.class_container">
+    @if(data.data.isTitleEnable) {
+        <p class="h1 fw-bold my-4">{{data.data.title}}</p>
+    }
     <div class="hero-section">
         <ngx-slick-carousel id="slick-carousel" class="hero-slider slick-carousel" [config]="heroBannerSlideConfig">
             @for (slide of slides; track slide.img) {

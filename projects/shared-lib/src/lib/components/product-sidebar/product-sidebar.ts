@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
+import { GlobaCommonlService } from 'projects/global-common.service';
 
 @Component({
   selector: 'web-product-sidebar',
@@ -14,6 +15,7 @@ export class ProductSidebarCommon {
   public dataService:any= inject(DataService);
   productListData: any=[];
   categoryListData: any;
+  public globalService:any= inject(GlobaCommonlService);
 
   constructor(private cd:ChangeDetectorRef, private router: Router) {
     this.callAllProductList();
@@ -85,4 +87,35 @@ export class ProductSidebarCommon {
   back(){
     window.history.back();
   }
+
+  addToCart(data: any) {
+    let finalData = {
+      product_id: data.id,
+      quantity: '1',
+    };
+    // console.log('finalData==.',finalData);
+    // return;
+    this.dataService
+      .post(finalData, 'cart')
+      .pipe(
+        catchError((err) => {
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        // console.log('Response:', res);
+        // console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
+        let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
+        if (nonLoggedInUserToken) {
+          localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+        }
+        if (res.success == true) {
+          this.globalService.showMsgSnackBar(res);
+        } else if (res.error && res.error.message) {
+          this.globalService.showMsgSnackBar(res.error);
+        }
+      });
+  }
+
+
 }
