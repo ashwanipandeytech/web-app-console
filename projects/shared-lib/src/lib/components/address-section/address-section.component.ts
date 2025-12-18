@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
@@ -14,6 +14,7 @@ export class AddressSectionComponent implements OnInit {
   addressListData: any=[];
 private dataService = inject(DataService);
 public globalFunctionService = inject(GlobalFunctionService);
+private cd = inject(ChangeDetectorRef);
   currentUser: any;
   constructor() { }
 
@@ -31,6 +32,7 @@ public globalFunctionService = inject(GlobalFunctionService);
         if (response.success == true) {
           this.addressListData = response.data;
           console.log('this.addressListData==>',this.addressListData);  
+          this.cd.detectChanges();
         }
       })
     }

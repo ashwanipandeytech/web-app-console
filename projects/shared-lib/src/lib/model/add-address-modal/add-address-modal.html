@@ -155,27 +155,21 @@
             <label class="form-label fw-semibold mb-1">Address type</label>
 
             <div class="d-flex gap-2">
-              <button
-                type="button"
-                class="btn"
+              <button type="button" class="btn fs-4"
                 [class.btn-outline-primary]="addressForm.value.type === 'home'"
                 [class.bg-light]="addressForm.value.type !== 'home'"
                 (click)="setAddressType('home')">
                 Home
               </button>
 
-              <button
-                type="button"
-                class="btn"
+              <button type="button" class="btn fs-4"
                 [class.btn-outline-primary]="addressForm.value.type === 'work'"
                 [class.bg-light]="addressForm.value.type !== 'work'"
                 (click)="setAddressType('work')">
                 Office
               </button>
 
-              <button
-                type="button"
-                class="btn"
+              <button type="button" class="btn fs-4"
                 [class.btn-outline-primary]="addressForm.value.type === 'other'"
                 [class.bg-light]="addressForm.value.type !== 'other'"
                 (click)="setAddressType('other')">
@@ -183,7 +177,6 @@
               </button>
             </div>
             @if(type?.invalid && type?.touched){
-              
               <div class="text-danger position-absolute">
                 Please select an address type.
               </div>
