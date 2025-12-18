@@ -5,12 +5,13 @@ import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { Router } from '@angular/router';
 import { GlobaCommonlService } from '../../../../../global-common.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
-  imports: [SlickCarouselModule],
+  imports: [SlickCarouselModule,CommonModule],
 })
 export class ProductComponent implements OnInit {
   productSectionSlideConfig = productSectionSlideConfig;
@@ -21,6 +22,7 @@ export class ProductComponent implements OnInit {
   router = inject(Router);
   @Input () data:any
   productData: any;
+  isWishlisted: boolean=false;
   constructor() {}
 
   ngOnInit() {
@@ -32,7 +34,22 @@ export class ProductComponent implements OnInit {
   openProduct(id: number) {
     this.router.navigate(['/product-details', id]);
   }
-
+toggleHeart(id:any) {
+   this.isWishlisted = !this.isWishlisted;
+    let data = {
+      product_id:id
+    }
+    if (this.isWishlisted) {
+      this.dataService.post(data,'wishlist').subscribe((res:any)=>{
+        console.log('wishlist==>',res);
+      })
+    }
+    else{
+         this.dataService.delete('wishlist/product',data.product_id).subscribe((res:any)=>{
+        console.log('wishlist==>',res);
+      })
+    }
+  }
   callAllProductList() {
     this.dataService
       .get('products/search', 'web')

@@ -170,4 +170,13 @@ this.loginForm();
       get s() {
     return this.signupForm.controls;
   }
+
+  loginWithGoogle(){
+
+    let endpoint = 'auth/google/redirect'
+    this.dataService.get(endpoint).subscribe((res:any)=>{
+      console.log('res===>',res);
+
+    })
+  }
 }

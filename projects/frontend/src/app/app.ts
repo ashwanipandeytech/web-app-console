@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 
@@ -10,6 +10,7 @@ declare var Razorpay: any;
 @Component({
   selector: 'safure-root',
   imports: [RouterOutlet, Header, Footer],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

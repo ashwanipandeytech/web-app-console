@@ -191,8 +191,21 @@ export class ProductDetails {
     }
   }
 
-  toggleHeart() {
+  toggleHeart(id:any) {
     this.isWishlisted = !this.isWishlisted;
+    let data = {
+      product_id:id
+    }
+    if (this.isWishlisted) {
+      this.dataService.post(data,'wishlist').subscribe((res:any)=>{
+        console.log('wishlist==>',res);
+      })
+    }
+    else{
+         this.dataService.delete('wishlist/product',data.product_id).subscribe((res:any)=>{
+        console.log('wishlist==>',res);
+      })
+    }
   }
 
   calculatePrice(){

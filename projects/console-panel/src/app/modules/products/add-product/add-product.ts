@@ -97,6 +97,7 @@ categories = [
   isInputShow: boolean=false;
   domain: string='';
   productStatus: string[]=[];
+  wrongDiscount: boolean=false;
   constructor(private fb: FormBuilder,private globalService:GlobalService,private cd:ChangeDetectorRef){
     this.initializeForms()
     this.initializeCategoryControls();
@@ -685,6 +686,7 @@ callUploadnediaSection(formData:any){
     // let permaLinkValue = this.productDetails.value.productTitle.contains(' ')
     const formatted = this.productDetails.value.productTitle.replace(/\s+/g, '-').toLowerCase();
     this.permaLink = formatted;
+    this.seoForm.patchValue({slugText:formatted});
     this.cd.detectChanges();
   }
     enableInput(){
@@ -700,5 +702,15 @@ callUploadnediaSection(formData:any){
     if (action == 'cancel') {
       this.permaLink = '';
     }
+   }
+   discountPriceChange(){
+    if (this.priceSection.value.salePrice > this.priceSection.value.regularPrice) {
+      this.wrongDiscount = true;
+    }
+    else{
+      this.wrongDiscount = false;
+
+    }
+    this.cd.detectChanges();
    }
 }

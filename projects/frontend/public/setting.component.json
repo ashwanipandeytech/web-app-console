@@ -17,14 +17,14 @@
   },
   {
     "templateCode": "ProductComponent",
-    "data":{"title":"Top Selling Prodcuts"}
+    "data":{"title":"Top Selling Products"}
   },
    {
     "templateCode": "Hero-Section-v1",
     "data":{
     "title":"Banner",
     "heroImage":[
-        {"title":"Carousel 1","img":"/images/Banner_Flash_Sale.png"}
+        {"title":"Banner","img":"/images/Banner_Flash_Sale.png"}
     ]
   }
 
@@ -40,7 +40,7 @@
     "data":{
     "title":"Banner",
     "heroImage":[
-        {"title":"Carousel 1","img":"/images/best-deal.png"}
+        {"title":"Banner","img":"/images/best-deal.png"}
     ]
   }
 
