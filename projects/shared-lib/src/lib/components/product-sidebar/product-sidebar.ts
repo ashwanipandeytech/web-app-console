@@ -79,16 +79,12 @@ this.productListData = productListData.filter(
 
           for (let i = 0; i < res.data.length; i++) {
             const element = res.data[i];
-            console.log('element==>', element.thumbnail);
             if (element?.thumbnail != null) {
-              console.log('environment.API_URL==>', environment.API_URL);
               element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
             }
             this.categoryListData.push(element);
           }
         }
-        console.log('categoryListData==>', this.categoryListData);
-
         this.cd.detectChanges();
         // this.categoryListData = res.data;
       });

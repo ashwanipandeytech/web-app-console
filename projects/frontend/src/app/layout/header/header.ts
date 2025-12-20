@@ -16,6 +16,7 @@ export class Header {
 isLoggedIn:any= false;
   cartItemCount: any=0;
   userName: any;
+  categoryListData: any;
 constructor(private cd:ChangeDetectorRef){
 
   //use effect for getting the userState signal
@@ -40,6 +41,10 @@ constructor(private cd:ChangeDetectorRef){
       
     }
     this.carList();
+    this.getCategoryList();
+  }
+    gotoCategory(id:any){
+this.route.navigate(['/product-sidebar',id]);
   }
   openDashboard(){
     if (this.isLoggedIn) {
@@ -50,7 +55,30 @@ constructor(private cd:ChangeDetectorRef){
     }
   }
 
+  getCategoryList() {
+    this.categoryListData = [];
+    this.dataService.get('categories')
+    .pipe(
+      catchError(err => {
+        console.error('Error:', err);
+        return of(null);
+      })
+    )
+    .subscribe((res: any) => {
+      if (res.data) {
 
+        for (let i = 0; i < res.data.length; i++) {
+          const element = res.data[i];
+          // if (element?.thumbnail != null) {
+          //   element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
+          // }
+          this.categoryListData.push(element);
+        }
+      }
+      this.cd.detectChanges();
+      // this.categoryListData = res.data;
+    });
+  }
   carList(){
        this.dataService.get('cart').pipe(
         catchError((error) => {

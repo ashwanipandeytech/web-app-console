@@ -470,21 +470,16 @@
 
           <div class="header-nav-menu flex-grow-1">
             <ul class="menu-list">
-              <li>
-                <a href="/product-sidebar" class="nav-link px-4">
-                  <span class="list-text fs-3">Cow</span>
-                </a>
-              </li>
-              <li>
-                <a href="/product-sidebar" class="nav-link px-4">
-                  <span class="list-text fs-3">Dog</span>
-                </a>
-              </li>
-              <li>
-                <a href="/product-sidebar" class="nav-link px-4">
-                  <span class="list-text fs-3">Goat</span>
-                </a>
-              </li>
+
+              @for (item of categoryListData; track $index) {
+
+                <li>
+                  <a (click)="gotoCategory(item.id)" class="nav-link px-4">
+                    <span class="list-text fs-3">{{item.name}}</span>
+                  </a>
+                </li>
+              }
+           
               <!-- <li>
                 <a href="/" class="nav-link fs-4 px-4">
                   <span class="list-text">Home</span>

@@ -29,11 +29,12 @@ getCities(country: string, state: string) {
       map(res => res.data)
     );
   }
-   openAddressPopup(){
+   openAddressPopup(data:any=''){
     const modalRef: NgbModalRef = this.ngbModal.open( AddAddressModal,
     { windowClass:'mobile-modal',
       scrollable: true
     });
+    modalRef.componentInstance.data = data;
     modalRef.result.then((result) => {
       console.log('Modal closed with result:', result);
     }).catch((reason) => {
