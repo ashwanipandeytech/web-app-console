@@ -6,7 +6,7 @@
         </div>
         <div class="category-section">
             @for (control of categoryListData; track $index) {
-            <a href="/product-sidebar">
+            <a (click)="gotoCategory(control.id)">
                 <div class="product-wrapper" data-aos="fade-right" data-aos-duration="100">
                     <div class="wrapper-img">
                         <img src="{{control.thumbnail}}" width="75px" alt="Feeders">

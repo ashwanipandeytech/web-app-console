@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, inject, Input, OnInit } from '@angular/co
 import { environment} from '../../environment/environment';
 import { DataService } from '../../services/data-service';
 import { catchError, of } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-category-component-v1',
@@ -12,6 +13,7 @@ export class CategoryComponentV1Component implements OnInit {
 @Input() data: any;
 private dataService = inject(DataService);
 private cd = inject(ChangeDetectorRef);
+private route = inject(Router);
 categoryListData:any=[];
   constructor() {
     console.log('CategoryComponentV1Component Load');
@@ -46,5 +48,8 @@ categoryListData:any=[];
       this.cd.detectChanges();
       // this.categoryListData = res.data;
     });
+  }
+  gotoCategory(id:any){
+this.route.navigate(['/product-sidebar',id])
   }
 }

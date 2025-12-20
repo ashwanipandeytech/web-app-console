@@ -4,7 +4,7 @@
         <div class="login-section">
             <div class="row align-items-center">
                 <div class="col-md-6 col-12">
-                    Login Credentials:<br/>
+                    Login Credential<span (click)="loginWithGoogle()">s:</span><br/>
                     Email: demo-web@gmail.com <br/>
                     Password: Demo@1234
                     @if (!isSignUp) {
@@ -61,6 +61,7 @@
                             </div>
                             <div class="login-btn text-center">
                                 <!-- <a class="shop-btn primary" style="background-color: rgb(228, 64, 64);" (click)="loginWithGoogle()">Google</a> -->
+                                <!-- <a style="cursor: pointer;" (click)="loginWithGoogle()"></a> -->
 
                                 <a class="shop-btn" (click)="loginUser()">Log In</a>
                                 <span class="shop-account">Dont't have an account ?<a (click)="enableDisableSignUp()">Sign Up Free</a></span>

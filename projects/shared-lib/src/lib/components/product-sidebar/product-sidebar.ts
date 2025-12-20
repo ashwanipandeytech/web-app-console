@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
@@ -16,6 +16,9 @@ export class ProductSidebarCommon {
   productListData: any=[];
   categoryListData: any;
   public globalService:any= inject(GlobaCommonlService);
+  private route = inject(ActivatedRoute);
+  productId:any;
+  filteredProductList: any;
 
   constructor(private cd:ChangeDetectorRef, private router: Router) {
     this.callAllProductList();
@@ -25,7 +28,10 @@ export class ProductSidebarCommon {
   openProduct(id: number) {
     this.router.navigate(['/product-details', id]);
   }
-
+ngOnInit() {
+  this.productId = this.route.snapshot.paramMap.get('id');
+  console.log(this.productId);
+}
   callAllProductList() {
 
     // const payload = {
@@ -43,7 +49,11 @@ export class ProductSidebarCommon {
       })
     ).subscribe((response: any) => {
       // console.log('Response:', response);
-    this.productListData = response.data.data;
+    let productListData = response.data.data;
+this.productListData = productListData.filter(
+  (item: any) => item.category.id == this.productId
+);
+
     this.cd.detectChanges();
       if (response && response.success) {
       
