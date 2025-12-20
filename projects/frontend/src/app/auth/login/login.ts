@@ -172,8 +172,7 @@ this.loginForm();
   }
 
   loginWithGoogle(){
-
-    let endpoint = 'auth/google/redirect'
+    let endpoint = 'auth/google/redirect?redirect=/landing'
     this.dataService.get(endpoint).subscribe((res:any)=>{
       console.log('res===>',res);
 
