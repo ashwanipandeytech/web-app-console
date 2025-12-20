@@ -17,16 +17,74 @@ export class DataService {
     this.authToken = user?.token ?? '';
   }
   request(method: string, endpoint: string, data?: any, options: any = {}) {
-    if (endpoint === 'cart') {
-      return this.http.post<any>(`${environment.API_URL}${endpoint}`, data);
-    }
-    let headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.authToken}`
-    });
-    if (options.headers) {
-      headers = options.headers;
-    }
-    const httpOptions = { headers };
+      console.log('method===>',method);
+      let httpOptions = {};
+      let headers:any; 
+        if (this.authToken !='' || !this.authToken) {
+            headers = new HttpHeaders({
+              'Authorization': `Bearer ${this.authToken}`
+            });
+        }
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const token = JSON.parse(localStorage.getItem('isNonUser') || 'null');
+        if (endpoint === 'cart' && method == 'POST' && user.token == undefined) {
+        httpOptions = {headers, observe: 'response' as const}
+      }
+        else{
+          httpOptions = {headers}
+
+        }
+        if (token) {
+        this.authToken = token;
+        }
+    console.log('this.authToken==>',this.authToken);
+//     if (endpoint === 'cart' && user.token == undefined) {
+//          let headers = new HttpHeaders({
+//       'Authorization': `Bearer`
+//     });
+//        if (options.headers) {
+//       headers = options.headers;
+//     }
+//     const httpOptions = { headers, observe: 'response' as const };
+// return this.http
+//   .post<Commonresponseobject>(`${environment.API_URL}${endpoint}`, data, httpOptions)
+//   .pipe(
+//     tap((res: any) => {
+//       console.log("📩 Full Response:", res);
+//       console.log("🧩 x-cart-identifier:", res.headers.get('x-cart-identifier'));
+//       let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
+//       if (nonLoggedInUserToken) {
+//        localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+//       }
+//       console.log("📬 Response Headers:", res.headers);
+
+//       // console.log("🔐 Set-Cookie:", res.headers.get('set-cookie'));
+//       // console.log("🧩 Custom Headers:", res.headers.keys());
+//     })
+//   );
+//       // return this.http.post<Commonresponseobject>(`${environment.API_URL}${endpoint}`,data, httpOptions);
+//     }
+
+    //  headers = new HttpHeaders({
+    //   'Authorization': `Bearer ${this.authToken}`
+    // });
+        if (options.headers) {
+          headers = options.headers;
+        }
+
+
+
+        
+    // if (endpoint === 'cart' && method == 'POST') {
+    //   return this.http.post<any>(`${environment.API_URL}${endpoint}`, data);
+    // }
+    // let headers = new HttpHeaders({
+    //   'Authorization': `Bearer ${this.authToken}`
+    // });
+    // if (options.headers) {
+    //   headers = options.headers;
+    // }
+    // const httpOptions = { headers };
     switch (method.toUpperCase()) {
 
       case 'GET':

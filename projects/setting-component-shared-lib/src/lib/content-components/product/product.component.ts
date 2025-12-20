@@ -84,11 +84,13 @@ toggleHeart(id:any) {
         })
       )
       .subscribe((res: any) => {
-        // console.log('Response:', res);
+        console.log('Response:', res.headers);
         // console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
-        let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
-        if (nonLoggedInUserToken) {
-          localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+        if (res.headers) {
+          let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
+          if (nonLoggedInUserToken) {
+            localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+          }
         }
         if (res.success == true) {
           this.globalService.showMsgSnackBar(res);
