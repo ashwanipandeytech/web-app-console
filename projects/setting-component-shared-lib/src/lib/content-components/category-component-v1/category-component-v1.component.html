@@ -4,12 +4,12 @@
             <h3>Category</h3>
             <a href="/category" class="h3 view">View All</a>
         </div>
-        <div class="category-section">
+        <div class="category-section row">
             @for (control of categoryListData; track $index) {
             <a (click)="gotoCategory(control.id)">
-                <div class="product-wrapper" data-aos="fade-right" data-aos-duration="100">
+                <div class="product-wrapper">
                     <div class="wrapper-img">
-                        <img src="{{control.thumbnail}}" width="75px" alt="Feeders">
+                        <img src="{{control.thumbnail}}" width="180px" alt="Feeders">
                     </div>
                     <div class="wrapper-info">
                         <span class="wrapper-details">{{control.name}}</span>

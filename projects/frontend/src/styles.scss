@@ -92,7 +92,7 @@
       border: 2px solid $paragraph;
       transition: all 0.3s;
       background: white;
-      height: 10rem;
+      height: 180px;
       overflow: hidden;
       img {
         transition: all 0.2s ease-in-out;
@@ -1390,9 +1390,7 @@ select{
     }
   }
 
-  textarea {
-    padding: 3rem;
-  }
+  textarea {padding: 1rem;}
 
   .review-btn {
     @include flexItem($justify: flex-end);

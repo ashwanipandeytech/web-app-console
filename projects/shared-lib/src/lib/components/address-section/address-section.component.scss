@@ -1,7 +1,9 @@
+@use '../../../scss/variable' as *;
+
 .address-container{
   .heading{
     .btn{
-      &:hover{background-color: #dee2e6;}
+      &:hover{background-color: #ccc;}
     }
   }
   .info-title{width: 90px;}

@@ -70,6 +70,8 @@
       ul li {
         margin-top: 1.5rem;
         @include flexItem($justify: flex-start, $gap: 1.5rem);
+        align-items: start;
+
       }
     }
   }
@@ -89,7 +91,7 @@
   .seperator {
     width: 1px;
     height: 19.7rem;
-    background: $theme-bg;
+    background: #cdcdcd;
 
     @media #{$sm} {
       display: none;

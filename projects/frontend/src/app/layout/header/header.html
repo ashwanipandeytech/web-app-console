@@ -32,7 +32,7 @@
           </div>
           <a href="#" class="shop-btn py-3 px-4">Search</a>
         </div>
-        <div class="header-cart-items">
+        <div class="header-cart-items gap-4">
           <div class="d-none header-compaire">
             <a href="/compaire" class="cart-item">
               <span>
@@ -45,6 +45,9 @@
               </span>
             </a>
           </div>
+          @if(isLoggedIn){
+            <div class="user-name">Hello, {{userName}}</div>
+          }
           <div class="header-favourite">
             <a href="/wishlist" class="cart-item">
               <span>
@@ -56,9 +59,6 @@
               </span>
             </a>
           </div>
-          @if(isLoggedIn){
-            <div class="user-name">Hello, {{userName}}</div>
-          }
           <div class="header-cart">
             <a href="/cart" class="cart-item position-relative">
 

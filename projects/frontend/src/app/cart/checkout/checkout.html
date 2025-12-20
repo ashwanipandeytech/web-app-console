@@ -1,241 +1,300 @@
 <!--------------- blog-tittle-section---------------->
 <section class="blog py-4">
-    <div class="container">
-        <div class="blog-bradcrum">
-            <span><a href="index.html">Home</a></span>
-            <span class="devider">/</span>
-            <span><a href="#" class="fw-semibold">Checkout</a></span>
-        </div>
-        <div class="blog-heading about-heading">
-            <h1 class="heading">Checkout</h1>
-        </div>
+  <div class="container">
+    <div class="blog-bradcrum">
+      <span><a href="index.html">Home</a></span>
+      <span class="devider">/</span>
+      <span><a href="#" class="fw-semibold">Checkout</a></span>
     </div>
+    <div class="blog-heading about-heading">
+      <h1 class="heading">Checkout</h1>
+    </div>
+  </div>
 </section>
 <!--------------- blog-tittle-section-end---------------->
 
 <!--------------- checkout-section---------------->
 <section class="checkout product pt-0">
-    <div class="container">
-        <div class="checkout-section">
-            <div class="row gy-5 gy-lg-0">
-                <div class="col-md-6 col-12">
-                    <div class="checkout-wrapper">
-                        <div class="account-section billing-section p-4 border">
-                            <h3 class="wrapper-heading mb-4">Billings Details</h3>
-                            <form [formGroup]="checkoutForm">
-                              <div class="review-form">
-                                <div class="account-inner-form">
-                                  <!-- First Name -->
-                                  <div class="review-form-name">
-                                    <label for="fname" class="form-label">First Name*</label>
-                                    <input type="text" id="fname" class="form-control" placeholder="First Name" formControlName="fname">
-                                    @if (hasError('fname', 'required')) {
-                                    <small class="text-danger position-absolute">First name is required</small>
-                                    }
-                                    @if (hasError('fname', 'minlength')) {
-                                      <small class="text-danger position-absolute">Minimum 2 characters</small>
-                                    }
-                                  </div>
+  <div class="container">
+    <div class="checkout-section">
+      <div class="row gy-5 gy-lg-0">
+        <div class="col-md-6 col-12">
+          <div class="checkout-wrapper">
+            <div class="account-section billing-section p-4 border">
+              <div class="d-flex align-items-center mb-4">
+                <h3 class="wrapper-heading">Billings Details</h3>
+                <button type="button" class="shop-btn ms-auto d-block w-auto mt-0 p-3 fs-5" >Add New Address</button>
+                <!-- <button type="button" (click)="globalFunctionService.openAddressPopup()" class="shop-btn ms-auto d-block mt-0" >Add New Address</button> -->
+              </div>
 
-                                  <!-- Last Name -->
-                                  <div class="review-form-name">
-                                    <label for="lname" class="form-label">Last Name*</label>
-                                    <input type="text" id="lname" class="form-control" placeholder="Last Name" formControlName="lname">
-                                    @if (hasError('lname', 'required')) {
-                                    <small class="text-danger position-absolute">Last name is required</small>
-                                    }
-                                  </div>
-                                </div>
-
-                                <div class="account-inner-form">
-                                  <!-- Email -->
-                                  <div class="review-form-name">
-                                    <label for="email" class="form-label">Email*</label>
-                                    <input type="email" id="email" class="form-control" placeholder="user@gmail.com" formControlName="email">
-                                    @if (hasError('email', 'required')) {
-                                    <small class="text-danger position-absolute">Email is required</small>
-                                    }
-                                    @if (hasError('email', 'email')) {
-                                    <small class="text-danger position-absolute">Enter a valid email</small>
-                                    }
-                                  </div>
-
-                                  <!-- Phone -->
-                                  <div class="review-form-name">
-                                    <label for="phone" class="form-label">Phone*</label>
-                                    <input type="tel" id="phone" class="form-control" placeholder="+910000000000" formControlName="phone">
-                                    @if (hasError('phone', 'required')) {
-                                    <small class="text-danger position-absolute">Phone is required</small>
-                                    }
-                                  </div>
-                                </div>
-
-                                <div class="account-inner-form">
-                                  <!-- Country -->
-                                  <div class="review-form-name address-form w-100 my-0">
-                                    <label for="country" class="form-label">Country*</label>
-                                    <select id="country" class="form-select" formControlName="country" (change)="onCountryChange($event)">
-                                      <option value="">Choose...</option>
-                                      @for(item of countries; track $index){
-                                      <option [value]="$index"  [selected]="item.name === 'India'">{{item.name}}</option>
-                                      }
-                                    </select>
-
-                                    @if (hasError('country', 'required')) {
-                                    <small class="text-danger position-absolute">Country is required</small>
-                                    }
-                                  </div>
-
-                                  <!-- State -->
-                                  <div class="review-form-name address-form w-100 my-0">
-                                    <label for="country" class="form-label">State*</label>
-                                    <select id="country" class="form-select" formControlName="state" (change)="onStateChange($event)">
-                                      <option value="">Choose...</option>
-                                      @for(item of states; track $index){
-                                      <option>{{item.name}}</option>
-                                      }
-                                    </select>
-                                    @if (hasError('state', 'required')) {
-                                    <small class="text-danger position-absolute">state is required</small>
-                                    }
-                                  </div>
-                                </div>
-
-                                <!-- Street -->
-                                <div class="review-form-name address-form">
-                                  <label for="street" class="form-label">Street</label>
-                                  <input id="street" class="form-control" formControlName="street"/>
-                                  @if (hasError('state', 'required')) {
-                                  <small class="text-danger position-absolute">state is required</small>
-                                  }
-                                </div>
-
-                                <!-- Address -->
-                                <!-- <div class="review-form-name address-form">
-                                  <label for="address" class="form-label">Address*</label>
-
-                                  <input type="text"
-                                        id="address"
-                                        class="form-control"
-                                        placeholder="Enter your Address"
-                                        formControlName="address">
-
-                                  @if (hasError('address', 'required')) {
-                                    <small class="text-danger">Address is required</small>
-                                  }
-                                </div> -->
-
-
-                                <div class="account-inner-form city-inner-form">
-                                  <!-- City -->
-                                  <div class="review-form-name">
-                                    <label for="city" class="form-label">Town / City*</label>
-
-                                    <select id="city" class="form-select" formControlName="city">
-                                      <option value="">Choose...</option>
-                                      @for(city of cities; track $index){
-                                          <option>{{city}}</option>
-                                      }
-                                    </select>
-
-                                    @if (hasError('city', 'required')) {
-                                      <small class="text-danger position-absolute">City is required</small>
-                                    }
-                                  </div>
-
-                                  <!-- ZIP -->
-                                  <div class="review-form-name">
-                                    <label for="zip" class="form-label">Postcode / ZIP*</label>
-
-                                    <input type="text"
-                                          id="zip"
-                                          class="form-control"
-                                          placeholder="0000"
-                                          formControlName="postal_code">
-
-                                    @if (hasError('zip', 'required')) {
-                                      <small class="text-danger position-absolute">ZIP is required</small>
-                                    }
-                                  </div>
-
-                                </div>
-
-                                <!-- ADDRESS TYPE -->
-                                <div class="address-form">
-                                  <label class="form-label mb-1">Address type</label>
-                                  <div class="d-flex gap-2">
-                                    <button type="button" class="btn"
-                                    [class.btn-outline-primary]="checkoutForm.value.type === 'home'"
-                                    [class.bg-light]="checkoutForm.value.type !== 'home'"
-                                    (click)="setAddressType('home')">Home</button>
-
-                                    <button type="button" class="btn"
-                                    [class.btn-outline-primary]="checkoutForm.value.type === 'work'"
-                                    [class.bg-light]="checkoutForm.value.type !== 'work'"
-                                    (click)="setAddressType('work')">Office</button>
-
-                                    <button type="button" class="btn"
-                                    [class.btn-outline-primary]="checkoutForm.value.type === 'other'"
-                                    [class.bg-light]="checkoutForm.value.type !== 'other'"
-                                    (click)="setAddressType('other')">Others </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </form>
-                        </div>
-                    </div>
+              <div class="seller-info border rounded py-3 px-4">
+                <h5 class="heading mb-3 d-flex align-items-center border-bottom pb-3">
+                  <span class="me-auto fs-3">Home</span>
+                  <button class="btn border"><i class="fa-solid fa-pen-to-square"></i></button>
+                  <button class="btn border ms-3"><i class="fa-solid fa-trash"></i></button>
+                </h5>
+                <div class="info-list">
+                  <ul class="d-flex flex-column gap-2">
+                    <li><span class="info-title d-inline-block fw-semibold">Name :</span>abc</li>
+                    <li><span class="info-title d-inline-block fw-semibold">Email :</span></li>
+                    <li><span class="info-title d-inline-block fw-semibold">Phone :</span></li>
+                    <li><span class="info-title d-inline-block fw-semibold">City :</span></li>
+                    <li><span class="info-title d-inline-block fw-semibold">Zip :</span></li>
+                  </ul>
                 </div>
+              </div>
 
-                <div class="col-md-6 col-12">
-                    <div class="checkout-wrapper">
-                        <div class="account-section billing-section p-4 border">
-                            <h3 class="wrapper-heading">Order Summary</h3>
-                            <div class="order-summery ">
-                                <div class="subtotal product-total">
-                                    <h5 class="wrapper-heading fw-semibold">PRODUCT</h5>
-                                    <h5 class="wrapper-heading fw-semibold">TOTAL</h5>
-                                </div>
-                                <hr>
-                                <div class="subtotal product-total">
-                                  <ul class="product-list">
-                                    @for(item of cartListData; track $index){
-                                      <li>
-                                        <div class="product-info">
-                                          <h5 class="wrapper-heading">{{item.product.title}}</h5>
-                                          <!-- <p class="paragraph" [innerHtml]="item.product.description"></p> -->
-                                        </div>
-                                        <div class="price">
-                                          <h5 class="wrapper-heading">₹{{item.product.price_data.finalPrice}}</h5>
-                                        </div>
-                                      </li>
-                                    }
-                                  </ul>
-                                </div>
-                                <hr>
-                                <div class="subtotal product-total">
-                                  <h5 class="wrapper-heading fw-semibold">SUBTOTAL</h5>
-                                  <h5 class="wrapper-heading">₹{{subTotal}}</h5>
-                                </div>
-                                <div class="subtotal product-total">
-                                  <ul class="product-list">
-                                    <li>
-                                      <div class="product-info">
-                                        <p class="paragraph">SHIPPING</p>
-                                        <h5 class="wrapper-heading">Free Shipping</h5>
-                                      </div>
-                                      <div class="price">
-                                        <h5 class="wrapper-heading">+₹0</h5>
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </div>
-                                <hr>
-                                <div class="subtotal total">
-                                    <h5 class="wrapper-heading fs-3 fw-bold">TOTAL</h5>
-                                    <h5 class="wrapper-heading fs-2 fw-bold">₹{{grandTotal}}</h5>
-                                </div>
-                                <div class="subtotal payment-type">
-                                  <!-- <div class="checkbox-item">
+              
+              <!-- <form [formGroup]="checkoutForm">
+                <div class="review-form">
+                  <div class="account-inner-form">
+                
+                    <div class="review-form-name">
+                      <label for="fname" class="form-label">First Name*</label>
+                      <input
+                        type="text"
+                        id="fname"
+                        class="form-control"
+                        placeholder="First Name"
+                        formControlName="fname"
+                      />
+                      @if (hasError('fname', 'required')) {
+                      <small class="text-danger position-absolute">First name is required</small>
+                      } @if (hasError('fname', 'minlength')) {
+                      <small class="text-danger position-absolute">Minimum 2 characters</small>
+                      }
+                    </div>
+
+                
+                    <div class="review-form-name">
+                      <label for="lname" class="form-label">Last Name*</label>
+                      <input
+                        type="text"
+                        id="lname"
+                        class="form-control"
+                        placeholder="Last Name"
+                        formControlName="lname"
+                      />
+                      @if (hasError('lname', 'required')) {
+                      <small class="text-danger position-absolute">Last name is required</small>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="account-inner-form">
+                    
+                    <div class="review-form-name">
+                      <label for="email" class="form-label">Email*</label>
+                      <input
+                        type="email"
+                        id="email"
+                        class="form-control"
+                        placeholder="user@gmail.com"
+                        formControlName="email"
+                      />
+                      @if (hasError('email', 'required')) {
+                      <small class="text-danger position-absolute">Email is required</small>
+                      } @if (hasError('email', 'email')) {
+                      <small class="text-danger position-absolute">Enter a valid email</small>
+                      }
+                    </div>
+
+                    
+                    <div class="review-form-name">
+                      <label for="phone" class="form-label">Phone*</label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        class="form-control"
+                        placeholder="+910000000000"
+                        formControlName="phone"
+                      />
+                      @if (hasError('phone', 'required')) {
+                      <small class="text-danger position-absolute">Phone is required</small>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="account-inner-form">
+                
+                    <div class="review-form-name address-form w-100 my-0">
+                      <label for="country" class="form-label">Country*</label>
+                      <select
+                        id="country"
+                        class="form-select"
+                        formControlName="country"
+                        (change)="onCountryChange($event)"
+                      >
+                        <option value="">Choose...</option>
+                        @for(item of countries; track $index){
+                        <option [value]="$index" [selected]="item.name === 'India'">
+                          {{ item.name }}
+                        </option>
+                        }
+                      </select>
+
+                      @if (hasError('country', 'required')) {
+                      <small class="text-danger position-absolute">Country is required</small>
+                      }
+                    </div>
+
+                
+                    <div class="review-form-name address-form w-100 my-0">
+                      <label for="country" class="form-label">State*</label>
+                      <select
+                        id="country"
+                        class="form-select"
+                        formControlName="state"
+                        (change)="onStateChange($event)"
+                      >
+                        <option value="">Choose...</option>
+                        @for(item of states; track $index){
+                        <option>{{ item.name }}</option>
+                        }
+                      </select>
+                      @if (hasError('state', 'required')) {
+                      <small class="text-danger position-absolute">state is required</small>
+                      }
+                    </div>
+                  </div>
+
+                
+                  <div class="review-form-name address-form">
+                    <label for="street" class="form-label">Street</label>
+                    <input id="street" class="form-control" formControlName="street" />
+                    @if (hasError('state', 'required')) {
+                    <small class="text-danger position-absolute">state is required</small>
+                    }
+                  </div>
+
+                  
+
+                  <div class="account-inner-form city-inner-form">
+                    
+                    <div class="review-form-name">
+                      <label for="city" class="form-label">Town / City*</label>
+
+                      <select id="city" class="form-select" formControlName="city">
+                        <option value="">Choose...</option>
+                        @for(city of cities; track $index){
+                        <option>{{ city }}</option>
+                        }
+                      </select>
+
+                      @if (hasError('city', 'required')) {
+                      <small class="text-danger position-absolute">City is required</small>
+                      }
+                    </div>
+
+                    
+                    <div class="review-form-name">
+                      <label for="zip" class="form-label">Postcode / ZIP*</label>
+
+                      <input
+                        type="text"
+                        id="zip"
+                        class="form-control"
+                        placeholder="0000"
+                        formControlName="postal_code"
+                      />
+
+                      @if (hasError('zip', 'required')) {
+                      <small class="text-danger position-absolute">ZIP is required</small>
+                      }
+                    </div>
+                  </div>
+
+                  
+                  <div class="address-form">
+                    <label class="form-label mb-1">Address type</label>
+                    <div class="d-flex gap-2">
+                      <button
+                        type="button"
+                        class="btn"
+                        [class.btn-outline-primary]="checkoutForm.value.type === 'home'"
+                        [class.bg-light]="checkoutForm.value.type !== 'home'"
+                        (click)="setAddressType('home')"
+                      >
+                        Home
+                      </button>
+
+                      <button
+                        type="button"
+                        class="btn"
+                        [class.btn-outline-primary]="checkoutForm.value.type === 'work'"
+                        [class.bg-light]="checkoutForm.value.type !== 'work'"
+                        (click)="setAddressType('work')"
+                      >
+                        Office
+                      </button>
+
+                      <button
+                        type="button"
+                        class="btn"
+                        [class.btn-outline-primary]="checkoutForm.value.type === 'other'"
+                        [class.bg-light]="checkoutForm.value.type !== 'other'"
+                        (click)="setAddressType('other')"
+                      >
+                        Others
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-12">
+          <div class="checkout-wrapper">
+            <div class="account-section billing-section p-4 border">
+              <h3 class="wrapper-heading">Order Summary</h3>
+              <div class="order-summery">
+                <div class="subtotal product-total">
+                  <h5 class="wrapper-heading fw-semibold">PRODUCT</h5>
+                  <h5 class="wrapper-heading fw-semibold">TOTAL</h5>
+                </div>
+                <hr />
+                <div class="subtotal product-total">
+                  <ul class="product-list">
+                    @for(item of cartListData; track $index){
+                    <li>
+                      <div class="product-info">
+                        <h5 class="wrapper-heading">{{ item.product.title }}</h5>
+                        <!-- <p class="paragraph" [innerHtml]="item.product.description"></p> -->
+                      </div>
+                      <div class="price">
+                        <h5 class="wrapper-heading">₹{{ item.product.price_data.finalPrice }}</h5>
+                      </div>
+                    </li>
+                    }
+                  </ul>
+                </div>
+                <hr />
+                <div class="subtotal product-total">
+                  <h5 class="wrapper-heading fw-semibold">SUBTOTAL</h5>
+                  <h5 class="wrapper-heading">₹{{ subTotal }}</h5>
+                </div>
+                <div class="subtotal product-total">
+                  <ul class="product-list">
+                    <li>
+                      <div class="product-info">
+                        <p class="paragraph">SHIPPING</p>
+                        <h5 class="wrapper-heading">Free Shipping</h5>
+                      </div>
+                      <div class="price">
+                        <h5 class="wrapper-heading">+₹0</h5>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <hr />
+                <div class="subtotal total">
+                  <h5 class="wrapper-heading fs-3 fw-bold">TOTAL</h5>
+                  <h5 class="wrapper-heading fs-2 fw-bold">₹{{ grandTotal }}</h5>
+                </div>
+                <div class="subtotal payment-type">
+                  <!-- <div class="checkbox-item">
                                       <input type="radio" id="bank" name="bank">
                                       <div class="bank">
                                           <h5 class="wrapper-heading">Direct Bank Transfer</h5>
@@ -248,31 +307,45 @@
                                       </div>
                                   </div> -->
 
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="radio" id="cash" name="bank" style="transform: scale(1.3);" (change)="choosePaymentMethod('cod')">
-                                    <label class="form-check-label fw-semibold" for="cash">
-                                      Cash on Delivery
-                                    </label>
-                                  </div>
-                                  <div class="form-check mt-3">
-                                    <input class="form-check-input" type="radio" id="credit" name="bank" style="transform: scale(1.3);" (change)="choosePaymentMethod('online')">
-                                    <label class="form-check-label fw-semibold" for="credit">
-                                      Credit/Debit Cards or Paypal
-                                    </label>
-                                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      id="cash"
+                      name="bank"
+                      style="transform: scale(1.3)"
+                      (change)="choosePaymentMethod('cod')"
+                    />
+                    <label class="form-check-label fw-semibold" for="cash">
+                      Cash on Delivery
+                    </label>
+                  </div>
+                  <div class="form-check mt-3">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      id="credit"
+                      name="bank"
+                      style="transform: scale(1.3)"
+                      (change)="choosePaymentMethod('online')"
+                    />
+                    <label class="form-check-label fw-semibold" for="credit">
+                      Credit/Debit Cards or Paypal
+                    </label>
+                  </div>
 
-                                  @if (!isSelectPaymentMethodInput) {
-                                  <small class="text-danger">Choose Payment Method First</small>
-                                  }
-                                </div>
-                             
-                                <a (click)="submitAddress()" class="shop-btn">Place Order Now</a>
-                            </div>
-                        </div>
-                    </div>
+                  @if (!isSelectPaymentMethodInput) {
+                  <small class="text-danger">Choose Payment Method First</small>
+                  }
                 </div>
+
+                <a (click)="submitAddress()" class="shop-btn">Place Order Now</a>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </section>
 <!--------------- checkout-section-end---------------->
