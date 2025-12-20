@@ -24,7 +24,7 @@ console.log('token==>',token);
     if (isLoginPage) {
         console.log('isLoginPage==>',isLoginPage);
         
-      router.navigate(['/landing']);
+      router.navigate(['/']);
       return false;
     }
     return true;

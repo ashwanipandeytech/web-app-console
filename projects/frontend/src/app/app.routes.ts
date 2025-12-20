@@ -25,12 +25,13 @@ import { Thankyou } from './pages/thankyou/thankyou';
 export const routes: Routes = [
     {
         path: '',
-        component: Login,
-        canActivate: [authGuard]
+        component: LandingPage,
+       // canActivate: [authGuard]
         
     },
      {
         path: 'landing',
+        redirectTo: '',
         component: LandingPage,
         
     },

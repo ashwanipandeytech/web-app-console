@@ -41,6 +41,7 @@ export class UserProfile {
   }
   logout() {
     localStorage.clear();
+    
     this.route.navigate(['/']).then(() => {
       window.location.reload();
     });

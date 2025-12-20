@@ -18,6 +18,16 @@ isLoggedIn:any= false;
   userName: any;
 constructor(private cd:ChangeDetectorRef){
 
+  //use effect for getting the userState signal
+
+  //step1 if user is found logged in 
+  //call carlist api to show the cart list count
+  //call wishlist api to show the wishlist count
+
+
+  //use effect for getting the CART ADDED signal
+  //call carlist api to show the cart list count
+
 }
   ngOnInit(){
       let userData:any = localStorage.getItem('user');

@@ -84,19 +84,22 @@ toggleHeart(id:any) {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res.headers);
+        console.log('Response:', res);
         // console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
         if (res.headers) {
           let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
+          //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
           if (nonLoggedInUserToken) {
             localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
           }
+            this.globalService.showMsgSnackBar(res.body);
         }
         if (res.success == true) {
           this.globalService.showMsgSnackBar(res);
         } else if (res.error && res.error.message) {
           this.globalService.showMsgSnackBar(res.error);
         }
+        // EMIT THE CART ADDED SIGNAL 
       });
   }
 }
