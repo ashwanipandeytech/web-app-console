@@ -2,6 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 @Component({
   selector: 'layout-settings',
@@ -12,7 +13,7 @@ import { DataService } from 'shared-lib';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LayoutSettingsComponent implements OnInit {
- settingsModel={
+ settingsModel:any={
   general: {
     logo: {
       desktop: {
@@ -35,7 +36,7 @@ export class LayoutSettingsComponent implements OnInit {
       }
     }
   },
-  home_slider:[
+  home_Banner_Slider:[
     {
         imgSrc:'',
         alt:'',
@@ -85,9 +86,10 @@ export class LayoutSettingsComponent implements OnInit {
 
   ngOnInit() {
 
-     this.dataService.loadSetting().subscribe((d: any) => {
+    this.dataService.loadSetting().subscribe((d: any) => {
       // this.settingsModel.set(d || {});
     this.settingsModel=d;
+    console.info(this.settingsModel)
     this.cdr.detectChanges();
     
      
@@ -96,8 +98,8 @@ export class LayoutSettingsComponent implements OnInit {
   }
 
  // Add new empty slide
-  addSlide() {
-    this.settingsModel.home_slider.push({
+  addSlide(type:string) {
+    this.settingsModel[type].push({
       imgSrc: '',
       alt: '',
       url: ''
@@ -105,12 +107,28 @@ export class LayoutSettingsComponent implements OnInit {
   }
 
   // Delete slide by index
-  deleteSlide(index: number) {
-    if (this.settingsModel.home_slider.length > 0) {
-      this.settingsModel.home_slider.splice(index, 1);
+  deleteSlide(type:string,index: number) {
+    if (this.settingsModel[type].length > 0) {
+      this.settingsModel[type].splice(index, 1);
     }
   }
   saveSettings() {
-    console.log('Saving settings:', this.settingsModel);
+    this.dataService.post(this.settingsModel, 'settings')
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+        if (res.data) {
+
+        
+        }
+     
+      });
   }
+
+
 }

@@ -110,7 +110,7 @@
       </div>
 
  
-    <!-- 3. Home Slider -->
+    <!-- 3. Home Banner Slider -->
 <div class="accordion-item">
   <h2 class="accordion-header" id="headingSlider">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -122,17 +122,17 @@
     <div class="accordion-body">
       <!-- Add Button -->
       <div class="mb-4 text-end">
-        <button type="button" class="btn btn-success btn-sm" (click)="addSlide()">
+        <button type="button" class="btn btn-success btn-sm" (click)="addSlide('home_Banner_Slider')">
           <i class="bi bi-plus-circle me-1"></i> Add New Slide
         </button>
       </div>
 
-      @for (slide of settingsModel.home_slider; track $index) {
+      @for (slide of settingsModel.home_Banner_Slider; track $index) {
         <div class="card mb-4 shadow-sm position-relative">
           <div class="card-body">
             <!-- Delete Button -->
             <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 mt-2 me-2"
-                    (click)="deleteSlide($index)" title="Delete this slide">
+                    (click)="deleteSlide('home_Banner_Slider',$index)" title="Delete this slide">
               <i class="fa fa-trash"></i>
             </button>
 
@@ -140,7 +140,7 @@
             <div class="row g-3">
               <div class="col-md-4">
                 <label class="form-label fw-semibold">Image URL</label>
-                <input type="text" class="form-control" [name]="'home_slider[' + $index + '].imgSrc'"
+                <input type="text" class="form-control" [name]="'home_Banner_Slider[' + $index + '].imgSrc'"
                        [(ngModel)]="slide.imgSrc" placeholder="https://example.com/slide.jpg">
 
                 @if (slide.imgSrc) {
@@ -150,12 +150,71 @@
               </div>
               <div class="col-md-4">
                 <label class="form-label fw-semibold">Alt Text</label>
-                <input type="text" class="form-control" [name]="'home_slider[' + $index + '].alt'"
+                <input type="text" class="form-control" [name]="'home_Banner_Slider[' + $index + '].alt'"
                        [(ngModel)]="slide.alt">
               </div>
               <div class="col-md-4">
                 <label class="form-label fw-semibold">Link URL</label>
-                <input type="text" class="form-control" [name]="'home_slider[' + $index + '].url'"
+                <input type="text" class="form-control" [name]="'home_Banner_Slider[' + $index + '].url'"
+                       [(ngModel)]="slide.url" placeholder="https://example.com">
+              </div>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <div class="alert alert-info text-center">
+          No slides yet. Click "Add New Slide" to get started.
+        </div>
+      }
+    </div>
+  </div>
+</div>
+ <!-- 3. Home Promo Slider -->
+<div class="accordion-item">
+  <h2 class="accordion-header" id="headingSlider">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseSlider" aria-expanded="false" aria-controls="collapseSlider">
+      <i class="bi bi-images me-2"></i> Home Promo Slider
+    </button>
+  </h2>
+  <div id="collapseSlider" class="accordion-collapse collapse" aria-labelledby="headingSlider">
+    <div class="accordion-body">
+      <!-- Add Button -->
+      <div class="mb-4 text-end">
+        <button type="button" class="btn btn-success btn-sm" (click)="addSlide('home_Promo_Slider')">
+          <i class="bi bi-plus-circle me-1"></i> Add New Slide
+        </button>
+      </div>
+
+      @for (slide of settingsModel.home_Promo_Slider; track $index) {
+        <div class="card mb-4 shadow-sm position-relative">
+          <div class="card-body">
+            <!-- Delete Button -->
+            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 mt-2 me-2"
+                    (click)="deleteSlide('home_Promo_Slider',$index)" title="Delete this slide">
+              <i class="fa fa-trash"></i>
+            </button>
+
+            <h5 class="card-title">Slide {{ $index + 1 }}</h5>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Image URL</label>
+                <input type="text" class="form-control" [name]="'home_Promo_Slider[' + $index + '].imgSrc'"
+                       [(ngModel)]="slide.imgSrc" placeholder="https://example.com/slide.jpg">
+
+                @if (slide.imgSrc) {
+                  <img [src]="slide.imgSrc" [alt]="slide.alt || 'Slide ' + ($index + 1)"
+                       class="img-fluid img-preview mt-3 rounded shadow">
+                }
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Alt Text</label>
+                <input type="text" class="form-control" [name]="'home_Promo_Slider[' + $index + '].alt'"
+                       [(ngModel)]="slide.alt">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Link URL</label>
+                <input type="text" class="form-control" [name]="'home_Promo_Slider[' + $index + '].url'"
                        [(ngModel)]="slide.url" placeholder="https://example.com">
               </div>
             </div>
@@ -237,7 +296,7 @@
     </div>
 
     <!-- Submit Button -->
-    <div class="text-center mt-5">
+    <div class="text-center mt-5" (click)="saveSettings()">
       <button type="submit" class="btn btn-primary btn-lg px-5">
         <i class="bi bi-save me-2"></i> Save All Settings
       </button>

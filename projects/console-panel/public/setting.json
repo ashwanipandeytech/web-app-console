@@ -21,7 +21,20 @@
       }
     }
   },
-  "home_slider": [
+  "home_Banner_Slider": [
+    {
+      "imgSrc": "",
+      "alt": "",
+      "url": ""
+    },
+    {
+      "imgSrc": "",
+      "alt": "",
+      "url": ""
+    }
+  ],
+
+  "home_Promo_Slider": [
     {
       "imgSrc": "",
       "alt": "",
