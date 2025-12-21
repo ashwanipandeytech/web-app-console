@@ -12,15 +12,15 @@
 <!--------------- products-info-section--------------->
 <section class="product product-info bg-light pt-2">
     <div class="container">
-        <div class="blog-bradcrum d-none d-sm-block pb-2">
+        <div class="blog-bradcrum d-none d-sm-block pb-2 py-4">
             <span><a href="/">Home</a></span>
             <span class="devider">/</span>
             <span><a href="/product-sidebar">Shop</a></span>
             <span class="devider">/</span>
-            <span><a href="#">Product Details</a></span>
+            <span><a href="#" class="fw-semibold">Product Details</a></span>
         </div>
 
-        <div class="product-info-section">
+        <div class="product-info-section mt-4">
             @if (productDetails && productDetails.data.length>0) {
                 @for (item of productDetails.data; track $index) {
                     @if (productId == item.id) {
