@@ -5,29 +5,24 @@
             <a href="/category-details" class="h3 view">View All</a>
         </div>
         <!-- <div class="top-selling-section"> -->
-        <div class="fresh-section 123">
+        <div class="fresh-section">
             <ngx-slick-carousel slickModal="slick-carousel" id="slick-carousel" class="slick-carousel" 
             [config]="productSectionSlideConfig">
                 @for (item of productListData; track $index) {
-                <div class="product-wrapper me-3 bg-white p-3 rounded-4" ngxSlickItem>
+                <div class="product-wrapper mx-2 bg-white p-3 rounded-4" ngxSlickItem>
                     <div class="product-img" style="height: 220px;">
                         <a (click)="openProduct(item.id)">
                             <img [src]="item?.images[0]?.url" alt="product-img">
                         </a>
-
-                        <!-- <div class="product-cart-items" (click)="toggleHeart(item.id)" [ngClass]="{ 'active-heart': item.is_wishlisted }">
-                            <i class="fa-regular fa-heart"></i>
-                            <i class="fa-solid fa-heart"></i>
-                        </div> -->
-                        <!-- {{isWishlisted}} -->
+                        
                         <div class="product-cart-items bg-white rounded p-1" 
-                        (click)="toggleHeart(item.id)"  
-                        [ngClass]="{ 'active-heart': item.is_wishlisted}">
+                        (click)="toggleHeart(item)"  
+                        [ngClass]="{ 'wishlisted': item.is_wishlisted}">
                             <i class="fa-heart" [ngClass]="item.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"></i>
                         </div>
                     </div>
 
-                    <div class="product-info">
+                    <div class="product-info pb-0">
                         <a (click)="openProduct(item.id)" class="product-details">{{item.title}}</a>
                         <div class="ratings">
                             <span>
@@ -45,7 +40,7 @@
                                 <span class="price-cut">₹{{item.price_data.regularPrice}}</span>
                                 <span class="new-price">₹{{item.price_data.salePrice}}</span>
                             </div>
-                            <a class="product-btn ms-auto w-auto" (click)="addToCart(item)">Add to Cart</a>
+                            <a class="product-btn ms-auto w-auto shop-btn my-0" (click)="addToCart(item)">Add to Cart</a>
                         </div>
                     </div>
                 </div>

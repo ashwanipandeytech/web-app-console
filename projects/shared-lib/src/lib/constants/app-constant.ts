@@ -21,7 +21,7 @@ export const  promoBannerSlideConfig = {
     ]
   };
  export const productSectionSlideConfig = {
-    slidesToShow: 4.5,
+    slidesToShow: 5,
     infinite: false,
     autoplaySpeed: 2000,
     dots: false,
