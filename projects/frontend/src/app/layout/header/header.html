@@ -53,7 +53,7 @@
           }
 
           <div class="header-favourite">
-            <a href="/wishlist" class="cart-item position-relative">
+            <a routerLink="/wishlist" class="cart-item position-relative">
               <i class="fa-solid fa-heart fa-2xl"></i>
               @if(countsList?.wishlist_count > 0) {
                 <i class="icon-badge position-absolute fs-6 text-center text-white bg-primary rounded-circle">{{countsList?.wishlist_count}}</i>
@@ -62,7 +62,7 @@
           </div>
 
           <div class="header-cart">
-            <a href="/cart" class="cart-item position-relative">
+            <a routerLink="/cart" class="cart-item position-relative">
               <i class="fa-solid fa-cart-shopping fa-2xl"></i>
               @if(countsList?.cart_count > 0) {
                 <i class="icon-badge position-absolute fs-6 text-center text-white bg-primary rounded-circle">{{countsList?.cart_count}}</i>
@@ -167,13 +167,13 @@
 
           <div class="header-user">
             @if(isLoggedIn) {
-              <a href="/user-profile">
+              <a routerLink="/user-profile">
                 <i class="fa-solid fa-user-check fa-2xl"></i>
               </a>
             }
 
             @if(!isLoggedIn){
-              <a href="/login">
+              <a routerLink="/login">
                 <i class="fa-solid fa-user fa-2xl"></i>
               </a>
             }
