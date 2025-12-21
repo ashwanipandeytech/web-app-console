@@ -24,7 +24,7 @@
 <!--------------- blog-tittle-section-end---------------->
 
 <!--------------- products-sidebar-section--------------->
-<section class="product-sidebar bg-light pt-2 pt-lg-3 pb-5">
+<section class="product-sidebar pt-2 pt-lg-3 pb-5">
     <div class="container-fluid px-2 px-lg-3">
         <div class="row g-2 g-lg-3">
 
@@ -133,9 +133,10 @@
                             }
                          <!-- } -->
                           @if (this.productListData.length<=0) {
-                                    <h1>
-                                        NO DATA AVAIALBLE
-                                    </h1>
+                                   <div class="container text-center py-4 text-muted display-1">
+                                    <i class="fa-solid fa-circle-info me-2"></i>
+                                    NO DATA AVAILABLE
+                                    </div>
                                 }
                         <!-- Product end -->
                     </div>
