@@ -199,7 +199,7 @@ if (this.searchQuery == '') {
       }
     
       fullAddrress.label = this.addressForm.value.type;
-      fullAddrress.is_default=1;
+      fullAddrress.is_default=true;
        this.dataService.post(fullAddrress, 'addresses')
             .pipe(
               catchError(err => {

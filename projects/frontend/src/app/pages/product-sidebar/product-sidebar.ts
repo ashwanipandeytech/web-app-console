@@ -5,7 +5,7 @@ import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 
 @Component({
-  selector: 'web-product-sidebar',
+  selector: 'web-category-details',
   imports: [],
   templateUrl: './product-sidebar.html',
   styleUrl: './product-sidebar.scss'

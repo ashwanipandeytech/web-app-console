@@ -5,6 +5,8 @@ import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { Router } from '@angular/router';
 import { GlobaCommonlService } from '../../../../../global-common.service';
+import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
+
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -16,6 +18,7 @@ import { CommonModule } from '@angular/common';
 export class ProductComponent implements OnInit {
   productSectionSlideConfig = productSectionSlideConfig;
   public globalService:any= inject(GlobaCommonlService);
+  private globalFunctionService = inject(GlobalFunctionService);
   dataService = inject(DataService);
   cd = inject(ChangeDetectorRef);
   productListData: any = [];
@@ -96,6 +99,7 @@ toggleHeart(id:any) {
         }
         if (res.success == true) {
           this.globalService.showMsgSnackBar(res);
+          this.globalFunctionService.getCount();
         } else if (res.error && res.error.message) {
           this.globalService.showMsgSnackBar(res.error);
         }
