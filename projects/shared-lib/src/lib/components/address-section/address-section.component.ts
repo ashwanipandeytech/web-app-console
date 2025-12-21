@@ -1,8 +1,10 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { GlobalFunctionService } from '../../services/global-function.service';
+import { GlobaCommonlService } from 'projects/global-common.service';
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-address-section',
@@ -11,11 +13,15 @@ import { GlobalFunctionService } from '../../services/global-function.service';
   styleUrls: ['./address-section.component.scss']
 })
 export class AddressSectionComponent implements OnInit {
+  @ViewChild('removeAddressModal') removeAddressModal!: ElementRef;
+
   addressListData: any=[];
 private dataService = inject(DataService);
 public globalFunctionService = inject(GlobalFunctionService);
+private globalService = inject(GlobaCommonlService);
 private cd = inject(ChangeDetectorRef);
   currentUser: any;
+  deleteAddressId: any;
   constructor() { }
 
   ngOnInit() {
@@ -36,4 +42,27 @@ private cd = inject(ChangeDetectorRef);
         }
       })
     }
+    setDeleteId(id: any) {
+  this.deleteAddressId = id;
+}
+deleteAddress() {
+  console.log('Deleting ID:', this.deleteAddressId);
+
+  this.dataService.delete('addresses',this.deleteAddressId).subscribe((res:any) => {
+    // uncomment below 
+    // if (res.success) {
+      // this.globalService.showMsgSnackBar(res);
+      this.getAddressList();
+    const modal = bootstrap.Modal.getInstance(
+        this.removeAddressModal.nativeElement
+      );
+      modal.hide();
+    // }
+ 
+  });
+}
+
+editAddress(item:any){
+
+}
 }

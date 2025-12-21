@@ -11,6 +11,8 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DynamicPopup } from '../confirmationPopup/confirmationPopup.component';
 import { GlobaCommonlService } from '../../../../../global-common.service';
 declare const google: any;
+declare const bootstrap: any;
+
 
 @Component({
   selector: 'app-cart',
@@ -19,6 +21,7 @@ declare const google: any;
   styleUrl: './cart.scss',
 })
 export class CartCommon {
+  @ViewChild('deleteCart') deleteCart!: ElementRef;
   @ViewChild('addressInput') addressInput!: ElementRef<HTMLInputElement>;
   private dataService: any = inject(DataService);
   private globalService: any = inject(GlobaCommonlService);
@@ -39,6 +42,7 @@ export class CartCommon {
   grandTotal: number = 0;
   loading: boolean = true;
   isLoggedIn: boolean = false;
+  cartItemId: any;
   constructor(private http: HttpClient, private fb: FormBuilder, private cd: ChangeDetectorRef) {
     this.addAddressForm();
     this.getAddressList();
@@ -335,29 +339,32 @@ export class CartCommon {
 
   // deleteItem(id:any){
 
-  deleteItem(id: any): void {
-    let popupData = {
-      title: 'Cart Item',
-      description: 'Are you sure, you want to delete Item',
-      id: id,
-    };
-    let dialogRef = this.dialog.open(DynamicPopup, {
-      width: '250px',
-      data: popupData,
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('Dialog closed with:', result);
-
-      if (result.action === 'ok') {
-        this.deleteCartItem(id);
-      }
-    });
-    // }
+  deleteCartItem(id:any){
+this.cartItemId = id;
   }
+  // deleteItem(): void {
+  //   let popupData = {
+  //     title: 'Cart Item',
+  //     description: 'Are you sure, you want to delete Item',
+  //     id: this.cartItemId,
+  //   };
+  //   let dialogRef = this.dialog.open(DynamicPopup, {
+  //     width: '250px',
+  //     data: popupData,
+  //   });
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     console.log('Dialog closed with:', result);
 
-  deleteCartItem(id: any) {
+  //     if (result.action === 'ok') {
+  //       this.deleteCartItem(id);
+  //     }
+  //   });
+  //   // }
+  // }
+
+  deleteItem() {
     this.dataService
-      .delete('cart', id)
+      .delete('cart', this.cartItemId)
       .pipe(
         catchError((err) => {
           console.error('Error:', err);
@@ -372,7 +379,10 @@ export class CartCommon {
 
         if (res.success == true) {
           this.globalService.showMsgSnackBar(res);
-
+ const modal = bootstrap.Modal.getInstance(
+        this.deleteCart.nativeElement
+      );
+      modal.hide();
           this.carList();
           this.cd.detectChanges();
         } else if (res.error && res.error.message) {

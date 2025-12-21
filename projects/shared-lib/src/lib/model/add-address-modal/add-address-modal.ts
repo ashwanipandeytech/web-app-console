@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, Input, ViewChild } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -8,6 +8,7 @@ import { DataService } from '../../services/data-service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../../../environments/environment';
 import { CheckPlatformService } from '../../services/check-platform.service';
+import { GlobaCommonlService } from 'projects/global-common.service';
 declare const google: any;
 
 @Component({
@@ -20,6 +21,7 @@ export class AddAddressModal {
   @ViewChild('addressInput') addressInput!: ElementRef<HTMLInputElement>;
   private dataService:any = inject(DataService);
   private checkPlatform:any = inject(CheckPlatformService);
+  private globalService = inject(GlobaCommonlService);
   // selectedAddress: string = '';
   searchText = '';
   suggestions: any[] = [];
@@ -31,6 +33,7 @@ export class AddAddressModal {
   addressListData: any=[];
   searchQuery: any;
   browser: boolean=true;
+  @Input () data:any;
   constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDetectorRef,private activeModal:NgbActiveModal){
     this.addAddressForm();
     this.getAddressList();
@@ -85,6 +88,22 @@ if (this.searchQuery == '') {
 // }, 100);
   }
 
+  ngOnInit(){
+    console.log('data==>',this.data);
+    if (this.data) {
+      this.addressForm.patchValue({
+      name:this.data.name,
+      phone:this.data.phone,
+    street: this.data.street,
+    type:this.data.type,
+    city: this.data.city || this.data.town || '',
+    state: this.data.state || '',
+    postal_code: this.data.postcode || this.data.postal_code || '',
+    country: this.data.country || '',
+    // location:[{ lat:item.properties.lat,lng:item.properties.lon}]
+  });
+    }
+  }
   selectSuggestion(item: any) {
     // console.log('searchText==>',item);
       this.searchText = '';
@@ -180,6 +199,7 @@ if (this.searchQuery == '') {
       }
     
       fullAddrress.label = this.addressForm.value.type;
+      fullAddrress.is_default=1;
        this.dataService.post(fullAddrress, 'addresses')
             .pipe(
               catchError(err => {
@@ -191,6 +211,8 @@ if (this.searchQuery == '') {
             .subscribe((res: any) => {
               console.log('Response:', res);
               if (res.success == true) {   
+                this.closePopup();
+                this.globalService.showMsgSnackBar(res);
                 // this.router.navigate(['/cart']);
               }
             });
@@ -201,6 +223,47 @@ if (this.searchQuery == '') {
     }
   }
 
+
+
+
+
+
+   updateAddress() {
+    if (this.addressForm.valid) {
+      console.log(this.addressForm.value);
+      let fullAddrress = this.addressForm.value;
+      if (this.lat && this.lng) {
+          fullAddrress.location = [{
+        lat:this.lat,lng:this.lng
+      }]
+      }
+      else{
+        fullAddrress.location = '';
+      }
+      fullAddrress.id = this.data.id;
+      fullAddrress.label = this.addressForm.value.type;
+       this.dataService.put(fullAddrress, 'addresses')
+            .pipe(
+              catchError(err => {
+                console.error('Error:', err);
+      
+                return of(null);
+              })
+            )
+            .subscribe((res: any) => {
+              console.log('Response:', res);
+              if (res.success == true) {   
+                this.closePopup();
+                this.globalService.showMsgSnackBar(res);
+                // this.router.navigate(['/cart']);
+              }
+            });
+      console.log('addresss=====>',fullAddrress);
+      
+    } else {
+      this.addressForm.markAllAsTouched();
+    }
+  }
 onSelectAddress(item: any) {
   console.log("Selected:", item);
 }

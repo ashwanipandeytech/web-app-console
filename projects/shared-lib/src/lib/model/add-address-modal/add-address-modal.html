@@ -1,5 +1,13 @@
 <div class="modal-header">
-  <h1 class="modal-title fs-3" id="addressModalLabel">New address details</h1>
+  
+@if (isNewAddress && !this.data) {
+   <h1 class="modal-title fs-3" id="addressModalLabel">New Address Details</h1>
+
+}
+@if (this.data) {
+  <h1 class="modal-title fs-3" id="addressModalLabel">Update Address Details</h1>
+
+}
   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closePopup()"></button>
 </div>
 
@@ -229,8 +237,13 @@
   }
 </div>
 
-@if (isNewAddress) {
+@if (isNewAddress && !this.data) {
   <div class="modal-footer border-0">
-    <button type="button" class="btn fw-semibold shop-btn w-100 py-3 fs-4">Save address</button>
+    <button type="button" class="btn fw-semibold shop-btn w-100 py-3 fs-4" (click)="submitForm()">Save address</button>
+  </div>
+}
+@if (this.data) {
+  <div class="modal-footer border-0">
+    <button type="button" class="btn fw-semibold shop-btn w-100 py-3 fs-4" (click)="updateAddress()">Update address</button>
   </div>
 }
