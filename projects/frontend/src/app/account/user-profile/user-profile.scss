@@ -1,9 +1,6 @@
 @use '../../../scss/variable' as *;
 
 .user-profile {margin-top: 2rem;}
-.w-1100{
-  max-width: 1100px;
-}
 
 // Wishlist start
 .wishlist-container {
@@ -288,16 +285,15 @@
         }
       }
 
-      svg {
-        fill: currentColor;
-        fill: $paragraph;
+      i {
+        color: $paragraph;
         transition: all 0.2s;
       }
     }
 
     .nav-link.active, .nav-link:hover {
-      svg {
-        fill: $theme-color;
+      i {
+        color: $theme-color;
         transform: scale(1.1);
       }
 
@@ -309,8 +305,8 @@
 
       background-color: transparent;
     }
-    .nav-link:hover {
-      svg {fill: rgba(($theme-color), 50%);}
+    .nav-link:not(.active):hover {
+      i {color: rgba(($theme-color), 50%);}
       .text {color: rgba(($theme-color), 70%);}
     }
   }

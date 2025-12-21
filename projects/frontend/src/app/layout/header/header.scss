@@ -729,3 +729,15 @@
   top: -20px;
   right: -12px;
 }
+
+.user-account{
+  .btn{
+    &:focus, &:active{border-color: transparent;}
+  }
+  li {
+    .dropdown-item{
+      &:active{background-color: $theme-color;}
+      span{display: inline-block;width: 24px;}
+    }
+  }
+}
