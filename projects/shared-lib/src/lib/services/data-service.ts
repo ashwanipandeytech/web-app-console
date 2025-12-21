@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Commonresponseobject } from '../model/responsemodel';
 import { environment } from '../../../../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -130,4 +130,8 @@ export class DataService {
   update(endpoint: string, data: any, id: any) {
     return this.request('POST', `${endpoint}/${id}`, data);
   }
+  loadSetting(): Observable<any> {
+   return this.http.get<any>('/setting.json');
+
+}
 }

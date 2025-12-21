@@ -1,36 +1,134 @@
 
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { catchError, of } from 'rxjs';
+import { DataService } from 'shared-lib';
 @Component({
   selector: 'layout-settings',
   templateUrl: './layout-settings.component.html',
-  imports: [ReactiveFormsModule, FormsModule],
+  imports: [FormsModule, CommonModule],
   styleUrls: ['./layout-settings.component.scss'],
-  standalone:true
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LayoutSettingsComponent implements OnInit {
-settings:any=FormGroup;
-  constructor(private fb:FormBuilder) {
-    this.addSettingForm();
-   }
+ settingsModel:any={
+  general: {
+    logo: {
+      desktop: {
+        imgSrc:'',
+        alt:''
+      },
+      mobile: {
+         imgSrc:'',
+        alt:''
+      }
+    },
+    favico: {
+      desktop: {
+        imgSrc:'',
+        alt:''
+      },
+      mobile: {
+         imgSrc:'',
+        alt:''
+      }
+    }
+  },
+  home_Banner_Slider:[
+    {
+        imgSrc:'',
+        alt:'',
+        url:'',
+    },
+    {
+       imgSrc:'',
+        alt:'',
+        url:'',
+    },
+  ],
+  social: [
+  {
+    label:'facebook',
+    link:''
+  },{
+    label:'twitter',
+    link:''
+  },
+  {
+    label:'instagram',
+    link:''
+  },
+  {
+    label:'linkedin',
+    link:''
+  },
+  {
+    label:'youtube',
+    link:''
+  },
+  {
+    label:'pinterest',
+    link:''
+  },
+  ],
+  contacts:{
+     mobileNo:'',
+     whatsappLink:'',
+     email:'',
+     address:''
+  }
+}
+ loading=true
+ public dataService: any = inject(DataService);
+  constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
-  }
 
-  addSettingForm(){
-      this.settings = this.fb.group({
-      name: ['', [Validators.required]],
-      mainCategory: ['',Validators.required],
-      categoryThumbnail: [''],
-      customCategoryIcon: [''],
-      description: ['', [Validators.minLength(30)]],
-      displayType: ['',Validators.required],
-
+    this.dataService.loadSetting().subscribe((d: any) => {
+      // this.settingsModel.set(d || {});
+    this.settingsModel=d;
+    console.info(this.settingsModel)
+    this.cdr.detectChanges();
+    
+     
+      this.loading=false
     });
   }
-saveSettingData(){
-  
-}
+
+ // Add new empty slide
+  addSlide(type:string) {
+    this.settingsModel[type].push({
+      imgSrc: '',
+      alt: '',
+      url: ''
+    });
+  }
+
+  // Delete slide by index
+  deleteSlide(type:string,index: number) {
+    if (this.settingsModel[type].length > 0) {
+      this.settingsModel[type].splice(index, 1);
+    }
+  }
+  saveSettings() {
+    this.dataService.post(this.settingsModel, 'settings')
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+        if (res.data) {
+
+        
+        }
+     
+      });
+  }
+
 
 }

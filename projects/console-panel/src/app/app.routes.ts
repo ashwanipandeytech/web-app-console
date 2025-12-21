@@ -7,7 +7,6 @@ import { AddProduct } from './modules/products/add-product/add-product';
 import { AllProducts } from './modules/products/all-products';
 import { Order } from './modules/order/order';
 import { Category } from './modules/category/category';
-import { SettingsComponent } from './modules/settings/settings.component';
 import { authGuard } from './app.guard';
 import { LayoutSettingsComponent } from './modules/layout-settings/layout-settings.component';
 
@@ -73,13 +72,8 @@ export const routes: Routes = [
     },
       {
         path: 'settings',
-        component: SettingsComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'layout-settings',
         component: LayoutSettingsComponent,
-       // canActivate: [authGuard]
-    },
+        canActivate: [authGuard]
+    }
    
 ];

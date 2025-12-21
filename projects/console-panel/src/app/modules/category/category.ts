@@ -102,6 +102,7 @@ export class Category {
       });
   }
   getCategoryList() {
+    
     this.categoryListData = [];
     this.dataService.get('categories')
       .pipe(
