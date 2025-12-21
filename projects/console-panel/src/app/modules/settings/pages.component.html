@@ -1,0 +1,64 @@
+<div class="container mt-3">
+     <div class="text-end mb-2">
+    <button
+      class="btn btn-sm btn-warning"
+      (click)="addPage()">
+      Add New Page
+    </button>
+  </div>
+    <div class="table-responsive">
+      
+
+   <table class="table table-bordered table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Slug</th>
+     
+       
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+     @for (page of pageList; track $index; let i = $index) {
+      <tr >
+        <td>{{ i + 1 }}</td>
+        <td>{{ page.title || '-' }}</td>
+        <td>{{ page.description || '-' }}</td>
+        <td>{{ page.slug || '-' }}</td>
+
+     
+
+        <!-- Actions -->
+        <td class="text-nowrap">
+         
+          <button
+            class="btn btn-sm btn-warning me-1"
+            (click)="editPage(page)">
+            Edit
+          </button>
+
+           <!-- <button
+            class="btn btn-sm btn-info me-1"
+            (click)="viewPage(page)">
+            View
+          </button>
+
+
+          <button
+            class="btn btn-sm btn-danger"
+            (click)="deletePage(i)">
+            Delete
+          </button> -->
+        </td>
+      </tr>
+    }
+    </tbody>
+  </table>
+</div>
+
+
+</div>

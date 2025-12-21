@@ -113,7 +113,11 @@ export class LayoutSettingsComponent implements OnInit {
     }
   }
   saveSettings() {
-    this.dataService.post(this.settingsModel, 'settings')
+   let payload= {
+      settings_name:'general',
+      settings:this.settingsModel
+    }
+    this.dataService.post(payload, 'settings')
       .pipe(
         catchError(err => {
           console.error('Error:', err);

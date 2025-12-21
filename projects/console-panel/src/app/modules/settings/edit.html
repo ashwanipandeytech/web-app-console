@@ -1,0 +1,101 @@
+<div class="container mt-4">
+  <h4>Edit Page</h4>
+
+  <form #pageForm="ngForm" (ngSubmit)="updatePage()">
+
+    <!-- PAGE DETAILS -->
+    <div class="card mb-4">
+      <div class="card-header fw-bold">
+        Page Details
+      </div>
+      <div class="card-body">
+
+        <!-- Title -->
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input type="text"
+                 class="form-control"
+                 name="title"
+                 [(ngModel)]="newPage.title"
+                 required>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea class="form-control"
+                    name="description"
+                    [(ngModel)]="newPage.description"
+                    required></textarea>
+        </div>
+
+        <!-- Slug -->
+        <div class="mb-3">
+          <label class="form-label">Slug</label>
+          <input type="text"
+                 class="form-control"
+                 name="slug"
+                 [(ngModel)]="newPage.slug"
+                 required>
+        </div>
+
+        <!-- Page Content -->
+        <div class="mb-3">
+          <label class="form-label">Page Content</label>
+          
+
+                      <quill-editor name="pageContent"
+                    [(ngModel)]="newPage.pageContent"></quill-editor>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SEO SECTION -->
+    <div class="card mb-4 border-success">
+      <div class="card-header bg-success text-white fw-bold">
+        SEO Settings
+      </div>
+      <div class="card-body">
+
+        <!-- Focus Keyphrase -->
+        <div class="mb-3">
+          <label class="form-label">Focus Keyphrase</label>
+          <input type="text"
+                 class="form-control"
+                 name="keywords"
+                 [(ngModel)]="newPage.seoData.keywords">
+        </div>
+
+        <!-- SEO Meta Title -->
+        <div class="mb-3">
+          <label class="form-label">SEO Meta Title</label>
+          <input type="text"
+                 class="form-control"
+                 name="metaTitle"
+                 [(ngModel)]="newPage.seoData.metaTitle">
+        </div>
+
+        <!-- SEO Meta Description -->
+        <div class="mb-3">
+          <label class="form-label">SEO Meta Description</label>
+          <textarea class="form-control"
+                    rows="3"
+                    name="metaDescription"
+                    [(ngModel)]="newPage.seoData.metaDescription"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="text-end">
+      <button class="btn btn-primary"
+              type="submit"
+              [disabled]="pageForm.invalid">
+        Update Page
+      </button>
+    </div>
+
+  </form>
+</div>
