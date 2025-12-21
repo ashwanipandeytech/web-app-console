@@ -209,7 +209,10 @@ export class ProductDetails {
         console.log('wishlist==>',res);
       })
     }
+     this.callAllProductList();
     this.globalFunctionService.getCount();
+    this.cd.detectChanges();
+
 
 
 

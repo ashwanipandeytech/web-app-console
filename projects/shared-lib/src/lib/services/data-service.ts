@@ -98,7 +98,8 @@ export class DataService {
   get(endpoint: string, from: string = '') {
 
     if (from === 'web') {
-      return this.http.get<Commonresponseobject>(`${environment.API_URL}${endpoint}`);
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${this.authToken}` });
+      return this.http.get<Commonresponseobject>(`${environment.API_URL}${endpoint}`,{headers});
     }
     return this.request('GET', endpoint);
   }
