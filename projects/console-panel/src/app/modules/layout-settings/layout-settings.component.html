@@ -1,95 +1,247 @@
-<!-- main sidebar end -->
+<!-- settings-form.component.html -->
+<div class="container mt-5 mb-5">
+  <h2 class="text-center mb-4 fw-bold">Website Settings</h2>
 
-<!-- main content start -->
-<div class="main-content">
-    <div class="breadcrumb mb-30">
-        <h2>Setting</h2>
-    </div>
-    <div class="row g-4">
-        <div class="col-12">
-            <div class="panel">
-                <div class="panel-header">
-                    <h5>Add New Setting</h5>
-                </div>
-                <form [formGroup]="settings">
-                <div class="panel-body">
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <label class="form-label"> Title</label>
-                            <input type="text" class="form-control form-control-sm" formControlName="name" id="categoryTitle">
-                            <p class="perma-txt" hidden>
-                                Permalink: <span data-link="https://example.com/" class="site-link text-primary" id="categoryPermalink">https://example.com/</span><input type="text" class="form-control form-control-sm" hidden="" id="editPermalink">
-                                <button class="btn-flush bg-primary" id="editPermaBtn">Edit</button>
-                                <button class="btn-flush bg-success" id="createPerma" hidden="">OK</button>
-                                <button class="btn-flush bg-danger" id="cancelPerma" hidden="">Cancel</button>
-                            </p>
-                        </div>
-                        <div class="col-sm-6">
-                            <label class="form-label">Main Setting</label>
-                            <select class="" formControlName="mainCategory">
-                                <option value="">Select</option>
-                                <option value="Cloth">Cloth</option>
-                                <option value="Fashion">Fashion</option>
-                                <option value="Jewellery">Jewellery</option>
-                                <option value="Bag">Bag</option>
-                                <option value="SmartPhone">Smart Phone</option>
-                                <option value="Watch">Watch</option>
-                                <option value="Sunglass">Sunglass</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-6">
-                            <label class="form-label">Custom Setting Icon</label>
-                            <input type="text" formControlName="customCategoryIcon" class="form-control form-control-sm" placeholder="Fontawesome 6 pro icon name">
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Description</label>
-                            <textarea rows="5" class="form-control form-control-sm" formControlName="description"></textarea>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Display Type</label>
-                            <select class="" formControlName="displayType">
-                                <option value="">Default</option>
-                                <option value="Products">Products</option>
-                                <option value="Subcategories">Subcategories</option>
-                                <option value="Both">Both</option>
-                            </select>
-                        </div>
-                       <!-- <div class="col-12">
-                        <div class="upload-category-thumbnail">
-                            <label class="form-label mb-0" for="thumbUpload">Add Category Thumbnail</label>
-                        <button>
-                            <input 
-                            type="file"
-                            (change)="onImageChange($event)"
-                            accept="image/*"
-                            class="form-control"
-                            />
-                        </button>
-                            @if(imagePreview){
+  <form #settingsForm="ngForm" >
 
-                                <div class="mt-2">
-                                <img src="{{imagePreview}}" alt="Thumbnail Preview" width="120" height="120" style="border-radius:8px;">
-                                </div>
-                            }
-                        </div>
-</div> -->
+    <!-- Accordion Container -->
+    <div class="accordion shadow-sm" id="settingsAccordion">
 
-                        <div class="col-12 d-flex justify-content-end">
-                            <div class="btn-box">
-                                <button class="btn btn-sm btn-primary" (click)="saveSettingData()">Save Setting</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </form>
+      <!-- 1. General - Logo -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingLogo">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseLogo" aria-expanded="true" aria-controls="collapseLogo">
+            <i class="bi bi-image me-2"></i> Logo Settings
+          </button>
+        </h2>
+        <div id="collapseLogo" class="accordion-collapse collapse show" aria-labelledby="headingLogo">
+          <div class="accordion-body">
+            <div class="row g-4">
+              <!-- Desktop Logo -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Desktop Logo</label>
+                <input type="text" class="form-control" name="general.logo.desktop.imgSrc"
+                       [(ngModel)]="settingsModel.general.logo.desktop.imgSrc"
+                       placeholder="https://example.com/desktop-logo.png">
+
+                @if (settingsModel.general.logo.desktop.imgSrc) {
+                  <div class="mt-3">
+                    <small class="text-muted">Preview:</small>
+                    <img [src]="settingsModel.general.logo.desktop.imgSrc"
+                         [alt]="settingsModel.general.logo.desktop.alt || 'Desktop Logo'"
+                         class="img-fluid img-preview rounded shadow-sm mt-2">
+                  </div>
+                }
+              </div>
+
+              <!-- Desktop Alt -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Desktop Logo Alt Text</label>
+                <input type="text" class="form-control" name="general.logo.desktop.alt"
+                       [(ngModel)]="settingsModel.general.logo.desktop.alt">
+              </div>
+
+              <!-- Mobile Logo -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Mobile Logo</label>
+                <input type="text" class="form-control" name="general.logo.mobile.imgSrc"
+                       [(ngModel)]="settingsModel.general.logo.mobile.imgSrc"
+                       placeholder="https://example.com/mobile-logo.png">
+
+                @if (settingsModel.general.logo.mobile.imgSrc) {
+                  <div class="mt-3">
+                    <small class="text-muted">Preview:</small>
+                    <img [src]="settingsModel.general.logo.mobile.imgSrc"
+                         [alt]="settingsModel.general.logo.mobile.alt || 'Mobile Logo'"
+                         class="img-fluid img-preview rounded shadow-sm mt-2">
+                  </div>
+                }
+              </div>
+
+              <!-- Mobile Alt -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Mobile Logo Alt Text</label>
+                <input type="text" class="form-control" name="general.logo.mobile.alt"
+                       [(ngModel)]="settingsModel.general.logo.mobile.alt">
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+
+      <!-- 2. Favicon -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingFavicon">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseFavicon" aria-expanded="false" aria-controls="collapseFavicon">
+            <i class="bi bi-bookmark-check me-2"></i> Favicon
+          </button>
+        </h2>
+        <div id="collapseFavicon" class="accordion-collapse collapse" aria-labelledby="headingFavicon">
+          <div class="accordion-body">
+            <div class="row g-4">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Desktop Favicon</label>
+                <input type="text" class="form-control" name="general.favico.desktop.imgSrc"
+                       [(ngModel)]="settingsModel.general.favico.desktop.imgSrc"
+                       placeholder="https://example.com/favicon.ico">
+
+                @if (settingsModel.general.favico.desktop.imgSrc) {
+                  <img [src]="settingsModel.general.favico.desktop.imgSrc"
+                       alt="Favicon Preview" class="img-preview mt-3" style="width: 64px; height: 64px;">
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Mobile Favicon</label>
+                <input type="text" class="form-control" name="general.favico.mobile.imgSrc"
+                       [(ngModel)]="settingsModel.general.favico.mobile.imgSrc"
+                       placeholder="https://example.com/mobile-favicon.png">
+
+                @if (settingsModel.general.favico.mobile.imgSrc) {
+                  <img [src]="settingsModel.general.favico.mobile.imgSrc"
+                       alt="Mobile Favicon Preview" class="img-preview mt-3" style="width: 64px; height: 64px;">
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+ 
+    <!-- 3. Home Slider -->
+<div class="accordion-item">
+  <h2 class="accordion-header" id="headingSlider">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseSlider" aria-expanded="false" aria-controls="collapseSlider">
+      <i class="bi bi-images me-2"></i> Home Slider
+    </button>
+  </h2>
+  <div id="collapseSlider" class="accordion-collapse collapse" aria-labelledby="headingSlider">
+    <div class="accordion-body">
+      <!-- Add Button -->
+      <div class="mb-4 text-end">
+        <button type="button" class="btn btn-success btn-sm" (click)="addSlide()">
+          <i class="bi bi-plus-circle me-1"></i> Add New Slide
+        </button>
+      </div>
+
+      @for (slide of settingsModel.home_slider; track $index) {
+        <div class="card mb-4 shadow-sm position-relative">
+          <div class="card-body">
+            <!-- Delete Button -->
+            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 mt-2 me-2"
+                    (click)="deleteSlide($index)" title="Delete this slide">
+              <i class="fa fa-trash"></i>
+            </button>
+
+            <h5 class="card-title">Slide {{ $index + 1 }}</h5>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Image URL</label>
+                <input type="text" class="form-control" [name]="'home_slider[' + $index + '].imgSrc'"
+                       [(ngModel)]="slide.imgSrc" placeholder="https://example.com/slide.jpg">
+
+                @if (slide.imgSrc) {
+                  <img [src]="slide.imgSrc" [alt]="slide.alt || 'Slide ' + ($index + 1)"
+                       class="img-fluid img-preview mt-3 rounded shadow">
+                }
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Alt Text</label>
+                <input type="text" class="form-control" [name]="'home_slider[' + $index + '].alt'"
+                       [(ngModel)]="slide.alt">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Link URL</label>
+                <input type="text" class="form-control" [name]="'home_slider[' + $index + '].url'"
+                       [(ngModel)]="slide.url" placeholder="https://example.com">
+              </div>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <div class="alert alert-info text-center">
+          No slides yet. Click "Add New Slide" to get started.
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+      <!-- 4. Social Media -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingSocial">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseSocial" aria-expanded="false" aria-controls="collapseSocial">
+            <i class="bi bi-share me-2"></i> Social Media Links
+          </button>
+        </h2>
+        <div id="collapseSocial" class="accordion-collapse collapse" aria-labelledby="headingSocial">
+          <div class="accordion-body">
+            <div class="row g-3">
+              @for (social of settingsModel.social; track $index) {
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">{{ social.label | titlecase }}</label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-{{ social.label }}"></i>
+                    </span>
+                    <input type="text" class="form-control" [name]="'social[' + $index + '].link'"
+                           [(ngModel)]="social.link" placeholder="{{ social.label }} link">
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Contacts -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingContacts">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseContacts" aria-expanded="false" aria-controls="collapseContacts">
+            <i class="fa fa-telephone me-2"></i> Contact Information
+          </button>
+        </h2>
+        <div id="collapseContacts" class="accordion-collapse collapse" aria-labelledby="headingContacts">
+          <div class="accordion-body">
+            <div class="row g-4">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Mobile Number</label>
+                <input type="text" class="form-control" name="contacts.mobileNo"
+                       [(ngModel)]="settingsModel.contacts.mobileNo">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">WhatsApp Link</label>
+                <input type="text" class="form-control" name="contacts.whatsappLink"
+                       [(ngModel)]="settingsModel.contacts.whatsappLink">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Email</label>
+                <input type="email" class="form-control" name="contacts.email"
+                       [(ngModel)]="settingsModel.contacts.email">
+              </div>
+              <div class="col-md-12">
+                <label class="form-label fw-semibold">Address</label>
+                <textarea class="form-control" name="contacts.address" rows="3"
+                          [(ngModel)]="settingsModel.contacts.address"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- footer start -->
-    <div class="footer">
-        <p>Copyright© <script>document.write(new Date().getFullYear())</script> All Rights Reserved By <span class="text-primary">Safure</span></p>
+    <!-- Submit Button -->
+    <div class="text-center mt-5">
+      <button type="submit" class="btn btn-primary btn-lg px-5">
+        <i class="bi bi-save me-2"></i> Save All Settings
+      </button>
     </div>
-    <!-- footer end -->
+
+  </form>
 </div>
-<!-- main content end -->

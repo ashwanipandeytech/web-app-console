@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { Observable, of, tap } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,6 +11,7 @@ export class DataService {
   private http = inject(HttpClient);
   private snackBar = inject(MatSnackBar);
   private authToken: any;
+  cache: any;
 
   constructor() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -135,4 +136,10 @@ export class DataService {
   update(endpoint: string, data: any, id: any) {
     return this.request('POST', `${endpoint}/${id}`, data);
   }
+
+
+
+
+
+
 }

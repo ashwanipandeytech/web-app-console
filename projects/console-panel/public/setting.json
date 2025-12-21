@@ -1,0 +1,68 @@
+{
+  "general": {
+    "logo": {
+      "desktop": {
+        "imgSrc": "https://safure.demohandler.in/images/logos/top-logo.png",
+        "alt": "safure logo"
+      },
+      "mobile": {
+        "imgSrc": "https://safure.demohandler.in/images/logos/top-logo.png",
+        "alt": " safure logo"
+      }
+    },
+    "favico": {
+      "desktop": {
+        "imgSrc": "",
+        "alt": ""
+      },
+      "mobile": {
+        "imgSrc": "",
+        "alt": ""
+      }
+    }
+  },
+  "home_slider": [
+    {
+      "imgSrc": "",
+      "alt": "",
+      "url": ""
+    },
+    {
+      "imgSrc": "",
+      "alt": "",
+      "url": ""
+    }
+  ],
+  "social": [
+    {
+      "label": "facebook",
+      "link": ""
+    },
+    {
+      "label": "twitter",
+      "link": ""
+    },
+    {
+      "label": "instagram",
+      "link": ""
+    },
+    {
+      "label": "linkedin",
+      "link": ""
+    },
+    {
+      "label": "youtube",
+      "link": ""
+    },
+    {
+      "label": "pinterest",
+      "link": ""
+    }
+  ],
+  "contacts": {
+    "mobileNo": "",
+    "whatsappLink": "",
+    "email": "",
+    "address": ""
+  }
+}
