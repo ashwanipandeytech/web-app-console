@@ -1,8 +1,8 @@
 @use '../../scss/variable' as *;
 
-.product-sidebar {
-  min-height: 350px;
-}
+// .product-sidebar {
+//   min-height: 350px;
+// }
 
 .product-sidebar-section {
   .product-sorting-section {
@@ -43,5 +43,13 @@
       padding: 1rem;
     }
   }
+}
+
+.product-cart-items{
+    &:hover{box-shadow: var(--bs-box-shadow) !important;}
+    &.wishlisted{
+        opacity: 1;
+        visibility: visible;
+    }
 }
 

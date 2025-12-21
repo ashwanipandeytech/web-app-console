@@ -13,19 +13,19 @@ import { CommonModule } from '@angular/common';
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
-  imports: [SlickCarouselModule,CommonModule],
+  imports: [SlickCarouselModule, CommonModule],
 })
 export class ProductComponent implements OnInit {
   productSectionSlideConfig = productSectionSlideConfig;
-  public globalService:any= inject(GlobaCommonlService);
+  public globalService: any = inject(GlobaCommonlService);
   private globalFunctionService = inject(GlobalFunctionService);
   dataService = inject(DataService);
   cd = inject(ChangeDetectorRef);
   productListData: any = [];
   router = inject(Router);
-  @Input () data:any
+  @Input() data: any;
   productData: any;
-  isWishlisted: boolean=false;
+  isWishlisted: boolean = false;
   constructor() {}
 
   ngOnInit() {
@@ -37,21 +37,23 @@ export class ProductComponent implements OnInit {
   openProduct(id: number) {
     this.router.navigate(['/product-details', id]);
   }
-toggleHeart(id:any) {
-   this.isWishlisted = !this.isWishlisted;
+  toggleHeart(item: any) {
+    this.isWishlisted = !this.isWishlisted;
     let data = {
-      product_id:id
+      product_id: item.id,
+    };
+    if (item.is_wishlisted) {
+     item.is_wishlisted = !item.is_wishlisted;
+      this.dataService.delete('wishlist/product', data.product_id).subscribe((res: any) => {
+        console.log('wishlist==>', res);
+      });
+    } else {
+     item.is_wishlisted = !item.is_wishlisted;
+      this.dataService.post(data, 'wishlist').subscribe((res: any) => {
+        console.log('wishlist==>', res);
+      });
     }
-    if (this.isWishlisted) {
-      this.dataService.post(data,'wishlist').subscribe((res:any)=>{
-        console.log('wishlist==>',res);
-      })
-    }
-    else{
-         this.dataService.delete('wishlist/product',data.product_id).subscribe((res:any)=>{
-        console.log('wishlist==>',res);
-      })
-    }
+    this.globalFunctionService.getCount();
   }
   callAllProductList() {
     this.dataService
@@ -95,7 +97,7 @@ toggleHeart(id:any) {
           if (nonLoggedInUserToken) {
             localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
           }
-            this.globalService.showMsgSnackBar(res.body);
+          this.globalService.showMsgSnackBar(res.body);
         }
         if (res.success == true) {
           this.globalService.showMsgSnackBar(res);
@@ -103,7 +105,7 @@ toggleHeart(id:any) {
         } else if (res.error && res.error.message) {
           this.globalService.showMsgSnackBar(res.error);
         }
-        // EMIT THE CART ADDED SIGNAL 
+        // EMIT THE CART ADDED SIGNAL
       });
   }
 }

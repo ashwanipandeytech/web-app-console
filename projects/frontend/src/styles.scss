@@ -520,7 +520,7 @@
 }
 
 // best-deal----------
-.best-product {
+.best-product { 
   background: url("/images/homepage-one/best-deal-bg.webp") no-repeat center / cover;
   padding-bottom: 11.2rem;
   height: 100%;
@@ -1592,7 +1592,7 @@ select{
 
   .review-form-text {
     img {
-      top: 4rem;
+      top: 1rem;
     }
   }
 
@@ -1691,7 +1691,10 @@ select{
 }
 
 
-
+.w-1100{max-width: 1100px;}
 .modal-open{
   padding-right: 0!important;
+}
+input[type=checkbox]{
+  transform: scale(1.4);
 }

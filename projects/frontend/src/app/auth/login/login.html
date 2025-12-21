@@ -16,7 +16,7 @@
                             </div>
                             <div class="review-inner-form ">
                                 <div class="review-form-name mb-3">
-                                    <label for="email" class="form-label">Email Address**</label>
+                                    <label for="email" class="form-label fw-semibold">Email Address**</label>
                                     <input formControlName="email" id="email" class="form-control" placeholder="Email">
 
                                     <!-- VALIDATION DISPLAYED HERE -->
@@ -33,7 +33,7 @@
                                 </div>
 
                                 <div class="review-form-name mb-3">
-                                    <label for="password" class="form-label">Password*</label>
+                                    <label for="password" class="form-label fw-semibold">Password*</label>
                                     <input formControlName="password" type="password" id="password" class="form-control" placeholder="password">
                                     
                                     <!-- VALIDATION DISPLAYED HERE -->
@@ -50,9 +50,9 @@
                                 </div>
 
                                 <div class="review-form-name checkbox mb-3">
-                                    <div class="checkbox-item">
-                                        <input type="checkbox">
-                                        <span class="address">Remember Me</span>
+                                    <div class="checkbox-item cursor-pointer">
+                                        <input type="checkbox" id="remember">
+                                        <label class="address mb-0" for="remember">Remember Me</label>
                                     </div>
                                     <div class="forget-pass">
                                         <p>Forgot password?</p>
@@ -82,7 +82,7 @@
                             <div class="review-inner-form">
                                 <!-- Name -->
                                 <div class="review-form-name">
-                                    <label for="name" class="form-label">Name</label>
+                                    <label for="name" class="form-label fw-semibold">Name</label>
                                     <input formControlName="name" id="name" class="form-control" placeholder="Name">
 
                                     <!-- VALIDATION DISPLAYED HERE -->
@@ -97,7 +97,7 @@
 
                                 <!-- Email -->
                                 <div class="review-form-name">
-                                    <label for="email" class="form-label">Email Address**</label>
+                                    <label for="email" class="form-label fw-semibold">Email Address**</label>
                                     <input formControlName="email" id="email" class="form-control" placeholder="Email">
                                     
                                     <!-- VALIDATION DISPLAYED HERE -->
@@ -115,7 +115,7 @@
 
                                 <!-- Phone -->
                                 <div class="review-form-name">
-                                    <label for="phone" class="form-label">Phone</label>
+                                    <label for="phone" class="form-label fw-semibold">Phone</label>
                                     <input formControlName="phone" id="phone" class="form-control" placeholder="phone no.">
                                     
                                     <!-- VALIDATION DISPLAYED HERE -->
@@ -130,7 +130,7 @@
 
                                 <!-- Password -->
                                 <div class="review-form-name">
-                                    <label for="password" class="form-label">Password*</label>
+                                    <label for="password" class="form-label fw-semibold">Password*</label>
                                     <input formControlName="password" type="password" id="password" class="form-control" placeholder="password">
                                     
                                     <!-- VALIDATION DISPLAYED HERE -->
@@ -145,7 +145,7 @@
 
                                 <!-- Confirm Password -->
                                 <div class="review-form-name">
-                                    <label for="confirmPassword" class="form-label">Confirm Password*</label>
+                                    <label for="confirmPassword" class="form-label fw-semibold">Confirm Password*</label>
                                     <input formControlName="password_confirmation" type="password" id="confirmPassword" class="form-control" placeholder="confirm password">
                                     
                                     <!-- VALIDATION DISPLAYED HERE -->
@@ -160,9 +160,9 @@
 
                                 <!-- Remember -->
                                 <div class="review-form-name checkbox">
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" formControlName="remember">
-                                        <span class="address">Remember Me</span>
+                                    <div class="checkbox-item cursor-pointer">
+                                        <input type="checkbox" formControlName="remember" id="remember">
+                                        <span class="address mb-0" for="remember">Remember Me</span>
                                     </div>
                                 </div>
 

@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { DataService } from 'projects/setting-component-shared-lib/src/lib/services/data-service';
 import { GlobaCommonlService } from 'projects/global-common.service';
+import { catchError, of } from 'rxjs';
+import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
 declare var bootstrap: any;
 
 @Component({
@@ -11,8 +13,8 @@ declare var bootstrap: any;
 })
 export class Wishlist {
   @ViewChild('removeProduct') removeProduct!: ElementRef;
-
   private dataService = inject(DataService);
+  private globalFunctionService = inject(GlobalFunctionService);
   private globalCommonService = inject(GlobaCommonlService)
   private cd = inject(ChangeDetectorRef);
   wishListData: any=[];
@@ -46,4 +48,38 @@ remove(){
   this.cd.markForCheck();
   })
 }
+ addToCart(data: any) {
+    let finalData = {
+      product_id: data.id,
+      quantity: '1',
+    };
+    // console.log('finalData==.',finalData);
+    // return;
+    this.dataService
+      .post(finalData, 'cart')
+      .pipe(
+        catchError((err) => {
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+        // console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
+        if (res.headers) {
+          let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
+          //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
+          if (nonLoggedInUserToken) {
+            localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+          }
+          this.globalCommonService.showMsgSnackBar(res.body);
+        }
+        if (res.success == true) {
+          this.globalCommonService.showMsgSnackBar(res);
+          this.globalFunctionService.getCount();
+        } else if (res.error && res.error.message) {
+          this.globalCommonService.showMsgSnackBar(res.error);
+        }
+        // EMIT THE CART ADDED SIGNAL
+      });
+  }
 }
