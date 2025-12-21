@@ -53,7 +53,7 @@ export class AddAddressModal {
     this.isNewAddress=true;
   }
   searchAddress(event: any) {
- const apiKey = environment.ADDRESS_API_KEY;
+ const apiKey = environment?.ADDRESS_API_KEY;
   const query = event.target.value;
 
   // if (!query) return;
