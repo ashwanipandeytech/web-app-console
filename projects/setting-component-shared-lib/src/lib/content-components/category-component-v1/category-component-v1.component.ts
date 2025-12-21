@@ -50,6 +50,6 @@ categoryListData:any=[];
     });
   }
   gotoCategory(id:any){
-this.route.navigate(['/product-sidebar',id])
+this.route.navigate(['/category-details',id])
   }
 }

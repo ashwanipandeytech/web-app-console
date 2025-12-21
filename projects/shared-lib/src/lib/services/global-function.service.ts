@@ -1,15 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { map } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { AddAddressModal } from '../model/add-address-modal/add-address-modal';
+import { DataService } from 'projects/setting-component-shared-lib/src/lib/services/data-service';
+import { SignalService } from 'projects/signal-service';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class GlobalFunctionService {
 private http = inject(HttpClient);
- readonly ngbModal = inject(NgbModal)
+private signalService = inject(SignalService);
+ private cartCountSource = new BehaviorSubject<any>(null);
+  cartCount$: Observable<any> = this.cartCountSource.asObservable();
+ readonly ngbModal = inject(NgbModal);
+ private dataService = inject(DataService);
+  countsList: any;
 constructor() { }
 
  getCountries() {
@@ -41,4 +49,17 @@ getCities(country: string, state: string) {
       console.log('Modal dismissed:', reason);
     });
   }
+getCount() {
+  this.dataService.get('user/overview-counts').subscribe((res: any) => {
+    this.countsList = res.data;
+
+    // update signal
+    console.log('res.data=======>',res.data);
+    
+    this.signalService.setCounts(res.data);
+  });
+}
+// setCartCount(data: any) {
+//     this.cartCountSource.next(data);
+//   }
 }

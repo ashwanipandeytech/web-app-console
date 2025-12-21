@@ -86,6 +86,8 @@ export class DataService {
     //   headers = options.headers;
     // }
     // const httpOptions = { headers };
+    console.log('httpOptions==>',httpOptions);
+    
     switch (method.toUpperCase()) {
 
       case 'GET':
