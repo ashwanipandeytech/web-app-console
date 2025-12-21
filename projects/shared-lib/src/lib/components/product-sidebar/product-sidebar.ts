@@ -159,11 +159,13 @@ console.log('this.productListData.length',this.productListData.length);
       product_id:item.id
     }
     if (item.is_wishlisted) {
+      item.is_wishlisted = !item.is_wishlisted;
             this.dataService.delete('wishlist/product',data.product_id).subscribe((res:any)=>{
         console.log('wishlist==>',res);
       })
     }
     else{
+      item.is_wishlisted = !item.is_wishlisted
       this.dataService.post(data,'wishlist').subscribe((res:any)=>{
         console.log('wishlist==>',res);
       })

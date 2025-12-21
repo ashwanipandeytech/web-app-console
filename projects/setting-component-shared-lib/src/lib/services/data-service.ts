@@ -108,9 +108,10 @@ export class DataService {
   }
 
   get(endpoint: string, from: string = '') {
-    if (from === 'web') {
-      return this.http.get<any>(`${environment.API_URL}${endpoint}`);
-    }
+   if (from === 'web') {
+      const headers = new HttpHeaders({ 'Authorization': `Bearer ${this.authToken}` });
+        return this.http.get<any>(`${environment.API_URL}${endpoint}`,{headers});
+      }
     return this.request('GET', endpoint);
   }
 
