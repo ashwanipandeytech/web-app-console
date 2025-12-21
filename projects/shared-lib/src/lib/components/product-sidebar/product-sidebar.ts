@@ -170,7 +170,9 @@ console.log('this.productListData.length',this.productListData.length);
         console.log('wishlist==>',res);
       })
     }
+    // this.callAllProductList();
     this.globalFunctionService.getCount();
+    // this.cd.detectChanges();
   }
 
 }

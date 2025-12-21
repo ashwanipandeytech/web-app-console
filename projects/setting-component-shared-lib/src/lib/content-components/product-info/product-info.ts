@@ -199,19 +199,23 @@ export class ProductDetails {
     let data = {
       product_id:item.id
     }
+    console.log('item==>',item.is_wishlisted);
+    
   if (item.is_wishlisted) {
+     item.is_wishlisted = !item.is_wishlisted;
       this.dataService.delete('wishlist/product',data.product_id).subscribe((res:any)=>{
         console.log('wishlist==>',res);
       })
     }
     else{
+       item.is_wishlisted = !item.is_wishlisted;
       this.dataService.post(data,'wishlist').subscribe((res:any)=>{
         console.log('wishlist==>',res);
       })
     }
-     this.callAllProductList();
+    //  this.callAllProductList();
     this.globalFunctionService.getCount();
-    this.cd.detectChanges();
+    // this.cd.detectChanges();
 
 
 
