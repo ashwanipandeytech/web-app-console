@@ -1,24 +1,29 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
-import { catchError, of } from 'rxjs';
+import { catchError, of, switchMap } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { GlobaCommonlService } from 'projects/global-common.service';
+import { CommonModule } from '@angular/common';
+import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
 
 @Component({
-  selector: 'web-product-sidebar',
-  imports: [],
+  selector: 'web-category-details',
+  imports: [CommonModule],
   templateUrl: './product-sidebar.html',
   styleUrl: './product-sidebar.scss'
 })
 export class ProductSidebarCommon {
   public dataService:any= inject(DataService);
+  private globalFunctionService = inject(GlobalFunctionService);
   productListData: any=[];
   categoryListData: any;
   public globalService:any= inject(GlobaCommonlService);
   private route = inject(ActivatedRoute);
   productId:any;
   filteredProductList: any;
+  defaultProductListData: any;
+  isWishlisted: boolean=false;
 
   constructor(private cd:ChangeDetectorRef, private router: Router) {
     this.callAllProductList();
@@ -29,8 +34,24 @@ export class ProductSidebarCommon {
     this.router.navigate(['/product-details', id]);
   }
 ngOnInit() {
-  this.productId = this.route.snapshot.paramMap.get('id');
-  console.log(this.productId);
+ this.route.paramMap.subscribe(params => {
+    const id = params.get('id');
+
+    if (id) {
+      this.productId = id;
+      // console.log('this.productListData==>',this.productListData);
+      // console.log('defaultProductListData==>',this.defaultProductListData);
+      if (this.defaultProductListData) {
+        
+        this.productListData = this.defaultProductListData.filter(
+    (item: any) => item.category.id == id
+  );
+      }
+    }
+  });
+
+  // this.productId = this.route.snapshot.paramMap.get('id');
+  // console.log(this.productId);
 }
   callAllProductList() {
 
@@ -49,17 +70,18 @@ ngOnInit() {
       })
     ).subscribe((response: any) => {
       // console.log('Response:', response);
-    let productListData = response.data.data;
-this.productListData = productListData.filter(
+    this.defaultProductListData = response.data.data;
+this.productListData = this.defaultProductListData.filter(
   (item: any) => item.category.id == this.productId
 );
+console.log('this.productListData.length',this.productListData.length);
 
     this.cd.detectChanges();
-      if (response && response.success) {
+      // if (response && response.success) {
       
-      } else if (response) {
-       //add toaserfnc alert('Login failed: ' + response.message);
-      }
+      // } else if (response) {
+      //  //add toaserfnc alert('Login failed: ' + response.message);
+      // }
     });
     
   }
@@ -111,17 +133,42 @@ this.productListData = productListData.filter(
       .subscribe((res: any) => {
         // console.log('Response:', res);
         // console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
-        let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
-        if (nonLoggedInUserToken) {
-          localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+          if (res.headers) {
+          let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
+          //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
+          if (nonLoggedInUserToken) {
+            localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+          }
+            this.globalService.showMsgSnackBar(res.body);
         }
+        // let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
+        // if (nonLoggedInUserToken) {
+        //   localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+        // }
         if (res.success == true) {
           this.globalService.showMsgSnackBar(res);
+          this.globalFunctionService.getCount();
         } else if (res.error && res.error.message) {
           this.globalService.showMsgSnackBar(res.error);
         }
       });
   }
-
+ toggleHeart(item:any) {
+    this.isWishlisted = !this.isWishlisted;
+    let data = {
+      product_id:item.id
+    }
+    if (item.is_wishlisted) {
+            this.dataService.delete('wishlist/product',data.product_id).subscribe((res:any)=>{
+        console.log('wishlist==>',res);
+      })
+    }
+    else{
+      this.dataService.post(data,'wishlist').subscribe((res:any)=>{
+        console.log('wishlist==>',res);
+      })
+    }
+    this.globalFunctionService.getCount();
+  }
 
 }

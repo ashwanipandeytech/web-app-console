@@ -4,12 +4,12 @@
     <div class="container">
       <div class="header-center">
         <div class="logo">
-          <a href="/">
+          <a routerLink="/">
             <!-- <img src="../images/logos/logo.webp" alt="logo"> -->
             <img src="../images/logos/top-logo.png" alt="logo" height="75px">
           </a>
         </div>
-        <div class="header-search-btn">
+        <div class="header-search-btn d-none">
           <input type="text" placeholder="Search Product.....">
           <div class="divider"></div>
           <div id="allcat">
@@ -51,12 +51,13 @@
           <div class="header-favourite">
             <a href="/wishlist" class="cart-item">
               <span>
-                <svg width="28" height="23" viewbox="0 0 28 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="24" height="23" viewbox="0 0 28 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M4.97214 5.02422C3.71435 5.18246 2.6616 5.7007 1.7705 6.60267C0.970091 7.40971 0.489057 8.26421 0.213053 9.37586C-0.275867 11.3024 0.0789948 13.2013 1.25398 14.9855C2.00708 16.1288 2.98097 17.1772 4.76711 18.7754C5.90266 19.7921 9.36848 22.7591 9.53802 22.858C9.69574 22.953 9.75488 22.9648 10.09 22.9648C10.4252 22.9648 10.4843 22.953 10.642 22.858C10.8116 22.7591 14.2853 19.7881 15.413 18.7754C17.207 17.1692 18.173 16.1249 18.9261 14.9855C20.1011 13.2013 20.4559 11.3024 19.967 9.37586C19.691 8.26421 19.21 7.40971 18.4096 6.60267C17.6131 5.7996 16.7614 5.33674 15.6456 5.09938C15.0857 4.9807 14.0526 4.96883 13.5637 5.0796C12.1995 5.3763 11.1546 6.0607 10.2004 7.27916L10.09 7.41762L9.98357 7.27916C9.04122 6.08443 8.01212 5.40004 6.69913 5.09938C6.30878 5.00839 5.4098 4.96883 4.97214 5.02422ZM6.28907 6.23081C7.40885 6.42861 8.37487 7.0774 9.13979 8.14948C9.26991 8.33542 9.43156 8.55696 9.49465 8.64795C9.78643 9.05937 10.3936 9.05937 10.6854 8.64795C10.7485 8.55696 10.9102 8.33542 11.0403 8.14948C12.0851 6.68575 13.5401 5.9974 15.1251 6.21498C16.8837 6.4563 18.2558 7.69058 18.7802 9.50641C19.1942 10.9424 19.0128 12.4497 18.2597 13.8066C17.6289 14.942 16.5761 16.1328 14.7427 17.7824C13.8555 18.5776 10.1255 21.7978 10.09 21.7978C10.0506 21.7978 6.33638 18.5895 5.4374 17.7824C2.61823 15.2466 1.50633 13.6642 1.23821 11.8088C1.06472 10.6101 1.31312 9.32047 1.91639 8.30377C2.82326 6.77278 4.58968 5.9341 6.28907 6.23081Z" fill="black"></path>
-                  <circle cx="20.9141" cy="7" r="7" fill="#0093dd"></circle>
-                  <path d="M20.9177 10.1087C20.4127 10.1065 19.9812 9.97337 19.6233 9.70916C19.2653 9.44496 18.9915 9.06037 18.8019 8.5554C18.6123 8.05043 18.5174 7.44212 18.5174 6.73047C18.5174 6.02095 18.6123 5.41477 18.8019 4.91193C18.9937 4.40909 19.2685 4.02557 19.6265 3.76136C19.9866 3.49716 20.4169 3.36506 20.9177 3.36506C21.4184 3.36506 21.8477 3.49822 22.2057 3.76456C22.5636 4.02876 22.8374 4.41229 23.027 4.91513C23.2188 5.41584 23.3147 6.02095 23.3147 6.73047C23.3147 7.44425 23.2199 8.05362 23.0302 8.55859C22.8406 9.06143 22.5668 9.44602 22.2089 9.71236C21.8509 9.97656 21.4205 10.1087 20.9177 10.1087ZM20.9177 9.25533C21.3608 9.25533 21.7071 9.03906 21.9564 8.60653C22.2078 8.17401 22.3335 7.54865 22.3335 6.73047C22.3335 6.18714 22.276 5.72798 22.1609 5.35298C22.048 4.97585 21.885 4.69034 21.6719 4.49645C21.461 4.30043 21.2096 4.20241 20.9177 4.20241C20.4766 4.20241 20.1304 4.41974 19.879 4.8544C19.6275 5.28906 19.5008 5.91442 19.4986 6.73047C19.4986 7.27592 19.5551 7.73722 19.668 8.11435C19.7831 8.48935 19.9461 8.77379 20.157 8.96768C20.3679 9.15945 20.6215 9.25533 20.9177 9.25533Z" fill="#F9FFFB"></path>
+
                 </svg>
               </span>
+              <i class="icon-badge position-absolute fs-6 text-center text-white bg-primary rounded-circle">{{countsList?.wishlist_count}}</i>
+
             </a>
           </div>
           <div class="header-cart">
@@ -67,8 +68,8 @@
                 <svg width="24" height="23" viewbox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M16.1568 8.1772C16.0284 7.84626 15.7343 7.81766 14.2887 7.81766H13.0875V7.2947C13.0875 6.48165 12.9716 5.91374 12.6899 5.32949C12.1804 4.2713 11.3272 3.5318 10.2213 3.1886C9.68279 3.02517 8.87923 2.95572 8.39047 3.02926C7.03602 3.24172 5.88039 4.09562 5.29223 5.31315C5.00642 5.90966 4.89045 6.48165 4.89045 7.2947V7.82175H3.68511C2.23954 7.82175 1.94546 7.85035 1.81705 8.19354C1.75078 8.41008 1.12948 13.0637 0.864385 15.0697C0.632431 16.8184 0.417045 18.469 0.259648 19.711C-0.0137267 21.8519 -0.00544266 21.8846 0.00284141 21.9214V21.9255C0.0401198 22.0644 0.408761 22.428 0.520596 22.5342L1.00521 23H16.9438L17.3041 22.6854C17.4657 22.5424 18 22.0562 18 21.8152C18 21.6517 16.1899 8.27117 16.1568 8.1772ZM16.6911 21.5046C16.687 21.5332 16.6538 21.619 16.5958 21.6803L16.513 21.7702H1.46498L1.2496 21.5414L2.09871 15.2863C2.39694 13.0596 2.66203 11.1189 2.81943 9.95855C2.88984 9.45193 2.92298 9.19453 2.93955 9.06788C3.49872 9.06379 5.94252 9.0597 8.98278 9.0597H15.0302L15.0384 9.10465C15.1047 9.4315 16.6621 21.141 16.6911 21.5046ZM6.1372 7.82175V7.35598C6.1372 7.04139 6.17862 6.6083 6.22418 6.40811C6.46856 5.38669 7.30111 4.5573 8.34077 4.29173C8.77568 4.1855 9.48811 4.22228 9.92302 4.37753H9.92717C10.3828 4.5287 10.7556 4.77384 11.0994 5.14972C11.6544 5.74623 11.8408 6.28145 11.8408 7.27018V7.82175H6.1372Z" fill="black"></path>
                 </svg>
+                <i class="icon-badge position-absolute fs-6 text-center text-white bg-primary rounded-circle">{{countsList?.cart_count}}</i>
               </span>
-              <i class="icon-badge position-absolute fs-6 text-center text-white bg-primary rounded-circle">{{cartItemCount}}</i>
             </a>
             @if (false) {
               <div class="cart-submenu">
@@ -279,7 +280,7 @@
         <div class="category-dropdown">
           <ul class="category-list">
             <li class="category-list-item">
-              <a href="/product-sidebar">
+              <a href="/category-details">
                 <div class="dropdown-item d-flex justify-content-between align-items-center">
                   <div class="dropdown-list-item d-flex">
                     <span class="dropdown-img">
@@ -301,7 +302,7 @@
               </a>
             </li>
             <li class="category-list-item">
-              <a href="/product-sidebar">
+              <a href="/category-details">
                 <div class="dropdown-item d-flex justify-content-between align-items-center">
                   <div class="dropdown-list-item d-flex">
                     <span class="dropdown-img">
@@ -323,7 +324,7 @@
               </a>
             </li>
             <li class="category-list-item">
-              <a href="/product-sidebar">
+              <a href="/category-details">
                 <div class="dropdown-item d-flex justify-content-between align-items-center">
                   <div class="dropdown-list-item d-flex">
                     <span class="dropdown-img">
@@ -345,7 +346,7 @@
               </a>
             </li>
             <li class="category-list-item">
-              <a href="/product-sidebar">
+              <a href="/category-details">
                 <div class="dropdown-item d-flex justify-content-between align-items-center">
                   <div class="dropdown-list-item d-flex">
                     <span class="dropdown-img">
@@ -367,7 +368,7 @@
               </a>
             </li>
             <li class="category-list-item">
-              <a href="/product-sidebar">
+              <a href="/category-details">
                 <div class="dropdown-item d-flex justify-content-between align-items-center">
                   <div class="dropdown-list-item d-flex">
                     <span class="dropdown-img">
@@ -389,7 +390,7 @@
               </a>
             </li>
             <li class="category-list-item">
-              <a href="/product-sidebar">
+              <a href="/category-details">
                 <div class="dropdown-item d-flex justify-content-between align-items-center">
                   <div class="dropdown-list-item d-flex">
                     <span class="dropdown-img">
@@ -442,28 +443,31 @@
             </button>
             <!-- <div class=" category-dropdown"> -->
             <ul class="dropdown-menu category-list w-100 rounded-0 border-0" style="top: -2px !important;">
-              <li class="category-list-item">
-                <a href="/product-sidebar">
-                  <div class="dropdown-item d-flex justify-content-between align-items-center">
-                    <div class="dropdown-list-item d-flex">
-                      <span class="dropdown-img">
-                        <img src="" alt="">
-                      </span>
-                      <span class="dropdown-text">
-                        Cow
-                      </span>
-                    </div>
-                    <div class="drop-down-list-icon">
-                      <span>
-                        <svg width="10" height="10" viewbox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <rect x="1.5" y="0.818359" width="5.78538" height="1.28564" transform="rotate(45 1.5 0.818359)"></rect>
-                          <rect x="5.58984" y="4.90918" width="5.78538" height="1.28564" transform="rotate(135 5.58984 4.90918)"></rect>
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              </li>
+             @for (item of categoryListData; track $index) {
+
+               <li class="category-list-item">
+                 <a (click)="gotoCategory(item.id)" style="cursor: pointer;">
+                   <div class="dropdown-item d-flex justify-content-between align-items-center">
+                     <div class="dropdown-list-item d-flex">
+                       <span class="dropdown-img">
+                         <img src="" alt="">
+                       </span>
+                       <span class="dropdown-text">
+                         {{item.name}}
+                       </span>
+                     </div>
+                     <div class="drop-down-list-icon">
+                       <span>
+                         <svg width="10" height="10" viewbox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                           <rect x="1.5" y="0.818359" width="5.78538" height="1.28564" transform="rotate(45 1.5 0.818359)"></rect>
+                           <rect x="5.58984" y="4.90918" width="5.78538" height="1.28564" transform="rotate(135 5.58984 4.90918)"></rect>
+                         </svg>
+                       </span>
+                     </div>
+                   </div>
+                 </a>
+               </li>
+             }
             </ul>
             <!-- </div> -->
           </div>
@@ -474,7 +478,7 @@
               @for (item of categoryListData; track $index) {
 
                 <li>
-                  <a (click)="gotoCategory(item.id)" class="nav-link px-4">
+                  <a (click)="gotoCategory(item.id)" class="nav-link px-4" style="cursor: pointer;">
                     <span class="list-text fs-3">{{item.name}}</span>
                   </a>
                 </li>

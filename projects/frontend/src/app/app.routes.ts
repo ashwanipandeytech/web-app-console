@@ -57,7 +57,7 @@ export const routes: Routes = [
          
     // },
       {
-        path: 'product-sidebar/:id',
+        path: 'category-details/:id',
         component: ProductSidebarCommon,
          
     },

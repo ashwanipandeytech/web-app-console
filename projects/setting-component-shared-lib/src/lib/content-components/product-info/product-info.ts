@@ -6,6 +6,7 @@ import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { SlickCarouselModule  } from 'ngx-slick-carousel';
 import { GlobaCommonlService } from '../../../../../global-common.service';
+import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
 
 @Component({
   selector: 'app-product-details',
@@ -17,6 +18,8 @@ export class ProductDetails {
   @ViewChild('descBox') descBox!: ElementRef;
   public dataService:any= inject(DataService);
   public globalService:any= inject(GlobaCommonlService);
+  private globalFunctionService = inject(GlobalFunctionService);
+
   isWishlisted = false;
   productListData: any=[];
   productDetails: any;
@@ -191,21 +194,35 @@ export class ProductDetails {
     }
   }
 
-  toggleHeart(id:any) {
+  toggleHeart(item:any) {
     this.isWishlisted = !this.isWishlisted;
     let data = {
-      product_id:id
+      product_id:item.id
     }
-    if (this.isWishlisted) {
-      this.dataService.post(data,'wishlist').subscribe((res:any)=>{
+  if (item.is_wishlisted) {
+      this.dataService.delete('wishlist/product',data.product_id).subscribe((res:any)=>{
         console.log('wishlist==>',res);
       })
     }
     else{
-         this.dataService.delete('wishlist/product',data.product_id).subscribe((res:any)=>{
+      this.dataService.post(data,'wishlist').subscribe((res:any)=>{
         console.log('wishlist==>',res);
       })
     }
+    this.globalFunctionService.getCount();
+
+
+
+    // if (this.isWishlisted) {
+    //   this.dataService.post(data,'wishlist').subscribe((res:any)=>{
+    //     console.log('wishlist==>',res);
+    //   })
+    // }
+    // else{
+    //      this.dataService.delete('wishlist/product',data.product_id).subscribe((res:any)=>{
+    //     console.log('wishlist==>',res);
+    //   })
+    // }
   }
 
   calculatePrice(){
