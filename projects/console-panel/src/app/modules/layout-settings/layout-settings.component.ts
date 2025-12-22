@@ -182,11 +182,16 @@ export class LayoutSettingsComponent implements OnInit {
   addFooterColumn() {
     this.settingsModel.footer.push({
       colHeading: '',
+      pageList:JSON.parse(JSON.stringify(this.pageList)),
       items: [ {
         "label": "",
-        "link": ""
+        "link": "",
+        "isSelected":false
       }]
     });
+
+        
+          
 
   }
   deleteFooterColumn(index: number) {
@@ -196,6 +201,8 @@ export class LayoutSettingsComponent implements OnInit {
   }
 
   addFooterColumnData(data: any) {
+
+
     data.push(
       {
         "label": "",
