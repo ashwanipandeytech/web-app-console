@@ -172,7 +172,7 @@ console.log('this.productListData.length',this.productListData.length);
     }
     // this.callAllProductList();
     this.globalFunctionService.getCount();
-    // this.cd.detectChanges();
+    this.cd.detectChanges();
   }
 
 }

@@ -246,11 +246,11 @@ export class CartCommon {
             // if (element.) {
 
             // }
-            element.product.price_data['finalPrice'] = element?.product.price_data?.regularPrice;
+            element.product.price_data['finalPrice'] = element?.product.price_data?.salePrice;
             this.globalService.calculatePrice(
               element.quantity,
               i,
-              element.product.price_data.regularPrice,
+              element.product.price_data.salePrice,
               this.cartListData
             );
           }
@@ -267,7 +267,7 @@ export class CartCommon {
     this.globalService.calculatePrice(
       productQuantity,
       index,
-      this.cartListData[index].product.price_data.regularPrice,
+      this.cartListData[index].product.price_data.salePrice,
       this.cartListData
     );
     this.updateCartList(productQuantity, id);
@@ -281,7 +281,7 @@ export class CartCommon {
       this.globalService.calculatePrice(
         productQuantity,
         index,
-        this.cartListData[index].product.price_data.regularPrice,
+        this.cartListData[index].product.price_data.salePrice,
         this.cartListData
       );
       this.updateCartList(productQuantity, id);

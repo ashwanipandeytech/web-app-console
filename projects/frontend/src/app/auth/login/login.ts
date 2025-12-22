@@ -151,10 +151,11 @@ export class Login {
                 //  window.location.reload(); // Reload the page after navigating
               });
 
-              // window.location.reload();
+              window.location.reload();
               setTimeout(() => {
                 localStorage.removeItem('isNonUser');
               }, 500);
+              this.globalService.getCount();
             }
             else {
               //make a signal for emiting the user state
@@ -167,8 +168,10 @@ export class Login {
               }
 
               this.router.navigate([redirectTo]).then(() => {
-                //  window.location.reload(); // Reload the page after navigating
+                 window.location.reload(); // Reload the page after navigating
               });
+              this.globalService.getCount();
+
             }
           }
           else if (res.error && res.error.message) {

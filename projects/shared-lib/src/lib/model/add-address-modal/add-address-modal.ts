@@ -213,6 +213,9 @@ if (this.searchQuery == '') {
               if (res.success == true) {   
                 this.closePopup();
                 this.globalService.showMsgSnackBar(res);
+                this.getAddressList();
+                this.cd.detectChanges();
+
                 // this.router.navigate(['/cart']);
               }
             });
@@ -242,7 +245,7 @@ if (this.searchQuery == '') {
       }
       fullAddrress.id = this.data.id;
       fullAddrress.label = this.addressForm.value.type;
-       this.dataService.put(fullAddrress, 'addresses')
+       this.dataService.put(fullAddrress,  `addresses/${this.data.id}`,)
             .pipe(
               catchError(err => {
                 console.error('Error:', err);
@@ -255,6 +258,8 @@ if (this.searchQuery == '') {
               if (res.success == true) {   
                 this.closePopup();
                 this.globalService.showMsgSnackBar(res);
+                this.getAddressList();
+                this.cd.detectChanges();
                 // this.router.navigate(['/cart']);
               }
             });
