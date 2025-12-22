@@ -5,10 +5,11 @@ import { DataService } from '../../../../../shared-lib/src/lib/services/data-ser
 import { catchError, of } from 'rxjs';
 import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
 import { SignalService } from 'projects/signal-service';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'web-header',
-  imports: [RouterLink,RouterModule],
+  imports: [RouterLink,RouterModule,JsonPipe],
   templateUrl: './header.html',
   styleUrl: './header.scss'
 })
@@ -43,6 +44,8 @@ constructor(private cd:ChangeDetectorRef){
   //call carlist api to show the cart list count
 
 }
+
+
   ngOnInit(){
       let userData:any = localStorage.getItem('user');
     if (userData == null) {

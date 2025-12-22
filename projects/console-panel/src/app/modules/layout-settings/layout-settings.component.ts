@@ -13,92 +13,138 @@ import { DataService } from 'shared-lib';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LayoutSettingsComponent implements OnInit {
- settingsModel:any={
-  general: {
-    logo: {
-      desktop: {
-        imgSrc:'',
-        alt:''
+  settingsModel: any = {
+    general: {
+      logo: {
+        desktop: {
+          imgSrc: '',
+          alt: ''
+        },
+        mobile: {
+          imgSrc: '',
+          alt: ''
+        }
       },
-      mobile: {
-         imgSrc:'',
-        alt:''
+      favico: {
+        desktop: {
+          imgSrc: '',
+          alt: ''
+        },
+        mobile: {
+          imgSrc: '',
+          alt: ''
+        }
       }
     },
-    favico: {
-      desktop: {
-        imgSrc:'',
-        alt:''
+    home_Banner_Slider: [
+      {
+        imgSrc: '',
+        alt: '',
+        url: '',
       },
-      mobile: {
-         imgSrc:'',
-        alt:''
-      }
+      {
+        imgSrc: '',
+        alt: '',
+        url: '',
+      },
+    ],
+    social: [
+      {
+        label: 'facebook',
+        link: ''
+      }, {
+        label: 'twitter',
+        link: ''
+      },
+      {
+        label: 'instagram',
+        link: ''
+      },
+      {
+        label: 'linkedin',
+        link: ''
+      },
+      {
+        label: 'youtube',
+        link: ''
+      },
+      {
+        label: 'pinterest',
+        link: ''
+      },
+    ],
+    contacts: {
+      mobileNo: '',
+      whatsappLink: '',
+      email: '',
+      address: ''
     }
-  },
-  home_Banner_Slider:[
-    {
-        imgSrc:'',
-        alt:'',
-        url:'',
-    },
-    {
-       imgSrc:'',
-        alt:'',
-        url:'',
-    },
-  ],
-  social: [
-  {
-    label:'facebook',
-    link:''
-  },{
-    label:'twitter',
-    link:''
-  },
-  {
-    label:'instagram',
-    link:''
-  },
-  {
-    label:'linkedin',
-    link:''
-  },
-  {
-    label:'youtube',
-    link:''
-  },
-  {
-    label:'pinterest',
-    link:''
-  },
-  ],
-  contacts:{
-     mobileNo:'',
-     whatsappLink:'',
-     email:'',
-     address:''
   }
-}
- loading=true
- public dataService: any = inject(DataService);
+  loading = true
+  public dataService: any = inject(DataService);
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
 
-    this.dataService.loadSetting().subscribe((d: any) => {
-      // this.settingsModel.set(d || {});
-    this.settingsModel=d;
-    console.info(this.settingsModel)
-    this.cdr.detectChanges();
-    
-     
-      this.loading=false
-    });
+    // this.dataService.loadSetting().subscribe((d: any) => {
+    //   // this.settingsModel.set(d || {});
+    // this.settingsModel=d;
+    // console.info(this.settingsModel)
+    // this.cdr.detectChanges();
+
+
+    //   this.loading=false
+    // });
+
+
+
+    this.dataService.get('settings/general')
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+        if (res.success) {
+          this.settingsModel = res.data.settings;
+          // this.settingsModel.footer = [
+          //   {
+          //     "colHeading": "",
+          //     "items": [
+          //       {
+          //         "label": "",
+          //         "link": ""
+          //       }
+          //     ]
+          //   },
+          //   {
+          //     "colHeading": "",
+          //     "items": [
+          //       {
+          //         "label": "",
+          //         "link": ""
+          //       }
+          //     ]
+          //   }, {
+          //     "colHeading": "",
+          //     "items": [
+          //       {
+          //         "label": "",
+          //         "link": ""
+          //       }
+          //     ]
+          //   }
+          // ]
+          this.cdr.detectChanges()
+        }
+
+      });
   }
 
- // Add new empty slide
-  addSlide(type:string) {
+  // Add new empty slide
+  addSlide(type: string) {
     this.settingsModel[type].push({
       imgSrc: '',
       alt: '',
@@ -107,15 +153,45 @@ export class LayoutSettingsComponent implements OnInit {
   }
 
   // Delete slide by index
-  deleteSlide(type:string,index: number) {
+  deleteSlide(type: string, index: number) {
     if (this.settingsModel[type].length > 0) {
       this.settingsModel[type].splice(index, 1);
     }
   }
+  addFooterColumn() {
+    this.settingsModel.footer.push({
+      colHeading: '',
+      items: [ {
+        "label": "",
+        "link": ""
+      }]
+    });
+
+  }
+  deleteFooterColumn(index: number) {
+    this.settingsModel.footer.splice(index, 1);
+
+
+  }
+
+  addFooterColumnData(data: any) {
+    data.push(
+      {
+        "label": "",
+        "link": ""
+      }
+    );
+
+  }
+  deleteFooterColumnData(data: any, index: number) {
+    data.splice(index, 1);
+
+
+  }
   saveSettings() {
-   let payload= {
-      settings_name:'general',
-      settings:this.settingsModel
+    let payload = {
+      settings_name: 'general',
+      settings: this.settingsModel
     }
     this.dataService.post(payload, 'settings')
       .pipe(
@@ -128,9 +204,9 @@ export class LayoutSettingsComponent implements OnInit {
         console.log('Response:', res);
         if (res.data) {
 
-        
+
         }
-     
+
       });
   }
 

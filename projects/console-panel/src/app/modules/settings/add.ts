@@ -2,9 +2,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { QuillModule } from 'ngx-quill';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
+import { GlobalService } from '../../global.service';
 @Component({
   selector: 'app-addpage',
   templateUrl: './add.html',
@@ -15,14 +17,14 @@ import { DataService } from 'shared-lib';
 export class AddPage implements OnInit {
 settings:any=FormGroup;
  public dataService: any = inject(DataService);
-  
+    private router: Router = inject(Router);
 newPage:any=
   {
     
-   "title":"About Us",
-   "description":"Services description",
-   "slug":"about-us",
-   "pageContent":"this will be ritch text",
+   "title":"",
+   "description":"",
+   "slug":"",
+   "pageContent":"",
    "seoData":{
     "keywords":"",
     "metaTitle":"",
@@ -32,7 +34,7 @@ newPage:any=
    }
 
 }
-  constructor() {
+  constructor(private globalService:GlobalService) {
   
    }
 
@@ -44,19 +46,19 @@ newPage:any=
           settings_name:this.newPage.slug,
           settings:this.newPage
         }
-        this.dataService.post(payload, 'settings')
+        this.dataService.post(payload, 'pages')
           .pipe(
             catchError(err => {
+                this.globalService.showMsgSnackBar(err);
               console.error('Error:', err);
               return of(null);
             })
           )
           .subscribe((res: any) => {
             console.log('Response:', res);
-            if (res.data) {
-    
-            
-            }
+              this.globalService.showMsgSnackBar(res);
+              this.router.navigate(['/pages']);
+          
          
           });
 }

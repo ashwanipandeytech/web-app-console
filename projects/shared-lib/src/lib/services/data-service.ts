@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Commonresponseobject } from '../model/responsemodel';
 import { environment } from '../../../../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, tap } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,7 @@ export class DataService {
   private http = inject(HttpClient);
   private snackBar = inject(MatSnackBar);
   private authToken: any;
+  generalSetting:any;
 
   constructor() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -131,8 +132,34 @@ export class DataService {
   update(endpoint: string, data: any, id: any) {
     return this.request('POST', `${endpoint}/${id}`, data);
   }
-  loadSetting(): Observable<any> {
-   return this.http.get<any>('/setting.json');
+  
 
-}
+
+	// Called by APP_INITIALIZER; returns a Promise that resolves when loaded
+	loadGeneralSettings(endpoint:string): Promise<void> {
+		// return firstValueFrom(this.http.get<Record<string, any>>(endpoint))
+      	//return firstValueFrom(this.get(endpoint))
+    	return firstValueFrom(this.get(endpoint))
+			.then((data:any) => {
+				// directly use the JSON from assets as the runtime env
+				this.generalSetting = data.data.settings|| {};
+				console.info('GeneralSettings loaded', this.generalSetting);
+				//console.info('EnvService: environment loaded', this.generalSetting);
+			})
+			.catch(err => {
+				// fallback to minimal env on error
+			//	console.error('EnvService: failed to load environment from assets', err);
+				this.generalSetting = {};
+			});
+	}
+
+	// access a key with optional default
+	getSpecificGeneralSettings<T = any>(key: string, defaultValue?: T): T | undefined {
+		return (this.generalSetting && key in this.generalSetting) ? (this.generalSetting[key] as T) : defaultValue;
+	}
+
+	// return whole env object
+	getAllGeneralSettings(): Record<string, any> {
+		return this.generalSetting;
+	}
 }
