@@ -138,23 +138,54 @@ export class LayoutSettingsComponent implements OnInit {
         console.log('Response:', res);
         if (res.data) {
           this.pageList = res.data;
-          this.settingsModel.footer.map((item:any)=>{
-            item.pageList= JSON.parse(JSON.stringify(this.pageList))
+          // this.settingsModel.footer.map((item:any)=>{
+          //   item.pageList= JSON.parse(JSON.stringify(this.pageList))
 
-            item.pageList.map((page:any)=>{
-            if(item.items.findIndex((innerItems:any)=>innerItems.link==page.slug)>-1){
-              page.isSelected=true
-            }
-            else{
-              page.isSelected=false
+          //   item.pageList.map((page:any)=>{
+          //   if(item.items.findIndex((innerItems:any)=>innerItems.link==page.slug)>-1){
+          //     page.isSelected=true
+          //   }
+          //   else{
+          //     page.isSelected=false
             
-            }
+          //   }
             
-          })
+          // })
             
               
             
-          })
+          // })
+          this.settingsModel.footer.forEach((item: any) => {
+  const pageList = JSON.parse(JSON.stringify(this.pageList));
+
+  // Create a map for quick lookup of order
+  const orderMap = new Map(
+    item.items.map((inner: any, index: number) => [inner.link, index])
+  );
+
+  item.pageList = pageList
+    .map((page: any) => ({
+      ...page,
+      isSelected: orderMap.has(page.slug)
+    }))
+    .sort((a: any, b: any) => {
+      const aIndex:any = orderMap.get(a.slug);
+      const bIndex:any = orderMap.get(b.slug);
+
+      // Both exist in item.items → sort by that order
+      if (aIndex !== undefined && bIndex !== undefined) {
+        return aIndex - bIndex;
+      }
+
+      // Only one exists → selected first
+      if (aIndex !== undefined) return -1;
+      if (bIndex !== undefined) return 1;
+
+      // Neither exists → keep original order
+      return 0;
+    });
+});
+
           this.cdr.detectChanges()
         }
 
