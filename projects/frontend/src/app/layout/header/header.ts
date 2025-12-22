@@ -81,7 +81,7 @@ this.route.navigate(['/category-details',id]);
 
   getCategoryList() {
     this.categoryListData = [];
-    this.dataService.get('categories')
+    this.dataService.get('categories/menu')
     .pipe(
       catchError(err => {
         console.error('Error:', err);
@@ -90,14 +90,15 @@ this.route.navigate(['/category-details',id]);
     )
     .subscribe((res: any) => {
       if (res.data) {
-
-        for (let i = 0; i < res.data.length; i++) {
-          const element = res.data[i];
-          // if (element?.thumbnail != null) {
-          //   element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
-          // }
-          this.categoryListData.push(element);
-        }
+// console.log('this.categoryListData===>',res.data);
+       this.categoryListData = res.data;
+        // for (let i = 0; i < res.data.length; i++) {
+        //   const element = res.data[i];
+        //   // if (element?.thumbnail != null) {
+        //   //   element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
+        //   // }
+        //   this.categoryListData.push(element);
+        // }
       }
       this.cd.detectChanges();
       // this.categoryListData = res.data;
