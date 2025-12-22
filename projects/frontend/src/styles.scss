@@ -1148,7 +1148,7 @@ table {
 .snackbar-error {
   background: #f44336 !important; /* red */
   color: #fff !important;
-   z-index: 9999;
+  z-index: 9999;
 }
 
 .snackbar-warning {
@@ -1692,9 +1692,11 @@ select{
 
 
 .w-1100{max-width: 1100px;}
-.modal-open{
-  padding-right: 0!important;
-}
-input[type=checkbox]{
-  transform: scale(1.4);
+.modal-open{padding-right: 0!important;}
+input[type=checkbox], input[type=radio]{transform: scale(1.4);}
+.cursor-pointer{cursor: pointer;}
+
+.mat-mdc-snack-bar-container .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled) {
+    --mat-button-text-state-layer-color: transparent!important;
+    --mat-button-text-ripple-color: transparent!important;
 }

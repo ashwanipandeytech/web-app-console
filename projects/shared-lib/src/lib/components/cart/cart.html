@@ -84,7 +84,7 @@
     <div class="blog-bradcrum py-4">
         <a href="/">Home</a>
         <span class="devider">/</span>
-        <a href="#" class="fw-semibold">Cart</a>
+        <span class="fw-semibold">Cart</span>
     </div>
 </div>
 
@@ -97,7 +97,7 @@
 <!--------------- blog-tittle-section-end---------------->
 
 <!--------------- cart-section---------------->
-<section class="product-cart product footer-padding pt-0">
+<section class="product-cart w-1100 mx-auto box-shadows rounded-4 py-3 px-4">
     <div class="container">
 
         <!-- Blank cart start -->
@@ -151,8 +151,12 @@
                                             <span>₹{{item.product.price_data.finalPrice}}</span>
                                         </li>
                                         <li class="mt-3" *ngIf="item.quantity > 1">
-                                            <span class="d-inline-block fw-semibold config-title">Unit price</span>
-                                            <span class="">₹{{item.product.price_data.regularPrice}}</span>
+                                            <!-- <span class="">₹{{item.product.price_data.regularPrice}}</span> -->
+                                            <div class="price">
+                                                 <span class="d-inline-block fw-semibold config-title">Unit price</span>
+                                            <span class="price-cut">₹{{item.product.price_data.regularPrice}}</span>
+                                                    <span class="new-price">₹{{item.product.price_data.salePrice}}</span>
+                                                      </div>
                                         </li>
                                     </ul>
                                 </div>

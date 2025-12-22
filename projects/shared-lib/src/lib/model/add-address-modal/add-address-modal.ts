@@ -211,8 +211,11 @@ if (this.searchQuery == '') {
             .subscribe((res: any) => {
               console.log('Response:', res);
               if (res.success == true) {   
-                this.closePopup();
+                this.closePopup('success');
                 this.globalService.showMsgSnackBar(res);
+                this.getAddressList();
+                this.cd.detectChanges();
+
                 // this.router.navigate(['/cart']);
               }
             });
@@ -242,7 +245,7 @@ if (this.searchQuery == '') {
       }
       fullAddrress.id = this.data.id;
       fullAddrress.label = this.addressForm.value.type;
-       this.dataService.put(fullAddrress, 'addresses')
+       this.dataService.put(fullAddrress,  `addresses/${this.data.id}`,)
             .pipe(
               catchError(err => {
                 console.error('Error:', err);
@@ -253,8 +256,10 @@ if (this.searchQuery == '') {
             .subscribe((res: any) => {
               console.log('Response:', res);
               if (res.success == true) {   
-                this.closePopup();
+                this.closePopup('success');
                 this.globalService.showMsgSnackBar(res);
+                this.getAddressList();
+                this.cd.detectChanges();
                 // this.router.navigate(['/cart']);
               }
             });
@@ -292,7 +297,7 @@ get postal_code() { return this.addressForm.get('postal_code'); }
 get country() { return this.addressForm.get('country'); }
 get type() { return this.addressForm.get('type'); }
 
-closePopup(){
-  this.activeModal.close();
+closePopup(action:any){
+  this.activeModal.close({result:action});
 }
 }

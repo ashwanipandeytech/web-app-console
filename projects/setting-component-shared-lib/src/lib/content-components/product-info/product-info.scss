@@ -446,6 +446,13 @@ hr {
   fill: red !important;
   stroke: red !important;
 }
+.product-cart-items{
+    &:hover{box-shadow: var(--bs-box-shadow) !important;}
+    &.wishlisted{
+        opacity: 1;
+        visibility: visible;
+    }
+}
 .loader-overlay {
   position: fixed;
   top: 0;

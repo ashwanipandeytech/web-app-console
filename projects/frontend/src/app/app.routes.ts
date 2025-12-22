@@ -41,41 +41,25 @@ export const routes: Routes = [
         canActivate: [authGuard]
          
     },
-    {
-        path: 'about-us',
-        component: AboutUs,
-         
-    },
+  
     {
         path: 'category',
         component: CategoryCommon,
          
     },
-    // {
-    //     path: 'product-sidebar',
-    //     component: ProductSidebar,
-         
-    // },
+   
       {
         path: 'category-details/:id',
         component: ProductSidebarCommon,
          
     },
-        // {
-        // path: 'product-info/:id',
-        // component: ProductInfo,
-         
-        // },
+       
          {
        path: 'product-details/:id',
         component: ProductDetailCommon,
          
         },
-    // {
-    //     path: 'cart',
-    //     component: Cart,
-         
-    // },   
+   
       {
         path: 'cart',
         component: CartCommon,
@@ -102,30 +86,42 @@ export const routes: Routes = [
         component: Checkout,
          
     },
+
+   
     {
-        path: 'terms',
-        component: Terms,
-         
-    },
-    {
-        path: 'privacy',
-        component: Privacy,
-         
-    },
-    {
-        path: 'contact-us',
-        component: ContactUs,
-         
-    },
-  {
         path: 'thank-you',
         component: Thankyou,
          
     },
+
+
+//  {
+//         path: 'about-us',
+//         component: AboutUs,
+         
+//     },
+//     {
+//         path: 'terms',
+//         component: Terms,
+         
+//     },
+//     {
+//         path: 'privacy',
+//         component: Privacy,
+         
+//     },
+//     {
+//         path: 'contact-us',
+//         component: ContactUs,
+         
+//     },
+
+
+
     {
-        path: 'host',
+        path: '**',
         pathMatch: 'full',
-        loadComponent: () => import('./host-outlet/host.component').then(m => m.HostOutletComponent),
+        loadComponent: () => import('./backend-pages/backend-pages').then(m => m.BackendPagesComponent),
         resolve: {
             pageData: PageContentResolver
         }

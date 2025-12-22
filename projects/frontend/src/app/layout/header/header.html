@@ -4,178 +4,62 @@
     <div class="container">
       <div class="header-center">
         <div class="logo">
+     
+         
           <a routerLink="/">
-            <!-- <img src="../images/logos/logo.webp" alt="logo"> -->
             <img src="../images/logos/top-logo.png" alt="logo" height="75px">
           </a>
         </div>
-        
-        <div class="header-search-btn d-none">
-          <input type="text" placeholder="Search Product.....">
-          <div class="divider"></div>
-          <div id="allcat">
-            <button type="button" onclick="selectBoxHandler('allcat')">
-              <span class="item-text">All Categories</span>
-              <span>
-                <svg width="10" height="5" viewbox="0 0 10 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="9.18359" y="0.90918" width="5.78538" height="1.28564" transform="rotate(135 9.18359 0.90918)" fill="#8E8E8E"></rect>
-                  <rect x="5.08984" y="5" width="5.78538" height="1.28564" transform="rotate(-135 5.08984 5)" fill="#8E8E8E"></rect>
-                </svg>
-              </span>
-            </button>
-            <div class="slectbox-body" style="display: none;">
-              <div class="clickAway position-fixed" onclick="selectBoxHandler('allcat')"></div>
-              <ul class="country-options">
-                <li class="all-option"><span class="option-text item-text">Cow</span></li>
-                <li class="all-option"><span class="option-text item-text">Dog</span></li>
-              </ul>
-            </div>
-          </div>
-          <a href="#" class="shop-btn py-3 px-4">Search</a>
-        </div>
 
         <div class="header-cart-items gap-4">
-          <div class="d-none header-compaire">
-            <a href="/compaire" class="cart-item">
-              <span>
-                <svg width="29" height="24" viewbox="0 0 29 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M8.00353 2.70598C8.00353 3.09348 7.99103 3.41431 7.97853 3.41431C7.96603 3.41431 7.76186 3.45181 7.53269 3.50181C3.57436 4.30181 0.620193 7.43098 0.0701934 11.406C-0.0589733 12.3143 -0.00480663 13.6977 0.191027 14.6227C0.68686 16.9893 2.22436 19.2102 4.25769 20.5102L4.49519 20.6602L5.08269 20.2185C5.40353 19.9768 5.67019 19.7685 5.67019 19.7518C5.67019 19.7393 5.56603 19.6727 5.44103 19.606C4.80353 19.2727 3.97436 18.606 3.41186 17.9768C2.34519 16.781 1.66186 15.3227 1.44103 13.7893C1.36186 13.2227 1.36186 12.0977 1.44103 11.5602C1.61186 10.4226 2.01186 9.34765 2.61186 8.40598C3.36186 7.23515 4.50353 6.21015 5.75353 5.58098C6.38686 5.26431 7.26603 4.96431 7.87019 4.85598L8.00353 4.83098V5.41431C8.00353 5.73515 8.01186 5.99765 8.02436 5.99765C8.06603 5.99765 10.6702 4.02681 10.6702 3.99765C10.6702 3.96848 8.06603 1.99764 8.02436 1.99764C8.01186 1.99764 8.00353 2.31431 8.00353 2.70598Z" fill="black"></path>
-                  <path d="M13.5914 5.11119C13.2706 5.35286 13.0122 5.56536 13.0247 5.58203C13.0372 5.60286 13.1622 5.68203 13.3081 5.76119C14.5289 6.45286 15.6664 7.61953 16.3706 8.91536C16.7956 9.69453 17.1539 10.8279 17.2539 11.7112C17.3372 12.407 17.2872 13.6029 17.1539 14.2362C16.5789 16.9612 14.6831 19.157 12.0664 20.132C11.7372 20.2529 10.8456 20.4987 10.7289 20.4987C10.6831 20.4987 10.6706 20.3945 10.6706 19.9154C10.6706 19.5945 10.6622 19.332 10.6497 19.332C10.6081 19.332 8.00391 21.3029 8.00391 21.332C8.00391 21.3612 10.6081 23.332 10.6497 23.332C10.6622 23.332 10.6706 23.0154 10.6706 22.6237V21.9195L10.8289 21.8945C11.2164 21.832 12.3122 21.5362 12.6706 21.3945C15.9206 20.1237 18.1456 17.307 18.6081 13.8737C18.7289 12.9904 18.6747 11.607 18.4831 10.707C17.9872 8.34036 16.4497 6.11953 14.4164 4.81953L14.1789 4.66953L13.5914 5.11119Z" fill="black"></path>
-                  <circle cx="21.668" cy="7" r="7" fill="#0093dd"></circle>
-                  <path d="M21.6716 10.1087C21.1666 10.1065 20.7351 9.97337 20.3772 9.70916C20.0192 9.44496 19.7454 9.06037 19.5558 8.5554C19.3662 8.05043 19.2714 7.44212 19.2714 6.73047C19.2714 6.02095 19.3662 5.41477 19.5558 4.91193C19.7476 4.40909 20.0224 4.02557 20.3804 3.76136C20.7405 3.49716 21.1709 3.36506 21.6716 3.36506C22.1723 3.36506 22.6016 3.49822 22.9596 3.76456C23.3175 4.02876 23.5913 4.41229 23.7809 4.91513C23.9727 5.41584 24.0686 6.02095 24.0686 6.73047C24.0686 7.44425 23.9738 8.05362 23.7841 8.55859C23.5945 9.06143 23.3207 9.44602 22.9628 9.71236C22.6048 9.97656 22.1744 10.1087 21.6716 10.1087ZM21.6716 9.25533C22.1147 9.25533 22.461 9.03906 22.7103 8.60653C22.9617 8.17401 23.0874 7.54865 23.0874 6.73047C23.0874 6.18714 23.0299 5.72798 22.9148 5.35298C22.8019 4.97585 22.6389 4.69034 22.4258 4.49645C22.2149 4.30043 21.9635 4.20241 21.6716 4.20241C21.2305 4.20241 20.8843 4.41974 20.6329 4.8544C20.3814 5.28906 20.2547 5.91442 20.2525 6.73047C20.2525 7.27592 20.309 7.73722 20.4219 8.11435C20.537 8.48935 20.7 8.77379 20.9109 8.96768C21.1218 9.15945 21.3754 9.25533 21.6716 9.25533Z" fill="#F9FFFB"></path>
-                </svg>
-              </span>
-            </a>
-          </div>
           
-          @if(isLoggedIn){
+          <!-- @if(isLoggedIn){
             <div class="user-name">Hello, {{userName}}</div>
-          }
+          } -->
 
-          <div class="header-favourite">
+          <!-- <div class="header-favourite">
             <a routerLink="/wishlist" class="cart-item position-relative">
               <i class="fa-solid fa-heart fa-2xl"></i>
               @if(countsList?.wishlist_count > 0) {
                 <i class="icon-badge position-absolute fs-6 text-center text-white bg-primary rounded-circle">{{countsList?.wishlist_count}}</i>
               }
             </a>
-          </div>
+          </div> -->
 
           <div class="header-cart">
-            <a routerLink="/cart" class="cart-item position-relative">
+            <a routerLink="/cart" class="cart-item position-relative opacity-75">
               <i class="fa-solid fa-cart-shopping fa-2xl"></i>
               @if(countsList?.cart_count > 0) {
                 <i class="icon-badge position-absolute fs-6 text-center text-white bg-primary rounded-circle">{{countsList?.cart_count}}</i>
               }
             </a>
-
-            @if (false) {
-              <div class="cart-submenu">
-                <div class="cart-wrapper-item">
-                  <div class="wrapper">
-                    <div class="wrapper-item">
-                      <div class="wrapper-img">
-                        <img src="../images/homepage-one/product-img/p-img-10.webp" alt="img">
-                      </div>
-                      <div class="wrapper-content">
-                        <h5 class="wrapper-title">Fresh Lemon Juice</h5>
-                        <div class="price">
-                          <p class="new-price">₹20.00</p>
-                        </div>
-                      </div>
-                    </div>
-                    <span class="close-btn">
-                      <svg viewbox="0 0 10 10" fill="none" class="fill-current" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9.7 0.3C9.3 -0.1 8.7 -0.1 8.3 0.3L5 3.6L1.7 0.3C1.3 -0.1 0.7 -0.1 0.3 0.3C-0.1 0.7 -0.1 1.3 0.3 1.7L3.6 5L0.3 8.3C-0.1 8.7 -0.1 9.3 0.3 9.7C0.7 10.1 1.3 10.1 1.7 9.7L5 6.4L8.3 9.7C8.7 10.1 9.3 10.1 9.7 9.7C10.1 9.3 10.1 8.7 9.7 8.3L6.4 5L9.7 1.7C10.1 1.3 10.1 0.7 9.7 0.3Z">
-                        </path>
-                      </svg>
-                    </span>
-                  </div>
-                  <div class="wrapper">
-                    <div class="wrapper-item">
-                      <div class="wrapper-img">
-                        <img src="../images/homepage-one/product-img/p-img-2.webp" alt="img">
-                      </div>
-                      <div class="wrapper-content">
-                        <h5 class="wrapper-title">Chicken Eggs</h5>
-                        <div class="price">
-                          <p class="new-price">₹10.00</p>
-                        </div>
-                      </div>
-                    </div>
-                    <span class="close-btn">
-                      <svg viewbox="0 0 10 10" fill="none" class="fill-current" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9.7 0.3C9.3 -0.1 8.7 -0.1 8.3 0.3L5 3.6L1.7 0.3C1.3 -0.1 0.7 -0.1 0.3 0.3C-0.1 0.7 -0.1 1.3 0.3 1.7L3.6 5L0.3 8.3C-0.1 8.7 -0.1 9.3 0.3 9.7C0.7 10.1 1.3 10.1 1.7 9.7L5 6.4L8.3 9.7C8.7 10.1 9.3 10.1 9.7 9.7C10.1 9.3 10.1 8.7 9.7 8.3L6.4 5L9.7 1.7C10.1 1.3 10.1 0.7 9.7 0.3Z">
-                        </path>
-                      </svg>
-                    </span>
-                  </div>
-                  <div class="wrapper">
-                    <div class="wrapper-item">
-                      <div class="wrapper-img">
-                        <img src="../images/homepage-one/product-img/p-img-3.webp" alt="img">
-                      </div>
-                      <div class="wrapper-content">
-                        <h5 class="wrapper-title">Fresh Watermelon</h5>
-                        <div class="price">
-                          <p class="new-price">₹15.00</p>
-                        </div>
-                      </div>
-                    </div>
-                    <span class="close-btn">
-                      <svg viewbox="0 0 10 10" fill="none" class="fill-current" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9.7 0.3C9.3 -0.1 8.7 -0.1 8.3 0.3L5 3.6L1.7 0.3C1.3 -0.1 0.7 -0.1 0.3 0.3C-0.1 0.7 -0.1 1.3 0.3 1.7L3.6 5L0.3 8.3C-0.1 8.7 -0.1 9.3 0.3 9.7C0.7 10.1 1.3 10.1 1.7 9.7L5 6.4L8.3 9.7C8.7 10.1 9.3 10.1 9.7 9.7C10.1 9.3 10.1 8.7 9.7 8.3L6.4 5L9.7 1.7C10.1 1.3 10.1 0.7 9.7 0.3Z">
-                        </path>
-                      </svg>
-                    </span>
-                  </div>
-                  <div class="wrapper">
-                    <div class="wrapper-item">
-                      <div class="wrapper-img">
-                        <img src="../images/homepage-one/product-img/p-img-14.webp" alt="img">
-                      </div>
-                      <div class="wrapper-content">
-                        <h5 class="wrapper-title">Eggplant Vegetable</h5>
-                        <div class="price">
-                          <p class="new-price">₹18.00</p>
-                        </div>
-                      </div>
-                    </div>
-                    <span class="close-btn">
-                      <svg viewbox="0 0 10 10" fill="none" class="fill-current" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9.7 0.3C9.3 -0.1 8.7 -0.1 8.3 0.3L5 3.6L1.7 0.3C1.3 -0.1 0.7 -0.1 0.3 0.3C-0.1 0.7 -0.1 1.3 0.3 1.7L3.6 5L0.3 8.3C-0.1 8.7 -0.1 9.3 0.3 9.7C0.7 10.1 1.3 10.1 1.7 9.7L5 6.4L8.3 9.7C8.7 10.1 9.3 10.1 9.7 9.7C10.1 9.3 10.1 8.7 9.7 8.3L6.4 5L9.7 1.7C10.1 1.3 10.1 0.7 9.7 0.3Z">
-                        </path>
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-                <div class="cart-wrapper-section">
-                  <div class="wrapper-line"></div>
-                  <div class="wrapper-subtotal">
-                    <h5 class="wrapper-title">Subtotal</h5>
-                    <h5 class="wrapper-title">₹60</h5>
-                  </div>
-                  <div class="cart-btn">
-                    <a href="cart.html" class="shop-btn view-btn">View Cart</a>
-                    <a href="checkout.html" class="shop-btn checkout-btn">Checkout Now</a>
-                  </div>
-                </div>
-              </div>
-            }
-
           </div>
 
           <div class="header-user">
-            @if(isLoggedIn) {
-              <a routerLink="/user-profile">
-                <i class="fa-solid fa-user-check fa-2xl"></i>
+            @if(!isLoggedIn){
+              <a href="/login">
+                <i class="fa-solid fa-user fa-2xl opacity-75"></i>
               </a>
             }
-
-            @if(!isLoggedIn){
-              <a routerLink="/login">
-                <i class="fa-solid fa-user fa-2xl"></i>
-              </a>
+            @if(isLoggedIn) {
+              <div class="dropdown user-account">
+                <button class="btn opacity-75" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa-solid fa-user-check fa-2xl"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end bg-white border-0 shadow rounded-3" style="z-index: 9999;">
+                  <li class="text-nowrap px-3 py-2 fs-4 fw-semibold bg-light mb-2">Hello, {{userName}}</li>
+                  <!-- Active class would be  bg-primary text-white -->
+                  <li class="mb-1"><a class="dropdown-item px-3 py-2 fs-4" href="/user-profile"><span><i class="fa-solid fa-lg opacity-75 fa-user-tie"></i></span>My Account</a></li>
+                  <li class="mb-1"><a class="dropdown-item px-3 py-2 fs-4" href="#"><span><i class="fa-solid fa-lg opacity-75 fa-bag-shopping"></i></span>My Order</a></li>
+                  <li class="mb-1"><a class="dropdown-item px-3 py-2 fs-4" href="#"><span><i class="fa-solid fa-lg opacity-75 fa-heart"></i></span>Wishlist 
+                    @if(countsList?.wishlist_count > 0) {
+                      <span class="badge text-bg-secondary ms-2">{{countsList?.wishlist_count}}</span>
+                    }</a>
+                  </li>
+                  <li class="mb-1"><a class="dropdown-item px-3 py-2 fs-4" href="#"><span><i class="fa-solid fa-lg opacity-75 fa-house"></i></span>Address</a></li>
+                  <li><a class="dropdown-item px-3 py-2 fs-4" href="#"><span><i class="fa-solid fa-lg opacity-75 fa-arrow-right-from-bracket"></i></span>Logout</a></li>
+                </ul>
+              </div>
             }
           </div>
         </div>
@@ -495,3 +379,26 @@
   </div>
 </header>
 <!--------------- header-section-end --------------->
+
+
+<!-- General Settings -->
+<!-- <pre> {{this.dataService.getAllGeneralSettings() | json}} </pre> -->
+
+<!-- Specific General Settings -->
+
+
+<!-- <pre> {{this.dataService.getSpecificGeneralSettings('general') | json}} </pre>
+
+
+<pre> {{this.dataService.getSpecificGeneralSettings('home_Banner_Slider') | json}} </pre>
+
+
+<pre> {{this.dataService.getSpecificGeneralSettings('home_Promo_Slider') | json}} </pre>
+
+
+<pre> {{this.dataService.getSpecificGeneralSettings('social') | json}} </pre>
+
+
+<pre> {{this.dataService.getSpecificGeneralSettings('contacts') | json}} </pre>
+
+<pre> {{this.dataService.getSpecificGeneralSettings('footer') | json}} </pre> -->

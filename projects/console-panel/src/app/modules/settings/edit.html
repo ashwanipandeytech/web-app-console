@@ -10,34 +10,55 @@
       </div>
       <div class="card-body">
 
-        <!-- Title -->
-        <div class="mb-3">
-          <label class="form-label">Title</label>
-          <input type="text"
-                 class="form-control"
-                 name="title"
-                 [(ngModel)]="newPage.title"
-                 required>
-        </div>
+<!-- Title -->
+<div class="mb-3">
+  <label class="form-label">Title*</label>
+  <input type="text"
+         class="form-control"
+         name="title"
+         [(ngModel)]="newPage.title"
+         #title="ngModel"
+         required>
+  
+  @if (title.invalid && title.touched) {
+    <div class="text-danger">
+      Title is mandatory.
+    </div>
+  }
+</div>
 
-        <!-- Description -->
-        <div class="mb-3">
-          <label class="form-label">Description</label>
-          <textarea class="form-control"
-                    name="description"
-                    [(ngModel)]="newPage.description"
-                    required></textarea>
-        </div>
+<!-- Description -->
+<div class="mb-3">
+  <label class="form-label">Description*</label>
+  <textarea class="form-control"
+            name="description"
+            [(ngModel)]="newPage.description"
+            #description="ngModel"
+            required></textarea>
+  
+  @if (description.invalid && description.touched) {
+    <div class="text-danger">
+      Description is mandatory.
+    </div>
+  }
+</div>
 
-        <!-- Slug -->
-        <div class="mb-3">
-          <label class="form-label">Slug</label>
-          <input type="text"
-                 class="form-control"
-                 name="slug"
-                 [(ngModel)]="newPage.slug"
-                 required>
-        </div>
+<!-- Slug -->
+<div class="mb-3">
+  <label class="form-label">Slug*</label>
+  <input type="text"
+         class="form-control"
+         name="slug"
+         [(ngModel)]="newPage.slug"
+         #slug="ngModel"
+         required>
+  
+  @if (slug.invalid && slug.touched) {
+    <div class="text-danger">
+      Slug is mandatory.
+    </div>
+  }
+</div>
 
         <!-- Page Content -->
         <div class="mb-3">

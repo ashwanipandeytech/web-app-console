@@ -24,30 +24,12 @@ export class App {
   public platformDetectionService:any= inject(PlatformDetectionService);
   constructor(){
    this.platFormType= this.platformDetectionService.getActivePlatform()
-   console.info('this.platFormType',this.platFormType)
+ 
   
   }
 
 
-  // payNow() {
-  //   const amount = 500; // in rupees
-
-  //   this.razorpayService.createOrder(amount).subscribe({
-  //     next: (order:any) => {
-  //       this.razorpayService.openCheckout(order, {
-  //         prefill: {
-  //           name: 'Rahul Kumar',
-  //           email: 'rahul@example.com',
-  //           contact: '9876543210'
-  //         }
-  //       });
-  //     },
-  //     error: (err:any) => {
-  //       console.error(err);
-  //       alert('Failed to create order');
-  //     }
-  //   });
-  // }
+ 
 
 
   openCheckout(amount: number) {

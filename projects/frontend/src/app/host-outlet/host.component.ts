@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, inject, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PageComponentFactory } from 'shared-lib';
+import { DataService } from 'shared-lib';
 @Component({
   selector: 'host-outlet',
   standalone: true,
@@ -20,14 +21,7 @@ export class HostOutletComponent {
     this.http.get('/setting.component.json').subscribe((res: any) => {
     this.allInOnePageSections = res;
     this.cd.detectChanges();
-//       res.map((item: any) => {  
-//         let  templateVersion=item.templateCode
-//         console.log('this.pageComponentFactory==>',this.pageComponentFactory);
-// this.allInOnePageSections = templateVersion;
 
-//        this.pageComponentFactory.loadComponentInstances(templateVersion, item, this.hostContainer);
-
-//       })
 });
 
 
@@ -45,7 +39,6 @@ export class HostOutletComponent {
       
     // });
   }
- // await this.loaddynamicComponentService.loadComponentInstance(templateVersion, item, this.maincontentContainer, this.componentEntryId);
 
 }
 

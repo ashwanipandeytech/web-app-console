@@ -1,0 +1,46 @@
+
+@if(this.isLoading){
+<section  class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <!-- Bootstrap spinner loader while pageData is loading -->
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</section>
+}
+
+@if(this.pageData){
+<section class="blog ">
+    <div class="container">
+        <div class="blog-bradcrum">
+            <span><a href="/">Home</a></span>
+            <span class="devider">/</span>
+            <span><a href="#">{{pageData.title}}</a></span>
+        </div>
+        <div class="blog-heading heading">
+            <h1 class="heading">{{pageData.title}}</h1>
+        </div>
+    </div>
+</section>
+
+<section class="backend-page-content">
+    <div class="container">
+        <div class="" [innerHTML]="pageData.pageContent">
+
+        </div>
+    </div>
+</section>
+}
+
+@if(!this.pageData){
+<div class="container-fluid error-container">
+    <div class="error-content">
+      <!-- Large 404 Text -->
+      <h1 class="text-primary">404</h1>
+      <p class="lead text-muted">Oops! The page you're looking for cannot be found.</p>
+      <p>It seems like the page has been moved or doesn't exist. You can go back to the homepage or explore other parts of the website.</p>
+      <!-- Button to Home -->
+      <a href="/" class="btn btn-primary btn-lg">Back to Homepage</a>
+    </div>
+  </div>
+}
+

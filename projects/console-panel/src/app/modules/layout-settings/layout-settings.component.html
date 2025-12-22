@@ -2,7 +2,7 @@
 <div class="px-4 mt-4 mb-4">
   <h4 class="text-center mb-4 fw-bold">Website Settings</h4>
 
-  <form #settingsForm="ngForm" >
+  <form #settingsForm="ngForm">
 
     <!-- Accordion Container -->
     <div class="accordion" id="settingsAccordion">
@@ -10,8 +10,8 @@
       <!-- 1. General - Logo -->
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingLogo">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#collapseLogo" aria-expanded="true" aria-controls="collapseLogo">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLogo"
+            aria-expanded="true" aria-controls="collapseLogo">
             <i class="bi bi-image me-2"></i> Logo Settings
           </button>
         </h2>
@@ -21,20 +21,17 @@
               <!-- Desktop Logo -->
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Desktop Logo</label>
-                <div class="d-flex">
-                  <input type="text" class="form-control" name="general.logo.desktop.imgSrc"
+                <input type="text" class="form-control" name="general.logo.desktop.imgSrc"
                   [(ngModel)]="settingsModel.general.logo.desktop.imgSrc"
                   placeholder="https://example.com/desktop-logo.png">
-                  <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto">Upload</button>
-                </div>
 
                 @if (settingsModel.general.logo.desktop.imgSrc) {
-                  <div class="mt-3">
-                    <small class="text-muted">Preview:</small>
-                    <img [src]="settingsModel.general.logo.desktop.imgSrc"
-                         [alt]="settingsModel.general.logo.desktop.alt || 'Desktop Logo'"
-                         class="img-fluid img-preview rounded shadow-sm mt-2">
-                  </div>
+                <div class="mt-3">
+                  <small class="text-muted">Preview:</small>
+                  <img [src]="settingsModel.general.logo.desktop.imgSrc"
+                    [alt]="settingsModel.general.logo.desktop.alt || 'Desktop Logo'"
+                    class="img-fluid img-preview rounded shadow-sm mt-2">
+                </div>
                 }
               </div>
 
@@ -42,26 +39,23 @@
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Desktop Logo Alt Text</label>
                 <input type="text" class="form-control" name="general.logo.desktop.alt"
-                       [(ngModel)]="settingsModel.general.logo.desktop.alt">
+                  [(ngModel)]="settingsModel.general.logo.desktop.alt">
               </div>
 
               <!-- Mobile Logo -->
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Mobile Logo</label>
-                <div class="d-flex">
-                  <input type="text" class="form-control" name="general.logo.mobile.imgSrc"
+                <input type="text" class="form-control" name="general.logo.mobile.imgSrc"
                   [(ngModel)]="settingsModel.general.logo.mobile.imgSrc"
                   placeholder="https://example.com/mobile-logo.png">
-                  <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto">Upload</button>
-                </div>
 
                 @if (settingsModel.general.logo.mobile.imgSrc) {
-                  <div class="mt-3">
-                    <small class="text-muted">Preview:</small>
-                    <img [src]="settingsModel.general.logo.mobile.imgSrc"
-                         [alt]="settingsModel.general.logo.mobile.alt || 'Mobile Logo'"
-                         class="img-fluid img-preview rounded shadow-sm mt-2">
-                  </div>
+                <div class="mt-3">
+                  <small class="text-muted">Preview:</small>
+                  <img [src]="settingsModel.general.logo.mobile.imgSrc"
+                    [alt]="settingsModel.general.logo.mobile.alt || 'Mobile Logo'"
+                    class="img-fluid img-preview rounded shadow-sm mt-2">
+                </div>
                 }
               </div>
 
@@ -69,7 +63,7 @@
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Mobile Logo Alt Text</label>
                 <input type="text" class="form-control" name="general.logo.mobile.alt"
-                       [(ngModel)]="settingsModel.general.logo.mobile.alt">
+                  [(ngModel)]="settingsModel.general.logo.mobile.alt">
               </div>
             </div>
           </div>
@@ -79,7 +73,8 @@
       <!-- 2. Favicon -->
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingFavicon">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFavicon" aria-expanded="false" aria-controls="collapseFavicon">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseFavicon" aria-expanded="false" aria-controls="collapseFavicon">
             <i class="bi bi-bookmark-check me-2"></i> Favicon
           </button>
         </h2>
@@ -88,32 +83,25 @@
             <div class="row g-4">
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Desktop Favicon</label>
-                <div class="d-flex">
-                  <input type="text" class="form-control" name="general.favico.desktop.imgSrc"
+                <input type="text" class="form-control" name="general.favico.desktop.imgSrc"
                   [(ngModel)]="settingsModel.general.favico.desktop.imgSrc"
                   placeholder="https://example.com/favicon.ico">
-                  <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto">Upload</button>
-                </div>
 
                 @if (settingsModel.general.favico.desktop.imgSrc) {
-                <img [src]="settingsModel.general.favico.desktop.imgSrc"
-                alt="Favicon Preview" class="img-preview mt-3" style="width: 64px; height: 64px;">
+                <img [src]="settingsModel.general.favico.desktop.imgSrc" alt="Favicon Preview" class="img-preview mt-3"
+                  style="width: 64px; height: 64px;">
                 }
               </div>
 
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Mobile Favicon</label>
-                <div class="d-flex">
-                  <input type="text" class="form-control" name="general.favico.mobile.imgSrc"
+                <input type="text" class="form-control" name="general.favico.mobile.imgSrc"
                   [(ngModel)]="settingsModel.general.favico.mobile.imgSrc"
                   placeholder="https://example.com/mobile-favicon.png">
-                  <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto">Upload</button>
-                </div>
-                
 
                 @if (settingsModel.general.favico.mobile.imgSrc) {
-                  <img [src]="settingsModel.general.favico.mobile.imgSrc"
-                       alt="Mobile Favicon Preview" class="img-preview mt-3" style="width: 64px; height: 64px;">
+                <img [src]="settingsModel.general.favico.mobile.imgSrc" alt="Mobile Favicon Preview"
+                  class="img-preview mt-3" style="width: 64px; height: 64px;">
                 }
               </div>
             </div>
@@ -121,14 +109,15 @@
         </div>
       </div>
 
+
       <!-- 3. Home Banner Slider -->
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingSlider">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSlider" aria-expanded="false" aria-controls="collapseSlider">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseSlider" aria-expanded="false" aria-controls="collapseSlider">
             <i class="bi bi-images me-2"></i> Home Slider
           </button>
         </h2>
-
         <div id="collapseSlider" class="accordion-collapse collapse" aria-labelledby="headingSlider">
           <div class="accordion-body">
             <!-- Add Button -->
@@ -143,7 +132,7 @@
               <div class="card-body">
                 <!-- Delete Button -->
                 <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 mt-2 me-2"
-                (click)="deleteSlide('home_Banner_Slider',$index)" title="Delete this slide">
+                  (click)="deleteSlide('home_Banner_Slider',$index)" title="Delete this slide">
                   <i class="fa fa-trash"></i>
                 </button>
 
@@ -151,26 +140,82 @@
                 <div class="row g-3">
                   <div class="col-md-4">
                     <label class="form-label fw-semibold">Image URL</label>
-                    <div class="d-flex">
-                      <input type="text" class="form-control" [name]="'home_Banner_Slider[' + $index + '].imgSrc'"
+                    <input type="text" class="form-control" [name]="'home_Banner_Slider[' + $index + '].imgSrc'"
                       [(ngModel)]="slide.imgSrc" placeholder="https://example.com/slide.jpg">
-                      <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto">Upload</button>
-                    </div>
 
                     @if (slide.imgSrc) {
-                      <img [src]="slide.imgSrc" [alt]="slide.alt || 'Slide ' + ($index + 1)"
-                          class="img-fluid img-preview mt-3 rounded shadow">
+                    <img [src]="slide.imgSrc" [alt]="slide.alt || 'Slide ' + ($index + 1)"
+                      class="img-fluid img-preview mt-3 rounded shadow">
                     }
                   </div>
                   <div class="col-md-4">
                     <label class="form-label fw-semibold">Alt Text</label>
                     <input type="text" class="form-control" [name]="'home_Banner_Slider[' + $index + '].alt'"
-                    [(ngModel)]="slide.alt">
+                      [(ngModel)]="slide.alt">
                   </div>
                   <div class="col-md-4">
                     <label class="form-label fw-semibold">Link URL</label>
                     <input type="text" class="form-control" [name]="'home_Banner_Slider[' + $index + '].url'"
-                    [(ngModel)]="slide.url" placeholder="https://example.com">
+                      [(ngModel)]="slide.url" placeholder="https://example.com">
+                  </div>
+                </div>
+              </div>
+            </div>
+            } @empty {
+            <div class="alert alert-info text-center">
+              No slides yet. Click "Add New Slide" to get started.
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+      <!-- 3. Home Promo Slider -->
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingSlider">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseSlider" aria-expanded="false" aria-controls="collapseSlider">
+            <i class="bi bi-images me-2"></i> Home Promo Slider
+          </button>
+        </h2>
+        <div id="collapseSlider" class="accordion-collapse collapse" aria-labelledby="headingSlider">
+          <div class="accordion-body">
+            <!-- Add Button -->
+            <div class="mb-4 text-end">
+              <button type="button" class="btn btn-success btn-sm" (click)="addSlide('home_Promo_Slider')">
+                <i class="bi bi-plus-circle me-1"></i> Add New Slide
+              </button>
+            </div>
+
+            @for (slide of settingsModel.home_Promo_Slider; track $index) {
+            <div class="card mb-4 shadow-sm position-relative">
+              <div class="card-body">
+                <!-- Delete Button -->
+                <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 mt-2 me-2"
+                  (click)="deleteSlide('home_Promo_Slider',$index)" title="Delete this slide">
+                  <i class="fa fa-trash"></i>
+                </button>
+
+                <h5 class="card-title">Slide {{ $index + 1 }}</h5>
+                <div class="row g-3">
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold">Image URL</label>
+                    <input type="text" class="form-control" [name]="'home_Promo_Slider[' + $index + '].imgSrc'"
+                      [(ngModel)]="slide.imgSrc" placeholder="https://example.com/slide.jpg">
+
+                    @if (slide.imgSrc) {
+                    <img [src]="slide.imgSrc" [alt]="slide.alt || 'Slide ' + ($index + 1)"
+                      class="img-fluid img-preview mt-3 rounded shadow">
+                    }
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold">Alt Text</label>
+                    <input type="text" class="form-control" [name]="'home_Promo_Slider[' + $index + '].alt'"
+                      [(ngModel)]="slide.alt">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold">Link URL</label>
+                    <input type="text" class="form-control" [name]="'home_Promo_Slider[' + $index + '].url'"
+                      [(ngModel)]="slide.url" placeholder="https://example.com">
                   </div>
                 </div>
               </div>
@@ -184,20 +229,61 @@
         </div>
       </div>
 
-      <!-- 3. Home Promo Slider -->
+
+      <!-- 4. Footer  -->
       <div class="accordion-item">
-        <h2 class="accordion-header" id="headingSlider">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSlider" aria-expanded="false" aria-controls="collapseSlider">
-            <i class="bi bi-images me-2"></i> Home Promo Slider
+        <h2 class="accordion-header" id="footerLinks">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseFooter" aria-expanded="false" aria-controls="collapseFooter">
+            <i class="bi bi-share me-2"></i> Footer Links
           </button>
         </h2>
-        <div id="collapseSlider" class="accordion-collapse collapse" aria-labelledby="headingSlider">
+        <div id="collapseFooter" class="accordion-collapse collapse" aria-labelledby="footerLinks">
           <div class="accordion-body">
-            <!-- Add Button -->
             <div class="mb-4 text-end">
-              <button type="button" class="btn btn-success btn-sm" (click)="addSlide('home_Promo_Slider')">
-                <i class="bi bi-plus-circle me-1"></i> Add New Slide
+              <button type="button" class="btn btn-success btn-sm" (click)="addFooterColumn()">
+                <i class="bi bi-plus-circle me-1"></i> Add Footer Column
               </button>
+            </div>
+
+            <div class="row g-3">
+              @for (footer of settingsModel.footer; track $index) {
+              <div class="col-md-4">
+                <div class="bg-light p-2 rounded">
+                  <div class="mb-2">
+                    <div class="position-relative">
+                      <label class="form-label fw-semibold">Column Heading: {{$index+1}}</label>
+
+                      <button type="button" class="btn text-danger position-absolute top-0 end-0 p-0 "
+                        style="margin-top: -4px; margin-right: -4px;" (click)="deleteFooterColumn($index)"
+                        title="Delete this slide">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </div>
+                    <div class="">
+                      <input type="text" class="form-control" [name]="'footer[' + $index + '].colHeading'"
+                        [(ngModel)]="footer.colHeading" placeholder="Enter Column Heading">
+                    </div>
+                  </div>
+
+
+
+
+                  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event,footer.pageList)">
+                    @for (page of footer.pageList; track $index) {
+                    <div class="example-box" cdkDrag>
+                      <input type="checkbox" [checked]="page.isSelected" (change)="page.isSelected = $event.target.checked">
+                      {{ page.slug }}
+
+                    </div>
+                    }
+                  </div>
+
+
+
+                </div>
+              </div>
+              }
             </div>
 
             @for (slide of settingsModel.home_Promo_Slider; track $index) {
@@ -248,7 +334,7 @@
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingSocial">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-          data-bs-target="#collapseSocial" aria-expanded="false" aria-controls="collapseSocial">
+            data-bs-target="#collapseSocial" aria-expanded="false" aria-controls="collapseSocial">
             <i class="bi bi-share me-2"></i> Social Media Links
           </button>
         </h2>
@@ -256,16 +342,16 @@
           <div class="accordion-body">
             <div class="row g-3">
               @for (social of settingsModel.social; track $index) {
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">{{ social.label | titlecase }}</label>
-                  <div class="input-group">
-                    <span class="input-group-text">
-                      <i class="fab fa-{{ social.label }} fa-xl"></i>
-                    </span>
-                    <input type="text" class="form-control" [name]="'social[' + $index + '].link'"
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ social.label | titlecase }}</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-{{ social.label }}"></i>
+                  </span>
+                  <input type="text" class="form-control" [name]="'social[' + $index + '].link'"
                     [(ngModel)]="social.link" placeholder="{{ social.label }} link">
-                  </div>
                 </div>
+              </div>
               }
             </div>
           </div>
@@ -276,7 +362,7 @@
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingContacts">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#collapseContacts" aria-expanded="false" aria-controls="collapseContacts">
+            data-bs-target="#collapseContacts" aria-expanded="false" aria-controls="collapseContacts">
             <i class="fa fa-telephone me-2"></i> Contact Information
           </button>
         </h2>
@@ -286,22 +372,22 @@
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Mobile Number</label>
                 <input type="text" class="form-control" name="contacts.mobileNo"
-                       [(ngModel)]="settingsModel.contacts.mobileNo">
+                  [(ngModel)]="settingsModel.contacts.mobileNo">
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold">WhatsApp Link</label>
                 <input type="text" class="form-control" name="contacts.whatsappLink"
-                       [(ngModel)]="settingsModel.contacts.whatsappLink">
+                  [(ngModel)]="settingsModel.contacts.whatsappLink">
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Email</label>
                 <input type="email" class="form-control" name="contacts.email"
-                       [(ngModel)]="settingsModel.contacts.email">
+                  [(ngModel)]="settingsModel.contacts.email">
               </div>
               <div class="col-md-12">
                 <label class="form-label fw-semibold">Address</label>
                 <textarea class="form-control" name="contacts.address" rows="3"
-                          [(ngModel)]="settingsModel.contacts.address"></textarea>
+                  [(ngModel)]="settingsModel.contacts.address"></textarea>
               </div>
             </div>
           </div>
