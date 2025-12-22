@@ -11,9 +11,9 @@
                     <div class="wrapper-content">
                         <div class="d-flex align-items-center">
                             <h5 class="heading text-truncate">{{item?.items[0].product.title}}</h5>
-                            <button class="lh-0 btn cancel-btn" data-bs-toggle="modal" data-bs-target="#removeProject">
+                            <!-- <button class="lh-0 btn cancel-btn" data-bs-toggle="modal" data-bs-target="#removeProject">
                                 <i class="fa-solid fa-trash fa-xl" (click)="deleteMyOrder(item.id)"></i>
-                            </button>
+                            </button> -->
                         </div>
                         <ul>
                             <li class="mt-md-3 mt-0">
@@ -54,6 +54,11 @@
     </div>
   </div>
 </div>
+
+<!-- Correct loop
+ Grand total
+ paymrnt method
+ deliver date -->
 
 <!-- Order detail Modal -->
 <div #deleteorder class="modal fade" id="orderDetail" tabindex="-1" aria-labelledby="orderDetailLabel" aria-hidden="true">
