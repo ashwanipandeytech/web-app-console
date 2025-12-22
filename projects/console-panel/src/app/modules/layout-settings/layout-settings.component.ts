@@ -253,5 +253,21 @@ export class LayoutSettingsComponent implements OnInit {
       });
   }
 
+  imagePreview: string | null = null;
+
+  onImageChange(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => (this.imagePreview = reader.result as string);
+    reader.readAsDataURL(file);
+  }
+
+  removeImage(event: MouseEvent) {
+    event.stopPropagation();
+    this.imagePreview = null;
+  }
+
 
 }
