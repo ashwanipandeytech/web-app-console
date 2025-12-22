@@ -59,7 +59,10 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+                "optimization": true,
+              "extractLicenses": false,
+              "sourceMap": true
             },
             "web-development": {
               "fileReplacements": [
@@ -69,12 +72,12 @@
                 }
 
               ],
-              "optimization": false,
+              "optimization": true,
               "extractLicenses": false,
               "sourceMap": true
             }
           },
-          "defaultConfiguration": "web-development"
+          "defaultConfiguration": "web-production"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
