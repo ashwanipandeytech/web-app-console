@@ -54,6 +54,8 @@ export class ProductComponent implements OnInit {
       });
     }
     this.globalFunctionService.getCount();
+    this.cd.detectChanges();
+
   }
   callAllProductList() {
     this.dataService

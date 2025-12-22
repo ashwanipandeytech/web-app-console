@@ -215,7 +215,7 @@ export class ProductDetails {
     }
     //  this.callAllProductList();
     this.globalFunctionService.getCount();
-    // this.cd.detectChanges();
+    this.cd.detectChanges();
 
 
 

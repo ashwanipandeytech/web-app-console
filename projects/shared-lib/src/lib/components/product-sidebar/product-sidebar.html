@@ -108,7 +108,7 @@
                                         </div>
     
                                         <div class="product-info pb-0">
-                                            <a href="/product-info" class="product-details">{{item.title}}</a>
+                                            <a (click)="openProduct(item.id)" class="product-details">{{item.title}}</a>
                                             <div class="ratings">
                                                 <span>
                                                     <svg width="90" height="18" viewbox="0 0 75 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -122,8 +122,8 @@
                                             </div>
                                             <div class="product-description d-flex align-items-center w-100 mt-auto">
                                                 <div class="price">
-                                                    <span class="price-cut">₹12.99</span>
-                                                    <span class="new-price">₹6.99</span>
+                                                    <span class="price-cut">₹{{item.price_data.regularPrice}}</span>
+                                                    <span class="new-price">₹{{item.price_data.salePrice}}</span>
                                                 </div>
                                                 <a class="product-btn ms-auto w-auto shop-btn my-0" (click)="addToCart(item)">Add to Cart</a>
                                             </div>

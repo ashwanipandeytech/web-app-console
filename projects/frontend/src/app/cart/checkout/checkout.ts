@@ -35,6 +35,7 @@ checkoutForm!: FormGroup;
   selectedPaymentMethod: any=false;
   isSelectPaymentMethodInput: boolean=true;
   fullAddrress: any={};
+  addressListData: any;
 
 ngOnInit(){
   let userString: any = localStorage.getItem('user'); // this is a string
@@ -46,6 +47,7 @@ if (userString) {
   this.createCheckoutBillingForm();
   this.carList();
   this.loadCountries();
+  this.getAddressList();
 
  let user:any = JSON.stringify(localStorage.getItem('user'));
   
@@ -402,4 +404,23 @@ this.selectedPaymentMethod = method;
 console.log('menthodi==.',method);
 
 }
+
+  getAddressList(){
+       this.dataService.get('addresses').pipe(
+      catchError((error) => {
+        return of(null); // or you can return a default value if needed
+      })
+    ).subscribe((response: any) => {
+      console.log('response==>',response);
+      if (response.success == true) {
+      this.addressListData = response.data.find(
+        (item: any) => item.is_default === 1
+      );
+      console.log('addressListData===>',this.addressListData);
+      
+  this.cd.detectChanges();
+}
+
+    })
+  }
 }

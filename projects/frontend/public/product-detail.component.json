@@ -19,19 +19,5 @@
           {"title":"Carousel 1","img":"/images/Making-Livestock-Care-Simple-Safe-Effective-7-min.png"}
       ]
     }
-  },
-  {
-    "templateCode": "Hero-Section-v1",
-      "data":{
-      "title":"Carousel",
-      "isTitleEnable": false,
-      "classList": {
-        "class_container":"container"
-      },
-      "heroImage":[
-          {"title":"Carousel 1","img":"/images/Making-Livestock-Care-Simple-Safe-Effective-7-min.png"},
-          {"title":"Carousel 2","img":"/images/Making-Livestock-Care-Simple-Safe-Effective-16-min.png"}
-      ]
-    }
   }
 ]
