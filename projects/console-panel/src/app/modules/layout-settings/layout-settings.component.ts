@@ -4,10 +4,12 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit }
 import { FormsModule } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
+import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
+import { GlobalService } from '../../global.service';
 @Component({
   selector: 'layout-settings',
   templateUrl: './layout-settings.component.html',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule,CdkDrag,CdkDropList],
   styleUrls: ['./layout-settings.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -82,6 +84,8 @@ export class LayoutSettingsComponent implements OnInit {
   }
   loading = true
   public dataService: any = inject(DataService);
+  private globalService:any = inject(GlobalService);
+  pageList: any;
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
@@ -98,7 +102,13 @@ export class LayoutSettingsComponent implements OnInit {
 
 
 
-    this.dataService.get('settings/general')
+
+
+  
+      this.getGeneralSetting()
+  }
+  getGeneralSetting(){
+       this.dataService.get('settings/general')
       .pipe(
         catchError(err => {
           console.error('Error:', err);
@@ -109,40 +119,51 @@ export class LayoutSettingsComponent implements OnInit {
         console.log('Response:', res);
         if (res.success) {
           this.settingsModel = res.data.settings;
-          // this.settingsModel.footer = [
-          //   {
-          //     "colHeading": "",
-          //     "items": [
-          //       {
-          //         "label": "",
-          //         "link": ""
-          //       }
-          //     ]
-          //   },
-          //   {
-          //     "colHeading": "",
-          //     "items": [
-          //       {
-          //         "label": "",
-          //         "link": ""
-          //       }
-          //     ]
-          //   }, {
-          //     "colHeading": "",
-          //     "items": [
-          //       {
-          //         "label": "",
-          //         "link": ""
-          //       }
-          //     ]
-          //   }
-          // ]
+
+         this.getPageList()
+          this.cdr.detectChanges()
+        }
+
+      });
+  }
+  getPageList(){
+        this.dataService.get('pages/list')
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+        if (res.data) {
+          this.pageList = res.data;
+          this.settingsModel.footer.map((item:any)=>{
+            item.pageList= JSON.parse(JSON.stringify(this.pageList))
+
+            item.pageList.map((page:any)=>{
+            if(item.items.findIndex((innerItems:any)=>innerItems.link==page.slug)>-1){
+              page.isSelected=true
+            }
+            else{
+              page.isSelected=false
+            
+            }
+            
+          })
+            
+              
+            
+          })
           this.cdr.detectChanges()
         }
 
       });
   }
 
+ drop(event: any,data:any) {
+    moveItemInArray(data, event.previousIndex, event.currentIndex);
+  }
   // Add new empty slide
   addSlide(type: string) {
     this.settingsModel[type].push({
@@ -189,21 +210,43 @@ export class LayoutSettingsComponent implements OnInit {
 
   }
   saveSettings() {
-    let payload = {
+    let settingData=JSON.parse(JSON.stringify(this.settingsModel))
+   
+   for (let i = 0; i < settingData.footer.length; i++) {
+   
+    let data=settingData.footer[i].pageList.filter((item: any) => item.isSelected);
+     settingData.footer[i].items = [];
+    data.map((item:any)=>{
+     settingData.footer[i].items.push({
+        "label": item.title,
+        "link": item.slug
+      })
+    })
+   // this.settingsModel.footer[i].items = 
+    
+    // Delete the 'pageList' property
+    delete settingData.footer[i].pageList;
+}
+ let payload = {
       settings_name: 'general',
-      settings: this.settingsModel
+      settings: settingData
     }
+
+   // console.info('this.settingsModel',this.settingsModel)
+   // return
     this.dataService.post(payload, 'settings')
       .pipe(
         catchError(err => {
           console.error('Error:', err);
+           this.globalService.showMsgSnackBar(err);
           return of(null);
         })
       )
       .subscribe((res: any) => {
         console.log('Response:', res);
-        if (res.data) {
-
+        if (res.success) {
+  this.globalService.showMsgSnackBar(res);
+  this.getGeneralSetting()
 
         }
 
