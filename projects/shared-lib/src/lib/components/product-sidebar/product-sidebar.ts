@@ -71,9 +71,15 @@ ngOnInit() {
     ).subscribe((response: any) => {
       // console.log('Response:', response);
     this.defaultProductListData = response.data.data;
-this.productListData = this.defaultProductListData.filter(
-  (item: any) => item.category.id == this.productId
-);
+    if(this.productId != 'all'){
+
+      this.productListData = this.defaultProductListData.filter(
+        (item: any) => item.category.id == this.productId
+      );
+    }
+    else{
+      this.productListData = response.data.data;
+    }
 console.log('this.productListData.length',this.productListData.length);
 
     this.cd.detectChanges();

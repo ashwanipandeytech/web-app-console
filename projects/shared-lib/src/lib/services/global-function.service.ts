@@ -40,13 +40,17 @@ getCities(country: string, state: string) {
    openAddressPopup(data:any=''){
     const modalRef: NgbModalRef = this.ngbModal.open( AddAddressModal,
     { windowClass:'mobile-modal',
-      scrollable: true
+      scrollable: true,
+      centered: true
     });
     modalRef.componentInstance.data = data;
     modalRef.result.then((result) => {
       console.log('Modal closed with result:', result);
+      return result;
     }).catch((reason) => {
       console.log('Modal dismissed:', reason);
+      return reason;
+
     });
   }
 getCount() {

@@ -2,9 +2,9 @@
 <section class="blog py-4">
   <div class="container">
     <div class="blog-bradcrum">
-      <span><a href="index.html">Home</a></span>
+      <span><a href="/cart">Back to cart</a></span>
       <span class="devider">/</span>
-      <span><a href="#" class="fw-semibold">Checkout</a></span>
+      <span class="fw-semibold">Checkout</span>
     </div>
     <div class="blog-heading about-heading">
       <h1 class="heading">Checkout</h1>
@@ -14,7 +14,7 @@
 <!--------------- blog-tittle-section-end---------------->
 
 <!--------------- checkout-section---------------->
-<section class="checkout product pt-0">
+<section class="checkout product w-1100 mx-auto box-shadows rounded-4 p-4">
   <div class="container">
     <div class="checkout-section">
       <div class="row gy-5 gy-lg-0">
@@ -23,28 +23,31 @@
             <div class="account-section billing-section p-4 border">
               <div class="d-flex align-items-center mb-4">
                 <h3 class="wrapper-heading">Billings Details</h3>
-                <button type="button" class="shop-btn ms-auto d-block w-auto mt-0 p-3 fs-5" >Add New Address</button>
+                <button type="button" class="shop-btn ms-auto d-block w-auto mt-0 p-3 fs-5" data-bs-toggle="modal"
+                  data-bs-target="#changeAddress">Change Address</button>
                 <!-- <button type="button" (click)="globalFunctionService.openAddressPopup()" class="shop-btn ms-auto d-block mt-0" >Add New Address</button> -->
               </div>
 
               <div class="seller-info border rounded py-3 px-4">
                 <h5 class="heading mb-3 d-flex align-items-center border-bottom pb-3">
-                  <span class="me-auto fs-3">Home</span>
-                  <button class="btn border"><i class="fa-solid fa-pen-to-square"></i></button>
-                  <button class="btn border ms-3"><i class="fa-solid fa-trash"></i></button>
+                  <span class="me-auto fs-3">{{addressListData?.type.toUpperCase()}}</span>
+                  <button class="btn border" (click)="editAddress(addressListData)"><i class="fa-solid fa-pen-to-square"></i></button>
+                  <!-- <button class="btn border ms-3"><i class="fa-solid fa-trash"></i></button> -->
                 </h5>
                 <div class="info-list">
                   <ul class="d-flex flex-column gap-2">
-                    <li><span class="info-title d-inline-block fw-semibold">Name :</span>{{addressListData.name}}</li>
-                    <li><span class="info-title d-inline-block fw-semibold">Email :</span>{{addressListData.name}}</li>
-                    <li><span class="info-title d-inline-block fw-semibold">Phone :</span>{{addressListData.phone}}</li>
-                    <li><span class="info-title d-inline-block fw-semibold">City :</span>{{addressListData.city}}</li>
-                    <li><span class="info-title d-inline-block fw-semibold">Zip :</span>{{addressListData.postal_code}}</li>
+                    <li><span class="info-title d-inline-block fw-semibold">Name :</span>{{addressListData?.name}}</li>
+                    <li><span class="info-title d-inline-block fw-semibold">Email :</span>{{email}}</li>
+                    <li><span class="info-title d-inline-block fw-semibold">Phone :</span>{{addressListData?.phone}}
+                    </li>
+                    <li><span class="info-title d-inline-block fw-semibold">City :</span>{{addressListData?.city}}</li>
+                    <li><span class="info-title d-inline-block fw-semibold">Zip :</span>{{addressListData?.postal_code}}
+                    </li>
                   </ul>
                 </div>
               </div>
 
-              
+
               <!-- <form [formGroup]="checkoutForm">
                 <div class="review-form">
                   <div class="account-inner-form">
@@ -241,7 +244,7 @@
                   </div>
                 </div>
               </form> -->
-            
+
             </div>
           </div>
         </div>
@@ -309,27 +312,15 @@
                                   </div> -->
 
                   <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      id="cash"
-                      name="bank"
-                      style="transform: scale(1.3)"
-                      (change)="choosePaymentMethod('cod')"
-                    />
+                    <input class="form-check-input" type="radio" id="cash" name="bank" style="transform: scale(1.3)"
+                      (change)="choosePaymentMethod('cod')" />
                     <label class="form-check-label fw-semibold" for="cash">
                       Cash on Delivery
                     </label>
                   </div>
                   <div class="form-check mt-3">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      id="credit"
-                      name="bank"
-                      style="transform: scale(1.3)"
-                      (change)="choosePaymentMethod('online')"
-                    />
+                    <input class="form-check-input" type="radio" id="credit" name="bank" style="transform: scale(1.3)"
+                      (change)="choosePaymentMethod('online')" />
                     <label class="form-check-label fw-semibold" for="credit">
                       Credit/Debit Cards or Paypal
                     </label>
@@ -340,7 +331,7 @@
                   }
                 </div>
 
-                <a (click)="submitAddress()" class="shop-btn">Place Order Now</a>
+                <a (click)="placeOrder()" class="shop-btn">Place Order Now</a>
               </div>
             </div>
           </div>
@@ -350,3 +341,46 @@
   </div>
 </section>
 <!--------------- checkout-section-end---------------->
+
+
+
+<div #changedModal class="modal fade" id="changeAddress" tabindex="-1" aria-labelledby="changeAddressLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-3" id="changeAddressLabel">Change Address</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-4">
+          @for(item of AllAddressList; track $index;let i= $index){
+          <div class="col-md-12">
+            <div class="seller-info border rounded py-3 px-4">
+              <div class="form-check mb-3 border-bottom pb-3">
+                <input class="form-check-input" type="radio" name="radioDefault" [id]="'radioDefault1'+ i" (change)="getSelectedAddress(item)">
+                <label class="form-check-label fs-4 fw-semibold ms-2 text-capitalize" [for]="'radioDefault1'+ i">
+                  {{item.type}}
+                </label>
+              </div>
+              <div class="info-list">
+                <ul class="d-flex flex-column gap-2">
+                  <li><span class="info-title d-inline-block fw-semibold">Name :</span> {{item.name}}</li>
+                  <li><span class="info-title d-inline-block fw-semibold">Email :</span>{{email}}</li>
+                  <li><span class="info-title d-inline-block fw-semibold">Phone :</span>{{item.phone}}</li>
+                  <li><span class="info-title d-inline-block fw-semibold">City :</span>{{item.city}}</li>
+                  <li><span class="info-title d-inline-block fw-semibold">Zip :</span>{{item.postal_code}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-secondary fs-4" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="shop-btn fs-4 py-2 px-3 my-0 ms-3" (click)="savedFinalAddress()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
