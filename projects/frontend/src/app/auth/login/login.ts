@@ -151,9 +151,9 @@ export class Login {
                 //  window.location.reload(); // Reload the page after navigating
               });
 
-              window.location.reload();
+              localStorage.removeItem('isNonUser');
               setTimeout(() => {
-                localStorage.removeItem('isNonUser');
+                window.location.reload();
               }, 500);
               this.globalService.getCount();
             }

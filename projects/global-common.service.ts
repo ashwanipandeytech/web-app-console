@@ -24,12 +24,18 @@ showMsgSnackBar(response:any){
       let regularPrice = null;
       productQuantity = quantity;
       regularPrice = price;
+      // console.log('quantity==>',quantity);
+      // console.log('price==>',price);
+      
       cartData[index].product.price_data.finalPrice = quantity * regularPrice;
       this.calculateGrandTotal(cartData);
     // this.selectedProduct.price_data.regularPrice = this.productPrice * this.quantity;
     // this.cd.detectChanges();
       }
        calculateGrandTotal(cartListData:any){
+
+        // console.log('this.cartListData==>',cartListData);
+        
         // this.grandTotal = 0;
       let grandTotal = 0;
 
