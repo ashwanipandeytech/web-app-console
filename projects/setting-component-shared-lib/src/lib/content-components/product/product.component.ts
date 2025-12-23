@@ -4,7 +4,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { Router } from '@angular/router';
-import { GlobaCommonlService } from '../../../../../global-common.service';
+import { GlobaCommonlService } from '../../../../../shared-lib/src/lib/services/global-common.service';
 import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
 
 import { CommonModule } from '@angular/common';
@@ -102,6 +102,8 @@ export class ProductComponent implements OnInit {
           this.globalService.showMsgSnackBar(res.body);
         }
         if (res.success == true) {
+         // console.info('herer add to cart')
+            this.globalFunctionService.getCount();
           this.globalService.showMsgSnackBar(res);
           this.globalFunctionService.getCount();
         } else if (res.error && res.error.message) {

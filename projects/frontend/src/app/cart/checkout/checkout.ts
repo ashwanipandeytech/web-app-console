@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RazorpayService } from 'shared-lib';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { GlobaCommonlService } from '../../../../../global-common.service';
+import { GlobaCommonlService } from '../../../../../shared-lib/src/lib/services/global-common.service';
 import { Router } from '@angular/router';
 import { GlobalFunctionService } from '../../../../../shared-lib/src/lib/services/global-function.service';
 declare const bootstrap: any;

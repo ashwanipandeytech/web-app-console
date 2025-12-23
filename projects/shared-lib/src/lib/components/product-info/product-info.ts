@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { SlickCarouselModule  } from 'ngx-slick-carousel';
-import { GlobaCommonlService } from '../../../../../global-common.service';
+import { GlobaCommonlService } from '../../services/global-common.service';
 import { HttpClient } from '@angular/common/http';
 import { PageComponentFactory } from 'shared-lib';
 import {HostProductInfooComponent} from '../host-product-infoo/host-product-infoo.component'

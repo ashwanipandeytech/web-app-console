@@ -9,7 +9,7 @@ import { AddAddressModal } from '../../model/add-address-modal/add-address-modal
 import { MatDialog } from '@angular/material/dialog';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DynamicPopup } from '../confirmationPopup/confirmationPopup.component';
-import { GlobaCommonlService } from '../../../../../global-common.service';
+import { GlobaCommonlService } from '../../services/global-common.service';
 declare const google: any;
 declare const bootstrap: any;
 

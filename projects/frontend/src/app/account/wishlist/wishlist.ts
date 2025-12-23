@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { DataService } from 'projects/setting-component-shared-lib/src/lib/services/data-service';
-import { GlobaCommonlService } from 'projects/global-common.service';
+import { DataService } from 'shared-lib';
+import { GlobaCommonlService } from 'shared-lib';
 import { catchError, of } from 'rxjs';
-import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
+import { GlobalFunctionService } from 'shared-lib';
 declare var bootstrap: any;
 
 @Component({
@@ -13,10 +13,10 @@ declare var bootstrap: any;
 })
 export class Wishlist {
   @ViewChild('removeProduct') removeProduct!: ElementRef;
-  private dataService = inject(DataService);
-  private globalFunctionService = inject(GlobalFunctionService);
-  private globalCommonService = inject(GlobaCommonlService)
-  private cd = inject(ChangeDetectorRef);
+  public dataService:any = inject(DataService);
+  public globalFunctionService:any = inject(GlobalFunctionService);
+  public globalCommonService:any = inject(GlobaCommonlService)
+  public cd = inject(ChangeDetectorRef);
   wishListData: any=[];
   WishListId: any;
 ngOnInit(){

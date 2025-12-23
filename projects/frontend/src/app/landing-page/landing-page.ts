@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AddAddressModal } from 'shared-lib/model/add-address-modal/add-address-modal';
 import { SlickCarouselModule  } from 'ngx-slick-carousel';
-import { GlobaCommonlService } from '../../../../global-common.service';
+import { GlobaCommonlService } from '../../../../shared-lib/src/lib/services/global-common.service';
 import { HostOutletComponent } from '../host-outlet/host.component';
 
 declare var $:any;

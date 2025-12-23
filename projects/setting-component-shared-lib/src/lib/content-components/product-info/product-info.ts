@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { SlickCarouselModule  } from 'ngx-slick-carousel';
-import { GlobaCommonlService } from '../../../../../global-common.service';
+import { GlobaCommonlService } from '../../../../../shared-lib/src/lib/services/global-common.service';
 import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
 
 @Component({

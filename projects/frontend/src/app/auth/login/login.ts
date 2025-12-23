@@ -3,10 +3,12 @@ import { Component, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
+import { SignalService } from 'shared-lib';
 import { DynamicPopup } from '../../../../../shared-lib/src/lib/components/confirmationPopup/confirmationPopup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
-import { GlobaCommonlService } from '../../../../../global-common.service';
+import { GlobaCommonlService } from 'shared-lib';
+import { GlobalFunctionService } from 'shared-lib';
 @Component({
   selector: 'web-login',
   imports: [FormsModule, ReactiveFormsModule],
@@ -16,6 +18,11 @@ import { GlobaCommonlService } from '../../../../../global-common.service';
 export class Login {
   public dataService: any = inject(DataService);
   public globalService: any = inject(GlobaCommonlService);
+
+  public globalFunctionService: any = inject(GlobalFunctionService);
+  
+ 
+  public signalService: any = inject(SignalService);
   readonly dialog = inject(MatDialog);
   isSignUp = false;
   signupForm!: FormGroup;
@@ -153,9 +160,10 @@ export class Login {
 
               localStorage.removeItem('isNonUser');
               setTimeout(() => {
-                window.location.reload();
+             //  window.location.reload();
               }, 500);
-              this.globalService.getCount();
+              this.globalFunctionService.getCount();
+              this.signalService.userLoggedIn.set(true);
             }
             else {
               //make a signal for emiting the user state
@@ -168,9 +176,12 @@ export class Login {
               }
 
               this.router.navigate([redirectTo]).then(() => {
-                 window.location.reload(); // Reload the page after navigating
+                console.info('res===here')
+                 this.globalFunctionService.getCount();
+                this.signalService.userLoggedIn.set(true);
+                // window.location.reload(); // Reload the page after navigating
               });
-              this.globalService.getCount();
+             
 
             }
           }

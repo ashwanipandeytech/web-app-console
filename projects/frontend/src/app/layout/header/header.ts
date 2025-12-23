@@ -4,7 +4,7 @@ import { DataService } from '../../../../../shared-lib/src/lib/services/data-ser
 import { catchError, of } from 'rxjs';
 import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
 import { AddAddressModal } from 'shared-lib/model/add-address-modal/add-address-modal';
-import { SignalService } from 'projects/signal-service';
+import { SignalService } from '../../../../../shared-lib/src/lib/services/signal-service';
 import { JsonPipe, NgTemplateOutlet } from '@angular/common';
 import { NgbModal, NgbModalRef, NgbSlide } from '@ng-bootstrap/ng-bootstrap';
 
@@ -27,13 +27,21 @@ export class Header {
   countsList: any;
   constructor(private cd: ChangeDetectorRef) {
     this.globalFunctionService.getCount();
-    effect(() => {
+  let allContsSignal=  effect(() => {
       // console.log('Cart count changed:', this.signalService.cartCounts());
       if (this.signalService.allCounts() != null) {
         this.countsList = this.signalService.allCounts();
         this.cd.detectChanges();
       }
     });
+
+    //  let userLoggedInSignal=  effect(() => {
+    //   // console.log('Cart count changed:', this.signalService.cartCounts());
+    //   if (this.signalService.userLoggedIn() ) {
+    //     this.countsList = this.signalService.allCounts();
+    //     this.cd.detectChanges();
+    //   }
+    // });
     //use effect for getting the userState signal
 
     //step1 if user is found logged in

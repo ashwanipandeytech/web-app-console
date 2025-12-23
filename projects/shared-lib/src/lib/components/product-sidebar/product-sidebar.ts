@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { catchError, of, switchMap } from 'rxjs';
 import { DataService } from '../../services/data-service';
-import { GlobaCommonlService } from 'projects/global-common.service';
+import { GlobaCommonlService } from '../../services/global-common.service';
 import { CommonModule } from '@angular/common';
 import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
 
