@@ -118,7 +118,10 @@ export class LayoutSettingsComponent implements OnInit {
       .subscribe((res: any) => {
         console.log('Response:', res);
         if (res.success) {
+    
+
           this.settingsModel = res.data.settings;
+        
 
          this.getPageList()
           this.cdr.detectChanges()
