@@ -3,4 +3,16 @@
         grid-template-columns: repeat(auto-fit, minmax(120px, max-content));
         justify-content: center;
     }
+    @media screen and (max-width : 576px) {
+        background-color: #0093dd;
+        .category-section{
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            justify-content: start;
+            padding-bottom: 10px;
+            > *{width: auto;}
+            .wrapper-details{color: #fff;}
+        }
+    }
 }

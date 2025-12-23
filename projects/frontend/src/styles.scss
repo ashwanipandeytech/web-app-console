@@ -1700,3 +1700,10 @@ input[type=checkbox], input[type=radio]{transform: scale(1.4);}
     --mat-button-text-state-layer-color: transparent!important;
     --mat-button-text-ripple-color: transparent!important;
 }
+
+@media screen and (max-width:575px) {
+    .slick-carousel{
+    .slick-prev{left: 0;z-index: 1;}
+    .slick-next{right: 0;}
+  }
+}
