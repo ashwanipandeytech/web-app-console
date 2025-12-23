@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { RouterOutlet } from '@angular/router';
 
 
-import { Header } from './layout/header/header';
-import { Footer } from './layout/footer/footer';
+import { Header } from 'shared-lib/components/layout/header/header';
+import { Footer } from 'shared-lib/components/layout/footer/footer';
 import { RazorpayService } from 'shared-lib';
 import { PlatformDetectionService } from 'shared-lib';
 declare var Razorpay: any;

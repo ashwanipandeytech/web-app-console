@@ -1,6 +1,6 @@
 import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { DataService } from '../../../../../shared-lib/src/lib/services/data-service';
+import { DataService } from 'shared-lib';
 
 @Component({
   selector: 'web-footer',

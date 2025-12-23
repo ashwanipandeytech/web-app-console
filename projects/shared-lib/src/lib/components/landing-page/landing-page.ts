@@ -3,13 +3,13 @@ import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
-import { environment } from '../../../../../environments/environment';
+import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AddAddressModal } from 'shared-lib/model/add-address-modal/add-address-modal';
 import { SlickCarouselModule  } from 'ngx-slick-carousel';
-import { GlobaCommonlService } from '../../../../shared-lib/src/lib/services/global-common.service';
+import { GlobaCommonlService } from '../../services/global-common.service';
 import { HostOutletComponent } from '../host-outlet/host.component';
 
 declare var $:any;

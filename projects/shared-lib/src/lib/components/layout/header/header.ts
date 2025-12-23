@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, effect, inject } from '@angular/core';
 import { Router, RouterLink, RouterModule } from '@angular/router';
-import { DataService } from '../../../../../shared-lib/src/lib/services/data-service';
+import { DataService } from 'shared-lib/services/data-service';
 import { catchError, of } from 'rxjs';
 import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
 import { AddAddressModal } from 'shared-lib/model/add-address-modal/add-address-modal';
-import { SignalService } from '../../../../../shared-lib/src/lib/services/signal-service';
+import { SignalService } from 'shared-lib/services/signal-service';
 import { JsonPipe, NgTemplateOutlet } from '@angular/common';
 import { NgbModal, NgbModalRef, NgbSlide } from '@ng-bootstrap/ng-bootstrap';
 

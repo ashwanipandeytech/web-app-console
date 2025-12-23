@@ -4,7 +4,6 @@ import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFo
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { SignalService } from 'shared-lib';
-import { DynamicPopup } from '../../../../../shared-lib/src/lib/components/confirmationPopup/confirmationPopup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GlobaCommonlService } from 'shared-lib';
