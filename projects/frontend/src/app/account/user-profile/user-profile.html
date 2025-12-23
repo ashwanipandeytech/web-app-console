@@ -26,27 +26,27 @@
             <div class="user-dashboard">
                 <div class="nav nav-item nav-pills me-3">
 
-                    <button class="nav-link" [ngClass]="{'active' : ispersonalInfo}" (click)="openComponent('Personal_Info')">
+                    <button class="nav-link" [ngClass]="{'active' : activePage == 'account'}" (click)="openComponent('account')">
                         <span><i class="fa-solid fa-lg fa-user-tie"></i></span>
                         <span class="text">My Account</span>
                     </button>
 
-                    <button class="nav-link"  [ngClass]="{ 'active': isOrder }" (click)="openComponent('Order')">
+                    <button class="nav-link"  [ngClass]="{ 'active': activePage == 'myorders' }" (click)="openComponent('myorders')">
                         <span><i class="fa-solid fa-lg fa-bag-shopping"></i></span>
                         <span class="text">Order</span>
                     </button>
 
-                    <button class="nav-link" [ngClass]="{'active' : isWishlist}" (click)="openComponent('Wishlist')">
+                    <button class="nav-link" [ngClass]="{'active' : activePage == 'wishlist'}" (click)="openComponent('wishlist')">
                         <span><i class="fa-solid fa-lg fa-heart"></i></span>
                         <span class="text">Wishlist</span>
                     </button>
 
-                    <button class="nav-link" [ngClass]="{ 'active': isAddress }" (click)="openComponent('Address')">
+                    <button class="nav-link" [ngClass]="{ 'active': activePage == 'address' }" (click)="openComponent('address')">
                         <span><i class="fa-solid fa-lg fa-house"></i></span>
                         <span class="text">Address</span>
                     </button>
 
-                    <button class="nav-link" [ngClass]="{ 'active': changePassword }" (click)="openComponent('Change_Password')">
+                    <button class="nav-link" [ngClass]="{ 'active': activePage == 'Change_Password' }" (click)="openComponent('Change_Password')">
                         <span><i class="fa-solid fa-lg fa-lock"></i></span>
                         <span class="text">Change Password</span>
                     </button>

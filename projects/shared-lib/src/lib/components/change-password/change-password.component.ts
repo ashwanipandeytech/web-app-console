@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DataService } from 'projects/setting-component-shared-lib/src/lib/services/data-service';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-change-password',
@@ -10,6 +12,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 })
 export class ChangePasswordComponent implements OnInit {
   passwordForm: FormGroup;
+  private dataService = inject(DataService);
   showCurrentPassword: boolean = false;
   showNewPassword: boolean = false;
   showConfirmPassword: boolean = false;
@@ -30,6 +33,25 @@ export class ChangePasswordComponent implements OnInit {
     }
     const formData = this.passwordForm.value;
     console.log('Password Data:', formData);
+    let payload = {
+      old_password:formData.currentPassword,
+      new_password:formData.password,
+      new_password_confirmation:formData.confirmPassword
+    }
+    this.dataService.post(payload, 'auth/change-password')
+            .pipe(
+              catchError((err) => {
+                console.error('Error:', err);
+                return of(null);
+              })
+            )
+            .subscribe((res: any) => {
+              console.log('Response:', res);
+              if (res.success == true) {
+                // this.router.navigate(['/cart']);
+              }
+            });
+
   }
   passwordToggle(type: any) {
     if (type == 'current') {

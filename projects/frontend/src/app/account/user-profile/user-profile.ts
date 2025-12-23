@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PersonalDetailsComponent } from 'shared-lib/components/personal-details/personal-details.component';
 import { AddressSectionComponent } from 'shared-lib/components/address-section/address-section.component';
 import { MyOrdersComponent } from 'shared-lib/components/my-orders/my-orders.component';
@@ -23,12 +23,14 @@ import { Wishlist } from '../wishlist/wishlist';
 export class UserProfile {
   private route = inject(Router);
   private cd = inject(ChangeDetectorRef);
+  private activatedRoute = inject(ActivatedRoute);
   isLoggedIn: any = null;
   ispersonalInfo: boolean=true;
   isOrder: boolean=false;
   isWishlist: boolean=false;
   changePassword: boolean=false;
   isAddress: boolean=false;
+  activePage: any;
 
   constructor() {}
   ngOnInit() {
@@ -38,6 +40,13 @@ export class UserProfile {
     } else {
       this.isLoggedIn = true;
     }
+    this.activatedRoute.queryParams.subscribe(params => {
+    console.log(params['key']);
+    if (params['key']) {
+      this.activePage =  params['key']
+    }
+  });
+
   }
   logout() {
     localStorage.clear();
@@ -50,21 +59,21 @@ export class UserProfile {
   openComponent(component:any){
     console.log('component==>',component);
     
-if (component == 'Personal_Info') {
+if (component == 'myaccount') {
   this.ispersonalInfo = true;
    this.isOrder = false;
    this.isWishlist = false;
    this.changePassword = false;
    this.isAddress = false;
 }
-if (component == 'Order') {
+if (component == 'myorder') {
   this.ispersonalInfo = false;
    this.isOrder = true;
    this.isWishlist = false;
    this.changePassword = false;
    this.isAddress = false;
 }
-if (component == 'Wishlist') {
+if (component == 'wishlist') {
    this.ispersonalInfo = false;
    this.isOrder = false;
    this.isWishlist = true;
@@ -78,7 +87,7 @@ if (component == 'Change_Password') {
    this.changePassword = true;
    this.isAddress = false;
 }
-if (component == 'Address') {
+if (component == 'address') {
   this.ispersonalInfo = false;
    this.isOrder = false;
    this.isWishlist = false;

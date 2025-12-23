@@ -5,11 +5,10 @@ import { DataService } from '../../../../../shared-lib/src/lib/services/data-ser
 import { catchError, of } from 'rxjs';
 import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
 import { SignalService } from 'projects/signal-service';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'web-header',
-  imports: [RouterLink,RouterModule,JsonPipe],
+  imports: [RouterLink,RouterModule],
   templateUrl: './header.html',
   styleUrl: './header.scss'
 })
@@ -107,6 +106,14 @@ this.route.navigate(['/category-details',id]);
       // this.categoryListData = res.data;
     });
   }
+    logout() {
+    localStorage.clear();
+    
+    this.route.navigate(['/']).then(() => {
+      window.location.reload();
+    });
+    // window.location.reload();
+  }
   carList(){
        this.dataService.get('cart').pipe(
         catchError((error) => {
@@ -121,6 +128,7 @@ this.route.navigate(['/category-details',id]);
   
       })
     }
+    
   //   getCartCount(){
   //     this.dataService.get('user/overview-counts').subscribe((res:any)=>{
   //       console.log('res====>',res);
