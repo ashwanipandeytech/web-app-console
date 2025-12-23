@@ -16,6 +16,7 @@ export class CategoryCommon {
   platFormType:string;
   public dataService:any= inject(DataService);
   public platformDetectionService:any= inject(PlatformDetectionService);
+  private route = inject(Router);
 
   constructor(private cd:ChangeDetectorRef, private router: Router) {
     this.platFormType= this.platformDetectionService.getActivePlatform()
@@ -58,4 +59,10 @@ export class CategoryCommon {
   back(){
     window.history.back();
   }
+
+  gotoCategory(id: any) {
+    this.route.navigate(['/category-details', id]);
+  }
+
+
 }

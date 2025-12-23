@@ -11,7 +11,7 @@
         <div class="blog-bradcrum">
             <span><a href="/">Home</a></span>
             <span class="devider">/</span>
-            <span><a href="#" class="fw-semibold">Category</a></span>
+            <span class="fw-semibold">Category</span>
         </div>
         <div class="blog-heading about-heading">
             <h1 class="heading">Category</h1>
@@ -22,21 +22,20 @@
 
 <section class="product-category product">
     <div class="container">
-        <div class="section-title">
-            <h3 class="text-center">Categories</h3>
-        </div>
-        <div class="category-section">
+        <div class="row category-section d-flex gap-0">
             @for (control of categoryListData; track $index) {
-            <a href="/category-details">
-                <div class="product-wrapper" data-aos="fade-right" data-aos-duration="100">
-                    <div class="wrapper-img">
-                        <img src="{{control.thumbnail}}" width="100px" alt="">
-                    </div>
-                    <div class="wrapper-info">
-                        <a class="wrapper-details">{{control.name}}</a>
-                    </div>
+                <div class="col-md-2 col">
+                    <a (click)="gotoCategory(control.id)">
+                        <div class="product-wrapper">
+                            <div class="wrapper-img">
+                                <img src="{{control.thumbnail}}" width="120px" alt="">
+                            </div>
+                            <div class="wrapper-info">
+                                <a class="wrapper-details">{{control.name}}</a>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
             }
         </div>
     </div>

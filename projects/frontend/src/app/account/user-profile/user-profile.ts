@@ -43,7 +43,8 @@ export class UserProfile {
     this.activatedRoute.queryParams.subscribe(params => {
     console.log(params['key']);
     if (params['key']) {
-      this.activePage =  params['key']
+      this.activePage =  params['key'];
+      this.openComponent(this.activePage);
     }
   });
 
@@ -58,15 +59,20 @@ export class UserProfile {
   }
   openComponent(component:any){
     console.log('component==>',component);
-    
-if (component == 'myaccount') {
+    this.activePage = component;
+    this.route.navigate([], {
+    relativeTo: this.activatedRoute,
+    queryParams: { key: component },
+    queryParamsHandling: 'merge' // keeps existing params
+  });
+if (component == 'account') {
   this.ispersonalInfo = true;
    this.isOrder = false;
    this.isWishlist = false;
    this.changePassword = false;
    this.isAddress = false;
 }
-if (component == 'myorder') {
+if (component == 'myorders') {
   this.ispersonalInfo = false;
    this.isOrder = true;
    this.isWishlist = false;

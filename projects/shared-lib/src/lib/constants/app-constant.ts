@@ -36,17 +36,20 @@ export const  promoBannerSlideConfig = {
         }
       },
       {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 4
-        }
+      breakpoint: 769, // 👈 IMPORTANT
+      settings: {
+        slidesToShow: 3,
+        centerPadding: '16px',
+        arrows: true,
+      }
       },
       {
         breakpoint: 540,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           centerPadding: '16px',
-          arrows: false,
+          arrows: true,
+          // dots:true
         }
       }
     ]
