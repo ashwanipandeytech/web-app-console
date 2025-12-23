@@ -69,13 +69,13 @@ export class Checkout {
         for (let i = 0; i < this.cartListData.length; i++) {
           const element = this.cartListData[i];
           // if (element.) {
-          this.globalService.calculatePrice(element.quantity, i, element.product.price_data.regularPrice, this.cartListData);
-
+          this.globalService.calculatePrice(element.quantity, i, element.product.price_data.salePrice, this.cartListData);
           // }
-          //  element.product.price_data['finalPrice'] = element?.product.price_data?.regularPrice;
+          //  element.product.price_data['finalPrice'] = element?.product.price_data?.salePrice;
           //    this.calculatePrice(element.quantity,i,element.product.price_data.regularPrice);
 
         }
+        this.calculateSubTotal();
         this.grandTotal = this.globalService.calculateGrandTotal(this.cartListData);
         this.cd.detectChanges();
       }
@@ -88,7 +88,7 @@ export class Checkout {
     this.subTotal = 0;
     for (let i = 0; i < this.cartListData.length; i++) {
       const element = this.cartListData[i];
-      this.subTotal += element.product.price_data.regularPrice;
+      this.subTotal += element.product.price_data.finalPrice;
     }
     this.calculateGrandTotal();
     // console.log('this.grandTotal==>',this.grandTotal);
@@ -158,7 +158,7 @@ export class Checkout {
 
 
     const payload = this.cartListData.map((cartItem: any) => ({
-      product_id: cartItem.product.product_id,
+      product_id: cartItem.product.id,
       quantity: cartItem.quantity,
       price: cartItem.product.price_data.salePrice
     }));

@@ -8,7 +8,7 @@ import { LoginService } from '../login-service';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 @Component({
-  selector: 'web-login',
+  selector: 'app-login',
    imports: [
     ReactiveFormsModule,
     HttpClientModule,
