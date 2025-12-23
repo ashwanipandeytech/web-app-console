@@ -1,13 +1,13 @@
 import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { DataService } from '../../../../../shared-lib/src/lib/services/data-service';
+import { DataService } from '../../../services/data-service';
 import { catchError, map, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { RazorpayService } from 'shared-lib';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { GlobaCommonlService } from '../../../../../shared-lib/src/lib/services/global-common.service';
+import { GlobaCommonlService } from '../../../services/global-common.service';
 import { Router } from '@angular/router';
-import { GlobalFunctionService } from '../../../../../shared-lib/src/lib/services/global-function.service';
+import { GlobalFunctionService } from '../../../services/global-function.service';
 declare const bootstrap: any;
 
 @Component({

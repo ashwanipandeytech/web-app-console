@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DataService } from 'projects/setting-component-shared-lib/src/lib/services/data-service';
+import { DataService } from '../../services/data-service';
 import { catchError, of } from 'rxjs';
 
 @Component({

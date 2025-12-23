@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject, Input, OnInit } from '@angular/core';
-import { environment } from '../../environment/environment';
+import { environment } from '../../environments/environment';
 import { DataService } from '../../services/data-service';
 import { catchError, of } from 'rxjs';
 import { Router } from '@angular/router';

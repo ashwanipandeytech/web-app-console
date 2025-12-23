@@ -3,16 +3,16 @@ import { ChangeDetectorRef, Component, ElementRef, inject, Renderer2, ViewChild 
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
-import { DataService } from 'shared-lib';
+import { DataService } from '../../services/data-service';
 import { SlickCarouselModule  } from 'ngx-slick-carousel';
-import { GlobaCommonlService } from '../../../../../shared-lib/src/lib/services/global-common.service';
-import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
+import { GlobaCommonlService } from '../../services/global-common.service';
+import { GlobalFunctionService } from '../../services/global-function.service';
 
 @Component({
   selector: 'app-product-details',
   imports: [CommonModule, SlickCarouselModule],
-  templateUrl: './product-info.html',
-  styleUrl: './product-info.scss'
+  templateUrl: './product-details.html',
+  styleUrl: './product-details.scss'
 })
 export class ProductDetails {
   @ViewChild('descBox') descBox!: ElementRef;
