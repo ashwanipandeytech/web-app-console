@@ -110,6 +110,9 @@ export class DataService {
   }
 
   postForm(endpoint: string, data: FormData) {
+    console.log('endpoint==>',endpoint);
+    console.log('data==>',data);
+    
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${this.authToken}` });
     return this.request('POST', endpoint, data, { headers });
   }

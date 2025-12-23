@@ -86,6 +86,8 @@ export class LayoutSettingsComponent implements OnInit {
   public dataService: any = inject(DataService);
   private globalService:any = inject(GlobalService);
   pageList: any;
+  uploadImageType: any;
+  uploadedImage: any;
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
@@ -298,17 +300,31 @@ export class LayoutSettingsComponent implements OnInit {
 
   onImageChange(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
+    this.uploadedImage = file;
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = () => (this.imagePreview = reader.result as string);
     reader.readAsDataURL(file);
+
+
+
   }
 
+  saveImage(){
+    console.log('this.uploadedImage==>',this.uploadedImage);
+    console.log('this.uploadImageType==>',this.uploadImageType);
+    
+    const formData = new FormData();
+    formData.append('files', this.uploadedImage);
+    formData.append('type', this.uploadImageType);
+    this.dataService.postForm('admin/gallery',formData);
+  }
   removeImage(event: MouseEvent) {
     event.stopPropagation();
     this.imagePreview = null;
   }
-
+uploadImage(type:any){
+this.uploadImageType = type;
+}
 
 }
