@@ -55,7 +55,7 @@
                                         <label class="address mb-0" for="remember">Remember Me</label>
                                     </div>
                                     <div class="forget-pass">
-                                        <p>Forgot password?</p>
+                                        <button type="btn">Forgot password?</button>
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@
                                 <!-- <a style="cursor: pointer;" (click)="loginWithGoogle()"></a> -->
 
                                 <a class="shop-btn" (click)="loginUser()">Log In</a>
-                                <span class="shop-account">Dont't have an account ?<a (click)="enableDisableSignUp()">Sign Up Free</a></span>
+                                <span class="shop-account">Dont't have an account ?<a (click)="enableDisableSignUp()" class="cursor-pointer">Sign Up Free</a></span>
                             </div>
                         </div>
                     </div>
@@ -162,7 +162,7 @@
                                 <div class="review-form-name checkbox">
                                     <div class="checkbox-item cursor-pointer">
                                         <input type="checkbox" formControlName="remember" id="remember">
-                                        <span class="address mb-0" for="remember">Remember Me</span>
+                                        <span class="address mb-0 cursor-pointer" for="remember">Remember Me</span>
                                     </div>
                                 </div>
 
@@ -172,7 +172,7 @@
                                 <button class="shop-btn" (click)="register()">Register</button>
                                 <span class="shop-account">
                                     Have an account ?
-                                    <a (click)="enableDisableSignUp()">Login</a>
+                                    <a (click)="enableDisableSignUp()" class="cursor-pointer">Login</a>
                                 </span>
                             </div>
                         </div>
