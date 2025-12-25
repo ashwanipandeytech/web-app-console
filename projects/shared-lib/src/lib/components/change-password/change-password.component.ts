@@ -3,6 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DataService } from '../../services/data-service';
 import { catchError, of } from 'rxjs';
+import { GlobaCommonlService } from 'shared-lib/services/global-common.service';
 
 @Component({
   selector: 'app-change-password',
@@ -13,6 +14,7 @@ import { catchError, of } from 'rxjs';
 export class ChangePasswordComponent implements OnInit {
   passwordForm: FormGroup;
   private dataService = inject(DataService);
+  private globalService = inject(GlobaCommonlService);
   showCurrentPassword: boolean = false;
   showNewPassword: boolean = false;
   showConfirmPassword: boolean = false;
@@ -28,6 +30,13 @@ export class ChangePasswordComponent implements OnInit {
   ngOnInit() {
   }
   onSubmit() {
+    // if user logged in by facebook or gmail 
+                    //  let payload = {
+                    //   password: formData.password,
+                    //   password_confirmation: formData.confirmPassword
+                    // }
+                // this.setPassword(payload);
+
     if (this.passwordForm.invalid) {
       return;
     }
@@ -48,10 +57,32 @@ export class ChangePasswordComponent implements OnInit {
             .subscribe((res: any) => {
               console.log('Response:', res);
               if (res.success == true) {
+                this.globalService.showMsgSnackBar(res);
+                this.passwordForm.reset();
+
                 // this.router.navigate(['/cart']);
               }
+              else if (res.error && res.error.message) {
+          this.globalService.showMsgSnackBar(res.error);
+        }
             });
 
+  }
+  setPassword(payload:any){
+     this.dataService.post(payload, 'auth/set-password')
+            .pipe(
+              catchError((err) => {
+                console.error('Error:', err);
+                return of(null);
+              })
+            )
+            .subscribe((res: any) => {
+              console.log('Response:', res);
+              if (res.success == true) {
+              }
+              else if (res.error && res.error.message) {
+                 }
+            });
   }
   passwordToggle(type: any) {
     if (type == 'current') {
