@@ -5,12 +5,12 @@ import { catchError, of } from 'rxjs';
 import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
 import { AddAddressModal } from 'shared-lib/model/add-address-modal/add-address-modal';
 import { SignalService } from 'shared-lib/services/signal-service';
-import { JsonPipe, NgTemplateOutlet } from '@angular/common';
+import { JsonPipe, NgTemplateOutlet, CommonModule  } from '@angular/common';
 import { NgbModal, NgbModalRef, NgbSlide } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'web-header',
-  imports: [RouterLink, RouterModule, JsonPipe, NgTemplateOutlet, NgbSlide],
+  imports: [RouterLink, RouterModule, JsonPipe, NgTemplateOutlet, NgbSlide, CommonModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })

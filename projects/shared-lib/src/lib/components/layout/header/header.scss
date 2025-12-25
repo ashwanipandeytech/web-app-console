@@ -82,12 +82,21 @@
     @include flexItem($gap: 2.5rem);
 
     .cart-item {
-          border: 1px solid rgb(204, 204, 204);
-          padding: 10px 9px;
-          border-radius: 6px;
-          &:hover{
-            background-color: rgb(204, 204, 204);
-          }
+      padding: 10px 9px;
+      border-radius: 6px;
+      &.not-allowed{
+        cursor: not-allowed;
+        background-color: rgb(204, 204, 204);
+        border: 1px solid rgb(204, 204, 204);
+      }
+      &.allowed{
+        border: 1px solid $theme-color;
+        color: $theme-color;
+        &:hover{
+          background-color: $theme-color;      
+          color: #fff;
+        }
+      }
       .cart-text {
         font-size: 1.6rem;
         color: $paragraph;
@@ -736,7 +745,8 @@
 
 .user-account{
   .btn{
-    &:focus, &:active{border-color: transparent;}
+    &:hover{border: 1px solid rgb(204, 204, 204);}
+    &:focus, &:active{border-color: rgb(204, 204, 204);}
   }
   li {
     .dropdown-item{
