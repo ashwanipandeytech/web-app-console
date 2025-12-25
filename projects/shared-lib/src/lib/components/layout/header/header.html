@@ -1,22 +1,26 @@
 <!--------------- header-section --------------->
 <header id="header" class="header">
-
   <div class="header-center-section d-flex">
     <div class="container">
       <div class="header-center py-3 py-lg-0">
         <div class="logo">
           <a routerLink="/">
-            <img src="../images/logos/top-logo.png" alt="logo" height="75px" class="d-none d-lg-inline-block">
-            <img src="../images/logos/logo.webp" alt="logo" class="d-lg-none">
+            <img
+              src="../images/logos/top-logo.png"
+              alt="logo"
+              height="75px"
+              class="d-none d-lg-inline-block"
+            />
+            <img src="../images/logos/logo.webp" alt="logo" class="d-lg-none" />
           </a>
         </div>
 
         <div class="header-cart-items gap-4">
           <div class="header-cart">
-              <ng-container *ngTemplateOutlet="cart"></ng-container>
+            <ng-container *ngTemplateOutlet="cart"></ng-container>
           </div>
 
-          <div class="header-user">
+          <div class="header-user ms-lg-4">
             <ng-container *ngTemplateOutlet="userProfile"></ng-container>
           </div>
         </div>
@@ -30,67 +34,116 @@
         <div class="header-nav-menu-section flex-grow-1">
           <div class="dropdown category-menu-section position-relative">
             <!-- <div class="empty position-fixed" onclick="tooglmenu()"></div> -->
-            <button type="button" class="dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+            <button
+              type="button"
+              class="dropdown-btn"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
               <span class="dropdown-icon">
-                <svg width="14" height="9" viewbox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="14"
+                  height="9"
+                  viewbox="0 0 14 9"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <rect width="14" height="1"></rect>
                   <rect y="8" width="14" height="1"></rect>
                   <rect y="4" width="10" height="1"></rect>
                 </svg>
-                <span class="list-text">
-                  All Categories
-                </span>
+                <span class="list-text"> All Categories </span>
               </span>
               <span>
-                <svg width="9" height="5" viewbox="0 0 9 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="8.18359" y="0.910156" width="5.78538" height="1.28564" transform="rotate(135 8.18359 0.910156)" fill="#1D1D1D"></rect>
-                  <rect x="4.08984" y="5" width="5.78538" height="1.28564" transform="rotate(-135 4.08984 5)" fill="#1D1D1D"></rect>
+                <svg
+                  width="9"
+                  height="5"
+                  viewbox="0 0 9 5"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    x="8.18359"
+                    y="0.910156"
+                    width="5.78538"
+                    height="1.28564"
+                    transform="rotate(135 8.18359 0.910156)"
+                    fill="#1D1D1D"
+                  ></rect>
+                  <rect
+                    x="4.08984"
+                    y="5"
+                    width="5.78538"
+                    height="1.28564"
+                    transform="rotate(-135 4.08984 5)"
+                    fill="#1D1D1D"
+                  ></rect>
                 </svg>
               </span>
             </button>
             <!-- <div class=" category-dropdown"> -->
-            <ul class="dropdown-menu category-list w-100 rounded-0 border-0" style="top: -2px !important;">
-             @for (item of categoryListData; track $index) {
+            <ul
+              class="dropdown-menu category-list w-100 rounded-0 border-0"
+              style="top: -2px !important"
+            >
+              @for (item of categoryListData; track $index) {
 
-               <li class="category-list-item">
-                 <a (click)="gotoCategory(item.id)" style="cursor: pointer;">
-                   <div class="dropdown-item d-flex justify-content-between align-items-center">
-                     <div class="dropdown-list-item d-flex">
-                       <span class="dropdown-img">
-                         <img src="" alt="">
-                       </span>
-                       <span class="dropdown-text">
-                         {{item.name}}
-                       </span>
-                     </div>
-                     <div class="drop-down-list-icon">
-                       <span>
-                         <svg width="10" height="10" viewbox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                           <rect x="1.5" y="0.818359" width="5.78538" height="1.28564" transform="rotate(45 1.5 0.818359)"></rect>
-                           <rect x="5.58984" y="4.90918" width="5.78538" height="1.28564" transform="rotate(135 5.58984 4.90918)"></rect>
-                         </svg>
-                       </span>
-                     </div>
-                   </div>
-                 </a>
-               </li>
-             }
+              <li class="category-list-item">
+                <a (click)="gotoCategory(item.id)" style="cursor: pointer">
+                  <div class="dropdown-item d-flex justify-content-between align-items-center">
+                    <div class="dropdown-list-item d-flex">
+                      <span class="dropdown-img">
+                        <img src="" alt="" />
+                      </span>
+                      <span class="dropdown-text">
+                        {{ item.name }}
+                      </span>
+                    </div>
+                    <div class="drop-down-list-icon">
+                      <span>
+                        <svg
+                          width="10"
+                          height="10"
+                          viewbox="0 0 6 9"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <rect
+                            x="1.5"
+                            y="0.818359"
+                            width="5.78538"
+                            height="1.28564"
+                            transform="rotate(45 1.5 0.818359)"
+                          ></rect>
+                          <rect
+                            x="5.58984"
+                            y="4.90918"
+                            width="5.78538"
+                            height="1.28564"
+                            transform="rotate(135 5.58984 4.90918)"
+                          ></rect>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              }
             </ul>
             <!-- </div> -->
           </div>
 
           <div class="header-nav-menu flex-grow-1">
             <ul class="menu-list">
-
               @for (item of categoryListData; track $index) {
 
-                <li>
-                  <a (click)="gotoCategory(item.id)" class="nav-link px-4" style="cursor: pointer;">
-                    <span class="list-text fs-3">{{item.name}}</span>
-                  </a>
-                </li>
+              <li>
+                <a (click)="gotoCategory(item.id)" class="nav-link px-4" style="cursor: pointer">
+                  <span class="list-text fs-3">{{ item.name }}</span>
+                </a>
+              </li>
               }
-           
+
               <!-- <li>
                 <a href="/" class="nav-link fs-4 px-4">
                   <span class="list-text">Home</span>
@@ -115,95 +168,99 @@
     </div>
   </div>
 
-  
   <div class="d-block d-sm-none bg-primary px-3 py-2">
     <div class="dropdown">
-        <button class="btn text-white dropdown-toggle" type="button" (click)="openAddressPopup()">
-            Address here 256, Street 65/4
-        </button>
+      <button class="btn text-white dropdown-toggle" type="button" (click)="openAddressPopup()">
+        Address here 256, Street 65/4
+      </button>
     </div>
 
     <!-- Search -->
     <div class="search-bar">
-        <input type="text" class="form-control" placeholder="Search">
+      <input type="text" class="form-control" placeholder="Search" />
     </div>
   </div>
-
 </header>
 <!--------------- header-section-end --------------->
 
-
 <ng-template #cart>
   <a routerLink="/cart" class="cart-item position-relative opacity-75">
-    <i class="fa-solid fa-cart-shopping fa-2xl"></i>
+    <i class="fa-solid fa-cart-shopping fa-2xl pe-2"></i><span>My Cart</span>
     @if(countsList?.cart_count > 0) {
-      <i class="icon-badge position-absolute fs-6 text-center text-white bg-primary rounded-circle">{{countsList?.cart_count}}</i>
+    <i class="icon-badge position-absolute fs-6 text-center text-white bg-primary rounded-circle">{{
+      countsList?.cart_count
+    }}</i>
     }
   </a>
 </ng-template>
 
-
 <ng-template #userProfile>
-       @if(!isLoggedIn){
-              <a routerLink="/login">
-                <i class="fa-solid fa-user fa-2xl opacity-75"></i>
-              </a>
-            }
-            @if(isLoggedIn) {
-              <div class="dropdown user-account">
-                <button class="btn opacity-75" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fa-solid fa-user-check fa-2xl"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end bg-white border-0 shadow rounded-3" style="z-index: 9999;">
-                  <li class="text-nowrap px-3 py-2 fs-4 fw-semibold bg-light mb-2">Hello, {{userName}}</li>
-                  <!-- Active class would be  bg-primary text-white -->
-                  <li class="mb-1"><a class="dropdown-item px-3 py-2 fs-4" [routerLink]="['/user-profile']"
-    [queryParams]="{ key: 'account' }"><span><i class="fa-solid fa-lg opacity-75 fa-user-tie"></i></span>My Account</a></li>
-                  <li class="mb-1"><a class="dropdown-item px-3 py-2 fs-4" [routerLink]="['/user-profile']"
-    [queryParams]="{ key: 'myorders' }"><span><i class="fa-solid fa-lg opacity-75 fa-bag-shopping"></i></span>My Order</a></li>
-                  <li class="mb-1"><a class="dropdown-item px-3 py-2 fs-4" [routerLink]="['/user-profile']"
-    [queryParams]="{ key: 'wishlist' }"><span><i class="fa-solid fa-lg opacity-75 fa-heart"></i></span>Wishlist 
-                    @if(countsList?.wishlist_count > 0) {
-                      <span class="badge text-bg-secondary ms-2">{{countsList?.wishlist_count}}</span>
-                    }</a>
-                  </li>
-                  <li class="mb-1"><a class="dropdown-item px-3 py-2 fs-4" [routerLink]="['/user-profile']"
-    [queryParams]="{ key: 'address' }"><span><i class="fa-solid fa-lg opacity-75 fa-house"></i></span>Address</a></li>
-                  <li><a class="dropdown-item px-3 py-2 fs-4" (click)="logout()"><span><i class="fa-solid fa-lg opacity-75 fa-arrow-right-from-bracket"></i></span>Logout</a></li>
-                </ul>
-              </div>
-            }
+  @if(!isLoggedIn){
+  <a href="/login" class="fs-3">
+    <!-- <i class="fa-solid fa-user fa-2xl opacity-75"></i> -->
+     Login
+  </a>
+  } @if(isLoggedIn) {
+  <div class="dropdown user-account">
+    <button class="btn opacity-75" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="fa-solid fa-user-check fa-2xl"></i>
+    </button>
+    <ul
+      class="dropdown-menu dropdown-menu-end bg-white border-0 shadow rounded-3"
+      style="z-index: 9999"
+    >
+      <li class="text-nowrap px-3 py-2 fs-4 fw-semibold bg-light mb-2">Hello, {{ userName }}</li>
+      <!-- Active class would be  bg-primary text-white -->
+      <li class="mb-1">
+        <a
+          class="dropdown-item px-3 py-2 fs-4"
+          [routerLink]="['/user-profile']"
+          [queryParams]="{ key: 'account' }"
+          ><span><i class="fa-solid fa-lg opacity-75 fa-user-tie"></i></span>My Account</a
+        >
+      </li>
+      <li class="mb-1">
+        <a
+          class="dropdown-item px-3 py-2 fs-4"
+          [routerLink]="['/user-profile']"
+          [queryParams]="{ key: 'myorders' }"
+          ><span><i class="fa-solid fa-lg opacity-75 fa-bag-shopping"></i></span>My Order</a
+        >
+      </li>
+      <li class="mb-1">
+        <a
+          class="dropdown-item px-3 py-2 fs-4"
+          [routerLink]="['/user-profile']"
+          [queryParams]="{ key: 'wishlist' }"
+          ><span><i class="fa-solid fa-lg opacity-75 fa-heart"></i></span>Wishlist
+          @if(countsList?.wishlist_count > 0) {
+          <span class="badge text-bg-secondary ms-2">{{ countsList?.wishlist_count }}</span>
+          }</a
+        >
+      </li>
+      <li class="mb-1">
+        <a
+          class="dropdown-item px-3 py-2 fs-4"
+          [routerLink]="['/user-profile']"
+          [queryParams]="{ key: 'address' }"
+          ><span><i class="fa-solid fa-lg opacity-75 fa-house"></i></span>Address</a
+        >
+      </li>
+      <li>
+        <a class="dropdown-item px-3 py-2 fs-4 cursor-pointer" (click)="logout()"
+          ><span><i class="fa-solid fa-lg opacity-75 fa-arrow-right-from-bracket"></i></span
+          >Logout</a
+        >
+      </li>
+    </ul>
+  </div>
+  }
 </ng-template>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- General Settings -->
 <!-- <pre> {{this.dataService.getAllGeneralSettings() | json}} </pre> -->
 
 <!-- Specific General Settings -->
-
 
 <!-- <pre> {{this.dataService.getSpecificGeneralSettings('general') | json}} </pre>
 

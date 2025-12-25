@@ -1,7 +1,7 @@
 @use '../../../scss/variable' as *;
 
 .footer {
-  background: #000;
+  background: rgb(240, 240, 245);
   padding-bottom: 0;
 }
 .footer-padding {
@@ -102,7 +102,7 @@
   .footer-heading {
     font-size: 2rem;
     margin-bottom: 1rem;
-    color: $primary-color;
+    color: rgba(2, 6, 12, 0.92);
   }
   .footer-title {
     margin-bottom: 1.8rem;
@@ -110,8 +110,9 @@
 
   .footer-link {
     a {
-      color: #c8c8c8;
+      color: rgba(2, 6, 12, 0.6);
       font-size: 1.5rem;
+      font-weight: 600;
 
       &:hover {
         color: $theme-color;
@@ -119,7 +120,7 @@
       }
     }
     p {
-      color: #c8c8c8;
+      color: #000;
     }
 
     ul {
@@ -160,10 +161,10 @@
     line-height: 1.5rem;
 
     .social-items {
-      gap: 1rem;
+      gap: 1.5rem;
     }
     p {
-      color: #c8c8c8;
+      color: rgba(2, 6, 12, 0.92);
     }
     .inner-text {
       color: $theme-color;
