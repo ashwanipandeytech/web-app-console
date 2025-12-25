@@ -2,14 +2,13 @@
 <header id="header" class="header">
   <div class="header-center-section d-flex">
     <div class="container">
-      <div class="header-center py-3 py-lg-0">
+      <div class="header-center py-2">
         <div class="logo">
           <a routerLink="/">
             <img
               src="../images/logos/top-logo.png"
               alt="logo"
-              height="75px"
-              class="d-none d-lg-inline-block"
+              class="d-none d-lg-inline-block img-fluid"
             />
             <img src="../images/logos/logo.webp" alt="logo" class="d-lg-none" />
           </a>
@@ -20,7 +19,7 @@
             <ng-container *ngTemplateOutlet="cart"></ng-container>
           </div>
 
-          <div class="header-user ms-lg-4">
+          <div class="header-user">
             <ng-container *ngTemplateOutlet="userProfile"></ng-container>
           </div>
         </div>
@@ -184,7 +183,7 @@
 <!--------------- header-section-end --------------->
 
 <ng-template #cart>
-  <a routerLink="/cart" class="cart-item position-relative opacity-75">
+  <a routerLink="/cart" class="cart-item d-inline-block opacity-75">
     <i class="fa-solid fa-cart-shopping fa-2xl pe-2"></i><span>My Cart</span>
     @if(countsList?.cart_count > 0) {
     <i class="icon-badge position-absolute fs-6 text-center text-white bg-primary rounded-circle">{{

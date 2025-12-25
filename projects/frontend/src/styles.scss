@@ -7,7 +7,15 @@
   --bs-primary-rgb: 0, 147, 221;
 }
 
-.container-fluid, .container  { max-width: 1400px; }
+.container-fluid  { max-width: 1400px; }
+.container {
+  @media screen and (min-width: 1200px) {
+    max-width: 1200px;
+  }
+  @media screen and (min-width: 1400px) {
+    max-width: 1400px;
+  }
+}
 .aspect-ratio-1 { aspect-ratio: 1; }
 
 .blog-bradcrum .devider { padding: 0 1rem; }
