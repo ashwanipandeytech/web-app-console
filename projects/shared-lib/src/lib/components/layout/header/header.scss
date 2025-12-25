@@ -82,8 +82,12 @@
     @include flexItem($gap: 2.5rem);
 
     .cart-item {
-      @include flexItem($align: flex-end, $gap: 5px);
-
+          border: 1px solid rgb(204, 204, 204);
+          padding: 10px 9px;
+          border-radius: 6px;
+          &:hover{
+            background-color: rgb(204, 204, 204);
+          }
       .cart-text {
         font-size: 1.6rem;
         color: $paragraph;

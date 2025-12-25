@@ -185,7 +185,7 @@
 
 <ng-template #cart>
   <a routerLink="/cart" class="cart-item position-relative opacity-75">
-    <i class="fa-solid fa-cart-shopping fa-2xl"></i>
+    <i class="fa-solid fa-cart-shopping fa-2xl pe-2"></i><span>My Cart</span>
     @if(countsList?.cart_count > 0) {
     <i class="icon-badge position-absolute fs-6 text-center text-white bg-primary rounded-circle">{{
       countsList?.cart_count
@@ -197,7 +197,8 @@
 <ng-template #userProfile>
   @if(!isLoggedIn){
   <a href="/login">
-    <i class="fa-solid fa-user fa-2xl opacity-75"></i>
+    <!-- <i class="fa-solid fa-user fa-2xl opacity-75"></i> -->
+     <span>Login</span>
   </a>
   } @if(isLoggedIn) {
   <div class="dropdown user-account">
