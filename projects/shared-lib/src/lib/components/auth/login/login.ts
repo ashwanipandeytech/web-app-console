@@ -118,7 +118,6 @@ export class Login {
     // console.log("Form Data:", this.signupForm.value);
   }
   loginUser() {
-    console.log('this.signupForm==>', this.loginform.invalid);
     this.submitted = true;
     if (this.loginform.invalid) {
       // this.loginform.markAllAsTouched();
@@ -139,51 +138,48 @@ export class Login {
             this.globalService.showMsgSnackBar(res);
             // localStorage.setItem('user', JSON.stringify(res.data));
             let isNonUserToken: any = JSON.parse(localStorage.getItem('isNonUser') || 'null');
-            console.log('isNonUserToken==>', isNonUserToken);
             if (isNonUserToken) {
-              console.log('re===>', res.data);
+              localStorage.removeItem('isNonUser');
+
+              // console.log('re===>', res.data);
               // res.data.token = isNonUserToken;
               //  localStorage.removeItem('isNonUser');
-              localStorage.setItem('user', JSON.stringify(res.data));
-
+              // localStorage.setItem('user', JSON.stringify(res.data));
+              // localStorage.setItem('isLoggedIn', JSON.stringify(true));
               //make a signal for emiting the user state
 
-             let redirectTo = '/'
-              if (this.isCheckoutPage) {
-                redirectTo = '/checkout'
-              }
+            //  let redirectTo = '/'
+            //   if (this.isCheckoutPage) {
+            //     redirectTo = '/checkout'
+            //   }
 
-              this.router.navigate([redirectTo]).then(() => {
-                //  window.location.reload(); // Reload the page after navigating
-              });
+              // this.router.navigate([redirectTo]).then(() => {
+              //   //  window.location.reload(); // Reload the page after navigating
+              // });
 
-              localStorage.removeItem('isNonUser');
-              setTimeout(() => {
-             //  window.location.reload();
-              }, 500);
-              this.globalFunctionService.getCount();
-              this.signalService.userLoggedIn.set(true);
+            //   setTimeout(() => {
+            //  //  window.location.reload();
+            //   }, 500);
+            //   this.globalFunctionService.getCount();
+            //   this.signalService.userLoggedIn.set(true);
+            // }
             }
-            else {
               //make a signal for emiting the user state
-
-
               localStorage.setItem('user', JSON.stringify(res.data));
+              localStorage.setItem('isLoggedIn', JSON.stringify(true));
               let redirectTo = '/'
               if (this.isCheckoutPage) {
                 redirectTo = '/checkout'
               }
-
               this.router.navigate([redirectTo]).then(() => {
-                console.info('res===here')
                  this.globalFunctionService.getCount();
                 this.signalService.userLoggedIn.set(true);
-                // window.location.reload(); // Reload the page after navigating
+                window.location.reload(); // Reload the page after navigating
               });
              
 
             }
-          }
+          
           else if (res.error && res.error.message) {
             console.log('error  :', res.error.message);
             this.globalService.showMsgSnackBar(res.error);

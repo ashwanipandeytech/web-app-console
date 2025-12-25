@@ -28,16 +28,18 @@ export class Header {
   constructor(private cd: ChangeDetectorRef) {
     this.globalFunctionService.getCount();
   let allContsSignal=  effect(() => {
-      // console.log('Cart count changed:', this.signalService.cartCounts());
+     this.isLoggedIn = this.signalService.userLoggedIn();
       if (this.signalService.allCounts() != null) {
         this.countsList = this.signalService.allCounts();
         this.cd.detectChanges();
       }
     });
 
-    //  let userLoggedInSignal=  effect(() => {
+    //  effect(() => {
     //   // console.log('Cart count changed:', this.signalService.cartCounts());
     //   if (this.signalService.userLoggedIn() ) {
+    //     console.log('this.signalService.userLoggedIn()==>',this.signalService.userLoggedIn());
+        
     //     this.countsList = this.signalService.allCounts();
     //     this.cd.detectChanges();
     //   }
@@ -54,11 +56,15 @@ export class Header {
 
   ngOnInit() {
     let userData: any = localStorage.getItem('user');
+    let isLoggedIn: any = localStorage.getItem('isLoggedIn');
     if (userData == null) {
       this.isLoggedIn = false;
     } else {
-      this.isLoggedIn = true;
+      this.isLoggedIn = isLoggedIn;
+      this.signalService.userLoggedIn.set(true);
       this.userName = JSON.parse(userData).user.name;
+      this.cd.detectChanges();
+      
     }
     // this.carList();
     this.getCategoryList();
