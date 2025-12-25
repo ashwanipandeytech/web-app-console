@@ -20,7 +20,7 @@
             <ng-container *ngTemplateOutlet="cart"></ng-container>
           </div>
 
-          <div class="header-user">
+          <div class="header-user ms-lg-4">
             <ng-container *ngTemplateOutlet="userProfile"></ng-container>
           </div>
         </div>
@@ -196,9 +196,9 @@
 
 <ng-template #userProfile>
   @if(!isLoggedIn){
-  <a href="/login">
+  <a href="/login" class="fs-3">
     <!-- <i class="fa-solid fa-user fa-2xl opacity-75"></i> -->
-     <span>Login</span>
+     Login
   </a>
   } @if(isLoggedIn) {
   <div class="dropdown user-account">
