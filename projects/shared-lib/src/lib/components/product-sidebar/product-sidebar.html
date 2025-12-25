@@ -27,7 +27,6 @@
 <section class="product-sidebar pt-2 pt-lg-3 pb-5">
     <div class="container px-2 px-lg-3">
         <div class="row g-2 g-lg-3">
-
             <div class="col-2 d-none">
                 <div class="sidebar h-100">
                     <div class="sidebar-section h-100">
@@ -90,60 +89,59 @@
                         <!-- Pagination end -->
 
                         <!-- Product start -->
-                         <!-- @if (this.productListData.length>0) { -->
+                        <!-- @if (this.productListData.length>0) { -->
 
-                             @for (item of productListData; track $index) {
-                                <div class="col-lg-2 col-md-3 col-12">
-                                    <div class="product-wrapper me-3 bg-white p-3 rounded-4 d-flex flex-column border">
-                                        <div class="product-img bg-light aspect-ratio-1">
-                                            <a (click)="openProduct(item.id)" class="h-100 w-100">
-                                                <img [src]="item?.images[0]?.url" alt="product-img" class="h-100">
-                                            </a>
-    
-                                            <div class="product-cart-items bg-white rounded p-1" 
-                                                (click)="toggleHeart(item)"  
-                                                [ngClass]="{ 'wishlisted': item.is_wishlisted}">
-                                                    <i class="fa-heart" [ngClass]="item.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"></i>
+                            @for (item of productListData; track $index) {
+                            <div class="col-lg-2 col-md-3 col-12">
+                                <div class="product-wrapper me-3 bg-white p-3 rounded-4 d-flex flex-column border">
+                                    <div class="product-img aspect-ratio-1">
+                                        <a (click)="openProduct(item.id)" class="h-100 w-100 overflow-hidden">
+                                            <img [src]="item?.images[0]?.url" alt="product-img" class="h-100">
+                                        </a>
+
+                                        <div class="product-cart-items bg-white rounded p-1" 
+                                            (click)="toggleHeart(item)"  
+                                            [ngClass]="{ 'wishlisted': item.is_wishlisted}">
+                                                <i class="fa-heart" [ngClass]="item.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="product-info pb-0 h-100">
+                                        <a class="product-btn w-auto shop-btn my-0" (click)="addToCart(item)">Add to Cart</a>
+
+                                        <div class="product-description d-flex align-items-center justify-content-between w-100 my-2">
+                                            <div class="price">
+                                                <span class="price-cut">₹{{item.price_data.regularPrice}}</span>
+                                                <span class="new-price">₹{{item.price_data.salePrice}}</span>
+                                            </div>
+
+                                            <div class="ratings">
+                                                <svg width="75" height="18" viewbox="0 0 75 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z" fill="#FFA800"></path>
+                                                    <path d="M22.5 0L24.1839 5.18237H29.6329L25.2245 8.38525L26.9084 13.5676L22.5 10.3647L18.0916 13.5676L19.7755 8.38525L15.3671 5.18237H20.8161L22.5 0Z" fill="#FFA800"></path>
+                                                    <path d="M37.5 0L39.1839 5.18237H44.6329L40.2245 8.38525L41.9084 13.5676L37.5 10.3647L33.0916 13.5676L34.7755 8.38525L30.3671 5.18237H35.8161L37.5 0Z" fill="#FFA800"></path>
+                                                    <path d="M52.5 0L54.1839 5.18237H59.6329L55.2245 8.38525L56.9084 13.5676L52.5 10.3647L48.0916 13.5676L49.7755 8.38525L45.3671 5.18237H50.8161L52.5 0Z" fill="#FFA800"></path>
+                                                    <path d="M67.5 0L69.1839 5.18237H74.6329L70.2245 8.38525L71.9084 13.5676L67.5 10.3647L63.0916 13.5676L64.7755 8.38525L60.3671 5.18237H65.8161L67.5 0Z" fill="#FFA800"></path>
+                                                </svg>
                                             </div>
                                         </div>
-    
-                                        <div class="product-info pb-0 h-100">
-                                            <a class="product-btn w-auto shop-btn my-0" (click)="addToCart(item)">Add to Cart</a>
-
-                                            <div class="product-description d-flex align-items-center justify-content-between w-100 my-2">
-                                                <div class="price">
-                                                    <span class="price-cut">₹{{item.price_data.regularPrice}}</span>
-                                                    <span class="new-price">₹{{item.price_data.salePrice}}</span>
-                                                </div>
-
-                                                <div class="ratings">
-                                                    <svg width="75" height="18" viewbox="0 0 75 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z" fill="#FFA800"></path>
-                                                        <path d="M22.5 0L24.1839 5.18237H29.6329L25.2245 8.38525L26.9084 13.5676L22.5 10.3647L18.0916 13.5676L19.7755 8.38525L15.3671 5.18237H20.8161L22.5 0Z" fill="#FFA800"></path>
-                                                        <path d="M37.5 0L39.1839 5.18237H44.6329L40.2245 8.38525L41.9084 13.5676L37.5 10.3647L33.0916 13.5676L34.7755 8.38525L30.3671 5.18237H35.8161L37.5 0Z" fill="#FFA800"></path>
-                                                        <path d="M52.5 0L54.1839 5.18237H59.6329L55.2245 8.38525L56.9084 13.5676L52.5 10.3647L48.0916 13.5676L49.7755 8.38525L45.3671 5.18237H50.8161L52.5 0Z" fill="#FFA800"></path>
-                                                        <path d="M67.5 0L69.1839 5.18237H74.6329L70.2245 8.38525L71.9084 13.5676L67.5 10.3647L63.0916 13.5676L64.7755 8.38525L60.3671 5.18237H65.8161L67.5 0Z" fill="#FFA800"></path>
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                            
-                                            <a (click)="openProduct(item.id)" class="product-details">{{item.title}}</a>
-                                        </div>
+                                        
+                                        <a (click)="openProduct(item.id)" class="product-details">{{item.title}}</a>
                                     </div>
                                 </div>
+                            </div>
                             }
-                         <!-- } -->
-                          @if (this.productListData.length<=0) {
-                                   <div class="container text-center py-4 text-muted display-1">
-                                    <i class="fa-solid fa-circle-info me-2"></i>
-                                    NO DATA AVAILABLE
-                                    </div>
-                                }
+                        <!-- } -->
+                        <!-- @if (this.productListData.length<=0) {
+                            <div class="container text-center py-4 text-muted display-1">
+                            <i class="fa-solid fa-circle-info me-2"></i>
+                            NO DATA AVAILABLE
+                            </div>
+                        } -->
                         <!-- Product end -->
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </section>

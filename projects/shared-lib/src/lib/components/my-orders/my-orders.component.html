@@ -71,33 +71,36 @@
       <div class="modal-body px-4">
         <div class="order-container">
           @for (item of orderDetailList; track $index) {
-            <div class="border rounded mb-3 p-3 row">
-                <div class="col-2">
-                    <div class="wrapper-img bg-light p-2 rounded-2">
-                        <img [src]="item.product.media?.uploadedImages[0]?.url" alt="" class="object-fit-contain rounded-2 w-100">
-                    </div>
-                </div>
-                
-                <div class="col-10">
-                    <div class="wrapper-content">
-                        <div class="d-flex align-items-center">
-                            <h5 class="heading text-truncate">{{item?.product.title}}</h5>
-                        </div>
-                        <ul>
-                            <li class="mt-md-3 mt-0">
-                                <span class="fw-semibold d-inline-block config-title">price</span>
-                                <span>₹{{item.price}}</span>
-                            </li>
-                        </ul>
-                        
-                        <div>
-                          <!-- <button type="button" class="btn shop-btn px-3 py-2 fs-5">Re-order</button> -->
-                          <button type="button" class="btn shop-btn px-3 py-2 fs-5 ms-3" (click)="addToCart(item)">Add to cart</button>
-                        </div>
+            @if (item.product !=null) {
 
-                    </div>
-                </div>
-            </div>
+              <div class="border rounded mb-3 p-3 row">
+                  <div class="col-2">
+                      <div class="wrapper-img bg-light p-2 rounded-2">
+                          <img [src]="item.product.media?.uploadedImages[0]?.url" alt="" class="object-fit-contain rounded-2 w-100">
+                      </div>
+                  </div>
+                  
+                  <div class="col-10">
+                      <div class="wrapper-content">
+                          <div class="d-flex align-items-center">
+                              <h5 class="heading text-truncate">{{item?.product.title}}</h5>
+                          </div>
+                          <ul>
+                              <li class="mt-md-3 mt-0">
+                                  <span class="fw-semibold d-inline-block config-title">price</span>
+                                  <span>₹{{item.price}}</span>
+                              </li>
+                          </ul>
+                          
+                          <div>
+                            <!-- <button type="button" class="btn shop-btn px-3 py-2 fs-5">Re-order</button> -->
+                            <button type="button" class="btn shop-btn px-3 py-2 fs-5 ms-3" (click)="addToCart(item)">Add to cart</button>
+                          </div>
+  
+                      </div>
+                  </div>
+              </div>
+            }
           }
         </div>
       </div>

@@ -1,6 +1,6 @@
 <!--------------- header-section --------------->
 <header id="header" class="header">
-  <div class="header-center-section d-flex">
+  <div class="header-center-section d-flex py-lg-4">
     <div class="container">
       <div class="header-center py-2">
         <div class="logo">
@@ -183,26 +183,35 @@
 <!--------------- header-section-end --------------->
 
 <ng-template #cart>
-  <a routerLink="/cart" class="cart-item d-inline-block opacity-75">
-    <i class="fa-solid fa-cart-shopping fa-2xl pe-2"></i><span>My Cart</span>
-    @if(countsList?.cart_count > 0) {
-    <i class="icon-badge position-absolute fs-6 text-center text-white bg-primary rounded-circle">{{
+  <a routerLink="/cart" class="cart-item position-relative opacity-75" 
+  [ngClass]="{
+    'not-allowed': countsList?.cart_count === 0,
+    'allowed': countsList?.cart_count > 0
+  }">
+    <i class="fa-solid fa-cart-shopping fa-2xl pe-2"></i>
+    <span >
+      {{ countsList?.cart_count === 0 ? 'My Cart' : countsList?.cart_count + ' items' }}
+    </span>
+
+    <!-- @if(countsList?.cart_count > 0) { -->
+    <!-- <i class="icon-badge position-absolute fs-6 text-center text-white bg-primary rounded-circle">{{
       countsList?.cart_count
-    }}</i>
-    }
+    }}</i> -->
+    <!-- } -->
   </a>
 </ng-template>
 
 <ng-template #userProfile>
   @if(!isLoggedIn){
-  <a href="/login" class="fs-3">
+  <a routerLink="/login" class="fs-3">
     <!-- <i class="fa-solid fa-user fa-2xl opacity-75"></i> -->
      Login
   </a>
   } @if(isLoggedIn) {
   <div class="dropdown user-account">
-    <button class="btn opacity-75" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-      <i class="fa-solid fa-user-check fa-2xl"></i>
+    <button class="btn opacity-75 fs-3 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <!-- <i class="fa-solid fa-user-check fa-2xl"></i> -->
+       Account
     </button>
     <ul
       class="dropdown-menu dropdown-menu-end bg-white border-0 shadow rounded-3"
