@@ -24,6 +24,7 @@ export class ProductSidebarCommon {
   filteredProductList: any;
   defaultProductListData: any;
   isWishlisted: boolean=false;
+  isLoading: boolean=false;
 
   constructor(private cd:ChangeDetectorRef, private router: Router) {
     this.callAllProductList();
@@ -54,7 +55,7 @@ ngOnInit() {
   // console.log(this.productId);
 }
   callAllProductList() {
-
+this.isLoading = true;
     // const payload = {
     //   email: this.email,
     //   password: this.password
@@ -76,9 +77,13 @@ ngOnInit() {
       this.productListData = this.defaultProductListData.filter(
         (item: any) => item.category.id == this.productId
       );
+this.isLoading = false;
+
     }
     else{
       this.productListData = response.data.data;
+this.isLoading = false;
+
     }
 console.log('this.productListData.length',this.productListData.length);
 

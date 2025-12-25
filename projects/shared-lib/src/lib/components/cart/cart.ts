@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DynamicPopup } from '../confirmationPopup/confirmationPopup.component';
 import { GlobaCommonlService } from '../../services/global-common.service';
+import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
 declare const google: any;
 declare const bootstrap: any;
 
@@ -25,6 +26,7 @@ export class CartCommon {
   @ViewChild('addressInput') addressInput!: ElementRef<HTMLInputElement>;
   private dataService: any = inject(DataService);
   private globalService: any = inject(GlobaCommonlService);
+  private globalFunctionService = inject(GlobalFunctionService);
 
   readonly dialog = inject(MatDialog);
   readonly ngbModal = inject(NgbModal);
@@ -384,6 +386,7 @@ this.cartItemId = id;
       );
       modal.hide();
           this.carList();
+           this.globalFunctionService.getCount();
           this.cd.detectChanges();
         } else if (res.error && res.error.message) {
           console.log('error  :', res.error.message);

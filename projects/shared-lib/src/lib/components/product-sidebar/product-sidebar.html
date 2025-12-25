@@ -44,11 +44,11 @@
                                         }
                                     </ul>
                                 }
-                                {{this.productListData.length}}
-                                @if (this.productListData.length==0) {
-                                    <h1>
-                                        NO DATA AVAIALBLE
-                                    </h1>
+                                <!-- {{this.productListData.length}} -->
+                                @if (isLoading) {
+                                   <div class="loader position-relative">
+                                    <div class="spinner position-absolute top-50 start-50 translate-middle"></div>
+                                    </div>
                                 }
                             </div>
                         </div>
@@ -132,12 +132,12 @@
                                 </div>
                             }
                          <!-- } -->
-                          @if (this.productListData.length<=0) {
+                          <!-- @if (this.productListData.length<=0) {
                                    <div class="container text-center py-4 text-muted display-1">
                                     <i class="fa-solid fa-circle-info me-2"></i>
                                     NO DATA AVAILABLE
                                     </div>
-                                }
+                                } -->
                         <!-- Product end -->
                     </div>
                 </div>
