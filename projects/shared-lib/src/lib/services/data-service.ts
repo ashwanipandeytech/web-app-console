@@ -41,6 +41,10 @@ export class DataService {
         }
         if (token) {
         this.authToken = token;
+         headers = new HttpHeaders({
+              'Authorization': `Bearer ${this.authToken}`
+            });
+             httpOptions = {headers}
         }
     console.log('this.authToken==>',this.authToken);
 //     if (endpoint === 'cart' && user.token == undefined) {
@@ -76,6 +80,8 @@ export class DataService {
         if (options.headers) {
           headers = options.headers;
         }
+        console.log('headers==>',headers);
+        
         switch (method.toUpperCase()) {
     // observe: 'response' as const
           case 'GET':

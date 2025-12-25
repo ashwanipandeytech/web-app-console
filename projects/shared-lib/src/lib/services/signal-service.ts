@@ -4,7 +4,7 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root'
 })
 export class SignalService {
-
+// user = signal<any>(null);
   // signal to store counts
   allCounts = signal<any>(null);
   userLoggedIn=signal<any>(false) 
@@ -17,4 +17,15 @@ export class SignalService {
   clearCartCounts() {
     this.allCounts.set(null);
   }
+  // setUser(user: any) {
+  //   this.user.set(user);
+  //   localStorage.setItem('user', JSON.stringify(user));
+  // }
+
+  // loadUserFromStorage() {
+  //   const user = localStorage.getItem('user');
+  //   if (user) {
+  //     this.user.set(JSON.parse(user));
+  //   }
+  // }
 }
