@@ -1,26 +1,21 @@
 import { Routes } from '@angular/router';
 import { PageContentResolver } from 'shared-lib';
-import { LandingPage } from './landing-page/landing-page';
-import { ContactUs } from './pages/contact-us/contact-us';
-import { AboutUs } from './pages/about-us/about-us';
-import { ProductSidebar } from './pages/product-sidebar/product-sidebar';
-import { Cart } from './cart/cart';
-import { Checkout } from './cart/checkout/checkout';
-import { Login } from './auth/login/login';
-import { Terms } from './terms/terms';
-import { Privacy } from './privacy/privacy';
-import { UserProfile } from './account/user-profile/user-profile';
-import { Wishlist } from './account/wishlist/wishlist';
-import { Compaire } from './account/compaire/compaire';
-import { Category } from './pages/category/category';
+import { LandingPage } from 'shared-lib/components/landing-page/landing-page';
+import { ContactUs } from 'shared-lib';
+import { AboutUs } from 'shared-lib';
+import { Checkout } from 'shared-lib/components/cart/checkout/checkout';
+import { Login } from 'shared-lib/components/auth/login/login';
+import { Terms } from 'shared-lib';
+import { Privacy } from 'shared-lib';
+import { UserProfile } from 'shared-lib/components/account/user-profile/user-profile';
+import { Wishlist } from 'shared-lib/components/account/wishlist/wishlist';
+import { Compaire } from 'shared-lib/components/account/compaire/compaire';
 import { authGuard } from './app.guard';
-import { ProductDetailCommon} from 'shared-lib/components/product-info/product-info';
+import { ProductDetails} from 'shared-lib/components/product-details/product-details';
 import { ProductSidebarCommon} from 'shared-lib/components/product-sidebar/product-sidebar';
 import { CategoryCommon} from 'shared-lib/components/category/category';
-
-
 import { CartCommon } from 'shared-lib/components/cart/cart';
-import { Thankyou } from './pages/thankyou/thankyou';
+import { Thankyou } from '../../../shared-lib/src/lib/components/thankyou/thankyou';
 
 export const routes: Routes = [
     {
@@ -56,7 +51,7 @@ export const routes: Routes = [
        
          {
        path: 'product-details/:id',
-        component: ProductDetailCommon,
+        component: ProductDetails,
          
         },
    
@@ -121,7 +116,7 @@ export const routes: Routes = [
     {
         path: '**',
         pathMatch: 'full',
-        loadComponent: () => import('./backend-pages/backend-pages').then(m => m.BackendPagesComponent),
+        loadComponent: () => import('../../../shared-lib/src/lib/components/backend-pages/backend-pages').then(m => m.BackendPagesComponent),
         resolve: {
             pageData: PageContentResolver
         }

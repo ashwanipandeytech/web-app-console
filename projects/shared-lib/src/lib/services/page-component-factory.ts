@@ -1,9 +1,9 @@
 import { Injectable, Type, ViewContainerRef, Injector } from '@angular/core';
-import { HeroSectionV1Component} from '../../../../setting-component-shared-lib/src/lib/content-components/hero-section-v1/hero-section-v1.component';
-import { CategoryComponentV1Component} from '../../../../setting-component-shared-lib/src/lib/content-components/category-component-v1/category-component-v1.component';
-import { ProductComponent} from '../../../../setting-component-shared-lib/src/lib/content-components/product/product.component';
-import { GridComponent} from '../../../../setting-component-shared-lib/src/lib/content-components/grid/grid.component';
-import { ProductDetails} from '../../../../setting-component-shared-lib/src/lib/content-components/product-info/product-info';
+import { HeroSectionV1Component} from '../components/hero-section-v1/hero-section-v1.component';
+import { CategoryComponentV1Component} from '../components/category-component-v1/category-component-v1.component';
+import { ProductComponent} from '../components/product/product.component';
+import { GridComponent} from '../components/grid/grid.component';
+import { ProductDetails} from '../components/product-details/product-details';
 
 // Define the component registry type for better type safety
 interface ComponentRegistry {

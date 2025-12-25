@@ -8,3 +8,8 @@ export * from './lib/services/page-component-factory';
 export * from './lib/services/data-service';
 export * from './lib/services/payment-razor';
 export * from './lib/services/platform-detection';
+export * from './lib/services/check-platform.service';
+export * from './lib/services/global-common.service';
+export * from './lib/services/global-function.service';
+export * from './lib/services/signal-service';
+

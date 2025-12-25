@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { catchError, of } from 'rxjs';
-import { DataService } from '../../services/data-service';
+import { GlobaCommonlService } from 'shared-lib/services/global-common.service';
+import { DataService } from 'shared-lib/services/data-service';
 declare var bootstrap: any;
 
 @Component({
@@ -12,11 +13,13 @@ declare var bootstrap: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyOrdersComponent implements OnInit {
-  @ViewChild('deleteorder') deleteorder!: ElementRef;
+  @ViewChild('orderDetail') orderDetail!: ElementRef;
  dataService = inject(DataService);
- private cd = inject(ChangeDetectorRef)
+ private cd = inject(ChangeDetectorRef);
+ public globalService:any= inject(GlobaCommonlService);
   orderListData: any=[];
   orderId: any;
+  orderDetailList: any;
   constructor() { }
 
   ngOnInit() {
@@ -46,19 +49,59 @@ orderList(){
                 });
 }
 
-deleteOrder(){
- this.dataService.delete('wishlist',this.orderId).subscribe((res:any)=>{
-    let response = {
-        message:'Item Removed from Wish List',
-        success:true
+getOrderDetailData(data:any){
+  console.log('data==>',data);
+  
+this.orderDetailList = data;
+console.log('orderDetailList==>',this.orderDetailList);
+
+}
+// deleteOrder(){
+//  this.dataService.delete('wishlist',this.orderId).subscribe((res:any)=>{
+//     let response = {
+//         message:'Item Removed from Wish List',
+//         success:true
+//     }
+//     const modal = bootstrap.Modal.getInstance(
+//         this.orderDetail.nativeElement
+//       );
+//       modal.hide();
+//       this.orderList();
+//       this.cd.markForCheck();
+// }
+//  )
+// }
+addToCart(item:any) {
+  console.log('item==>',item);
+  
+    let cartPayload = {
+      product_id:item.product.id,
+      quantity:item.quantity
     }
-    const modal = bootstrap.Modal.getInstance(
-        this.deleteorder.nativeElement
-      );
-      modal.hide();
-      this.orderList();
-      this.cd.markForCheck();
-}
- )
-}
+    this.dataService.post(cartPayload, 'cart')
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+        if (res.success ==true) {
+          this.globalService.showMsgSnackBar(res);
+        }
+        else if (res.error && res.error.message) {
+          this.globalService.showMsgSnackBar(res.error);
+        }
+
+
+
+
+
+        if (res.success == true) {   
+        
+        }
+      });
+
+  }
 }

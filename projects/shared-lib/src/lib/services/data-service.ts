@@ -16,10 +16,12 @@ export class DataService {
   generalSetting:any;
 
   constructor() {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    this.authToken = user?.token ?? '';
+ 
   }
   request(method: string, endpoint: string, data?: any, options: any = {}) {
+    
+      let user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.authToken = user?.token ?? '';
     console.log('method===>',method);
       let httpOptions = {};
       let headers:any; 
@@ -28,7 +30,7 @@ export class DataService {
               'Authorization': `Bearer ${this.authToken}`
             });
         }
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
+       user = JSON.parse(localStorage.getItem('user') || '{}');
       const token = JSON.parse(localStorage.getItem('isNonUser') || 'null');
         if (endpoint === 'cart' && method == 'POST' && user.token == undefined) {
         httpOptions = {headers, observe: 'response' as const}

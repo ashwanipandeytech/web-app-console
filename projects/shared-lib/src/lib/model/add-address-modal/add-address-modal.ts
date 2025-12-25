@@ -8,7 +8,7 @@ import { DataService } from '../../services/data-service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../../../environments/environment';
 import { CheckPlatformService } from '../../services/check-platform.service';
-import { GlobaCommonlService } from 'projects/global-common.service';
+import { GlobaCommonlService } from '../../services/global-common.service';
 declare const google: any;
 
 @Component({

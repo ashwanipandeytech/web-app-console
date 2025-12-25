@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { GlobalFunctionService } from '../../services/global-function.service';
-import { GlobaCommonlService } from 'projects/global-common.service';
+import { GlobaCommonlService } from '../../services/global-common.service';
 declare var bootstrap: any;
 
 @Component({

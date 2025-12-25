@@ -3,8 +3,8 @@ import { inject, Injectable } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { AddAddressModal } from '../model/add-address-modal/add-address-modal';
-import { DataService } from 'projects/setting-component-shared-lib/src/lib/services/data-service';
-import { SignalService } from 'projects/signal-service';
+import { DataService } from './data-service';
+import { SignalService } from './signal-service';
 
 
 @Injectable({
