@@ -7,7 +7,7 @@
             <span><a href="#" class="fw-semibold">settings</a></span>
         </div>
         <div class="blog-heading about-heading">
-            <h1 class="heading fw-semibold">User Settings</h1>
+            <h1 class="heading fw-semibold text-capitalize">{{activePage}}</h1>
         </div>
     </div>
 </section>
@@ -31,7 +31,7 @@
                         <span class="text">My Account</span>
                     </button>
 
-                    <button class="nav-link"  [ngClass]="{ 'active': activePage == 'myorders' }" (click)="openComponent('myorders')">
+                    <button class="nav-link"  [ngClass]="{ 'active': activePage == 'Orders' }" (click)="openComponent('Orders')">
                         <span><i class="fa-solid fa-lg fa-bag-shopping"></i></span>
                         <span class="text">Order</span>
                     </button>
@@ -46,7 +46,7 @@
                         <span class="text">Address</span>
                     </button>
 
-                    <button class="nav-link" [ngClass]="{ 'active': activePage == 'Change_Password' }" (click)="openComponent('Change_Password')">
+                    <button class="nav-link" [ngClass]="{ 'active': activePage == 'Change-Password' }" (click)="openComponent('Change-Password')">
                         <span><i class="fa-solid fa-lg fa-lock"></i></span>
                         <span class="text">Change Password</span>
                     </button>

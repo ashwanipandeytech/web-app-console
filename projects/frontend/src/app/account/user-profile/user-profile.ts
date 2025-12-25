@@ -44,6 +44,7 @@ export class UserProfile {
     console.log(params['key']);
     if (params['key']) {
       this.activePage =  params['key'];
+      console.log("this.activePage", this.activePage)
       this.openComponent(this.activePage);
     }
   });
@@ -72,7 +73,7 @@ if (component == 'account') {
    this.changePassword = false;
    this.isAddress = false;
 }
-if (component == 'myorders') {
+if (component == 'Orders') {
   this.ispersonalInfo = false;
    this.isOrder = true;
    this.isWishlist = false;
@@ -86,7 +87,7 @@ if (component == 'wishlist') {
    this.changePassword = false;
    this.isAddress = false;
 }
-if (component == 'Change_Password') {
+if (component == 'Change-Password') {
    this.ispersonalInfo = false;
    this.isOrder = false;
    this.isWishlist = false;
