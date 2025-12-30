@@ -1,12 +1,13 @@
 import { ChangeDetectorRef, Component, effect, inject } from '@angular/core';
 import { Router, RouterLink, RouterModule } from '@angular/router';
-import { DataService } from 'shared-lib/services/data-service';
+import { DataService } from '../../../services/data-service';
 import { catchError, of } from 'rxjs';
-import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
-import { AddAddressModal } from 'shared-lib/model/add-address-modal/add-address-modal';
-import { SignalService } from 'shared-lib/services/signal-service';
+import { GlobalFunctionService } from '../../../services/global-function.service';
+import { AddAddressModal } from '../../../model/add-address-modal/add-address-modal';
+import { SignalService } from '../../../services/signal-service';
 import { JsonPipe, NgTemplateOutlet, CommonModule  } from '@angular/common';
 import { NgbModal, NgbModalRef, NgbSlide } from '@ng-bootstrap/ng-bootstrap';
+import { Login } from '../../auth/login/login';
 
 @Component({
   selector: 'web-header',
@@ -153,6 +154,17 @@ export class Header {
   
   openAddressPopup(){
     const modalRef: NgbModalRef = this.ngbModal.open( AddAddressModal,
+    { windowClass:'mobile-modal',
+      scrollable: true
+    });
+    modalRef.result.then((result) => {
+      console.log('Modal closed with result:', result);
+    }).catch((reason) => {
+      console.log('Modal dismissed:', reason);
+    });
+  }
+  openLogin(){
+     const modalRef: NgbModalRef = this.ngbModal.open( Login,
     { windowClass:'mobile-modal',
       scrollable: true
     });
