@@ -86,6 +86,8 @@ export class LayoutSettingsComponent implements OnInit {
   public dataService: any = inject(DataService);
   private globalService:any = inject(GlobalService);
   pageList: any;
+  uploadedFile:any;
+
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
@@ -298,6 +300,7 @@ export class LayoutSettingsComponent implements OnInit {
 
   onImageChange(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
+    this.uploadedFile = file;
     if (!file) return;
 
     const reader = new FileReader();
@@ -311,4 +314,29 @@ export class LayoutSettingsComponent implements OnInit {
   }
 
 
+  savedImage(){
+console.log('uploadedFile==>',this.uploadedFile);
+  // for (const file of this.uploadedFile) {
+
+    const formData = new FormData();
+    formData.append('files', this.uploadedFile);
+    // formData.append('module', 'product');
+    // formData.append('module_id', id);
+    formData.append('type', 'desktopLogo');
+    this.callUploadnediaSection(formData);
+  // }
+  }
+  callUploadnediaSection(formData:any){
+  console.log('formData==>',formData);
+  
+    this.dataService.postForm('gallery',formData)
+      .pipe(
+        catchError(err => {
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:', res);
+      });
+}
 }

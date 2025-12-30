@@ -31,6 +31,7 @@
 
                 </div>
             </div>
+            
         </div>
 
         <!-- Delete product Modal -->
@@ -53,5 +54,12 @@
         </div>
 
     } 
+     <app-no-data
+  *ngIf="!wishListData || wishListData.length === 0"
+  title="No Wishlist Found"
+  message="There are no data available right now."
+  [showAction]="false"
+  actionText="Reload">
+</app-no-data>
 </section>
 <!--------------- wishlist-end---------------->

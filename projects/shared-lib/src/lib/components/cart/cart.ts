@@ -10,14 +10,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DynamicPopup } from '../confirmationPopup/confirmationPopup.component';
 import { GlobaCommonlService } from '../../services/global-common.service';
-import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
+import { GlobalFunctionService } from '../../services/global-function.service';
+import { RouterModule } from '@angular/router';
 declare const google: any;
 declare const bootstrap: any;
 
 
 @Component({
   selector: 'app-cart',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,RouterModule],
   templateUrl: './cart.html',
   styleUrl: './cart.scss',
 })

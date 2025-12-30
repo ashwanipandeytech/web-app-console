@@ -1,0 +1,12 @@
+<div class="no-data-wrapper">
+  <div class="no-data-card">
+    <div class="icon">📄</div>
+
+    <h2>{{ title }}</h2>
+    <p>{{ message }}</p>
+
+    <button *ngIf="showAction" class="action-btn">
+      {{ actionText }}
+    </button>
+  </div>
+</div>

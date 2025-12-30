@@ -95,6 +95,13 @@
             </div>
 
         </div>
+             <app-no-data
+  *ngIf="!addressListData || addressListData.length === 0"
+  title="No Address Found"
+  message="There are no data available right now."
+  [showAction]="false"
+  actionText="Reload">
+</app-no-data>
     </div>
 </div>
 

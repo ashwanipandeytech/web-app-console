@@ -4,12 +4,14 @@ import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { GlobalFunctionService } from '../../services/global-function.service';
 import { GlobaCommonlService } from '../../services/global-common.service';
+import { CommonModule } from '@angular/common';
+import { NoDataComponent } from '../no-data/no-data.component';
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-address-section',
   templateUrl: './address-section.component.html',
-  imports:[FormsModule],
+  imports:[FormsModule,CommonModule,NoDataComponent],
   styleUrls: ['./address-section.component.scss']
 })
 export class AddressSectionComponent implements OnInit {

@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { catchError, of } from 'rxjs';
-import { GlobaCommonlService } from 'shared-lib/services/global-common.service';
-import { DataService } from 'shared-lib/services/data-service';
+import { GlobaCommonlService } from '../../services/global-common.service';
+import { DataService } from '../../services/data-service';
+import { NoDataComponent } from '../no-data/no-data.component';
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-my-orders',
   templateUrl: './my-orders.component.html',
-  imports:[CommonModule],
+  imports:[CommonModule,NoDataComponent],
   styleUrls: ['./my-orders.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

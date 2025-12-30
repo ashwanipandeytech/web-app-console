@@ -33,6 +33,13 @@
                 </div>
             </div>
     }
+ <app-no-data
+  *ngIf="!orderDetailList || orderDetailList.length === 0"
+  title="No Orders Found"
+  message="There are no data available right now."
+  [showAction]="false"
+  actionText="Reload">
+</app-no-data>
 </div>
 
 

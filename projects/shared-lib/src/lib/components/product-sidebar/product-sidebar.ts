@@ -5,11 +5,12 @@ import { catchError, of, switchMap } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { GlobaCommonlService } from '../../services/global-common.service';
 import { CommonModule } from '@angular/common';
-import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
+import { GlobalFunctionService } from '../../services/global-function.service';
+import { NoDataComponent } from '../no-data/no-data.component';
 
 @Component({
   selector: 'web-category-details',
-  imports: [CommonModule],
+  imports: [CommonModule,NoDataComponent],
   templateUrl: './product-sidebar.html',
   styleUrl: './product-sidebar.scss'
 })

@@ -25,7 +25,12 @@
 
             <div class="review-form-name">
               <label class="form-label fw-semibold">Phone*</label>
-              <input type="tel" class="form-control" placeholder="+91 **********" formControlName="phone">
+              <input type="number" class="form-control" placeholder="+91 **********" formControlName="phone">
+             @if(phone?.errors?.['pattern'] && phone?.touched){
+          <div class="text-danger mt-1">
+            Enter a valid 10-digit phone number.
+          </div>
+          }
             </div>
           </div>
 
@@ -59,6 +64,9 @@
             <div class="review-form-name">
               <label class="form-label fw-semibold">Postcode / ZIP*</label>
               <input type="number" class="form-control" placeholder="0000" formControlName="postcode">
+             @if(postcode?.errors?.['pattern'] && postcode?.touched){
+          <div class="text-danger position-absolute">Enter a valid postal code.</div>
+          }
             </div>
           </div>
 

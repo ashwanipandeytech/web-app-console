@@ -96,7 +96,7 @@ export class Login {
               }
 
               this.router.navigate([redirectTo]).then(() => {
-                //  window.location.reload(); // Reload the page after navigating
+                window.location.reload(); // Reload the page after navigating
               });
           }
           else if (res.error && res.error.message) {

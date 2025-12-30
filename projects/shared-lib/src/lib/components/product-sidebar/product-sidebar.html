@@ -49,6 +49,13 @@
                                     <div class="spinner position-absolute top-50 start-50 translate-middle"></div>
                                     </div>
                                 }
+                                     <app-no-data
+  *ngIf="!productListData || productListData.length === 0"
+  title="No Category Found"
+  message="There are no data available right now."
+  [showAction]="false"
+  actionText="Reload">
+</app-no-data>
                             </div>
                         </div>
                     </div>

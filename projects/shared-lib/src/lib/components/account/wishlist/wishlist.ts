@@ -1,13 +1,15 @@
 import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { DataService } from 'shared-lib';
-import { GlobaCommonlService } from 'shared-lib';
+import { DataService } from '../../../services/data-service';
+import { GlobaCommonlService } from '../../../services/global-common.service';
 import { catchError, of } from 'rxjs';
-import { GlobalFunctionService } from 'shared-lib';
+import { GlobalFunctionService } from '../../../services/global-function.service';
+import { NoDataComponent } from '../../no-data/no-data.component';
+import { CommonModule } from '@angular/common';
 declare var bootstrap: any;
 
 @Component({
   selector: 'web-wishlist',
-  imports: [],
+  imports: [NoDataComponent,CommonModule],
   templateUrl: './wishlist.html',
   styleUrl: './wishlist.scss'
 })
