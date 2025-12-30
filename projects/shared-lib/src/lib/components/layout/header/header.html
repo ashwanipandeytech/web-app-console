@@ -1,5 +1,5 @@
 <!--------------- header-section --------------->
-<header id="header" class="header">
+<!-- <header id="header" class="header">
   <div class="header-center-section d-flex py-lg-4">
     <div class="container">
       <div class="header-center py-2">
@@ -31,8 +31,7 @@
     <div class="container">
       <div class="header-nav">
         <div class="header-nav-menu-section flex-grow-1">
-          <div class="dropdown category-menu-section position-relative">
-            <!-- <div class="empty position-fixed" onclick="tooglmenu()"></div> -->
+          <div class="dropdown category-menu-section position-relative">            
             <button
               type="button"
               class="dropdown-btn"
@@ -80,7 +79,6 @@
                 </svg>
               </span>
             </button>
-            <!-- <div class=" category-dropdown"> -->
             <ul
               class="dropdown-menu category-list w-100 rounded-0 border-0"
               style="top: -2px !important"
@@ -129,7 +127,6 @@
               </li>
               }
             </ul>
-            <!-- </div> -->
           </div>
 
           <div class="header-nav-menu flex-grow-1">
@@ -143,21 +140,6 @@
               </li>
               }
 
-              <!-- <li>
-                <a href="/" class="nav-link fs-4 px-4">
-                  <span class="list-text">Home</span>
-                </a>
-              </li>
-              <li>
-                <a href="/category" class="nav-link fs-4 px-4">
-                  <span class="list-text">All Categories</span>
-                </a>
-              </li>
-              <li>
-                <a href="/contact-us" class="nav-link fs-4 px-4">
-                  <span class="list-text">Contact</span>
-                </a>
-              </li> -->
             </ul>
           </div>
         </div>
@@ -174,13 +156,80 @@
       </button>
     </div>
 
-    <!-- Search -->
     <div class="search-bar">
       <input type="text" class="form-control" placeholder="Search" />
     </div>
   </div>
-</header>
+</header> -->
 <!--------------- header-section-end --------------->
+
+<!-- HEADER -->
+<nav class="navbar navbar-expand-lg border-bottom bg-white py-2">
+  <div class="container-fluid align-items-center">
+
+    <!-- Logo -->
+    <a class="navbar-brand fw-bold text-purple" href="#">zepto</a>
+
+    <!-- Location -->
+    <div class="dropdown me-3 d-none d-lg-block">
+      <button class="btn btn-link text-dark dropdown-toggle text-decoration-none" data-bs-toggle="dropdown">
+        Select Location
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Delhi</a></li>
+        <li><a class="dropdown-item" href="#">Mumbai</a></li>
+      </ul>
+    </div>
+
+    <!-- Search -->
+    <form class="flex-grow-1 mx-3">
+      <div class="input-group">
+        <span class="input-group-text bg-white">
+          <i class="bi bi-search"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search for “cheese slices”"
+        />
+      </div>
+    </form>
+
+    <!-- Right Icons -->
+    <div class="d-flex align-items-center gap-4">
+      <div class="text-center small cursor-pointer">
+        <i class="bi bi-person fs-5"></i><br />
+        Login
+      </div>
+      <div class="text-center small cursor-pointer">
+        <i class="bi bi-cart fs-5"></i><br />
+        Cart
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+<!-- CATEGORY BAR -->
+<div class="border-bottom bg-white">
+  <div class="container-fluid">
+    <ul class="nav category-nav gap-4 py-2 flex-nowrap overflow-auto">
+      <li class="nav-item">
+        <a class="nav-link active" href="#">All</a>
+      </li>
+      <li class="nav-item"><a class="nav-link" href="#">Cafe</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Toys</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Fresh</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Electronics</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Mobiles</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Beauty</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Fashion</a></li>
+    </ul>
+  </div>
+</div>
+
+
 
 <ng-template #cart>
   <a routerLink="/cart" class="cart-item position-relative opacity-75" 
