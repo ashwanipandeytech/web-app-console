@@ -37,13 +37,13 @@ $spartan: "League Spartan", sans-serif;
 
 // (shop-buttons)
 @mixin shopBtn(
-  $padding: 1.2rem 3.4rem,
-  $margin: 1rem 0,
+  $padding: 6px 14px,
+  $margin:  0,
   $align: center,
   $border: 0.4rem,
   $display: inline-block,
   $btn-bg: $theme-color,
-  $text: 1.6rem,
+  $text: 16px,
   $font: 600,
   $position: relative,
   $bf-color: $primary-color
