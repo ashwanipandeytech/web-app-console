@@ -50,6 +50,7 @@ ngOnInit() {
   );
       }
     }
+    window.scrollTo(0,0);
   });
 
   // this.productId = this.route.snapshot.paramMap.get('id');

@@ -117,7 +117,7 @@ export class ProductDetails {
     // }
     let cartPayload = {
       product_id:this.selectedProduct.id,
-      quantity:this.quantity
+      quantity:1
     }
     this.dataService.post(cartPayload, 'cart')
       .pipe(
@@ -129,16 +129,31 @@ export class ProductDetails {
       )
       .subscribe((res: any) => {
         console.log('Response:', res);
-        if (res.success ==true) {
-          this.globalService.showMsgSnackBar(res);
-          // if (action == 'buy') {
-          // this.router.navigate(['/checkout']);
-          //   return;
-          // }
-          // this.router.navigate(['/cart']);
-        // window.location.reload();
+         if (res.headers) {
+          let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
+          //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
+          if (nonLoggedInUserToken) {
+            localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+          }
+          this.globalService.showMsgSnackBar(res.body);
         }
-        else if (res.error && res.error.message) {
+         if (res.success == true) {
+         // console.info('herer add to cart')
+            this.globalFunctionService.getCount();
+          this.globalService.showMsgSnackBar(res);
+          this.cd.detectChanges();
+          // this.globalFunctionService.getCount();
+        }
+        // if (res.success ==true) {
+        //   this.globalService.showMsgSnackBar(res);
+        //   // if (action == 'buy') {
+        //   // this.router.navigate(['/checkout']);
+        //   //   return;
+        //   // }
+        //   // this.router.navigate(['/cart']);
+        // // window.location.reload();
+        // }
+       else if (res.error && res.error.message) {
           this.globalService.showMsgSnackBar(res.error);
         }
 
@@ -182,17 +197,17 @@ export class ProductDetails {
     
   }
   
-  increase() {
-    this.quantity++;
-    this.calculatePrice();
-  }
+  // increase() {
+  //   this.quantity++;
+  //   this.calculatePrice();
+  // }
 
-  decrease() {
-    if (this.quantity > 1) {
-      this.quantity--;
-      this.calculatePrice();
-    }
-  }
+  // decrease() {
+  //   if (this.quantity > 1) {
+  //     this.quantity--;
+  //     this.calculatePrice();
+  //   }
+  // }
 
   toggleHeart(item:any) {
     this.isWishlisted = !this.isWishlisted;
@@ -232,10 +247,10 @@ export class ProductDetails {
     // }
   }
 
-  calculatePrice(){
-    this.selectedProduct.price_data.regularPrice = this.productPrice * this.quantity;
-    this.cd.detectChanges();
-  }
+  // calculatePrice(){
+  //   this.selectedProduct.price_data.regularPrice = this.productPrice * this.quantity;
+  //   this.cd.detectChanges();
+  // }
 
   back(){
     window.history.back();

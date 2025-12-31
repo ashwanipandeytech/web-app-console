@@ -9,6 +9,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../../../environments/environment';
 import { CheckPlatformService } from '../../services/check-platform.service';
 import { GlobaCommonlService } from '../../services/global-common.service';
+import { SignalService } from '../../services/signal-service';
 declare const google: any;
 
 @Component({
@@ -22,6 +23,8 @@ export class AddAddressModal {
   private dataService:any = inject(DataService);
   private checkPlatform:any = inject(CheckPlatformService);
   private globalService = inject(GlobaCommonlService);
+  private signalService = inject(SignalService);
+
   // selectedAddress: string = '';
   searchText = '';
   suggestions: any[] = [];
@@ -34,6 +37,7 @@ export class AddAddressModal {
   searchQuery: any;
   browser: boolean=true;
   @Input () data:any;
+  @Input () isfrom:any;
   constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDetectorRef,private activeModal:NgbActiveModal){
     this.addAddressForm();
     this.getAddressList();
@@ -90,6 +94,8 @@ if (this.searchQuery == '') {
 
   ngOnInit(){
     console.log('data==>',this.data);
+    console.log('isfrom===>',this.isfrom);
+    
     if (this.data) {
       this.addressForm.patchValue({
       name:this.data.name,
@@ -143,6 +149,8 @@ if (this.searchQuery == '') {
 
           this.selectedAddress = res.display_name;
           console.log('this.selectedAddress===>',this.selectedAddress);
+          this.signalService.currentLocation.set(this.selectedAddress);
+          localStorage.setItem('currentLocation',JSON.stringify(this.selectedAddress))
           this.isNewAddress = true;
           this.cd.detectChanges();
           
@@ -187,6 +195,10 @@ if (this.searchQuery == '') {
 
   submitForm() {
     if (this.addressForm.valid) {
+       let userData: any = localStorage.getItem('user');
+    //  else {
+    //   this.isLoggedIn = true;
+    // }
       console.log(this.addressForm.value);
       let fullAddrress = this.addressForm.value;
       if (this.lat && this.lng) {
@@ -200,6 +212,18 @@ if (this.searchQuery == '') {
     
       fullAddrress.label = this.addressForm.value.type;
       fullAddrress.is_default=true;
+console.log('userData==>',userData.token);
+
+      if (userData.token == undefined) {
+       localStorage.removeItem('tempAddress');
+       localStorage.setItem('tempAddress',JSON.stringify(fullAddrress));
+       this.closePopup('success');
+      // this.globalService.showMsgSnackBar(res);
+      // this.getAddressList();
+       this.cd.detectChanges();
+       return;
+          }
+
        this.dataService.post(fullAddrress, 'addresses')
             .pipe(
               catchError(err => {

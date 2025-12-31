@@ -7,10 +7,10 @@ export class SignalService {
 // user = signal<any>(null);
   // signal to store counts
   allCounts = signal<any>(null);
-  userLoggedIn=signal<any>(false) 
+  userLoggedIn=signal<any>(false);
+  currentLocation = signal<any>(null);
 
   setCounts(data: any) {
-    console.log('data==>',data);
     this.allCounts.set(data);
   }
 

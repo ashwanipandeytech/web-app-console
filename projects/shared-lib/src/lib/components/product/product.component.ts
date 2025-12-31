@@ -1,11 +1,11 @@
 import { ChangeDetectorRef, Component, inject, Input, input, OnInit } from '@angular/core';
-import { productSectionSlideConfig } from 'shared-lib/constants/app-constant';
+import { productSectionSlideConfig } from '../../constants/app-constant';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { Router } from '@angular/router';
-import { GlobaCommonlService } from '../../../../../shared-lib/src/lib/services/global-common.service';
-import { GlobalFunctionService } from 'shared-lib/services/global-function.service';
+import { GlobaCommonlService } from '../../services/global-common.service';
+import { GlobalFunctionService } from '../../services/global-function.service';
 
 import { CommonModule } from '@angular/common';
 

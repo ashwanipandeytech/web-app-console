@@ -179,18 +179,21 @@
 
     <!-- Location -->
     <div class="dropdown">
-      <button class="btn btn-link text-dark text-decoration-none fs-14 fw-bold" data-bs-toggle="dropdown">
-        Select Location
+      <button class="btn btn-link text-dark text-decoration-none fs-14 fw-bold" data-bs-toggle="dropdown" (click)="openAddressPopup('header')">
+        {{currentAddress}}
+        @if(!currentAddress){
+          <span> Select Location</span>
+        }
         <i class="fa-solid fa-chevron-down fa-sm"></i>
       </button>
-      <ul class="dropdown-menu">
+      <!-- <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="#">Delhi</a></li>
         <li><a class="dropdown-item" href="#">Mumbai</a></li>
-      </ul>
+      </ul> -->
     </div>
 
     <!-- Search -->
-    <form class="flex-grow-1 d-none d-lg-block">
+    <!-- <form class="flex-grow-1 d-none d-lg-block"> -->
       <div class="input-group">
         <span class="input-group-text bg-white">
           <i class="fa-solid fa-magnifying-glass"></i>
@@ -199,9 +202,11 @@
           type="text"
           class="form-control border-start-0 ps-0 fw-semibold"
           placeholder="Search for “cow”"
+           [(ngModel)]="searchText"
+           (keyup.enter)="searchCategory()"
         />
       </div>
-    </form>
+    <!-- </form> -->
 
     <!-- Right Icons -->
     <div class="d-flex align-items-center gap-4">
@@ -222,7 +227,7 @@
     <ul class="nav category-nav gap-4 flex-nowrap overflow-auto">
        @for (item of categoryListData; track $index) {
         <li class="nav-item">
-          <a (click)="gotoCategory(item.id)" class="nav-link fs-18 cursor-pointer fw-semibold">
+          <a  [routerLink]="['/category-details', item.id]" routerLinkActive="active" class="nav-link fs-18 cursor-pointer fw-semibold">
             {{ item.name }}
           </a>
         </li>

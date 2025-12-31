@@ -8,10 +8,11 @@ import { SignalService } from '../../../services/signal-service';
 import { JsonPipe, NgTemplateOutlet, CommonModule  } from '@angular/common';
 import { NgbModal, NgbModalRef, NgbSlide } from '@ng-bootstrap/ng-bootstrap';
 import { Login } from '../../auth/login/login';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'web-header',
-  imports: [RouterLink, RouterModule, JsonPipe, NgTemplateOutlet, NgbSlide, CommonModule],
+  imports: [RouterLink, RouterModule, JsonPipe, NgTemplateOutlet, NgbSlide, CommonModule,FormsModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
@@ -26,14 +27,25 @@ export class Header {
   userName: any;
   categoryListData: any;
   countsList: any;
+   searchText = '';
+  categories: any[] = [];
+  currentAddress: any;
   constructor(private cd: ChangeDetectorRef) {
     this.globalFunctionService.getCount();
-  let allContsSignal=  effect(() => {
+  effect(() => {
      this.isLoggedIn = this.signalService.userLoggedIn();
       if (this.signalService.allCounts() != null) {
         this.countsList = this.signalService.allCounts();
-        this.cd.detectChanges();
       }
+      if (localStorage.getItem('currentLocation')) {
+        this.currentAddress = localStorage.getItem('currentLocation');
+      }
+      else{
+        this.currentAddress = this.signalService.currentLocation();
+      }
+
+      this.cd.detectChanges();
+      
     });
 
     //  effect(() => {
@@ -98,6 +110,24 @@ export class Header {
     });
     // window.location.reload();
   }
+
+  searchCategory() {
+    if (!this.searchText.trim()) return;
+
+    const matchedCategory = this.categoryListData.find((cat: { name: string; }) =>
+      // cat.name.toLowerCase() === this.searchText.toLowerCase()
+      cat.name.toLowerCase().includes(this.searchText.toLowerCase())
+    );
+
+    if (matchedCategory) {
+      // redirect to category page
+      // this.route.navigate(['/category', matchedCategory.id]);
+    this.route.navigate(['/category-details', matchedCategory.id]);
+
+    } else {
+      alert('Category not found');
+    }
+  }
   getCategoryList() {
     this.categoryListData = [];
     this.dataService
@@ -152,11 +182,12 @@ export class Header {
   // }
 
   
-  openAddressPopup(){
+  openAddressPopup(from:any=''){
     const modalRef: NgbModalRef = this.ngbModal.open( AddAddressModal,
     { windowClass:'mobile-modal',
       scrollable: true
     });
+    modalRef.componentInstance.isfrom = from;
     modalRef.result.then((result) => {
       console.log('Modal closed with result:', result);
     }).catch((reason) => {
