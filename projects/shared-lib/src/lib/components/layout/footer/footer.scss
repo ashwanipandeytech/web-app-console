@@ -137,26 +137,10 @@
   }
 }
 
-.footer-bottom-section,
-.footer-social,
-.social-items {
-  @include flexItem($justify: space-between);
-}
-.footer-bottom-section {
-  padding: 1rem 0 2rem 0;
-
-  .footer-social {
-    gap: 1.5rem;
-    line-height: 1.5rem;
-
-    .social-items {
-      gap: 1.5rem;
-    }
-    p {
-      color: rgba(2, 6, 12, 0.92);
-    }
-    .inner-text {
-      color: $theme-color;
+.social-item {
+  .social-icon{
+    &:hover{
+      svg{transform: scale(1.1);}
     }
   }
 }

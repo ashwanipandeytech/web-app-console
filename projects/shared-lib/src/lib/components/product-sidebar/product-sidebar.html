@@ -1,155 +1,208 @@
 <div class="d-flex d-sm-none align-items-center bg-light p-1">
-    <button class="btn btn-light d-flex align-items-center" (click)="back()"> 
-        <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" style="height: 1.5rem; width: 1.5rem; color: black;"><path d="M15.5 19L8.5 12L15.5 5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
-        <span class="d-inline-block" style="height: 24px; line-height: 24px;">Back</span>
-    </button>
+  <button class="btn btn-light d-flex align-items-center" (click)="back()">
+    <svg
+      fill="none"
+      height="24"
+      viewBox="0 0 24 24"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+      style="height: 1.5rem; width: 1.5rem; color: black"
+    >
+      <path
+        d="M15.5 19L8.5 12L15.5 5"
+        stroke="black"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2.5"
+      ></path>
+    </svg>
+    <span class="d-inline-block" style="height: 24px; line-height: 24px">Back</span>
+  </button>
 </div>
 
 <!--------------- blog-tittle-section---------------->
 <section class="p-2 d-none">
-    <div class="container">
-        <div class="blog-bradcrum">
-            <span><a href="/">Home</a></span>
-            <span class="devider px-2">/</span>
-            <span><a href="/category">Category</a></span>
-            <span class="devider px-2">/</span>
-            <span class="text-muted">Cow</span>
-            <!-- </div> -->
-            <!-- <div class="blog-heading text-center flex-grow-1">
+  <div class="container">
+    <div class="blog-bradcrum">
+      <span><a href="/">Home</a></span>
+      <span class="devider px-2">/</span>
+      <span><a href="/category">Category</a></span>
+      <span class="devider px-2">/</span>
+      <span class="text-muted">Cow</span>
+      <!-- </div> -->
+      <!-- <div class="blog-heading text-center flex-grow-1">
                 <h1 class="heading">Category</h1>
             </div> -->
-        </div>
     </div>
+  </div>
 </section>
 <!--------------- blog-tittle-section-end---------------->
 
 <!--------------- products-sidebar-section--------------->
 <section class="product-sidebar pt-2 pt-lg-3 pb-5">
-    <div class="container px-2 px-lg-3">
-        <div class="row g-2 g-lg-3">
-            <div class="col-2 d-none">
-                <div class="sidebar h-100">
-                    <div class="sidebar-section h-100">
-                        <div class="sidebar-wrapper">
-                            <!-- <h3 class="wrapper-heading">Product Categories</h3> -->
-                            <div class="sidebar-item">
-                                @if (this.productListData.length>0) {
-                                    <ul class="sidebar-list">
-                                        @for (control of categoryListData; track $index) {
-                                        <li class="w-100 p-2 p-lg-1">
-                                            <img src="{{control.thumbnail}}" alt="">
-                                            <span class="fw-semibold lh-1">{{control.name}}</span>
-                                        </li>
-                                        }
-                                    </ul>
-                                }
-                                <!-- {{this.productListData.length}} -->
-                                @if (isLoading) {
-                                   <div class="loader position-relative">
-                                    <div class="spinner position-absolute top-50 start-50 translate-middle"></div>
-                                    </div>
-                                }
-                                     <app-no-data
-  *ngIf="!productListData || productListData.length === 0"
-  title="No Category Found"
-  message="There are no data available right now."
-  [showAction]="false"
-  actionText="Reload">
-</app-no-data>
-                            </div>
-                        </div>
-                    </div>
+  <div class="container px-2 px-lg-3">
+    <div class="row g-2 g-lg-3">
+      <div class="col-2 d-none">
+        <div class="sidebar h-100">
+          <div class="sidebar-section h-100">
+            <div class="sidebar-wrapper">
+              <!-- <h3 class="wrapper-heading">Product Categories</h3> -->
+              <div class="sidebar-item">
+                @if (this.productListData.length>0) {
+                <ul class="sidebar-list">
+                  @for (control of categoryListData; track $index) {
+                  <li class="w-100 p-2 p-lg-1">
+                    <img src="{{ control.thumbnail }}" alt="" />
+                    <span class="fw-semibold lh-1">{{ control.name }}</span>
+                  </li>
+                  }
+                </ul>
+                }
+                <!-- {{this.productListData.length}} -->
+                @if (isLoading) {
+                <div class="loader position-relative">
+                  <div class="spinner position-absolute top-50 start-50 translate-middle"></div>
                 </div>
+                }
+                <app-no-data
+                  *ngIf="!productListData || productListData.length === 0"
+                  title="No Category Found"
+                  message="There are no data available right now."
+                  [showAction]="false"
+                  actionText="Reload"
+                >
+                </app-no-data>
+              </div>
             </div>
-            
-            <div class="col-12">
-                <div class="product-sidebar-section">
-                    <div class="row g-2 g-lg-3">
-                        
-                        <!-- Pagination start -->
-                        <div class="col-lg-12">
-                            <div class="product-sorting-section">
-                                <div class="result pe-5">
-                                    <p>Showing <span>1–16 of 66 results</span></p>
-                                </div>
-                                <div class="product-sorting">
-                                    <span class="product-sort">Sort by:</span>
-                                    <div class="dropdown position-static">
-                                        <button class="btn btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span>Default</span>
-                                            <span class="ps-3">
-                                                <svg width="10" height="6" viewbox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 1L5 5L9 1" stroke="#9A9A9A"></path>
-                                                </svg>
-                                            </span>
-                                        </button>
+          </div>
+        </div>
+      </div>
 
-                                        <ul class="dropdown-menu">
-                                            @for (control of categoryListData; track $index) {
-                                            <li><a class="dropdown-item" href="#">{{control.name}}</a></li>
-                                            }
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Pagination end -->
+      <div class="col-12 mt-0">
+        <div class="product-sidebar-section">
+          <div class="row g-2 g-lg-3">
+            <!-- Pagination start -->
+            <div class="col-lg-12">
+              <div class="product-sorting-section py-2">
+                <div class="result pe-5">
+                  <p class="fs-16">Showing <span>1–16 of 66 results</span></p>
+                </div>
+                <div class="product-sorting">
+                  <span class="product-sort fs-16">Sort by:</span>
+                  <div class="dropdown position-static">
+                    <button
+                      class="btn btn-light fs-16 py-1"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >Default
+                      <span class="ps-3">
+                        <svg
+                          width="10"
+                          height="6"
+                          viewbox="0 0 10 6"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M1 1L5 5L9 1" stroke="#9A9A9A"></path>
+                        </svg>
+                      </span>
+                    </button>
 
-                        <!-- Product start -->
-                        <!-- @if (this.productListData.length>0) { -->
+                    <ul class="dropdown-menu py-0 border-0 shadow">
+                      @for (control of categoryListData; track $index) {
+                      <li class="border-bottom opacity-75">
+                        <a class="dropdown-item fs-16" href="#">{{ control.name }}</a>
+                      </li>
+                      }
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Pagination end -->
 
-                            @for (item of productListData; track $index) {
-                            <div class="col-lg-2 col-md-3 col-12">
-                                <div class="product-wrapper me-3 bg-white p-3 rounded-4 d-flex flex-column border">
-                                    <div class="product-img aspect-ratio-1">
-                                        <a (click)="openProduct(item.id)" class="h-100 w-100 overflow-hidden">
-                                            <img [src]="item?.images[0]?.url" alt="product-img" class="h-100">
-                                        </a>
+            <!-- Product start -->
+            <!-- @if (this.productListData.length>0) { -->
 
-                                        <div class="product-cart-items bg-white rounded p-1" 
-                                            (click)="toggleHeart(item)"  
-                                            [ngClass]="{ 'wishlisted': item.is_wishlisted}">
-                                                <i class="fa-heart" [ngClass]="item.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"></i>
-                                        </div>
-                                    </div>
+            @for (item of productListData; track $index) {
+            <div class="col-lg-3 col-md-4 col-12">
+              <div class="product-wrapper me-3 bg-white p-3 rounded-2 d-flex flex-column border">
+                <div class="product-img aspect-ratio-1" style='height: 200px;'>
+                  <a (click)="openProduct(item.id)" class="h-100 w-100 overflow-hidden">
+                    <img [src]="item?.images[0]?.url" alt="product-img" class="h-100 w-100"/>
+                  </a>
 
-                                    <div class="product-info pb-0 h-100">
-                                        <a class="product-btn w-auto shop-btn my-0" (click)="addToCart(item)">Add to Cart</a>
+                  <div
+                    class="product-cart-items bg-white rounded p-1"
+                    (click)="toggleHeart(item)"
+                    [ngClass]="{ wishlisted: item.is_wishlisted }"
+                  >
+                    <i
+                      class="fa-heart"
+                      [ngClass]="item.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"
+                    ></i>
+                  </div>
+                </div>
 
-                                        <div class="product-description d-flex align-items-center justify-content-between w-100 my-2">
-                                            <div class="price">
-                                                <span class="price-cut">₹{{item.price_data.regularPrice}}</span>
-                                                <span class="new-price">₹{{item.price_data.salePrice}}</span>
-                                            </div>
+                <div class="product-info pb-0 h-100">
+                  <a (click)="openProduct(item.id)" class="product-details fs-14 fw-semibold text-dark text-capitalize">{{ item.title }}</a>
+                  <div
+                    class="product-description d-flex align-items-center justify-content-between w-100 my-2">
+                    <div class="price gap-2">
+                      <span class="price-cut fs-16">₹{{ item.price_data.regularPrice }}</span>
+                      <span class="new-price fs-16">₹{{ item.price_data.salePrice }}</span>
+                    </div>
 
-                                            <div class="ratings">
-                                                <svg width="75" height="18" viewbox="0 0 75 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z" fill="#FFA800"></path>
-                                                    <path d="M22.5 0L24.1839 5.18237H29.6329L25.2245 8.38525L26.9084 13.5676L22.5 10.3647L18.0916 13.5676L19.7755 8.38525L15.3671 5.18237H20.8161L22.5 0Z" fill="#FFA800"></path>
-                                                    <path d="M37.5 0L39.1839 5.18237H44.6329L40.2245 8.38525L41.9084 13.5676L37.5 10.3647L33.0916 13.5676L34.7755 8.38525L30.3671 5.18237H35.8161L37.5 0Z" fill="#FFA800"></path>
-                                                    <path d="M52.5 0L54.1839 5.18237H59.6329L55.2245 8.38525L56.9084 13.5676L52.5 10.3647L48.0916 13.5676L49.7755 8.38525L45.3671 5.18237H50.8161L52.5 0Z" fill="#FFA800"></path>
-                                                    <path d="M67.5 0L69.1839 5.18237H74.6329L70.2245 8.38525L71.9084 13.5676L67.5 10.3647L63.0916 13.5676L64.7755 8.38525L60.3671 5.18237H65.8161L67.5 0Z" fill="#FFA800"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        
-                                        <a (click)="openProduct(item.id)" class="product-details">{{item.title}}</a>
-                                    </div>
-                                </div>
-                            </div>
-                            }
-                         <!-- } -->
-                          <!-- @if (this.productListData.length<=0) {
+                    <div class="ratings mt-0">
+                      <svg
+                        width="75"
+                        height="18"
+                        viewbox="0 0 75 15"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z"
+                          fill="#FFA800"
+                        ></path>
+                        <path
+                          d="M22.5 0L24.1839 5.18237H29.6329L25.2245 8.38525L26.9084 13.5676L22.5 10.3647L18.0916 13.5676L19.7755 8.38525L15.3671 5.18237H20.8161L22.5 0Z"
+                          fill="#FFA800"
+                        ></path>
+                        <path
+                          d="M37.5 0L39.1839 5.18237H44.6329L40.2245 8.38525L41.9084 13.5676L37.5 10.3647L33.0916 13.5676L34.7755 8.38525L30.3671 5.18237H35.8161L37.5 0Z"
+                          fill="#FFA800"
+                        ></path>
+                        <path
+                          d="M52.5 0L54.1839 5.18237H59.6329L55.2245 8.38525L56.9084 13.5676L52.5 10.3647L48.0916 13.5676L49.7755 8.38525L45.3671 5.18237H50.8161L52.5 0Z"
+                          fill="#FFA800"
+                        ></path>
+                        <path
+                          d="M67.5 0L69.1839 5.18237H74.6329L70.2245 8.38525L71.9084 13.5676L67.5 10.3647L63.0916 13.5676L64.7755 8.38525L60.3671 5.18237H65.8161L67.5 0Z"
+                          fill="#FFA800"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
+
+                  <button type="button" class="product-btn w-auto shop-btn mt-auto" (click)="addToCart(item)">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+            }
+            <!-- } -->
+            <!-- @if (this.productListData.length<=0) {
                                    <div class="container text-center py-4 text-muted display-1">
                                     <i class="fa-solid fa-circle-info me-2"></i>
                                     NO DATA AVAILABLE
                                     </div>
                                 } -->
-                        <!-- Product end -->
-                    </div>
-                </div>
-            </div>
+            <!-- Product end -->
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </section>
 <!--------------- products-sidebar-section-end--------------->
