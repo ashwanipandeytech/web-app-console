@@ -1,191 +1,205 @@
 <!--------------- login-section --------------->
-<section class="login product footer-padding">
-    <div class="container">
-        <div class="login-section">
-            <div class="row align-items-center">
-                <div class="col-md-6 col-12">
-                    Login Credential<span (click)="loginWithGoogle()">s:</span><br/>
-                    Email: demo-web@gmail.com <br/>
-                    Password: Demo@12345
-                    @if (!isSignUp) {
-                    <div class="login-form" [formGroup]="loginform">
-                        <div class="review-form  box-shadows">
-                            <div class="review-form-text">
-                                <h5 class="comment-title">Log In</h5>
-                                <img src="../images/homepage-one/vector-line.png" alt="img">
-                            </div>
-                            <div class="review-inner-form ">
-                                <div class="review-form-name mb-3">
-                                    <label for="email" class="form-label fw-semibold">Email Address**</label>
-                                    <input formControlName="email" id="email" class="form-control" placeholder="Email">
+<div class="modal-header border-0 pb-0 pt-2">
+    <i class="fa-solid fa-xmark ms-auto cursor-pointer close-btn" data-bs-dismiss="modal" aria-label="Close"></i>
+</div>
+<section class="modal-body">
+  <!-- Login Credential<span (click)="loginWithGoogle()">s:</span><br/>
+    Email: demo-web@gmail.com <br/>
+    Password: Demo@12345 -->
+  @if (!isSignUp) {
+    <ng-container [formGroup]="loginform">
+        <div class="text-center mb-3">
+            <small class="text-muted">Please enter your details</small>
+            <h3 class="fw-bold title">Welcome back</h3>
+        </div>
 
-                                    <!-- VALIDATION DISPLAYED HERE -->
-                                    @if (submitted && f['email'].errors) {
-                                    <div class="text-danger fs-14 mb-2">
-                                        @if (f['email'].errors['required']) {
-                                        <small>Email is required.</small>
-                                        }
-                                        @if (f['email'].errors['email']) {
-                                        <small>Please enter a valid email address.</small>
-                                        }
-                                    </div>
-                                    }
-                                </div>
-
-                                <div class="review-form-name mb-3">
-                                    <label for="password" class="form-label fw-semibold">Password*</label>
-                                    <input formControlName="password" type="password" id="password" class="form-control" placeholder="password">
-                                    
-                                    <!-- VALIDATION DISPLAYED HERE -->
-                                    @if (submitted && f['password'].errors) {
-                                        <div class="text-danger fs-14 mb-2">
-                                        @if (f['password'].errors['required']) {
-                                            <small>Password is required.</small>
-                                        }
-                                        @if (f['password'].errors['minlength']) {
-                                            <small>Password must be at least 6 characters.</small>
-                                        }
-                                        </div>
-                                    }
-                                </div>
-
-                                <div class="review-form-name checkbox mb-3">
-                                    <div class="checkbox-item cursor-pointer">
-                                        <input type="checkbox" id="remember">
-                                        <label class="address mb-0" for="remember">Remember Me</label>
-                                    </div>
-                                    <!-- <div class="forget-pass">
-                                        <button type="btn">Forgot password?</button>
-                                    </div> -->
-                                </div>
-                            </div>
-                            <div class="login-btn text-center">
-                                <!-- <a class="shop-btn primary" style="background-color: rgb(228, 64, 64);" (click)="loginWithGoogle()">Google</a> -->
-                                <!-- <a style="cursor: pointer;" (click)="loginWithGoogle()"></a> -->
-
-                                <a class="shop-btn" (click)="loginUser()">Log In</a>
-                                <span class="shop-account">Dont't have an account ?<a (click)="enableDisableSignUp()" class="cursor-pointer">Sign Up Free</a></span>
-                            </div>
-                        </div>
-                    </div>
-                }
-
-
-                    @if (isSignUp) {
-                      <div class="signup-form" [formGroup]="signupForm">
-                        <div class="review-form box-shadows">
-                            <div class="review-form-text">
-                                <h5 class="comment-title">SignUp</h5>
-                                <img src="../images/homepage-one/vector-line.png" alt="img">
-                            </div>
-
-                            <div class="review-inner-form">
-                                <!-- Name -->
-                                <div class="review-form-name">
-                                    <label for="name" class="form-label fw-semibold">Name</label>
-                                    <input formControlName="name" id="name" class="form-control" placeholder="Name">
-
-                                    <!-- VALIDATION DISPLAYED HERE -->
-                                    @if (submittedRegister && s['name'].errors) {
-                                    <div class="text-danger fs-14 mb-2">
-                                        @if (s['name'].errors['required']) {
-                                        <small>Name is required.</small>
-                                        }
-                                    </div>
-                                    }
-                                </div>
-
-                                <!-- Email -->
-                                <div class="review-form-name">
-                                    <label for="email" class="form-label fw-semibold">Email Address**</label>
-                                    <input formControlName="email" id="email" class="form-control" placeholder="Email">
-                                    
-                                    <!-- VALIDATION DISPLAYED HERE -->
-                                    @if (submittedRegister && s['email'].errors) {
-                                    <div class="text-danger fs-14 mb-2">
-                                        @if (s['email'].errors['required']) {
-                                        <small>Email is required.</small>
-                                        }
-                                        @if (s['email'].errors['email']) {
-                                        <small>Please enter a valid email address.</small>
-                                        }
-                                    </div>
-                                    }
-                                </div>
-
-                                <!-- Phone -->
-                                <div class="review-form-name">
-                                    <label for="phone" class="form-label fw-semibold">Phone</label>
-                                    <input formControlName="phone" id="phone" class="form-control" placeholder="phone no.">
-                                    
-                                    <!-- VALIDATION DISPLAYED HERE -->
-                                    @if (submittedRegister && s['phone'].errors) {
-                                    <div class="text-danger fs-14 mb-2">
-                                        @if (s['phone'].errors['pattern']) {
-                                        <small>Phone number must be exactly 10 digits.</small>
-                                        }
-                                    </div>
-                                    }
-                                </div>
-
-                                <!-- Password -->
-                                <div class="review-form-name">
-                                    <label for="password" class="form-label fw-semibold">Password*</label>
-                                    <input formControlName="password" type="password" id="password" class="form-control" placeholder="password">
-                                    
-                                    <!-- VALIDATION DISPLAYED HERE -->
-                                    @if (submittedRegister && s['password'].errors) {
-                                    <div class="text-danger fs-14 mb-2">
-                                        @if (s['password'].errors['required']) {
-                                        <small>Password is required.</small>
-                                        }
-                                    </div>
-                                    }
-                                </div>
-
-                                <!-- Confirm Password -->
-                                <div class="review-form-name">
-                                    <label for="confirmPassword" class="form-label fw-semibold">Confirm Password*</label>
-                                    <input formControlName="password_confirmation" type="password" id="confirmPassword" class="form-control" placeholder="confirm password">
-                                    
-                                    <!-- VALIDATION DISPLAYED HERE -->
-                                    @if (submittedRegister && s['password_confirmation'].errors) {
-                                    <div class="text-danger fs-14 mb-2">
-                                        @if (s['password_confirmation'].errors['required']) {
-                                        <small>Confirm Password is required.</small>
-                                        }
-                                    </div>
-                                    }
-                                </div>
-
-                                <!-- Remember -->
-                                <div class="review-form-name checkbox">
-                                    <div class="checkbox-item cursor-pointer">
-                                        <input type="checkbox" formControlName="remember" id="remember">
-                                        <span class="address mb-0 cursor-pointer" for="remember">Remember Me</span>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="login-btn text-center">
-                                <button class="shop-btn" (click)="register()">Register</button>
-                                <span class="shop-account">
-                                    Have an account ?
-                                    <a (click)="enableDisableSignUp()" class="cursor-pointer">Login</a>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Email -->
+        <div class="mb-4 position-relative">
+            <input formControlName="email" id="email" class="form-control" placeholder="Email address" />
+            @if (submitted && f['email'].errors) {
+                <div class="text-danger fs-14 position-absolute">
+                    @if (f['email'].errors['required']) {
+                    <small>Email is required.</small>
+                    } @if (f['email'].errors['email']) {
+                    <small>Please enter a valid email address.</small>
                     }
                 </div>
-                <div class="col-md-6 d-none d-sm-block">
-                    <div class="login-img">
-                        <img src="../../../../images/homepage-one/account-img.webp" alt="img">
-                    </div>
+                }
+        </div>
+
+        <!-- Password -->
+        <div class="mb-4 position-relative">
+            <input formControlName="password" [type]="showCurrentPassword?'text':'password'" id="password" class="form-control" placeholder="Password"/>
+            @if (loginform.value.password.length>1) {
+                <span role="button" class="password-show position-absolute" (click)="passwordToggle('reEnter')">
+                    <i class="fa-solid fa-xs" [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                </span>
+            }
+            @if (submitted && f['password'].errors) {
+                <div class="text-danger fs-14 position-absolute">
+                    @if (f['password'].errors['required']) {
+                    <small>Password is required.</small>
+                    } @if (f['password'].errors['minlength']) {
+                    <small>Password must be at least 6 characters.</small>
+                    }
                 </div>
+                }
+        </div>
+
+        <!-- Remember / Forgot -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="remember">
+            <label class="form-check-label small cursor-pointer fs-14" for="remember">
+                Remember Me
+            </label>
+            </div>
+            <a href="#" class="small text-primary fw-semibold text-decoration-none hover-underline fs-14">
+            Forgot password
+            </a>
+        </div>
+
+        <!-- Sign In Button -->
+        <button class="shop-btn w-100 mb-3" (click)="loginUser()">
+            Log in
+        </button>
+
+        <!-- Google Button -->
+        <button class="btn btn-outline-secondary rounded-2 py-2 w-100 d-flex align-items-center justify-content-center gap-2 mb-2">
+            <img
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            width="20"
+            alt="Google"
+            />
+            Sign in with Google
+        </button>
+
+        <!-- Footer -->
+        <p class="text-center small text-muted mb-0 fs-16">
+            Don’t have an account?
+            <a class="text-primary fw-semibold text-decoration-none cursor-pointer hover-underline" (click)="enableDisableSignUp()">
+            Sign up
+            </a>
+        </p>
+    </ng-container>
+  } 
+  @if (isSignUp) {
+   <ng-container [formGroup]="signupForm">
+        <div class="text-center mb-3">
+            <small class="text-muted">Please enter your details</small>
+            <h3 class="fw-bold title">Create your account </h3>
+        </div>
+        
+        <div class="mb-4 position-relative">
+          <input formControlName="name" id="name" class="form-control" placeholder="Name" />
+
+          @if (submittedRegister && s['name'].errors) {
+          <div class="text-danger fs-14 position-absolute">
+            @if (s['name'].errors['required']) {
+            <small>Name is required.</small>
+            }
+          </div>
+          }
+        </div>
+        
+        <div class="mb-4 position-relative">
+          <input formControlName="email" id="email" class="form-control" placeholder="Email" />
+          @if (submittedRegister && s['email'].errors) {
+          <div class="text-danger fs-14 position-absolute">
+            @if (s['email'].errors['required']) {
+            <small>Email is required.</small>
+            } @if (s['email'].errors['email']) {
+            <small>Please enter a valid email address.</small>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="mb-4 position-relative">
+          <input formControlName="phone" id="phone" class="form-control" placeholder="phone no." />
+
+          @if (submittedRegister && s['phone'].errors) {
+          <div class="text-danger fs-14 position-absolute">
+            @if (s['phone'].errors['pattern']) {
+            <small>Phone number must be exactly 10 digits.</small>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="mb-4 position-relative">
+          <input
+            formControlName="password"
+            type="password"
+            id="password"
+            class="form-control"
+            placeholder="password"
+          />
+
+          
+          @if (submittedRegister && s['password'].errors) {
+          <div class="text-danger fs-14 position-absolute">
+            @if (s['password'].errors['required']) {
+            <small>Password is required.</small>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="mb-4 position-relative">
+          <input
+            formControlName="password_confirmation"
+            type="password"
+            id="confirmPassword"
+            class="form-control"
+            placeholder="confirm password"
+          />
+
+          
+          @if (submittedRegister && s['password_confirmation'].errors) {
+          <div class="text-danger fs-14 position-absolute">
+            @if (s['password_confirmation'].errors['required']) {
+            <small>Confirm Password is required.</small>
+            }
+          </div>
+          }
+        </div>
+
+        <!-- Remember / Forgot -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="remember">
+                <label class="form-check-label small cursor-pointer fs-14" for="remember">
+                    Remember Me
+                </label>
             </div>
         </div>
-    </div>
+
+        <!-- Sign In Button -->
+        <button class="shop-btn w-100 mb-3" (click)="register()">
+           Register
+        </button>
+
+        <!-- Google Button -->
+        <button class="btn btn-outline-secondary rounded-2 py-2 w-100 d-flex align-items-center justify-content-center gap-2 mb-1">
+            <img
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            width="20"
+            alt="Google"
+            />
+            Sign up with Google
+        </button>
+
+        <!-- Footer -->
+        <p class="text-center small text-muted mb-0 fs-16">
+            Have an account ?
+            <a class="text-primary fw-semibold text-decoration-none cursor-pointer hover-underline" (click)="enableDisableSignUp()">
+            Login
+            </a>
+        </p>
+
+  </ng-container>
+
+  }
 </section>
 <!--------------- login-section-end --------------->

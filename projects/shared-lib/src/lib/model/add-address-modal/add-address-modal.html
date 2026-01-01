@@ -1,23 +1,27 @@
-<div class="modal-header">
-
+<div class="modal-header py-2">
   @if (isNewAddress && !this.data) {
-  <h1 class="modal-title fs-3" id="addressModalLabel">New Address Details</h1>
-  }
-  @if (this.data) {
-  <h1 class="modal-title fs-3" id="addressModalLabel">Update Address Details</h1>
+  <h1 class="modal-title fs-5" id="addressModalLabel">New Address Details</h1>
+  } @if (this.data) {
+  <h1 class="modal-title fs-5" id="addressModalLabel">Update Address Details</h1>
 
   }
-  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closePopup('')"></button>
+  <button type="button" class="opacity-75" data-bs-dismiss="modal" aria-label="Close" (click)="closePopup('')">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
 </div>
 
 <div class="modal-body">
   @if(isfrom == 'header'){
 
   <ng-container>
-
-    <div class="search-bar">
-      <input type="text" (input)="searchAddress($event)" [value]="searchText" class="form-control"
-        placeholder="Enter address...">
+    <div class="search-bar mb-3">
+      <input
+        type="text"
+        (input)="searchAddress($event)"
+        [value]="searchText"
+        class="form-control"
+        placeholder="Enter address..."
+      />
       <!-- @if (suggestions.length) {
         <select>
           @for (s of suggestions; track $index) {
@@ -30,42 +34,52 @@
     @if (suggestions.length) {
     <ul class="list-group mt-2">
       @for (s of suggestions; track $index) {
-      <li class="list-group-item" aria-current="true" (click)="selectSuggestion(s)"> {{ s.properties.formatted }}</li>
+      <li class="list-group-item" aria-current="true" (click)="selectSuggestion(s)">
+        {{ s.properties.formatted }}
+      </li>
       }
     </ul>
     }
-    {{selectedAddress}}
+    {{ selectedAddress }}
     @if(searchText=='' && selectedAddress == '') {
     <div class="d-flex align-items-center justify-content-between bg-light rounded gap-2 my-2 px-2">
       <div class="d-flex align-items-center gap-2">
         <div class="cDvsYG">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
             <g fill="#101418" fill-rule="evenodd" clip-rule="evenodd">
-              <path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zM10 12a2 2 0 1 1 4 0 2 2 0 0 1-4 0z" />
               <path
-                d="M12.75 2.75a.75.75 0 0 0-1.5 0v2.063c0 .08.013.158.037.231a7.003 7.003 0 0 0-6.247 6.212.758.758 0 0 0-.04-.001H2.75a.75.75 0 0 0 0 1.5H5l.04-.001a7.003 7.003 0 0 0 6.233 6.217.751.751 0 0 0-.023.185v2.103a.75.75 0 0 0 1.5 0v-2.103a.752.752 0 0 0-.023-.185 7.002 7.002 0 0 0 6.234-6.216h2.297a.75.75 0 1 0 0-1.5H18.96a7.003 7.003 0 0 0-6.247-6.21.747.747 0 0 0 .037-.232zm4.75 9.259a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zM10 12a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"
+              />
+              <path
+                d="M12.75 2.75a.75.75 0 0 0-1.5 0v2.063c0 .08.013.158.037.231a7.003 7.003 0 0 0-6.247 6.212.758.758 0 0 0-.04-.001H2.75a.75.75 0 0 0 0 1.5H5l.04-.001a7.003 7.003 0 0 0 6.233 6.217.751.751 0 0 0-.023.185v2.103a.75.75 0 0 0 1.5 0v-2.103a.752.752 0 0 0-.023-.185 7.002 7.002 0 0 0 6.234-6.216h2.297a.75.75 0 1 0 0-1.5H18.96a7.003 7.003 0 0 0-6.247-6.21.747.747 0 0 0 .037-.232zm4.75 9.259a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+              />
             </g>
           </svg>
         </div>
-        <div class="cIArQh">
+        <div class="cIArQh py-2 fs-14">
           <div class="ck03O3">
             <div class="c4ZmYS" data-size="small">
               <span class="nfVqo">Use My Current Location</span>
             </div>
           </div>
-          <div class="ctyATk" data-size="small">Enable your current location for better services</div>
+          <div class="ctyATk" data-size="small">
+            Enable your current location for better services
+          </div>
         </div>
       </div>
       <div class="__78jF3">
-        <button class="btn btn-primary p-2" (click)="getCurrentLocation()">Enable</button>
+        <button class="shop-btn" (click)="getCurrentLocation()">Enable</button>
       </div>
     </div>
     }
   </ng-container>
-  }
-
-
-  @if (isNewAddress) {
+  } @if (isNewAddress) {
   <ng-container>
     <!-- <div class="d-flex align-items-start bg-primary-light rounded p-3 mb-3">
         <img src="assets/images/svg/indictor.svg" alt="" class="pt-1">
@@ -77,83 +91,108 @@
 
     <!-- Reactive Form -->
     <form [formGroup]="addressForm" (ngSubmit)="submitForm()">
-      <div class="row g-4 review-form">
+      <div class="row g-3 review-form">
         <div class="col-12 col-sm-6">
           <!-- NAME -->
           <label class="form-label fw-semibold mb-1">Full name</label>
-          <input type="text" class="form-control" formControlName="name" placeholder="name"
-            [class.is-invalid]="name?.invalid && name?.touched">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="name"
+            placeholder="Name"
+            [class.is-invalid]="name?.invalid && name?.touched"
+          />
           @if(name?.invalid && name?.touched){
-          <div class="text-danger position-absolute">
-            Name is required (min 2 characters)
-          </div>
+          <div class="text-danger position-absolute fs-12">Name is required (min 2 characters)</div>
           }
         </div>
         <div class="col-12 col-sm-6">
           <!-- PHONE -->
           <label class="form-label fw-semibold mb-1">Phone</label>
-          <input type="text" class="form-control" formControlName="phone" placeholder="phone"
-            [class.is-invalid]="phone?.invalid && phone?.touched">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="phone"
+            placeholder="Phone"
+            [class.is-invalid]="phone?.invalid && phone?.touched"
+          />
           @if(phone?.errors?.['required'] && phone?.touched){
-          <div class="text-danger position-absolute">
-            Phone number is required.
-          </div>
-          }
-          @if(phone?.errors?.['pattern'] && phone?.touched){
-          <div class="text-danger mt-1">
-            Enter a valid 10-digit phone number.
-          </div>
+          <div class="text-danger fs-12 position-absolute">Phone number is required.</div>
+          } @if(phone?.errors?.['pattern'] && phone?.touched){
+          <div class="text-danger position-absolute fs-12">Enter a valid 10-digit phone number.</div>
           }
         </div>
         <div class="col-12 col-sm-6">
           <!-- STREET -->
           <label class="form-label fw-semibold mb-1">Street</label>
-          <input type="text" class="form-control" formControlName="street" placeholder="street"
-            [class.is-invalid]="street?.invalid && street?.touched">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="street"
+            placeholder="Street"
+            [class.is-invalid]="street?.invalid && street?.touched"
+          />
           @if(street?.invalid && street?.touched){
-          <div class="text-danger position-absolute">Street is required.</div>
+          <div class="text-danger position-absolute fs-12">Street is required.</div>
           }
         </div>
         <div class="col-12 col-sm-6">
           <!-- CITY -->
           <label class="form-label fw-semibold mb-1">City</label>
-          <input type="text" class="form-control" formControlName="city" placeholder="city"
-            [class.is-invalid]="city?.invalid && city?.touched">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="city"
+            placeholder="City"
+            [class.is-invalid]="city?.invalid && city?.touched"
+          />
           @if(city?.invalid && city?.touched){
-          <div class="text-danger position-absolute">City is required.</div>
+          <div class="text-danger position-absolute fs-12">City is required.</div>
           }
         </div>
         <div class="col-12 col-sm-6">
           <!-- STATE -->
           <label class="form-label fw-semibold mb-1">State</label>
-          <input type="text" class="form-control" formControlName="state" placeholder="state"
-            [class.is-invalid]="state?.invalid && state?.touched">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="state"
+            placeholder="State"
+            [class.is-invalid]="state?.invalid && state?.touched"
+          />
           @if(state?.invalid && state?.touched){
-          <div class="text-danger position-absolute">State is required.</div>
+          <div class="text-danger position-absolute fs-12">State is required.</div>
           }
         </div>
         <div class="col-12 col-sm-6">
           <!-- POSTAL CODE -->
           <label class="form-label fw-semibold mb-1">Postal Code</label>
-          <input type="text" class="form-control" formControlName="postal_code" placeholder="postal_code"
-            [class.is-invalid]="postal_code?.invalid && postal_code?.touched">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="postal_code"
+            placeholder="Postal_code"
+            [class.is-invalid]="postal_code?.invalid && postal_code?.touched"
+          />
           @if(postal_code?.errors?.['required'] && postal_code?.touched){
 
-          <div class="text-danger position-absolute">
-            Postal code is required.
-          </div>
-          }
-          @if(postal_code?.errors?.['pattern'] && postal_code?.touched){
-          <div class="text-danger position-absolute">Enter a valid postal code.</div>
+          <div class="text-danger position-absolute fs-12">Postal code is required.</div>
+          } @if(postal_code?.errors?.['pattern'] && postal_code?.touched){
+          <div class="text-danger position-absolute fs-12">Enter a valid postal code.</div>
           }
         </div>
         <div class="col-12 col-sm-6">
           <!-- COUNTRY -->
           <label class="form-label fw-semibold mb-1">Country</label>
-          <input type="text" class="form-control" formControlName="country" placeholder="country"
-            [class.is-invalid]="country?.invalid && country?.touched">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="country"
+            placeholder="Country"
+            [class.is-invalid]="country?.invalid && country?.touched"
+          />
           @if(country?.invalid && country?.touched){
-          <div class="text-danger position-absolute">Country is required.</div>
+          <div class="text-danger position-absolute fs-12">Country is required.</div>
           }
         </div>
 
@@ -163,41 +202,49 @@
             <label class="form-label fw-semibold mb-1">Address type</label>
 
             <div class="d-flex gap-2">
-              <button type="button" class="btn fs-4" [class.btn-outline-primary]="addressForm.value.type === 'home'"
-                [class.bg-light]="addressForm.value.type !== 'home'" (click)="setAddressType('home')">
+              <button
+                type="button"
+                class="btn fs-14"
+                [class.btn-outline-primary]="addressForm.value.type === 'home'"
+                [class.bg-light]="addressForm.value.type !== 'home'"
+                (click)="setAddressType('home')"
+              >
                 Home
               </button>
 
-              <button type="button" class="btn fs-4" [class.btn-outline-primary]="addressForm.value.type === 'work'"
-                [class.bg-light]="addressForm.value.type !== 'work'" (click)="setAddressType('work')">
+              <button
+                type="button"
+                class="btn fs-12"
+                [class.btn-outline-primary]="addressForm.value.type === 'work'"
+                [class.bg-light]="addressForm.value.type !== 'work'"
+                (click)="setAddressType('work')"
+              >
                 Office
               </button>
 
-              <button type="button" class="btn fs-4" [class.btn-outline-primary]="addressForm.value.type === 'other'"
-                [class.bg-light]="addressForm.value.type !== 'other'" (click)="setAddressType('other')">
+              <button
+                type="button"
+                class="btn fs-14"
+                [class.btn-outline-primary]="addressForm.value.type === 'other'"
+                [class.bg-light]="addressForm.value.type !== 'other'"
+                (click)="setAddressType('other')"
+              >
                 Others
               </button>
             </div>
             @if(type?.invalid && type?.touched){
-            <div class="text-danger position-absolute">
-              Please select an address type.
-            </div>
+            <div class="text-danger position-absolute">Please select an address type.</div>
             }
           </div>
         </div>
       </div>
 
-
       <!-- <button class="btn btn-primary mt-2" type="submit">
     Save Address
   </button> -->
-
     </form>
-
   </ng-container>
-  }
-
-  @if (!isNewAddress) {
+  } @if (!isNewAddress) {
   <button class="btn bg-primary-light text-primary w-100" (click)="newAddress()">
     <i class="bi bi-plus"></i> Add new address
   </button>
@@ -206,10 +253,17 @@
     <p class="fs-14 text-muted mb-2">Saved addresses</p>
     <div class="form-check mb-3">
       @for (item of addressListData; track item.id; let i = $index) {
-      <input class="form-check-input" type="radio" name="selectedAddress" [id]="'addressRadio' + i" [value]="item"
-        (change)="onSelectAddress(item)">
-      <label class="form-check-label fs-14" [for]="'addressRadio' + i">{{item.street}} {{item.city}}, {{item.state}} -
-        {{item.postal_code}}</label>
+      <input
+        class="form-check-input"
+        type="radio"
+        name="selectedAddress"
+        [id]="'addressRadio' + i"
+        [value]="item"
+        (change)="onSelectAddress(item)"
+      />
+      <label class="form-check-label fs-14" [for]="'addressRadio' + i"
+        >{{ item.street }} {{ item.city }}, {{ item.state }} - {{ item.postal_code }}</label
+      >
       }
       <!-- <span class="d-block fs-12 text-muted">Address here 256, Street 65/4, 635412</span> -->
     </div>
@@ -229,12 +283,14 @@
 
 @if (isNewAddress && !this.data) {
 <div class="modal-footer border-0">
-  <button type="button" class="btn fw-semibold shop-btn w-100 py-3 fs-4" (click)="submitForm()">Save address</button>
+  <button type="button" class="shop-btn w-100" (click)="submitForm()">
+    Save address
+  </button>
 </div>
-}
-@if (this.data) {
+} @if (this.data) {
 <div class="modal-footer border-0">
-  <button type="button" class="btn fw-semibold shop-btn w-100 py-3 fs-4" (click)="updateAddress()">Update
-    address</button>
+  <button type="button" class="shop-btn w-100" (click)="updateAddress()">
+    Update address
+  </button>
 </div>
 }

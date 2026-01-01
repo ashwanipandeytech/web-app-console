@@ -757,10 +757,7 @@
     background-color: var(--bs-btn-active-bg);
     border-color: transparent;
 }
-::placeholder{
-  color: #374151;
-  font-size: 14px;
-}
+
 .input-group{
   input{
     &:focus{border-color: #dee2e6;}

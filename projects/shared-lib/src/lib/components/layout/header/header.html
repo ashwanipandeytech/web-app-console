@@ -179,17 +179,13 @@
 
     <!-- Location -->
     <div class="dropdown">
-      <button class="btn btn-link text-dark text-decoration-none fs-14 fw-bold" data-bs-toggle="dropdown" (click)="openAddressPopup('header')">
+      <button class="btn text-nowrap btn-link text-dark text-decoration-none fs-14 fw-bold text-truncate" data-bs-toggle="dropdown" (click)="openAddressPopup('header')" style="max-width: 140px;">
         {{currentAddress}}
         @if(!currentAddress){
           <span> Select Location</span>
+          <i class="fa-solid fa-chevron-down fa-sm ms-1 align-middle"></i>
         }
-        <i class="fa-solid fa-chevron-down fa-sm"></i>
       </button>
-      <!-- <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Delhi</a></li>
-        <li><a class="dropdown-item" href="#">Mumbai</a></li>
-      </ul> -->
     </div>
 
     <!-- Search -->
@@ -223,11 +219,13 @@
 
 <!-- CATEGORY BAR -->
 <div class="border-bottom bg-white">
-  <div class="container-fluid d-flex py-2 align-items-center">
+  <div class="container-fluid d-flex py-0 align-items-center">
     <ul class="nav category-nav gap-4 flex-nowrap overflow-auto">
        @for (item of categoryListData; track $index) {
+        <!-- <pre>{{categoryListData | json}}</pre> -->
         <li class="nav-item">
-          <a  [routerLink]="['/category-details', item.id]" routerLinkActive="active" class="nav-link fs-18 cursor-pointer fw-semibold">
+          <a  [routerLink]="['/category-details', item.id]" routerLinkActive="active" class="nav-link fs-18 cursor-pointer fw-semibold d-flex align-items-center">
+            <img src="{{item.thumbnail}}" alt="catImg" width="24px" height="24px" class="me-1">
             {{ item.name }}
           </a>
         </li>

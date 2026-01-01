@@ -5,14 +5,22 @@ import { catchError, of } from 'rxjs';
 import { GlobalFunctionService } from '../../../services/global-function.service';
 import { AddAddressModal } from '../../../model/add-address-modal/add-address-modal';
 import { SignalService } from '../../../services/signal-service';
-import { JsonPipe, NgTemplateOutlet, CommonModule  } from '@angular/common';
+import { JsonPipe, NgTemplateOutlet, CommonModule } from '@angular/common';
 import { NgbModal, NgbModalRef, NgbSlide } from '@ng-bootstrap/ng-bootstrap';
 import { Login } from '../../auth/login/login';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'web-header',
-  imports: [RouterLink, RouterModule, JsonPipe, NgTemplateOutlet, NgbSlide, CommonModule,FormsModule],
+  imports: [
+    RouterLink,
+    RouterModule,
+    JsonPipe,
+    NgTemplateOutlet,
+    NgbSlide,
+    CommonModule,
+    FormsModule,
+  ],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
@@ -21,38 +29,36 @@ export class Header {
   readonly dataService = inject(DataService);
   private globalFunctionService = inject(GlobalFunctionService);
   private signalService = inject(SignalService);
-  readonly ngbModal = inject(NgbModal)
+  readonly ngbModal = inject(NgbModal);
   isLoggedIn: any = false;
   cartItemCount: any = 0;
   userName: any;
   categoryListData: any;
   countsList: any;
-   searchText = '';
+  searchText = '';
   categories: any[] = [];
   currentAddress: any;
   constructor(private cd: ChangeDetectorRef) {
     this.globalFunctionService.getCount();
-  effect(() => {
-     this.isLoggedIn = this.signalService.userLoggedIn();
+    effect(() => {
+      this.isLoggedIn = this.signalService.userLoggedIn();
       if (this.signalService.allCounts() != null) {
         this.countsList = this.signalService.allCounts();
       }
       if (localStorage.getItem('currentLocation')) {
         this.currentAddress = localStorage.getItem('currentLocation');
-      }
-      else{
+      } else {
         this.currentAddress = this.signalService.currentLocation();
       }
 
       this.cd.detectChanges();
-      
     });
 
     //  effect(() => {
     //   // console.log('Cart count changed:', this.signalService.cartCounts());
     //   if (this.signalService.userLoggedIn() ) {
     //     console.log('this.signalService.userLoggedIn()==>',this.signalService.userLoggedIn());
-        
+
     //     this.countsList = this.signalService.allCounts();
     //     this.cd.detectChanges();
     //   }
@@ -77,7 +83,6 @@ export class Header {
       this.signalService.userLoggedIn.set(true);
       this.userName = JSON.parse(userData).user.name;
       this.cd.detectChanges();
-      
     }
     // this.carList();
     this.getCategoryList();
@@ -102,9 +107,9 @@ export class Header {
       this.route.navigate(['/login']);
     }
   }
- logout() {
+  logout() {
     localStorage.clear();
-    
+
     this.route.navigate(['/']).then(() => {
       window.location.reload();
     });
@@ -114,7 +119,7 @@ export class Header {
   searchCategory() {
     if (!this.searchText.trim()) return;
 
-    const matchedCategory = this.categoryListData.find((cat: { name: string; }) =>
+    const matchedCategory = this.categoryListData.find((cat: { name: string }) =>
       // cat.name.toLowerCase() === this.searchText.toLowerCase()
       cat.name.toLowerCase().includes(this.searchText.toLowerCase())
     );
@@ -122,8 +127,7 @@ export class Header {
     if (matchedCategory) {
       // redirect to category page
       // this.route.navigate(['/category', matchedCategory.id]);
-    this.route.navigate(['/category-details', matchedCategory.id]);
-
+      this.route.navigate(['/category-details', matchedCategory.id]);
     } else {
       alert('Category not found');
     }
@@ -181,29 +185,33 @@ export class Header {
   //   // });
   // }
 
-  
-  openAddressPopup(from:any=''){
-    const modalRef: NgbModalRef = this.ngbModal.open( AddAddressModal,
-    { windowClass:'mobile-modal',
-      scrollable: true
+  openAddressPopup(from: any = '') {
+    const modalRef: NgbModalRef = this.ngbModal.open(AddAddressModal, {
+      windowClass: 'mobile-modal',
+      scrollable: true,
+      centered:true
     });
     modalRef.componentInstance.isfrom = from;
-    modalRef.result.then((result) => {
-      console.log('Modal closed with result:', result);
-    }).catch((reason) => {
-      console.log('Modal dismissed:', reason);
-    });
+    modalRef.result
+      .then((result) => {
+        console.log('Modal closed with result:', result);
+      })
+      .catch((reason) => {
+        console.log('Modal dismissed:', reason);
+      });
   }
-  openLogin(){
-     const modalRef: NgbModalRef = this.ngbModal.open( Login,
-    { windowClass:'mobile-modal',
-      scrollable: true
+  openLogin() {
+    const modalRef: NgbModalRef = this.ngbModal.open(Login, {
+      windowClass: 'mobile-modal login-popup',
+      scrollable: true,
+      centered:true
     });
-    modalRef.result.then((result) => {
-      console.log('Modal closed with result:', result);
-    }).catch((reason) => {
-      console.log('Modal dismissed:', reason);
-    });
+    modalRef.result
+      .then((result) => {
+        console.log('Modal closed with result:', result);
+      })
+      .catch((reason) => {
+        console.log('Modal dismissed:', reason);
+      });
   }
-
 }

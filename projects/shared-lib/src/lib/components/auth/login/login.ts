@@ -1,6 +1,13 @@
-
-import { Component, inject } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, ViewEncapsulation } from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { SignalService } from 'shared-lib';
@@ -8,19 +15,20 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GlobaCommonlService } from 'shared-lib';
 import { GlobalFunctionService } from 'shared-lib';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'web-login',
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './login.html',
-  styleUrl: './login.scss'
+  styleUrl: './login.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class Login {
   public dataService: any = inject(DataService);
   public globalService: any = inject(GlobaCommonlService);
 
   public globalFunctionService: any = inject(GlobalFunctionService);
-  
- 
+
   public signalService: any = inject(SignalService);
   readonly dialog = inject(MatDialog);
   isSignUp = false;
@@ -28,22 +36,26 @@ export class Login {
   loginform!: FormGroup;
   submitted: boolean = false;
   submittedRegister: boolean = false;
-  isCheckoutPage: boolean = false
+  isCheckoutPage: boolean = false;
+  showCurrentPassword: boolean = false;
+  showNewPassword: boolean = false;
+  showConfirmPassword: boolean = false;
   enableDisableSignUp() {
     this.isSignUp = !this.isSignUp;
   }
 
-  constructor(private fb: FormBuilder, private router: Router,
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
 
     private activatedRoute: ActivatedRoute
   ) {
-
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.isCheckoutPage = (params['checkout'] === 'true') ? true : false;
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.isCheckoutPage = params['checkout'] === 'true' ? true : false;
 
       console.log(this.isCheckoutPage);
     });
-    console.info(this.router)
+    console.info(this.router);
     this.signUpForm();
     this.loginForm();
   }
@@ -51,22 +63,24 @@ export class Login {
     this.signupForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.pattern(/^[0-9]{10}$/) // only 10 digits allowed
-      ]
+      phone: [
+        '',
+        [
+          Validators.pattern(/^[0-9]{10}$/), // only 10 digits allowed
+        ],
       ],
 
       // phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       password_confirmation: ['', Validators.required],
-      remember: [false]
+      remember: [false],
     });
   }
   loginForm() {
     this.loginform = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-
-    })
+    });
   }
   register() {
     console.log('this.signupForm==>', this.signupForm.invalid);
@@ -74,11 +88,11 @@ export class Login {
     if (this.signupForm.invalid) {
       // this.signupForm.markAllAsTouched();
       return;
-    }
-    else {
-      this.dataService.post(this.signupForm.value, 'auth/register')
+    } else {
+      this.dataService
+        .post(this.signupForm.value, 'auth/register')
         .pipe(
-          catchError(err => {
+          catchError((err) => {
             console.error('Error:', err);
 
             return of(err);
@@ -90,22 +104,20 @@ export class Login {
             this.globalService.showMsgSnackBar(res);
             localStorage.setItem('user', JSON.stringify(res.data));
             //make a signal for emiting the user state
-           let redirectTo = '/'
-              if (this.isCheckoutPage) {
-                redirectTo = '/checkout'
-              }
+            let redirectTo = '/';
+            if (this.isCheckoutPage) {
+              redirectTo = '/checkout';
+            }
 
-              this.router.navigate([redirectTo]).then(() => {
-                window.location.reload(); // Reload the page after navigating
-              });
-          }
-          else if (res.error && res.error.message) {
+            this.router.navigate([redirectTo]).then(() => {
+              window.location.reload(); // Reload the page after navigating
+            });
+          } else if (res.error && res.error.message) {
             console.log('error  :', res.error.message);
             this.globalService.showMsgSnackBar(res.error);
           }
 
-
-          // if (res.success ==true) {    
+          // if (res.success ==true) {
           //   let id = res.data.id;
           // }
 
@@ -122,11 +134,11 @@ export class Login {
     if (this.loginform.invalid) {
       // this.loginform.markAllAsTouched();
       return;
-    }
-    else {
-      this.dataService.post(this.loginform.value, 'auth/login')
+    } else {
+      this.dataService
+        .post(this.loginform.value, 'auth/login')
         .pipe(
-          catchError(err => {
+          catchError((err) => {
             console.error('Error:', err);
 
             return of(err);
@@ -148,39 +160,35 @@ export class Login {
               // localStorage.setItem('isLoggedIn', JSON.stringify(true));
               //make a signal for emiting the user state
 
-            //  let redirectTo = '/'
-            //   if (this.isCheckoutPage) {
-            //     redirectTo = '/checkout'
-            //   }
+              //  let redirectTo = '/'
+              //   if (this.isCheckoutPage) {
+              //     redirectTo = '/checkout'
+              //   }
 
               // this.router.navigate([redirectTo]).then(() => {
               //   //  window.location.reload(); // Reload the page after navigating
               // });
 
-            //   setTimeout(() => {
-            //  //  window.location.reload();
-            //   }, 500);
-            //   this.globalFunctionService.getCount();
-            //   this.signalService.userLoggedIn.set(true);
-            // }
+              //   setTimeout(() => {
+              //  //  window.location.reload();
+              //   }, 500);
+              //   this.globalFunctionService.getCount();
+              //   this.signalService.userLoggedIn.set(true);
+              // }
             }
-              //make a signal for emiting the user state
-              localStorage.setItem('user', JSON.stringify(res.data));
-              localStorage.setItem('isLoggedIn', JSON.stringify(true));
-              let redirectTo = '/'
-              if (this.isCheckoutPage) {
-                redirectTo = '/checkout'
-              }
-              this.router.navigate([redirectTo]).then(() => {
-                 this.globalFunctionService.getCount();
-                this.signalService.userLoggedIn.set(true);
-                window.location.reload(); // Reload the page after navigating
-              });
-             
-
+            //make a signal for emiting the user state
+            localStorage.setItem('user', JSON.stringify(res.data));
+            localStorage.setItem('isLoggedIn', JSON.stringify(true));
+            let redirectTo = '/';
+            if (this.isCheckoutPage) {
+              redirectTo = '/checkout';
             }
-          
-          else if (res.error && res.error.message) {
+            this.router.navigate([redirectTo]).then(() => {
+              this.globalFunctionService.getCount();
+              this.signalService.userLoggedIn.set(true);
+              window.location.reload(); // Reload the page after navigating
+            });
+          } else if (res.error && res.error.message) {
             console.log('error  :', res.error.message);
             this.globalService.showMsgSnackBar(res.error);
           }
@@ -189,7 +197,7 @@ export class Login {
           //     title: 'Login Successfully',
           //     description: 'Do you want to loggedIn',
           //   }
-          //       if (res.success == true) {    
+          //       if (res.success == true) {
           // let dialogRef = this.dialog.open(DynamicPopup, {
           //     width: '250px',
           //     data: popupData,
@@ -219,10 +227,19 @@ export class Login {
   }
 
   loginWithGoogle() {
-    let endpoint = 'auth/google/redirect?redirect=/landing'
+    let endpoint = 'auth/google/redirect?redirect=/landing';
     this.dataService.get(endpoint).subscribe((res: any) => {
       console.log('res===>', res);
+    });
+  }
 
-    })
+  passwordToggle(type: any) {
+    if (type == 'current') {
+      this.showCurrentPassword = !this.showCurrentPassword;
+    } else if (type == 'new') {
+      this.showNewPassword = !this.showNewPassword;
+    } else if (type == 'reEnter') {
+      this.showConfirmPassword = !this.showConfirmPassword;
+    }
   }
 }
