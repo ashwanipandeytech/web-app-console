@@ -1729,7 +1729,7 @@ input[type=checkbox], input[type=radio]{
 .form-check{
   .form-check-label{
     vertical-align: middle;
-    margin-top: -5px;
+    margin-top: 5px;
   }
   &:hover{
     input[type=checkbox], input[type=radio]{border-color: #000;}
