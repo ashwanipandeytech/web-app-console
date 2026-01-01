@@ -30,7 +30,7 @@
 
               <div class="seller-info border rounded py-3 px-4">
                 <h5 class="heading mb-3 d-flex align-items-center border-bottom pb-3">
-                  <span class="me-auto fs-3">{{addressListData?.type.toUpperCase()}}</span>
+                  <span class="me-auto ">{{addressListData?.type.toUpperCase()}}</span>
                   <button class="btn border" (click)="editAddress(addressListData)"><i class="fa-solid fa-pen-to-square"></i></button>
                   <!-- <button class="btn border ms-3"><i class="fa-solid fa-trash"></i></button> -->
                 </h5>
@@ -294,7 +294,7 @@
                 </div>
                 <hr />
                 <div class="subtotal total">
-                  <h5 class="wrapper-heading fs-3 fw-bold">TOTAL</h5>
+                  <h5 class="wrapper-heading  fw-bold">TOTAL</h5>
                   <h5 class="wrapper-heading fs-2 fw-bold">₹{{ grandTotal }}</h5>
                 </div>
                 <div class="subtotal payment-type">
@@ -348,7 +348,7 @@
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-3" id="changeAddressLabel">Change Address</h1>
+        <h1 class="modal-title " id="changeAddressLabel">Change Address</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">

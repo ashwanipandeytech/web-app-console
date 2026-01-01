@@ -3,7 +3,7 @@
 
 :root {
   --bs-light-rgb: 240, 240, 240;
-  --bs-body-font-size: 1.4rem;
+  --bs-body-font-size:14px;
   --bs-primary-rgb: 0, 147, 221;
 }
 
@@ -18,7 +18,7 @@
 }
 .aspect-ratio-1 { aspect-ratio: 1; }
 
-.blog-bradcrum .devider { padding: 0 1rem; }
+.blog-bradcrum .devider { padding: 10px; }
 
 @media screen and (max-width: 576px) {
     .modal {
@@ -703,11 +703,11 @@
 
 .blog-bradcrum {
   span {
-    font-size: 1.5rem;
+    font-size: 16px;
     color: $heading;
   }
   a {
-    font-size: 1.5rem;
+    font-size: 16px;
     color: $heading;
     font-weight: 300;
     font-family: $inter;
@@ -1208,7 +1208,7 @@ table {
           }
         }
         .text {
-          font-size: 1.4rem;
+          font-size:14px;
           color: $paragraph;
         }
       }
@@ -1741,7 +1741,13 @@ input[type=checkbox], input[type=radio]{
 
 @media screen and (max-width:575px) {
     .slick-carousel{
-    .slick-prev{left: 0;z-index: 1;}
-    .slick-next{right: 0;}
+      .slick-prev{left: 0;z-index: 1;}
+      .slick-next{right: 0;}
+    }
+}
+.hero-section{
+  .slick-slide{
+    max-height: 450px;
+    img{object-fit: cover;}
   }
 }
