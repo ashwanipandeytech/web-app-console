@@ -5,11 +5,23 @@
   word-wrap: break-word;
   overflow-wrap: anywhere;
 }
+
 .seller-info {
-  .heading{
-    .btn{
-      &:hover{background-color: #dee2e6;}
+  .heading {
+    .btn {
+      &:hover {
+        background-color: #dee2e6;
+      }
     }
   }
-  .info-title{width: 90px;}
+
+  .info-title {
+    width: 90px;
+  }
+
+  &.ch {
+    &:hover {
+      box-shadow: 0 1px 12px 2px #dbdbdb;
+    }
+  }
 }
