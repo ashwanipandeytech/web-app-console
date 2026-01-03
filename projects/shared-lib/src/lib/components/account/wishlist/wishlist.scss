@@ -1,16 +1,31 @@
 .wishlist-container {
     min-height: 400px;
-    .wrapper-img{
-    img{max-height: 90px;}
+
+    .wrapper-img {
+        img {
+            height: 70px;
+        }
     }
-    .wrapper-content{
-        .heading{
+
+    .wrapper-content {
+        .heading {
             width: calc(100% - 30px);
             font-size: 14px;
         }
-        .cancel-btn{
-            &:hover{background-color: #f1f2f7;}
+
+        .cancel-btn {
+            &:hover {
+                background-color: #dc35451f;
+            }
         }
-        .config-title{width: 150px;}
+
+        .config-title {
+            width: 150px;
+        }
+    }
+    .wrapper {
+        &:hover {
+            box-shadow: 0 1px 12px 2px #dbdbdb;
+        }
     }
 }

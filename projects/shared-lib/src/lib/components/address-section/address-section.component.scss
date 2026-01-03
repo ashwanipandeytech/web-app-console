@@ -3,8 +3,15 @@
 .address-container{
   .heading{
     .btn{
-      &:hover{background-color: #ccc;}
+      &:hover{background-color: #f1f2f7;}
+        line-height: 0;
+        padding: 14px 10px;
     }
   }
   .info-title{width: 90px;}
+  .seller-info{
+      &:hover {
+          box-shadow: 0 1px 12px 2px #dbdbdb;
+      }
+  }
 }

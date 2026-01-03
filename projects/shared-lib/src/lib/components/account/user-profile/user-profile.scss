@@ -1,6 +1,6 @@
 @use '../../../scss/variable' as *;
 
-.user-profile {margin-top: 2rem;}
+.user-profile {margin-top: 1rem;}
 
 // Wishlist start
 .wishlist-container {
@@ -270,7 +270,7 @@
   @include flexItem($align: flex-start, $gap: 3rem, $justify: flex-start);
 
   .nav-item {
-    width: 23.1rem;
+    width: 16rem;
     border-right: 2px solid #dee2e6;
     padding: 0 0 2rem 0;
     @include flexItem($direction: column, $align: flex-start, $gap: 2rem);

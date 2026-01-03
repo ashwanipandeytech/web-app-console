@@ -1,41 +1,57 @@
 <form [formGroup]="profileForm" (ngSubmit)="submitForm()">
-
   <div class="row">
     <div class="col-12">
       <div class="account-section">
         <div class="review-form w-100">
-
           <div class="account-inner-form">
-            <div class="review-form-name">
+            <div class="review-form-name mb-3">
               <label class="form-label fw-semibold">First Name*</label>
-              <input type="text" class="form-control" placeholder="First Name" formControlName="firstName">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="First Name"
+                formControlName="firstName"
+              />
             </div>
 
-            <div class="review-form-name">
+            <div class="review-form-name mb-3">
               <label class="form-label fw-semibold">Last Name*</label>
-              <input type="text" class="form-control" placeholder="Last Name" formControlName="lastName">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Last Name"
+                formControlName="lastName"
+              />
             </div>
           </div>
 
           <div class="account-inner-form">
-            <div class="review-form-name">
+            <div class="review-form-name mb-3">
               <label class="form-label fw-semibold">Email*</label>
-              <input type="email" class="form-control" placeholder="user@gmail.com" formControlName="email">
+              <input
+                type="email"
+                class="form-control"
+                placeholder="user@gmail.com"
+                formControlName="email"
+              />
             </div>
 
-            <div class="review-form-name">
+            <div class="review-form-name mb-3">
               <label class="form-label fw-semibold">Phone*</label>
-              <input type="number" class="form-control" placeholder="+91 **********" formControlName="phone">
-             @if(phone?.errors?.['pattern'] && phone?.touched){
-          <div class="text-danger mt-1">
-            Enter a valid 10-digit phone number.
-          </div>
-          }
+              <input
+                type="number"
+                class="form-control"
+                placeholder="+91 **********"
+                formControlName="phone"
+              />
+              @if(phone?.errors?.['pattern'] && phone?.touched){
+              <div class="text-danger mt-1">Enter a valid 10-digit phone number.</div>
+              }
             </div>
           </div>
 
           <div class="account-inner-form">
-            <!-- <div class="review-form-name">
+            <!-- <div class="review-form-name mb-3">
               <label class="form-label fw-semibold">Country*</label>
               <select id="country" class="form-select" formControlName="country">
                 <option value="">Choose...</option>
@@ -44,29 +60,39 @@
                 }
               </select>
             </div> -->
-            <div class="review-form-name">
+            <div class="review-form-name mb-3">
               <label class="form-label fw-semibold">Address*</label>
-              <input type="text" class="form-control" placeholder="Enter your Address" formControlName="address">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter your Address"
+                formControlName="address"
+              />
             </div>
           </div>
 
           <div class="account-inner-form city-inner-form">
-            <div class="review-form-name">
+            <div class="review-form-name mb-3">
               <label class="form-label fw-semibold">Town / City*</label>
               <select id="city" class="form-select" formControlName="city">
                 <option value="">Choose...</option>
                 @for(city of cities; track $index){
-                    <option>{{city}}</option>
+                <option>{{ city }}</option>
                 }
               </select>
             </div>
 
-            <div class="review-form-name">
+            <div class="review-form-name mb-3">
               <label class="form-label fw-semibold">Postcode / ZIP*</label>
-              <input type="number" class="form-control" placeholder="0000" formControlName="postcode">
-             @if(postcode?.errors?.['pattern'] && postcode?.touched){
-          <div class="text-danger position-absolute">Enter a valid postal code.</div>
-          }
+              <input
+                type="number"
+                class="form-control"
+                placeholder="0000"
+                formControlName="postcode"
+              />
+              @if(postcode?.errors?.['pattern'] && postcode?.touched){
+              <div class="text-danger position-absolute">Enter a valid postal code.</div>
+              }
             </div>
           </div>
 
@@ -77,7 +103,6 @@
         </div>
       </div>
     </div>
-
 
     <!-- upload profile pic  -->
     <!-- <div class="col-lg-5">
@@ -100,5 +125,4 @@
       </div>
     </div> -->
   </div>
-
 </form>
