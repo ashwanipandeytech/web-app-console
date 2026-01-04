@@ -192,7 +192,7 @@
 }
 .wrapper-subtitle {
   display: block;
-  font-size: 1rem;
+  font-size: 14px;
   margin-bottom: 0;
   text-transform: uppercase;
   font-family: $nunito;
@@ -703,11 +703,11 @@
 
 .blog-bradcrum {
   span {
-    font-size: 16px;
+    font-size: 12px;
     color: $heading;
   }
   a {
-    font-size: 16px;
+    font-size: 12px;
     color: $heading;
     font-weight: 300;
     font-family: $inter;
