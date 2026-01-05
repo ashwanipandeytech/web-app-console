@@ -1,5 +1,10 @@
 @use '../../../scss/variable' as *;
 
+// .nav {
+//   --bs-nav-link-padding-x: .5rem;
+//   --bs-nav-link-padding-y: 0.25rem;
+// }
+
 // .header-top-section {
 //   border-bottom: 1px solid $theme-bg;
 //   background: $theme-bg;
@@ -767,7 +772,7 @@
   .nav-link {
     color: #555;
     transition: color 0.2s ease;
-    text-transform: capitalize;
+    text-transform: uppercase;
     &:hover {color: $theme-color;}
     &.active {
       color: $theme-color;

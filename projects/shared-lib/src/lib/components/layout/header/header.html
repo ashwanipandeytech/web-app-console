@@ -165,8 +165,7 @@
 
 <!-- HEADER -->
 <nav class="navbar navbar-expand-lg border-bottom bg-white py-2">
-  <div class="container-fluid align-items-center gap-lg-4 gap-1 flex-nowrap">
-
+  <div class="container align-items-center gap-lg-4 gap-1 flex-nowrap">
     <!-- Logo -->
     <a routerLink="/">
       <img
@@ -179,17 +178,20 @@
 
     <!-- Location -->
     <div class="dropdown">
-      <button class="btn text-nowrap btn-link text-dark text-decoration-none fs-14 fw-bold text-truncate" data-bs-toggle="dropdown" (click)="openAddressPopup('header')" style="max-width: 140px;">
+      <button class="btn text-nowrap text-dark fs-14 fw-bold" data-bs-toggle="dropdown" 
+      (click)="openAddressPopup('header')"
+      [ngClass]="{'bg-light': !currentAddress}" 
+      style="padding: 10px;">
         {{currentAddress}}
         @if(!currentAddress){
           <span> Select Location</span>
-          <i class="fa-solid fa-chevron-down fa-sm ms-1 align-middle"></i>
+          <i class="fa-solid fa-chevron-down fa-sm ms-1 align-middle ms-2"></i>
         }
       </button>
     </div>
 
     <!-- Search -->
-    <!-- <form class="flex-grow-1 d-none d-lg-block"> -->
+    <form class="flex-grow-1 d-none d-lg-block">
       <div class="input-group">
         <span class="input-group-text bg-white">
           <i class="fa-solid fa-magnifying-glass"></i>
@@ -202,7 +204,7 @@
            (keyup.enter)="searchCategory()"
         />
       </div>
-    <!-- </form> -->
+    </form>
 
     <!-- Right Icons -->
     <div class="d-flex align-items-center gap-4">
@@ -219,13 +221,15 @@
 
 <!-- CATEGORY BAR -->
 <div class="border-bottom bg-white">
-  <div class="container-fluid d-flex py-0 align-items-center">
-    <ul class="nav category-nav gap-4 flex-nowrap overflow-auto">
+  <div class="container d-flex align-items-center px-0">
+    <ul class="nav category-nav gap-1 flex-nowrap overflow-auto">
        @for (item of categoryListData; track $index) {
         <!-- <pre>{{categoryListData | json}}</pre> -->
         <li class="nav-item">
-          <a  [routerLink]="['/category-details', item.id]" routerLinkActive="active" class="nav-link fs-18 cursor-pointer fw-semibold d-flex align-items-center">
+          <a  [routerLink]="['/category-details', item.id]" routerLinkActive="active" class="nav-link fs-14 fw-semibold d-flex align-items-center">
+            <!-- <img src="{{item.thumbnail}}" alt="catImg" width="24px" height="24px" class="me-1"> -->
             <img src="{{baseUrl}}/{{item.thumbnail}}" alt="catImg" width="24px" height="24px" class="me-1">
+
             {{ item.name }}
           </a>
         </li>
@@ -238,7 +242,7 @@
 <ng-template #cart>
   <a routerLink="/cart" class="cart-item position-relative icon-menu">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart-icon lucide-shopping-cart"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-    <span class="fs-13 d-block">Cart</span>
+    <span class="fs-14 d-block">Cart</span>
 
     @if(countsList?.cart_count > 0) {
       <i class="icon-badge position-absolute fs-12 text-center text-white bg-primary rounded-circle">{{
@@ -252,13 +256,13 @@
   @if(!isLoggedIn){
   <a class="icon-menu" (click)="openLogin()">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-icon lucide-user-round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
-     <span class="fs-13 d-block">Login</span>
+     <span class="fs-14 d-block">Login</span>
   </a>
   } @if(isLoggedIn) {
   <div class="dropdown user-account icon-menu">
     <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-check-icon lucide-user-round-check"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path d="m16 19 2 2 4-4"/></svg>
-      <span class="fs-13 d-block">Profile</span>
+      <span class="fs-14 d-block">Profile</span>
     </button>
     <ul
       class="dropdown-menu dropdown-menu-end bg-white border-0 shadow rounded-3 pt-0"
