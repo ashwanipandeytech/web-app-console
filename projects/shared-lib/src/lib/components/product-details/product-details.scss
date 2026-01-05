@@ -9,8 +9,8 @@
 
   @media #{$sm} {
     .product-info-content {
-      padding: 1rem;
-      margin-top: 1.4rem;
+      // padding: 1rem;
+      margin-top: 1.2rem;
       // &-price {
       //   padding: 1.6rem;
       //   background-color: #f2f9ff;
@@ -119,7 +119,7 @@
 
 // product-info-content
 .product-info-content {
-  padding: 2rem 5rem;
+  padding: 1rem;
 
   .wrapper-subtitle {
     color: $paragraph;
@@ -133,7 +133,7 @@
     @include flexItem($justify: flex-start, $gap: 5px);
 
     .text {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       color: $heading;
     }
   }
@@ -144,14 +144,14 @@
     justify-content: flex-start;
 
     .new-price {
-      font-size: 2rem;
+      font-size: 1.4rem;
       color: red;
     }
   }
 
   .content-paragraph {
-    line-height: 3rem;
-    font-size: 1.6rem;
+    line-height: 1.2rem;
+    font-size: 1rem;
     margin-top: 1rem;
 
     .inner-text {
@@ -161,13 +161,13 @@
 
   .product-availability {
     @include flexItem($justify: flex-start, $gap: 1rem);
-    font-size: 1.6rem;
+    font-size: 1.2rem;
     font-weight: 500;
     padding: 10px 15px;
     background-color: $theme-bg;
     border-radius: 1.2rem;
     display: inline-block;
-    margin: 1rem 0;
+    // margin: 1rem 0;
 
     .inner-text {
       color: $theme-color;
@@ -287,10 +287,10 @@
   }
 
   .product-details {
-    margin: 1.5rem 0;
+    margin: .5rem 0;
 
     p {
-      margin-bottom: 1rem;
+      margin-bottom: .5rem;
     }
 
     .inner-text {
@@ -361,8 +361,8 @@ hr {
     gap: .25rem;
 
     .nav-link {
-      font-size: 1.6rem;
-      padding: 1rem 2.4rem;
+      font-size: 1.2rem;
+      padding: .5rem 1.2rem;
       color: $theme-color;
       font-weight: 600;
       margin-bottom: 0;
@@ -380,25 +380,25 @@ hr {
   }
 
   .tab-item {
-    padding: 2rem 0 0 0;
+    padding: 1rem 0 0 0;
 
     .product-intro-section {
-      margin-bottom: 4rem;
+      margin-bottom: 1.2rem;
 
       .product-details {
-        line-height: 2.6rem;
-        margin-top: 1rem;
+        line-height: 1.6rem;
+        margin-top: .5rem;
       }
     }
 
     .product-feature {
       ul li {
         list-style: unset;
-        margin-top: 1rem;
+        margin-top: .25rem;
         margin-left: 2rem;
 
         &::marker {
-          font-size: 1.5rem;
+          font-size: 1rem;
         }
       }
     }
@@ -479,4 +479,9 @@ hr {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+
+.slick-dotted.slick-slider {
+  margin-bottom: 0;
 }

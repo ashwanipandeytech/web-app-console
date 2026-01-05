@@ -21,7 +21,7 @@ export const  promoBannerSlideConfig = {
     ]
   };
  export const productSectionSlideConfig = {
-    slidesToShow: 5.3,
+    slidesToShow: 4.3,
     infinite: false,
     autoplaySpeed: 2000,
     dots: false,
@@ -46,7 +46,7 @@ export const  promoBannerSlideConfig = {
       {
         breakpoint: 540,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,
           centerPadding: '16px',
           arrows: true,
           // dots:true

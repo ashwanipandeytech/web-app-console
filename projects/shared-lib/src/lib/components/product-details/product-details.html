@@ -12,7 +12,7 @@
 <!--------------- products-info-section--------------->
 <section class="product product-info bg-light pt-2">
     <div class="container">
-        <div class="blog-bradcrum d-none d-sm-block pb-2 py-4">
+        <div class="blog-bradcrum d-none d-sm-block pb-2">
             <span><a href="/">Home</a></span>
             <span class="devider">/</span>
             <span><a href="/product-sidebar">Shop</a></span>
@@ -20,7 +20,7 @@
             <span><a href="#" class="fw-semibold">Product Details</a></span>
         </div>
 
-        <div class="product-info-section mt-4">
+        <div class="product-info-section">
             @if (productDetails && productDetails.data.length>0) {
                 @for (item of productDetails.data; track $index) {
                     @if (productId == item.id) {
@@ -44,6 +44,11 @@
                                         </div>
                                     }
                                 </ngx-slick-carousel>
+
+                                <div class="d-flex p-2">
+                                    <a (click)="addToCart()" class="shop-btn flex-grow-1 mb-0 me-3">Add to Cart</a>
+                                    <a (click)="addToCart('buy')" class="shop-btn shop-btn-warning flex-grow-1 mb-0">Buy now</a>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6 mt-0">
@@ -52,7 +57,7 @@
                                     <span class="wrapper-subtitle">{{item.category.name}}</span>
                                     <h3 class="wrapper-heading">{{item.title}}</h3>
 
-                                    <div class="d-flex justify-content-between mt-3">
+                                    <div class="d-flex justify-content-between mt-2">
                                         <div class="price my-0">
                                             <span class="price-cut">₹{{item.price_data.regularPrice}}</span>
                                             <span class="new-price">₹{{item.price_data.salePrice}}</span>
@@ -82,14 +87,11 @@
                                             <span class="text">6 Reviews</span>
                                         </div>
                                     </div>
-                                    <a (click)="addToCart()" class="shop-btn mb-0 me-3">Add to Cart</a>
-                                    <a (click)="addToCart('buy')" class="shop-btn shop-btn-warning mb-0">Buy now</a>
-
                                 </div>
 
                                 
                                 <p class="content-paragraph fs-5 lh-base" [innerHTML]="item.description" style="word-wrap: break-word;"></p>
-                                <hr class="border-dark">
+                                <hr class="border-dark my-2">
                                 <div class="product-availability">
                                     <span>Availabillity : </span>
                                     <span class="inner-text">132 Products Available</span>
@@ -131,7 +133,7 @@
                                     </ul>
                                 </div>
 
-                                <hr class="border-dark">
+                                <hr class="border-dark my-2">
 
                                 <div class="product-details">
                                     <p class="category">Category : <span class="inner-text">{{item.category.name}}</span></p>
@@ -210,7 +212,7 @@
 
                                 <!-- product-feature  -->
                                 <div class="mt-4">
-                                    <h5 class="intro-heading">Features :</h5>
+                                    <h5>Features :</h5>
                                     <ul>
                                         <li>
                                             <p>Lorem ipsum dolor sit amet.</p>
@@ -248,8 +250,8 @@
 
                     <button class="nav-link" id="nav-review-tab" data-bs-toggle="tab" data-bs-target="#nav-review" type="button" role="tab" aria-controls="nav-review" aria-selected="false">Reviews</button>
 
-                    <button class="nav-link" id="nav-seller-tab" data-bs-toggle="tab" data-bs-target="#nav-seller" type="button" role="tab" aria-controls="nav-seller" aria-selected="false">Seller
-                        Info</button>
+                    <!-- <button class="nav-link" id="nav-seller-tab" data-bs-toggle="tab" data-bs-target="#nav-seller" type="button" role="tab" aria-controls="nav-seller" aria-selected="false">Seller
+                        Info</button> -->
 
                 </div>
             </nav>
@@ -257,7 +259,7 @@
 
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0" data-aos="fade-up">
                     <div class="product-intro-section">
-                        <h5 class="intro-heading">Introduction</h5>
+                        <h5>Introduction</h5>
                         <p class="product-details">
                             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
                             has been the industry's standard dummy text ever since the 1500s, when an unknown
@@ -270,7 +272,7 @@
                         </p>
                     </div>
                     <div class="product-feature">
-                        <h5 class="intro-heading">Features :</h5>
+                        <h5>Features :</h5>
                         <ul>
                             <li>
                                 <p>slim body with metal cover</p>
@@ -290,7 +292,7 @@
                 </div>
                 <div class="tab-pane fade" id="nav-review" role="tabpanel" aria-labelledby="nav-review-tab" tabindex="0">
                     <div class="product-review-section" data-aos="fade-up">
-                        <h5 class="intro-heading">Reviews</h5>
+                        <h5>Reviews</h5>
 
                         <div class="review-wrapper">
                             <div class="wrapper">
@@ -329,11 +331,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="nav-seller" role="tabpanel" aria-labelledby="nav-seller-tab" tabindex="0">
+                <!-- <div class="tab-pane fade" id="nav-seller" role="tabpanel" aria-labelledby="nav-seller-tab" tabindex="0">
                     <div class="product-review-section" data-aos="fade-up">
 
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

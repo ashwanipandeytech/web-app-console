@@ -12,6 +12,7 @@ import { DynamicPopup } from '../confirmationPopup/confirmationPopup.component';
 import { GlobaCommonlService } from '../../services/global-common.service';
 import { GlobalFunctionService } from '../../services/global-function.service';
 import { RouterModule } from '@angular/router';
+import { Login } from '../auth/login/login';
 declare const google: any;
 declare const bootstrap: any;
 
@@ -408,4 +409,21 @@ this.cartItemId = id;
   // 'postal_code' => '12345',
   // 'country' => 'IN',
   // 'location' => ['lat' => 12.34, 'lng' => 56.78],
+
+     openLogin() {
+  const modalRef: NgbModalRef = this.ngbModal.open(Login, {
+    windowClass: 'mobile-modal login-popup',
+    scrollable: true,
+    centered: true,
+    backdrop: 'static' // optional
+  });
+
+  modalRef.result
+    .then((result) => {
+      console.log('Modal closed with result:', result);
+    })
+    .catch((reason) => {
+      console.log('Modal dismissed:', reason);
+    });
+}
 }
