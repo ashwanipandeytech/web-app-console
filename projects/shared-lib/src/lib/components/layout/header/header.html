@@ -225,7 +225,7 @@
         <!-- <pre>{{categoryListData | json}}</pre> -->
         <li class="nav-item">
           <a  [routerLink]="['/category-details', item.id]" routerLinkActive="active" class="nav-link fs-18 cursor-pointer fw-semibold d-flex align-items-center">
-            <img src="{{item.thumbnail}}" alt="catImg" width="24px" height="24px" class="me-1">
+            <img src="{{baseUrl}}/{{item.thumbnail}}" alt="catImg" width="24px" height="24px" class="me-1">
             {{ item.name }}
           </a>
         </li>

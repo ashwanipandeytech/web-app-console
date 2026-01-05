@@ -9,6 +9,7 @@ import { JsonPipe, NgTemplateOutlet, CommonModule } from '@angular/common';
 import { NgbModal, NgbModalRef, NgbSlide } from '@ng-bootstrap/ng-bootstrap';
 import { Login } from '../../auth/login/login';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'web-header',
@@ -37,6 +38,7 @@ export class Header {
   countsList: any;
   searchText = '';
   categories: any[] = [];
+  baseUrl = environment.DOMAIN;
   currentAddress: any;
   constructor(private cd: ChangeDetectorRef) {
     this.globalFunctionService.getCount();
@@ -104,7 +106,8 @@ export class Header {
     if (this.isLoggedIn) {
       this.route.navigate(['/user-profile.html']);
     } else {
-      this.route.navigate(['/login']);
+      // this.route.navigate(['/login']);
+      this.openLogin();
     }
   }
   logout() {
@@ -144,8 +147,8 @@ export class Header {
       )
       .subscribe((res: any) => {
         if (res.data) {
-          // console.log('this.categoryListData===>',res.data);
           this.categoryListData = res.data;
+          console.log('this.categoryListData===>',res.data);
           // for (let i = 0; i < res.data.length; i++) {
           //   const element = res.data[i];
           //   // if (element?.thumbnail != null) {

@@ -9,13 +9,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { catchError, of } from 'rxjs';
-import { DataService } from 'shared-lib';
-import { SignalService } from 'shared-lib';
-import { MatDialog } from '@angular/material/dialog';
+import { DataService } from '../../../services/data-service';
+import { SignalService } from '../../../services/signal-service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
-import { GlobaCommonlService } from 'shared-lib';
-import { GlobalFunctionService } from 'shared-lib';
+import { GlobaCommonlService } from '../../../services/global-common.service';
+import { GlobalFunctionService } from '../../../services/global-function.service';
 import { CommonModule } from '@angular/common';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'web-login',
   imports: [FormsModule, ReactiveFormsModule, CommonModule],
@@ -26,11 +27,11 @@ import { CommonModule } from '@angular/common';
 export class Login {
   public dataService: any = inject(DataService);
   public globalService: any = inject(GlobaCommonlService);
-
+  public activeModal = inject(NgbActiveModal);
   public globalFunctionService: any = inject(GlobalFunctionService);
-
   public signalService: any = inject(SignalService);
-  readonly dialog = inject(MatDialog);
+  // readonly dialog = inject(MatDialog);
+  
   isSignUp = false;
   signupForm!: FormGroup;
   loginform!: FormGroup;
@@ -47,7 +48,6 @@ export class Login {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-
     private activatedRoute: ActivatedRoute
   ) {
     this.activatedRoute.queryParams.subscribe((params) => {
@@ -128,6 +128,9 @@ export class Login {
         });
     }
     // console.log("Form Data:", this.signupForm.value);
+  }
+  closePopup(){
+    this.activeModal.dismiss();
   }
   loginUser() {
     this.submitted = true;
