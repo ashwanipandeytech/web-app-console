@@ -1717,14 +1717,12 @@ select{
     .btn-secondary{padding: 6px 14px;}
   }
 }
-input[type=checkbox]{
-  transform: scale(1.2);
+input[type=checkbox], input[type=radio]{
+  cursor: pointer;
   &:focus{box-shadow: none;}
 }
-input[type=radio]{
-  transform: scale(0.8);
-  &:focus{box-shadow: none;}
-}
+input[type=checkbox]{transform: scale(1.2);}
+input[type=radio]{transform: scale(0.8);}
 .cursor-pointer{cursor: pointer;}
 .shop-btn.w-100{padding-block: 10px;}
 .text-primary{color:$theme-color ;}
@@ -1737,6 +1735,7 @@ input[type=radio]{
   .form-check-label{
     vertical-align: middle;
     margin-top: 5px;
+    cursor: pointer;
   }
   &:hover{
     input[type=checkbox], input[type=radio]{border-color: #000;}
