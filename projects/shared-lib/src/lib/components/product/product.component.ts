@@ -103,9 +103,10 @@ export class ProductComponent implements OnInit {
         }
         if (res.success == true) {
          // console.info('herer add to cart')
-            this.globalFunctionService.getCount();
+            // this.globalFunctionService.getCount();
           this.globalService.showMsgSnackBar(res);
           this.globalFunctionService.getCount();
+          this.cd.detectChanges();
         } else if (res.error && res.error.message) {
           this.globalService.showMsgSnackBar(res.error);
         }

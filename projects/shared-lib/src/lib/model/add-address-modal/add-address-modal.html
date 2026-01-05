@@ -91,6 +91,7 @@
 
     <!-- Reactive Form -->
     <form [formGroup]="addressForm" (ngSubmit)="submitForm()">
+    @if(suggestions.length == 0){
       <div class="row g-3 review-form">
         <div class="col-12 col-sm-6">
           <!-- NAME -->
@@ -238,6 +239,7 @@
           </div>
         </div>
       </div>
+    }
 
       <!-- <button class="btn btn-primary mt-2" type="submit">
     Save Address

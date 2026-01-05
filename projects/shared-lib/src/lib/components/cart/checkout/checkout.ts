@@ -40,6 +40,7 @@ export class Checkout {
   addressListData: any;
   AllAddressList: any;
   changedSelectedAddress: any;
+  addressNotfound: boolean=false;
 
   ngOnInit() {
     let userString: any = localStorage.getItem('user'); // this is a string
@@ -260,10 +261,15 @@ export class Checkout {
   placeOrder() {
     if (this.selectedPaymentMethod == false) {
       this.isSelectPaymentMethodInput = false;
+      console.log('this.addressListData==>',this.addressListData);
+      
+      if (!this.addressListData || this.addressListData == undefined) {
+        this.addressNotfound = true;
+      }
       //  if (this.checkoutForm.invalid) {
       //   this.checkoutForm.markAllAsTouched();
       // }
-      // return;
+      return;
     }
     this.addressListData.id;
     this.openCheckout(this.addressListData.id);
@@ -431,10 +437,17 @@ export class Checkout {
 
     })
   }
-  editAddress(address: any) {
+ async editAddress(address: any) {
     let addresss = address;
-    let addressResp = this.globalFunctionService.openAddressPopup(addresss);
-    this.getAddressList();
+     this.globalFunctionService.openAddressPopup(addresss).then((res:any)=>{
+        if (res.result ==='success') {
+          this.cd.detectChanges();
+          this.addressNotfound = false;
+        }
+        this.getAddressList();
+      console.log('addressResp==========>',res);
+    })
+    
     this.cd.detectChanges();
   }
   getSelectedAddress(item: any) {
@@ -444,6 +457,8 @@ export class Checkout {
   }
   savedFinalAddress() {
     this.addressListData = this.changedSelectedAddress;
+    this.addressNotfound = false;
+
     this.closeModal();
     this.cd.detectChanges();
   }

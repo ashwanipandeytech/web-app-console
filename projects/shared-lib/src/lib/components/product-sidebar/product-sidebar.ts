@@ -161,6 +161,7 @@ console.log('this.productListData.length',this.productListData.length);
         if (res.success == true) {
           this.globalService.showMsgSnackBar(res);
           this.globalFunctionService.getCount();
+          this.cd.detectChanges();
         } else if (res.error && res.error.message) {
           this.globalService.showMsgSnackBar(res.error);
         }

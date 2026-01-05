@@ -44,14 +44,15 @@ getCities(country: string, state: string) {
       centered: true
     });
     modalRef.componentInstance.data = data;
-    modalRef.result.then((result) => {
-      console.log('Modal closed with result:', result);
-      return result;
-    }).catch((reason) => {
-      console.log('Modal dismissed:', reason);
-      return reason;
+    return modalRef.result;
+    // modalRef.result.then((result) => {
+    //   console.log('Modal closed with result:', result);
+    //   return result;
+    // }).catch((reason) => {
+    //   console.log('Modal dismissed:', reason);
+    //   return reason;
 
-    });
+    // });
   }
 getCount() {
   this.dataService.get('user/overview-counts').subscribe((res: any) => {

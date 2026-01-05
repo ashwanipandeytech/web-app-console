@@ -195,16 +195,16 @@ if (this.searchQuery == '') {
 
   submitForm() {
     if (this.addressForm.valid) {
-       let userData: any = localStorage.getItem('user');
+       let userData: any = JSON.parse(localStorage.getItem('user') || 'null');
     //  else {
     //   this.isLoggedIn = true;
     // }
       console.log(this.addressForm.value);
       let fullAddrress = this.addressForm.value;
       if (this.lat && this.lng) {
-          fullAddrress.location = [{
+          fullAddrress.location = {
         lat:this.lat,lng:this.lng
-      }]
+      }
       }
       else{
         fullAddrress.location = '';
@@ -212,9 +212,9 @@ if (this.searchQuery == '') {
     
       fullAddrress.label = this.addressForm.value.type;
       fullAddrress.is_default=true;
-console.log('userData==>',userData.token);
+console.log('userData==>',userData);
 
-      if (userData.token == undefined) {
+      if (userData?.token == undefined || userData == null) {
        localStorage.removeItem('tempAddress');
        localStorage.setItem('tempAddress',JSON.stringify(fullAddrress));
        this.closePopup('success');
@@ -260,9 +260,9 @@ console.log('userData==>',userData.token);
       console.log(this.addressForm.value);
       let fullAddrress = this.addressForm.value;
       if (this.lat && this.lng) {
-          fullAddrress.location = [{
+          fullAddrress.location = {
         lat:this.lat,lng:this.lng
-      }]
+      }
       }
       else{
         fullAddrress.location = '';
