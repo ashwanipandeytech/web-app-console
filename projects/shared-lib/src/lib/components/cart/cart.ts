@@ -11,7 +11,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DynamicPopup } from '../confirmationPopup/confirmationPopup.component';
 import { GlobaCommonlService } from '../../services/global-common.service';
 import { GlobalFunctionService } from '../../services/global-function.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Login } from '../auth/login/login';
 declare const google: any;
 declare const bootstrap: any;
@@ -29,7 +29,7 @@ export class CartCommon {
   private dataService: any = inject(DataService);
   private globalService: any = inject(GlobaCommonlService);
   private globalFunctionService = inject(GlobalFunctionService);
-
+  private route = inject(Router); 
   readonly dialog = inject(MatDialog);
   readonly ngbModal = inject(NgbModal);
 
@@ -409,7 +409,14 @@ this.cartItemId = id;
   // 'postal_code' => '12345',
   // 'country' => 'IN',
   // 'location' => ['lat' => 12.34, 'lng' => 56.78],
-
+proccedToCheckout(){
+  if (this.isLoggedIn) {
+    this.route.navigate(['/checkout']);
+  }
+  else{
+    this.openLogin();
+  }
+}
      openLogin() {
   const modalRef: NgbModalRef = this.ngbModal.open(Login, {
     windowClass: 'mobile-modal login-popup',
@@ -421,6 +428,8 @@ this.cartItemId = id;
   modalRef.result
     .then((result) => {
       console.log('Modal closed with result:', result);
+      this.route.navigate(['/checkout']);
+
     })
     .catch((reason) => {
       console.log('Modal dismissed:', reason);

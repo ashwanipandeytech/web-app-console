@@ -64,14 +64,16 @@
                   <div class="spinner position-absolute top-50 start-50 translate-middle"></div>
                 </div>
                 }
-                <app-no-data
-                  *ngIf="!productListData || productListData.length === 0"
-                  title="No Category Found"
-                  message="There are no data available right now."
-                  [showAction]="false"
-                  actionText="Reload"
-                >
-                </app-no-data>
+                @if(!productListData || productListData.length === 0){
+
+                  <app-no-data
+                    title="No Category Found"
+                    message="There are no data available right now."
+                    [showAction]="false"
+                    actionText="Reload"
+                  >
+                  </app-no-data>
+                }
               </div>
             </div>
           </div>
@@ -191,6 +193,16 @@
               </div>
             </div>
             }
+              @if(!productListData || productListData.length === 0){
+
+                  <app-no-data
+                    title="No Product Found"
+                    message="There are no data available right now."
+                    [showAction]="false"
+                    actionText="Reload"
+                  >
+                  </app-no-data>
+                }
             <!-- } -->
             <!-- @if (this.productListData.length<=0) {
                                    <div class="container text-center py-4 text-muted display-1">

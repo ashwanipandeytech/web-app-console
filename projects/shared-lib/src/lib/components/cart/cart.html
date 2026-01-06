@@ -257,7 +257,10 @@
           <!-- <div class="wishlist-btn cart-btn mb-2"> -->
             <!-- <a href="empty-cart.html" class="clean-btn">Clear Cart</a> -->
             <!-- <a href="#" class="shop-btn update-btn">Update Cart</a> -->
-            <a [routerLink]="isLoggedIn ? '/checkout' : 'openLogin()'" class="shop-btn w-100 mb-2"
+            <!-- <a [routerLink]="isLoggedIn ? '/checkout' : 'openLogin()'" class="shop-btn w-100 mb-2"
+              >Proceed to Checkout</a
+            > -->
+              <a (click)="proccedToCheckout()" class="shop-btn w-100 mb-2"
               >Proceed to Checkout</a
             >
           <!-- </div> -->

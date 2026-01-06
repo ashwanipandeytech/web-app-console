@@ -12,6 +12,7 @@ import { catchError, of } from 'rxjs';
 import { GlobaCommonlService } from '../../services/global-common.service';
 import { DataService } from '../../services/data-service';
 import { NoDataComponent } from '../no-data/no-data.component';
+import { GlobalFunctionService } from '../../services/global-function.service';
 declare var bootstrap: any;
 
 @Component({
@@ -26,6 +27,7 @@ export class MyOrdersComponent implements OnInit {
   dataService = inject(DataService);
   private cd = inject(ChangeDetectorRef);
   public globalService: any = inject(GlobaCommonlService);
+  private globalFunctionService = inject(GlobalFunctionService);
   orderListData: any = [];
   orderId: any;
   orderDetailList: any;
@@ -96,11 +98,11 @@ export class MyOrdersComponent implements OnInit {
         console.log('Response:', res);
         if (res.success == true) {
           this.globalService.showMsgSnackBar(res);
+          this.globalFunctionService.getCount();
+          this.cd.detectChanges();
+
         } else if (res.error && res.error.message) {
           this.globalService.showMsgSnackBar(res.error);
-        }
-
-        if (res.success == true) {
         }
       });
   }
