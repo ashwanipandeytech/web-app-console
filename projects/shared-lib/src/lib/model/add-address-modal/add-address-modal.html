@@ -1,6 +1,13 @@
 <div class="modal-header py-2">
   @if (isNewAddress && !this.data) {
-  <h1 class="modal-title fs-5" id="addressModalLabel">New Address Details</h1>
+  <h1 class="modal-title fs-5" id="addressModalLabel">
+    @if(isLogin){
+      New Address Details
+    }
+      @if(!isLogin){
+      Current Location
+    }
+  </h1>
   } @if (this.data) {
   <h1 class="modal-title fs-5" id="addressModalLabel">Update Address Details</h1>
 
@@ -91,7 +98,7 @@
 
     <!-- Reactive Form -->
     <form [formGroup]="addressForm" (ngSubmit)="submitForm()">
-    @if(suggestions.length == 0){
+    @if(suggestions.length == 0 && isLogin){
       <div class="row g-3 review-form">
         <div class="col-12 col-sm-6">
           <!-- NAME -->
@@ -283,7 +290,7 @@
   }
 </div>
 
-@if (isNewAddress && !this.data) {
+@if (isNewAddress && !this.data && isLogin) {
 <div class="modal-footer border-0">
   <button type="button" class="shop-btn w-100" (click)="submitForm()">
     Save address

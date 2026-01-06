@@ -55,15 +55,13 @@ getCities(country: string, state: string) {
     // });
   }
 getCount() {
-  this.dataService.get('user/overview-counts').subscribe((res: any) => {
-    this.countsList = res.data;
-
-    // update signal
-    console.log('res.data=======>',res.data);
-    
-    this.signalService.setCounts(res.data);
-  });
-}
+      let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+      const guestToken = isGuest;
+      this.dataService.get(`user/overview-counts`).subscribe((res: any) => {
+        this.countsList = res.data;
+        this.signalService.setCounts(res.data);
+      });
+    }
 // setCartCount(data: any) {
 //     this.cartCountSource.next(data);
 //   }

@@ -44,7 +44,7 @@ export class ProductComponent implements OnInit {
     };
     if (item.is_wishlisted) {
      item.is_wishlisted = !item.is_wishlisted;
-      this.dataService.delete('wishlist/product', data.product_id).subscribe((res: any) => {
+      this.dataService.delete(`wishlist/product${data.product_id}`).subscribe((res: any) => {
         console.log('wishlist==>', res);
       });
     } else {
@@ -77,9 +77,12 @@ export class ProductComponent implements OnInit {
   }
 
   addToCart(data: any) {
+      let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+      // const guestToken = isGuest;
     let finalData = {
       product_id: data.id,
       quantity: '1',
+      guest_token:isGuest
     };
     // console.log('finalData==.',finalData);
     // return;

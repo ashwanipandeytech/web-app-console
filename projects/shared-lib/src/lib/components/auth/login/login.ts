@@ -82,6 +82,22 @@ export class Login {
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
+  addAddress(address:any){
+     this.dataService.post(address, 'addresses')
+       .pipe(
+         catchError(err => {
+           console.error('Error:', err);
+           return of(null);
+         })
+       )
+       .subscribe((res: any) => {
+         console.log('Response:', res);
+         if (res.success == true) {  
+          this.closePopup(); 
+          //  this.globalService.showMsgSnackBar(res);
+         }
+       });
+  }
   register() {
     console.log('this.signupForm==>', this.signupForm.invalid);
     this.submittedRegister = true;
@@ -89,8 +105,11 @@ export class Login {
       // this.signupForm.markAllAsTouched();
       return;
     } else {
+    let isNonUserToken: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+       let formData = this.signupForm.value;
+      formData.guest_token = isNonUserToken;
       this.dataService
-        .post(this.signupForm.value, 'auth/register')
+        .post(formData, 'auth/register')
         .pipe(
           catchError((err) => {
             console.error('Error:', err);
@@ -103,18 +122,29 @@ export class Login {
           if (res.success == true) {
             this.globalService.showMsgSnackBar(res);
             localStorage.setItem('user', JSON.stringify(res.data));
-            //make a signal for emiting the user state
-            let redirectTo = '/';
-            if (this.isCheckoutPage) {
-              redirectTo = '/checkout';
+            // let tempAddress: any = JSON.parse(localStorage.getItem('tempAddress') || 'null');
+              // if (tempAddress !=null) {
+              //   this.addAddress(tempAddress);
+              // }
+              // let isNonUserToken: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+            if (isNonUserToken) {
+              localStorage.removeItem('GUEST_TOKEN');
             }
+            //make a signal for emiting the user state
+            localStorage.setItem('isLoggedIn', JSON.stringify(true));
+            this.globalFunctionService.getCount();
+            //make a signal for emiting the user state
+            // let redirectTo = '/';
+            // if (this.isCheckoutPage) {
+            //   redirectTo = '/checkout';
+            // }
 
-            this.router.navigate([redirectTo]).then(() => {
-              window.location.reload(); // Reload the page after navigating
-            });
+            // this.router.navigate([redirectTo]).then(() => {
+            //   window.location.reload(); // Reload the page after navigating
+            // });
           } else if (res.error && res.error.message) {
             console.log('error  :', res.error.message);
-            this.globalService.showMsgSnackBar(res.error);
+            // this.globalService.showMsgSnackBar(res.error);
           }
 
           // if (res.success ==true) {
@@ -130,16 +160,22 @@ export class Login {
     // console.log("Form Data:", this.signupForm.value);
   }
   closePopup(){
-    this.activeModal.dismiss();
+    this.activeModal.close({result:'success'});
   }
   loginUser() {
+    let isNonUserToken: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+        // if (isNonUserToken) {
+        //   localStorage.removeItem('GUEST_TOKEN');
+        // }
     this.submitted = true;
     if (this.loginform.invalid) {
       // this.loginform.markAllAsTouched();
       return;
     } else {
+      let formData = this.loginform.value;
+      formData.guest_token = isNonUserToken;
       this.dataService
-        .post(this.loginform.value, 'auth/login')
+        .post(formData, 'auth/login')
         .pipe(
           catchError((err) => {
             console.error('Error:', err);
@@ -151,46 +187,22 @@ export class Login {
           // console.log('Response:', res.error.message);
           if (res.success == true) {
             this.globalService.showMsgSnackBar(res);
-            // localStorage.setItem('user', JSON.stringify(res.data));
-            let isNonUserToken: any = JSON.parse(localStorage.getItem('isNonUser') || 'null');
-            if (isNonUserToken) {
-              localStorage.removeItem('isNonUser');
-
-              // console.log('re===>', res.data);
-              // res.data.token = isNonUserToken;
-              //  localStorage.removeItem('isNonUser');
-              // localStorage.setItem('user', JSON.stringify(res.data));
-              // localStorage.setItem('isLoggedIn', JSON.stringify(true));
-              //make a signal for emiting the user state
-
-              //  let redirectTo = '/'
-              //   if (this.isCheckoutPage) {
-              //     redirectTo = '/checkout'
-              //   }
-
-              // this.router.navigate([redirectTo]).then(() => {
-              //   //  window.location.reload(); // Reload the page after navigating
-              // });
-
-              //   setTimeout(() => {
-              //  //  window.location.reload();
-              //   }, 500);
-              //   this.globalFunctionService.getCount();
-              //   this.signalService.userLoggedIn.set(true);
+              //  let tempAddress: any = JSON.parse(localStorage.getItem('tempAddress') || 'null');
+              // if (tempAddress !=null) {
+              //   this.addAddress(tempAddress);
               // }
-            }
+            // localStorage.setItem('user', JSON.stringify(res.data));
+            // let isNonUserToken: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+            // if (isNonUserToken) {
+              localStorage.removeItem('GUEST_TOKEN');
+
+            // }
             //make a signal for emiting the user state
             localStorage.setItem('user', JSON.stringify(res.data));
             localStorage.setItem('isLoggedIn', JSON.stringify(true));
-            let redirectTo = '/';
-            if (this.isCheckoutPage) {
-              redirectTo = '/checkout';
-            }
-            this.router.navigate([redirectTo]).then(() => {
-              this.globalFunctionService.getCount();
-              this.signalService.userLoggedIn.set(true);
-              window.location.reload(); // Reload the page after navigating
-            });
+            this.globalFunctionService.getCount();
+            this.signalService.userLoggedIn.set(true);
+            this.closePopup();
           } else if (res.error && res.error.message) {
             console.log('error  :', res.error.message);
             this.globalService.showMsgSnackBar(res.error);

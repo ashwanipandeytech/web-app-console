@@ -51,9 +51,12 @@ remove(){
   })
 }
  addToCart(data: any) {
+      let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+
     let finalData = {
       product_id: data.id,
       quantity: '1',
+      guest_token:isGuest
     };
     // console.log('finalData==.',finalData);
     // return;

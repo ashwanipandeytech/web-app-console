@@ -81,10 +81,11 @@ export class MyOrdersComponent implements OnInit {
   // }
   addToCart(item: any) {
     console.log('item==>', item);
-
+      let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
     let cartPayload = {
       product_id: item.product.id,
       quantity: item.quantity,
+      guest_token:isGuest
     };
     this.dataService
       .post(cartPayload, 'cart')
