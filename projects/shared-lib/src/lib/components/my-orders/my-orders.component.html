@@ -4,7 +4,7 @@
   <div class="spinner position-absolute top-50 start-50 translate-middle spinner-border-sm"></div>
 </div>
 }
-<div class="order-container">
+<div class="order-container px-3 px-md-0">
   @for (item of orderListData; track $index) {
   <div
     class="border rounded mb-3 p-3 row wrapper cursor-pointer"
@@ -102,7 +102,7 @@
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
-      <div class="modal-body px-4">
+      <div class="modal-body px-lg-4">
         <div class="order-container d-flex flex-column gap-3">
           @for (item of orderDetailList; track $index) { @if (item.product !=null) {
 

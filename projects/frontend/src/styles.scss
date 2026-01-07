@@ -715,11 +715,11 @@
 
   @media #{$sm} {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 0rem;
 
-    a {
-      font-size: 1.5rem;
-    }
+    // a {
+    //   font-size: 1.5rem;
+    // }
   }
 }
 
@@ -996,7 +996,7 @@ table {
 
     .order-summery {
       .wrapper-heading {
-        font-size: 1.8rem;
+        font-size: 16px;
       }
 
       .subtotal {
@@ -1602,7 +1602,7 @@ select{
 
   @media #{$sm} {
     .review-form {
-      padding: 2rem;
+      padding: 1rem;
       height: auto;
       width: auto;
       .review-form-text {
@@ -1677,11 +1677,12 @@ select{
 
   @media #{$sm} {
     .review-form {
-      padding: 2rem;
+      padding: 1rem;
       height: auto;
     }
     .account-inner-form {
       flex-direction: column;
+      gap: 0;
     }
     .checkbox-item {
       margin: 1rem;
