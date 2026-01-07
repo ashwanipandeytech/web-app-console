@@ -49,7 +49,7 @@ export class CartCommon {
   cartItemId: any;
   constructor(private http: HttpClient, private fb: FormBuilder, private cd: ChangeDetectorRef) {
     this.addAddressForm();
-    this.getAddressList();
+    // this.getAddressList();
     this.carList();
     let userData: any = localStorage.getItem('user');
     if (userData == null) {
@@ -367,8 +367,9 @@ this.cartItemId = id;
   // }
 
   deleteItem() {
+
     this.dataService
-      .delete('cart', this.cartItemId)
+      .delete(`cart/${this.cartItemId}`)
       .pipe(
         catchError((err) => {
           console.error('Error:', err);
@@ -414,10 +415,10 @@ proccedToCheckout(){
     this.route.navigate(['/checkout']);
   }
   else{
-    this.openLogin();
+    this.openLogin('checkout');
   }
 }
-     openLogin() {
+     openLogin(from:any='') {
   const modalRef: NgbModalRef = this.ngbModal.open(Login, {
     windowClass: 'mobile-modal login-popup',
     scrollable: true,
@@ -428,7 +429,20 @@ proccedToCheckout(){
   modalRef.result
     .then((result) => {
       console.log('Modal closed with result:', result);
-      this.route.navigate(['/checkout']);
+      console.log('from==>',from);
+      console.log('result.result===>',result.result);
+      
+      if (result.result == 'success' && from == 'checkout') {
+        this.carList();
+            this.route.navigate(['/checkout']);
+      }
+     else {
+      console.log('result.result=================>');
+      
+        this.carList();
+        this.cd.detectChanges();
+      }
+      // this.route.navigate(['/checkout']);
 
     })
     .catch((reason) => {

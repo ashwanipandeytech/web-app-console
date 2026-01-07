@@ -42,19 +42,37 @@ export class Header {
   currentAddress: any;
   constructor(private cd: ChangeDetectorRef) {
     this.globalFunctionService.getCount();
-    effect(() => {
+  effect(() => {
       this.isLoggedIn = this.signalService.userLoggedIn();
       if (this.signalService.allCounts() != null) {
         this.countsList = this.signalService.allCounts();
       }
-      if (localStorage.getItem('currentLocation')) {
-        this.currentAddress = localStorage.getItem('currentLocation');
-      } else {
-        this.currentAddress = this.signalService.currentLocation();
-      }
+      console.log('effect==>',this.signalService.currentLocation());
+      
+      // if (this.signalService.currentLocation() !=null) {
+      //   this.currentAddress = this.signalService.currentLocation();
+      // }
+      // else{
+      // if (localStorage.getItem('currentLocation')) {
+      //   this.currentAddress = localStorage.getItem('currentLocation');
+      // }
+      // }
 
       this.cd.detectChanges();
     });
+    const address = effect(()=>{
+       if (this.signalService.currentLocation() !=null) {
+        this.currentAddress = this.signalService.currentLocation();
+      }
+      else{
+           if (localStorage.getItem('currentLocation')) {
+        this.currentAddress = localStorage.getItem('currentLocation');
+      }
+      }
+    })
+      //  else {
+      //   this.currentAddress = this.signalService.currentLocation();
+      // }
 
     //  effect(() => {
     //   // console.log('Cart count changed:', this.signalService.cartCounts());
@@ -86,6 +104,9 @@ export class Header {
       this.userName = JSON.parse(userData).user.name;
       this.cd.detectChanges();
     }
+      //       if (localStorage.getItem('currentLocation')) {
+      //   this.currentAddress = localStorage.getItem('currentLocation');
+      // }
     // this.carList();
     this.getCategoryList();
     // this.getCartCount();

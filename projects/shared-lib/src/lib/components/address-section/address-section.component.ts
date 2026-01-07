@@ -50,7 +50,7 @@ private cd = inject(ChangeDetectorRef);
 deleteAddress() {
   console.log('Deleting ID:', this.deleteAddressId);
 
-  this.dataService.delete('addresses',this.deleteAddressId).subscribe((res:any) => {
+  this.dataService.delete(`addresses/${this.deleteAddressId}`).subscribe((res:any) => {
     // uncomment below 
     // if (res.success) {
       // this.globalService.showMsgSnackBar(res);

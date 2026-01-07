@@ -38,9 +38,10 @@ export class AddAddressModal {
   browser: boolean=true;
   @Input () data:any;
   @Input () isfrom:any;
+  isLogin: boolean=false;
   constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDetectorRef,private activeModal:NgbActiveModal){
     this.addAddressForm();
-    this.getAddressList();
+    // this.getAddressList();
 
     let platformName = this.checkPlatform.checkPlatformType();
     console.log('platformName==>',platformName);
@@ -93,9 +94,16 @@ if (this.searchQuery == '') {
   }
 
   ngOnInit(){
-    console.log('data==>',this.data);
-    console.log('isfrom===>',this.isfrom);
-    
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    console.log('user==>',user);
+
+    if ( typeof user === 'object' && Object.keys(user).length <= 0) {
+      this.isLogin = false;
+    }
+    else{
+      this.isLogin = true;
+
+    }
     if (this.data) {
       this.addressForm.patchValue({
       name:this.data.name,
@@ -119,7 +127,8 @@ if (this.searchQuery == '') {
     this.searchQuery ='';
     console.log('    this.searchText==>',    this.searchText);
     // patch values into form values 
-
+          this.signalService.currentLocation.set(this.selectedAddress);
+          localStorage.setItem('currentLocation',JSON.stringify(this.selectedAddress))
      this.addressForm.patchValue({
     street: item.properties.county || item.properties.address_line1 || '',
     city: item.properties.city || item.properties.town || '',
@@ -153,7 +162,9 @@ if (this.searchQuery == '') {
           localStorage.setItem('currentLocation',JSON.stringify(this.selectedAddress))
           this.isNewAddress = true;
           this.cd.detectChanges();
-          
+          if (!this.isLogin) {
+            this.activeModal.close();
+          }
         });
     });
   }
@@ -214,35 +225,42 @@ if (this.searchQuery == '') {
       fullAddrress.is_default=true;
 console.log('userData==>',userData);
 
-      if (userData?.token == undefined || userData == null) {
-       localStorage.removeItem('tempAddress');
-       localStorage.setItem('tempAddress',JSON.stringify(fullAddrress));
-       this.closePopup('success');
-      // this.globalService.showMsgSnackBar(res);
-      // this.getAddressList();
-       this.cd.detectChanges();
-       return;
-          }
+if (userData == null) {
+  localStorage.removeItem('tempAddress');
+  localStorage.setItem('tempAddress',JSON.stringify(fullAddrress));
+  this.closePopup('success');
+  // this.globalService.showMsgSnackBar(res);
+  // this.getAddressList();
+  this.cd.detectChanges();
+  return;
+}
+else{
 
-       this.dataService.post(fullAddrress, 'addresses')
-            .pipe(
-              catchError(err => {
-                console.error('Error:', err);
-      
-                return of(null);
-              })
-            )
-            .subscribe((res: any) => {
-              console.log('Response:', res);
-              if (res.success == true) {   
-                this.closePopup('success');
-                this.globalService.showMsgSnackBar(res);
-                this.getAddressList();
-                this.cd.detectChanges();
+  this.dataService.post(fullAddrress, 'addresses')
+       .pipe(
+         catchError(err => {
+           console.error('Error:', err);
+  
+           return of(null);
+         })
+       )
+       .subscribe((res: any) => {
+         console.log('Response:', res);
+         if (res.success == true) {   
+           this.closePopup('success');
+           this.globalService.showMsgSnackBar(res);
+          //  this.getAddressList();
+           this.cd.detectChanges();
+  
+           // this.router.navigate(['/cart']);
+         }
+       });
+}
 
-                // this.router.navigate(['/cart']);
-              }
-            });
+      // if (userData?.token == undefined || userData == null) {
+      //  return;
+      //     }
+
       console.log('addresss=====>',fullAddrress);
       
     } else {
@@ -282,7 +300,7 @@ console.log('userData==>',userData);
               if (res.success == true) {   
                 this.closePopup('success');
                 this.globalService.showMsgSnackBar(res);
-                this.getAddressList();
+                // this.getAddressList();
                 this.cd.detectChanges();
                 // this.router.navigate(['/cart']);
               }

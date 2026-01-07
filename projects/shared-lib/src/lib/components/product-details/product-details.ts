@@ -111,13 +111,15 @@ export class ProductDetails {
   // }
 
   addToCart(action:any='') {
+      let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
     console.log('localStorage.getItem -====',localStorage.getItem('user'));
     // if (localStorage.getItem('user') == null) {
     //   this.router.navigate(['/login']);
     // }
     let cartPayload = {
       product_id:this.selectedProduct.id,
-      quantity:1
+      quantity:1,
+      guest_token:isGuest
     }
     this.dataService.post(cartPayload, 'cart')
       .pipe(
