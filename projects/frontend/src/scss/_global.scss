@@ -163,7 +163,7 @@ button {
     position: relative;
     // overflow: hidden;
     @media #{$sm} {
-      height: initial;
+      height: initial!important;
     }
 
     img {
@@ -323,7 +323,7 @@ button {
 
   @media #{$sm} {
     h3 {
-      font-size: 2rem;
+      font-size: 20px;
     }
   }
 }

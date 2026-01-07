@@ -87,11 +87,11 @@
         </div>
       </div>
 
-      <div class="col-12 mt-0">
+      <div class="col-12 mt-5">
         <div class="product-sidebar-section">
           <div class="row g-2 g-lg-3">
             <!-- Pagination start -->
-            <div class="col-lg-12">
+            <div class="col-lg-12 d-none">
               <div class="product-sorting-section py-2">
                 <div class="result pe-5">
                   <p class="fs-16">Showing <span>1–16 of 66 results</span></p>
@@ -135,7 +135,7 @@
             <!-- @if (this.productListData.length>0) { -->
 
             @for (item of productListData; track $index) {
-            <div class="col-lg-3 col-md-4 col-12">
+            <div class="col-lg-3 col-md-4 col-6">
               <div class="product-wrapper me-3 bg-white p-3 rounded-2 d-flex flex-column border">
                 <div class="product-img aspect-ratio-1" style='height: 200px;'>
                   <a (click)="openProduct(item.id)" class="h-100 w-100 overflow-hidden">

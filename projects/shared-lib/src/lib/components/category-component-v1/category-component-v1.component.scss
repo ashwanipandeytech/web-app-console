@@ -11,8 +11,9 @@
             overflow-x: auto;
             justify-content: start;
             padding-bottom: 10px;
+            gap: 0;
             > *{width: auto;}
-            .wrapper-details{color: #fff;}
+            .wrapper-details{color: #fff!important;}
         }
     }
 }
