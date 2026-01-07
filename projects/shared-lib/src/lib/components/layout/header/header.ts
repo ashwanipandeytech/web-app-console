@@ -42,23 +42,23 @@ export class Header {
   currentAddress: any;
   constructor(private cd: ChangeDetectorRef) {
     this.globalFunctionService.getCount();
-  const countList =  effect(() => {
+  effect(() => {
       this.isLoggedIn = this.signalService.userLoggedIn();
       if (this.signalService.allCounts() != null) {
         this.countsList = this.signalService.allCounts();
       }
       console.log('effect==>',this.signalService.currentLocation());
       
-      if (this.signalService.currentLocation() !=null) {
-        this.currentAddress = this.signalService.currentLocation();
-      }
+      // if (this.signalService.currentLocation() !=null) {
+      //   this.currentAddress = this.signalService.currentLocation();
+      // }
       // else{
       // if (localStorage.getItem('currentLocation')) {
       //   this.currentAddress = localStorage.getItem('currentLocation');
       // }
       // }
 
-      // this.cd.detectChanges();
+      this.cd.detectChanges();
     });
     const address = effect(()=>{
        if (this.signalService.currentLocation() !=null) {
