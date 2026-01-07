@@ -13,7 +13,7 @@
             <ngx-slick-carousel slickModal="slick-carousel" id="slick-carousel" class="slick-carousel" 
             [config]="productSectionSlideConfig">
                 @for (item of productListData; track $index) {
-                <div class="product-wrapper me-3 bg-white p-3 rounded-2 border d-flex flex-column h-100" ngxSlickItem>
+                <div class="product-wrapper me-md-3 mx-2 bg-white p-3 rounded-2 border d-flex flex-column h-100" ngxSlickItem>
                     <div class="product-img" style="height: 190px;">
                         <a (click)="openProduct(item.id)">
                             <img [src]="item?.images[0]?.url" alt="product-img">
