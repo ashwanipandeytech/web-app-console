@@ -18,12 +18,13 @@
                         <a (click)="openProduct(item.id)">
                             <img [src]="item?.images[0]?.url" alt="product-img">
                         </a>
-                        
-                        <div class="product-cart-items bg-white rounded p-1" 
-                        (click)="toggleHeart(item)"  
-                        [ngClass]="{ 'wishlisted': item.is_wishlisted}">
-                            <i class="fa-heart" [ngClass]="item.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"></i>
-                        </div>
+                        @if(isLogin){
+                            <div class="product-cart-items bg-white rounded p-1" 
+                            (click)="toggleHeart(item)"  
+                            [ngClass]="{ 'wishlisted': item.is_wishlisted}">
+                                <i class="fa-heart" [ngClass]="item.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"></i>
+                            </div>
+                        }
                     </div>
 
                     <div class="product-info pb-0 h-100">

@@ -21,14 +21,18 @@ export class Wishlist {
   public cd = inject(ChangeDetectorRef);
   wishListData: any=[];
   WishListId: any;
+  isLoading: boolean=true;
 ngOnInit(){
  this.getWishlistData();
 }
 
 
 getWishlistData(){
+  this.isLoading = true;
   this.dataService.get('wishlist').subscribe((res:any)=>{
   this.wishListData = res.data;
+  this.isLoading = false;
+
   this.cd.markForCheck();
   })
 }
@@ -36,7 +40,7 @@ removeWishlist(id:any){
 this.WishListId = id;
 }
 remove(){
-  this.dataService.delete('wishlist',this.WishListId).subscribe((res:any)=>{
+  this.dataService.delete(`wishlist/${this.WishListId}`).subscribe((res:any)=>{
     let response = {
         message:'Item Removed from Wish List',
         success:true

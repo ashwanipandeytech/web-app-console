@@ -40,6 +40,7 @@ ngOnInit() {
     const id = params.get('id');
 
     if (id) {
+      this.isLoading = true;
       this.productId = id;
       // console.log('this.productListData==>',this.productListData);
       // console.log('defaultProductListData==>',this.defaultProductListData);
@@ -48,6 +49,8 @@ ngOnInit() {
         this.productListData = this.defaultProductListData.filter(
     (item: any) => item.category.id == id
   );
+      this.isLoading = false;
+
       }
     }
     window.scrollTo(0,0);
