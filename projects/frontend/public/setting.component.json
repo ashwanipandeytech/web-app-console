@@ -32,7 +32,7 @@
       "class_container":""
     },
     "heroImage":[
-        {"title":"Banner","img":"/images/Banner_Flash_Sale.png"}
+        {"title":"Banner","img":"/images/Banner_Flash_Sale.webp"}
     ]
   }
 
@@ -52,7 +52,7 @@
       "class_container":""
     },
     "heroImage":[
-        {"title":"Banner","img":"/images/best-deal.png"}
+        {"title":"Banner","img":"/images/best-deal.webp"}
     ]
   }
 
