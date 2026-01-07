@@ -59,6 +59,8 @@ getCount() {
       const guestToken = isGuest;
       this.dataService.get(`user/overview-counts`).subscribe((res: any) => {
         this.countsList = res.data;
+        console.log('res.data',res.data);
+        
         this.signalService.setCounts(res.data);
       });
     }

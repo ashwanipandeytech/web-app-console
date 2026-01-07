@@ -4,6 +4,8 @@
   <div class="spinner position-absolute top-50 start-50 translate-middle spinner-border-sm"></div>
 </div>
 }
+@if(!isLoading){
+
 <div class="order-container">
   @for (item of orderListData; track $index) {
   <div
@@ -229,3 +231,5 @@
     </div>
   </div>
 </div>
+
+}

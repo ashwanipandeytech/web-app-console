@@ -1,7 +1,7 @@
-import { Component, inject, OnInit, } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, } from '@angular/core';
 import { CommonModule, NgComponentOutlet } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { PageComponentFactory } from 'shared-lib';
+import { PageComponentFactory } from '../../services/page-component-factory';
 @Component({
   selector: 'app-host-product-infoo',
   templateUrl: './host-product-infoo.component.html',
@@ -11,7 +11,7 @@ import { PageComponentFactory } from 'shared-lib';
 export class HostProductInfooComponent implements OnInit {
 allInOnePageSections:any = [];
   public pageComponentFactory:any= inject(PageComponentFactory);
-
+private cd = inject(ChangeDetectorRef);
   private http  = inject(HttpClient);
   constructor() { }
 
@@ -20,6 +20,8 @@ allInOnePageSections:any = [];
       console.log('allInOnePageSections===>',res);
       
     this.allInOnePageSections = res;
+    this.cd.detectChanges();
+
       
   })
   }

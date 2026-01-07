@@ -11,6 +11,8 @@ export class SignalService {
   currentLocation = signal<any>(null);
 
   setCounts(data: any) {
+    console.log('signal service ==',data);
+    
     this.allCounts.set(data);
   }
 

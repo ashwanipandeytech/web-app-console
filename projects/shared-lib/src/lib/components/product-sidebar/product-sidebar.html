@@ -3,6 +3,8 @@
   <div class="spinner position-absolute top-50 start-50 translate-middle spinner-border-sm"></div>
 </div>
 }
+@if(!isLoading){
+
 <div class="d-flex d-sm-none align-items-center bg-light p-1">
   <button class="btn btn-light d-flex align-items-center" (click)="back()">
     <svg
@@ -223,3 +225,5 @@
   </div>
 </section>
 <!--------------- products-sidebar-section-end--------------->
+
+}

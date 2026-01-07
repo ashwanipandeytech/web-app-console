@@ -1,4 +1,4 @@
-import { Component, inject, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ViewEncapsulation } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -30,6 +30,7 @@ export class Login {
   public activeModal = inject(NgbActiveModal);
   public globalFunctionService: any = inject(GlobalFunctionService);
   public signalService: any = inject(SignalService);
+  private cd = inject(ChangeDetectorRef);
   // readonly dialog = inject(MatDialog);
   
   isSignUp = false;
@@ -133,6 +134,7 @@ export class Login {
             //make a signal for emiting the user state
             localStorage.setItem('isLoggedIn', JSON.stringify(true));
             this.globalFunctionService.getCount();
+
             //make a signal for emiting the user state
             // let redirectTo = '/';
             // if (this.isCheckoutPage) {
@@ -142,6 +144,9 @@ export class Login {
             // this.router.navigate([redirectTo]).then(() => {
             //   window.location.reload(); // Reload the page after navigating
             // });
+            setTimeout(() => {
+              this.closePopup();
+            }, 0);
           } else if (res.error && res.error.message) {
             console.log('error  :', res.error.message);
             // this.globalService.showMsgSnackBar(res.error);
@@ -161,6 +166,9 @@ export class Login {
   }
   closePopup(){
     this.activeModal.close({result:'success'});
+    console.log('enter login');
+    
+    this.cd.detectChanges();
   }
   loginUser() {
     let isNonUserToken: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
@@ -202,7 +210,10 @@ export class Login {
             localStorage.setItem('isLoggedIn', JSON.stringify(true));
             this.globalFunctionService.getCount();
             this.signalService.userLoggedIn.set(true);
-            this.closePopup();
+           setTimeout(() => {
+            
+             this.closePopup();
+           }, 0);
           } else if (res.error && res.error.message) {
             console.log('error  :', res.error.message);
             this.globalService.showMsgSnackBar(res.error);

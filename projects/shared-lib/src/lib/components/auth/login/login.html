@@ -43,7 +43,7 @@
         <div class="mb-3 position-relative">
           <input formControlName="password" [type]="showCurrentPassword?'text':'password'" id="password" class="form-control" placeholder="Enter your password"/>
           @if (loginform.value.password.length>1) {
-          <span role="button" class="password-show position-absolute" (click)="passwordToggle('reEnter')">
+          <span role="button" class="password-show position-absolute" (click)="passwordToggle('current')">
             <i class="fa-solid" [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
           </span>
           }
