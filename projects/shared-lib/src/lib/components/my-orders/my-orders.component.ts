@@ -31,6 +31,7 @@ export class MyOrdersComponent implements OnInit {
   orderListData: any = [];
   orderId: any;
   orderDetailList: any;
+  isLoading: boolean=true;
   constructor() {}
 
   ngOnInit() {
@@ -43,6 +44,7 @@ export class MyOrdersComponent implements OnInit {
     this.orderId = id;
   }
   orderList() {
+    this.isLoading = true;
     this.dataService
       .get('orders')
       .pipe(
@@ -54,6 +56,7 @@ export class MyOrdersComponent implements OnInit {
         console.log('Response:===>', res);
         if (res.success == true) {
           this.orderListData = res.data.data;
+          this.isLoading = false;
           this.cd.detectChanges();
           // this.router.navigate(['/cart']);
         }

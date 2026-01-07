@@ -23,6 +23,7 @@ export class PersonalDetailsComponent implements OnInit {
   countries: any=[];
   states: any;
   cities: any=[];
+  isLoading: boolean=true;
   constructor() { }
 
   ngOnInit() {
@@ -91,6 +92,7 @@ get postcode() { return this.profileForm.get('postcode'); }
   }
 
 getProfileList() {
+  this.isLoading = true;
   this.dataService.get('profile').pipe(
     catchError((error) => {
       console.error('Profile API error:', error);
@@ -110,7 +112,10 @@ getProfileList() {
     console.log('profileListData ==>', this.profileListData);
 
     // ✅ Safe address access
-    const data = this.profileListData.addresses?.[0] ?? {};
+    // const data = this.profileListData.addresses?.[0] ?? {};
+    const data = this.profileListData.addresses?.find((addr:any) => addr.is_default == 1) ?? {};
+
+console.log('data==>',data);
 
     // ✅ Safe name split
     const fullName = this.profileListData.name?.trim().split(' ') ?? [];
@@ -132,6 +137,7 @@ if (this.profileListData && response.success) {
     city: data.city ?? '',
     postcode: data.postal_code ?? ''
   });
+  this.isLoading = false;
 
   this.cd.detectChanges();
 }

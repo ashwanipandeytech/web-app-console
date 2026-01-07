@@ -24,6 +24,7 @@ private globalService = inject(GlobaCommonlService);
 private cd = inject(ChangeDetectorRef);
   currentUser: any;
   deleteAddressId: any;
+  isLoading: boolean=true;
   constructor() { }
 
   ngOnInit() {
@@ -32,6 +33,7 @@ private cd = inject(ChangeDetectorRef);
   }
 
    getAddressList(){
+    this.isLoading = true;
          this.dataService.get('addresses').pipe(
         catchError((error) => {
           return of(null);
@@ -39,7 +41,8 @@ private cd = inject(ChangeDetectorRef);
       ).subscribe((response: any) => {
         if (response.success == true) {
           this.addressListData = response.data;
-          console.log('this.addressListData==>',this.addressListData);  
+          console.log('this.addressListData==>',this.addressListData);
+          this.isLoading = false;
           this.cd.detectChanges();
         }
       })

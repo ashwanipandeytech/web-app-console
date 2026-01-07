@@ -1,3 +1,9 @@
+
+@if(isLoading){
+<div class="loader position-relative">
+  <div class="spinner position-absolute top-50 start-50 translate-middle spinner-border-sm"></div>
+</div>
+}
 <div class="order-container">
   @for (item of orderListData; track $index) {
   <div

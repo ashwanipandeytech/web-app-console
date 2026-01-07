@@ -26,10 +26,19 @@ export class ProductComponent implements OnInit {
   @Input() data: any;
   productData: any;
   isWishlisted: boolean = false;
+  isLogin: boolean=false;
   constructor() {}
 
   ngOnInit() {
     this.callAllProductList();
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    if ( typeof user === 'object' && Object.keys(user).length <= 0) {
+      this.isLogin = false;
+    }
+    else{
+      this.isLogin = true;
+
+    }
     this.productData = this.data;
     this.cd.detectChanges();
   }

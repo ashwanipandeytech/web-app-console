@@ -70,6 +70,7 @@ export class ProductDetails {
   };
   
   loading: boolean=true;
+  isLogin: boolean=false;
 
   constructor(private cd:ChangeDetectorRef,private route:ActivatedRoute, private sanitizer: DomSanitizer, private renderer: Renderer2,private router: Router){
     this.callAllProductList();
@@ -81,7 +82,17 @@ export class ProductDetails {
 
     this.dataService.getById('products',this.productId).subscribe((res:any) => {
       this.productDetails = res.data;
-      console.log('productId==>',this.productDetails);
+      // console.log('productId==>',this.productDetails);
+      let user = JSON.parse(localStorage.getItem('user') || '{}');
+    console.log('user==>',user);
+
+    if ( typeof user === 'object' && Object.keys(user).length <= 0) {
+      this.isLogin = false;
+    }
+    else{
+      this.isLogin = true;
+
+    }
       this.cd.detectChanges();
     });
   }

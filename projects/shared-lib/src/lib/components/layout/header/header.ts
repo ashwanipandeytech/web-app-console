@@ -49,16 +49,16 @@ export class Header {
       }
       console.log('effect==>',this.signalService.currentLocation());
       
-      // if (this.signalService.currentLocation() !=null) {
-      //   this.currentAddress = this.signalService.currentLocation();
-      // }
+      if (this.signalService.currentLocation() !=null) {
+        this.currentAddress = this.signalService.currentLocation();
+        this.cd.detectChanges();
+      }
       // else{
       // if (localStorage.getItem('currentLocation')) {
       //   this.currentAddress = localStorage.getItem('currentLocation');
       // }
       // }
 
-      this.cd.detectChanges();
     });
     const address = effect(()=>{
        if (this.signalService.currentLocation() !=null) {
