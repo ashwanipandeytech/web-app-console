@@ -162,7 +162,8 @@
           <div class="card border-0 shadow-sm p-3">
             <h6 class="fw-semibold mb-3 d-flex align-items-center">
               Delivery details
-              <a class="icon-link icon-link-hover text-primary ms-auto fs-14 fw-normal" href="#">
+              <a class="icon-link icon-link-hover text-primary ms-auto fs-14 fw-normal" (click)="cancelOrder()"  data-bs-toggle="modal"
+                 data-bs-target="#confirmCancelOrder">
                 Cancel Order
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -197,7 +198,8 @@
           <div class="card border-0 shadow-sm p-3">
             <h6 class="fw-semibold mb-3 d-flex align-items-center">
               Rate your experience
-              <a class="icon-link icon-link-hover text-primary ms-auto fs-14 fw-normal" href="#">
+              <a class="icon-link icon-link-hover text-primary ms-auto fs-14 fw-normal" data-bs-toggle="modal"
+    data-bs-target="#rateusModal">
                 Rate Us
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -230,4 +232,117 @@
     </div>
   </div>
 </div>
+
+
+
+
+          <div
+   #confirmCancelOrder
+  class="modal fade"
+  id="confirmCancelOrder"
+    tabindex="-1"
+    aria-labelledby="removeAddressLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header py-2">
+          <h1 class="modal-title fs-5" id="removeAddressLabel">Cancel Order</h1>
+          <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
+             <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body fs-16">Are you sure - you want to cancel the order ?</div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button type="button" class="shop-btn ms-2" (click)="cancelOrder()">
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+ <div
+  #rateusModal
+  class="modal fade"
+  id="rateusModal"
+  tabindex="-1"
+  aria-labelledby="rateusModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header py-2">
+        <h5 class="modal-title" id="rateusModalLabel">Rate Us</h5>
+        <button
+          type="button"
+          class="close-btn"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <form [formGroup]="rateUsForm" (ngSubmit)="submitRating()">
+        <div class="modal-body text-center">
+
+          <p class="mb-2">How was your experience?</p>
+
+          <!-- ⭐ Star Rating -->
+          <div class="rating-stars mb-3">
+            <i
+              *ngFor="let star of stars; let i = index"
+              class="fa-star"
+              [ngClass]="{
+                'fa-solid active': i < rateUsForm.value.rating,
+                'fa-regular': i >= rateUsForm.value.rating
+              }"
+              (click)="setRating(i + 1)"
+            ></i>
+          </div>
+
+          <div
+            class="text-danger small"
+            *ngIf="rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid"
+          >
+            Please select a rating
+          </div>
+
+          <!-- Feedback -->
+          <textarea
+            class="form-control mt-3"
+            rows="3"
+            placeholder="Write your feedback (optional)"
+            formControlName="comment"
+          ></textarea>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer border-0">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="shop-btn ms-2"
+            [disabled]="rateUsForm.invalid"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
 }

@@ -13,12 +13,13 @@ import { GlobaCommonlService } from '../../services/global-common.service';
 import { DataService } from '../../services/data-service';
 import { NoDataComponent } from '../no-data/no-data.component';
 import { GlobalFunctionService } from '../../services/global-function.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-my-orders',
   templateUrl: './my-orders.component.html',
-  imports: [CommonModule, NoDataComponent],
+  imports: [CommonModule, NoDataComponent,ReactiveFormsModule],
   styleUrls: ['./my-orders.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -28,16 +29,44 @@ export class MyOrdersComponent implements OnInit {
   private cd = inject(ChangeDetectorRef);
   public globalService: any = inject(GlobaCommonlService);
   private globalFunctionService = inject(GlobalFunctionService);
+  private fb = inject(FormBuilder);
   orderListData: any = [];
   orderId: any;
   orderDetailList: any;
   isLoading: boolean=true;
-  constructor() {}
+   rateUsForm!: FormGroup;
+  stars = [1, 2, 3, 4, 5];
+  constructor() {
+    this.addRateUsForm();
+  }
 
   ngOnInit() {
-    console.log('enter');
-
     this.orderList();
+  }
+  addRateUsForm(){
+     this.rateUsForm = this.fb.group({
+      rating: [null, Validators.required],
+      comment: ['']
+    });
+  }
+    setRating(value: number): void {
+    this.rateUsForm.patchValue({ rating: value });
+  }
+
+  submitRating(): void {
+    if (this.rateUsForm.invalid) {
+      this.rateUsForm.markAllAsTouched();
+      return;
+    }
+
+    const payload = this.rateUsForm.value;
+
+    console.log('Rating Submitted:', payload);
+
+    // 🔹 API call example
+    // this.apiService.post('rate-us', payload).subscribe()
+
+    this.rateUsForm.reset();
   }
 
   deleteMyOrder(id: any) {
@@ -63,9 +92,13 @@ export class MyOrdersComponent implements OnInit {
       });
   }
 
+
+  cancelOrder(){
+
+  }
   getOrderDetailData(data: any) {
-    console.log('hiii');
     this.orderDetailList = data;
+    console.log('hiii',data);
   }
   // deleteOrder(){
   //  this.dataService.delete('wishlist',this.orderId).subscribe((res:any)=>{

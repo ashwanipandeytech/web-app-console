@@ -29,7 +29,7 @@ export class AddAddressModal {
   searchText = '';
   suggestions: any[] = [];
   selectedAddress = '';
-  isNewAddress: Boolean=false;
+  isNewAddress: Boolean=true;
   addressForm!: FormGroup;
   lat: any;
   lng: any;
@@ -45,13 +45,13 @@ export class AddAddressModal {
 
     let platformName = this.checkPlatform.checkPlatformType();
     console.log('platformName==>',platformName);
-    if (platformName.Web == true) {
-      this.browser = true;
-      this.isNewAddress = true;
-    }
-    else{
-      this.browser = false;
-    }
+    // if (platformName.Web == true) {
+    //   this.browser = true;
+    //   this.isNewAddress = true;
+    // }
+    // else{
+    //   this.browser = false;
+    // }
   }
 
   newAddress() {

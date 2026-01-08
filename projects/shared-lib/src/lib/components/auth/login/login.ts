@@ -164,9 +164,17 @@ export class Login {
     }
     // console.log("Form Data:", this.signupForm.value);
   }
-  closePopup(){
-    this.activeModal.close({result:'success'});
-    console.log('enter login');
+  closePopup(action:any=''){
+    if (action == 'deny') {
+    // this.activeModal.close({result:null});
+    this.activeModal.dismiss();
+      // return;
+    }
+    else{
+
+      this.activeModal.close({result:'success'});
+      console.log('enter login');
+    }
     
     this.cd.detectChanges();
   }
