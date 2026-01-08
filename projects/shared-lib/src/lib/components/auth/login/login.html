@@ -22,12 +22,13 @@
   <!-- Login Credential<span (click)="loginWithGoogle()">s:</span><br/>
     Email: demo-web@gmail.com <br/>
     Password: Demo@12345 -->
+    @if(!isForgotPwd){
   @if (!isSignUp) {
     <ng-container [formGroup]="loginform">
 
         <!-- Email -->
         <div class="mb-3 position-relative">
-            <input formControlName="email" id="email" class="form-control" placeholder="Enter your email" />
+            <input formControlName="email" id="email" class="form-control" placeholder="Enter your email"/>
             @if (submitted && f['email'].errors) {
             <div class="text-danger fs-14 position-absolute">
               @if (f['email'].errors['required']) {
@@ -64,7 +65,7 @@
             <input class="form-check-input" type="checkbox" id="remember">
             <label class="form-check-label small cursor-pointer fs-14" for="remember">Remember me</label>
             </div>
-            <a href="#" class="small text-primary fw-semibold text-decoration-none hover-underline fs-14">Forgot password?</a>
+            <a (click)="forgotPaaword();forgotStep = 'select'" class="small text-primary fw-semibold text-decoration-none hover-underline fs-14">Forgot password?</a>
         </div>
 
         <!-- Sign In Button -->
@@ -231,5 +232,70 @@
   </ng-container>
 
   }
+      
+    }
+
+
+@if(isForgotPwd){
+  <i class="fa fa-arrow-left" aria-hidden="true" (click)="goBack()"></i>
+  <div *ngIf="forgotStep === 'select'">
+    <button class="shop-btn w-100 mb-2" (click)="resetVia('otp')">
+      Reset via Otp
+    </button>
+  
+    <button class="btn btn-outline-secondary w-100" (click)="resetVia('email')">
+      Reset via Email
+    </button>
+  </div>
+
+
+
+
+  <!-- <div *ngIf="forgotStep === 'phone'" [formGroup]="forgotPhoneForm">
+  <input class="form-control mb-2" placeholder="Enter phone number" formControlName="email">
+
+  <button class="shop-btn w-100"
+    [disabled]="forgotPhoneForm.invalid || otpTimerRunning"
+    (click)="sendOtp('otp')">
+    Get OTP
+  </button>
+</div> -->
+
+  <div *ngIf="forgotStep === 'otp'" [formGroup]="otpForm">
+  <input class="form-control mb-2" placeholder="Enter OTP" formControlName="otp">
+    <span (click)="!otpTimerRunning?resendOtp():''">
+
+      {{ otpTimerRunning ? 'Resend OTP in ' + timer : 'Get OTP' }}
+    </span>
+
+  <button class="shop-btn w-100" (click)="verifyOtp()">
+    Submit OTP
+  </button>
+</div>
+ <div *ngIf="forgotStep === 'reset-password'" [formGroup]="resetPasswordForm">
+  <input class="form-control mb-2" type="password" placeholder="New password" formControlName="password">
+  <input class="form-control mb-2" type="password" placeholder="Confirm password" formControlName="confirmPassword">
+
+  <small class="text-danger"  *ngIf="resetPasswordForm.errors?.['mismatch']">
+    Passwords do not match
+  </small>
+
+  <button class="shop-btn w-100" [disabled]="resetPasswordForm.invalid" (click)="setPassword()">
+    Set Password
+  </button>
+</div> 
+<div *ngIf="forgotStep === 'email'" [formGroup]="forgotEmailForm">
+  <input class="form-control mb-2" placeholder="Enter email" formControlName="email">
+
+    <button class="shop-btn w-100" (click)="sendOtp(resetPasswordVia)">
+    {{ resetPasswordVia == 'otp' ? ' Get Otp' : 'Get Link' }}
+
+    </button>
+</div>
+
+}
+
+
+
 </section>
 <!--------------- login-section-end --------------->

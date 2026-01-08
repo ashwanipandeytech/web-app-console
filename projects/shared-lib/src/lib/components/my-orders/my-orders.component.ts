@@ -46,7 +46,8 @@ export class MyOrdersComponent implements OnInit {
   addRateUsForm(){
      this.rateUsForm = this.fb.group({
       rating: [null, Validators.required],
-      comment: ['']
+      comment: [''],
+      orderId:[]
     });
   }
     setRating(value: number): void {
