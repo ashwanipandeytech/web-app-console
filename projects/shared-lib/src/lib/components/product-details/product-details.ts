@@ -7,6 +7,8 @@ import { DataService } from '../../services/data-service';
 import { SlickCarouselModule  } from 'ngx-slick-carousel';
 import { GlobaCommonlService } from '../../services/global-common.service';
 import { GlobalFunctionService } from '../../services/global-function.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Login } from '../auth/login/login';
 
 @Component({
   selector: 'app-product-details',
@@ -19,6 +21,7 @@ export class ProductDetails {
   public dataService:any= inject(DataService);
   public globalService:any= inject(GlobaCommonlService);
   private globalFunctionService = inject(GlobalFunctionService);
+  readonly ngbModal = inject(NgbModal);
 
   isWishlisted = false;
   productListData: any=[];
@@ -156,7 +159,12 @@ export class ProductDetails {
           this.globalService.showMsgSnackBar(res);
           this.cd.detectChanges();
           if (action == 'buy') {
-            this.router.navigate(['/checkout'])
+            if (this.isLogin) {
+              this.router.navigate(['/checkout'])
+            }
+            else{
+              this.openLogin();
+            }
           }
           // this.globalFunctionService.getCount();
         }
@@ -183,7 +191,20 @@ export class ProductDetails {
       });
 
   }
-
+  openLogin() {
+    const modalRef: NgbModalRef = this.ngbModal.open(Login, {
+      windowClass: 'mobile-modal login-popup',
+      scrollable: true,
+      centered:true
+    });
+    modalRef.result
+      .then((result) => {
+        console.log('Modal closed with result:', result);
+      })
+      .catch((reason) => {
+        console.log('Modal dismissed:', reason);
+      });
+  }
   callAllProductList() {
       this.loading = true;  // show loader
     this.dataService.get('products/search','web').pipe(
