@@ -11,7 +11,7 @@
     class="border rounded mb-3 p-3 row wrapper cursor-pointer"
     data-bs-toggle="modal"
     data-bs-target="#orderDetail"
-    (click)="getOrderDetailData(item.items)"
+    (click)="getOrderDetailData(item)"
   >
     <div class="col-2">
       <div class="wrapper-img bg-light p-2 rounded-2">
@@ -105,7 +105,7 @@
       </div>
       <div class="modal-body px-lg-4">
         <div class="order-container d-flex flex-column gap-3">
-          @for (item of orderDetailList; track $index) { @if (item.product !=null) {
+          @for (item of orderDetailList.items; track $index) { @if (item.product !=null) {
 
           <div class="border rounded p-3 wrapper">
             <div class="row">
@@ -182,14 +182,17 @@
               <!-- Address -->
               <div class="d-flex align-items-start mb-3">
                 <i class="fa-solid fa-location-dot me-2"></i>
-                <span class="fw-medium text-dark small"> Other Noida, greater noida, Delhi </span>
+                <span class="fw-medium text-dark small">
+                  {{orderDetailList?.address?.address_line}}{{orderDetailList?.address?.city}},{{orderDetailList?.address?.state}}
+                  <!-- Other Noida, greater noida, Delhi -->
+                 </span>
               </div>
 
               <!-- User -->
               <div class="d-flex align-items-center">
                 <i class="fa-regular fa-user me-2"></i>
                 <span class="fw-medium text-dark small">
-                  Kumar Kumar <span class="text-muted ms-1">7292033463</span>
+                  {{orderDetailList?.addres?.name}} <span class="text-muted ms-1">{{orderDetailList?.address?.phone}}</span>
                 </span>
               </div>
             </div>

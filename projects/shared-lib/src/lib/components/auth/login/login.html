@@ -1,5 +1,5 @@
 <!--------------- login-section --------------->
-<div class="modal-header justify-content-center border-0">
+<div class="modal-header justify-content-center border-0" #loginModal>
   <div class="mb-2">
     <div class="text-center mb-1">
       <img src="../images/logos/top-logo.png" alt="logo" class="img-fluid">
@@ -265,7 +265,7 @@
   <input class="form-control mb-2" placeholder="Enter OTP" formControlName="otp">
     <span (click)="!otpTimerRunning?resendOtp():''">
 
-      {{ otpTimerRunning ? 'Resend OTP in ' + timer : 'Get OTP' }}
+      {{ otpTimerRunning ? 'Resend OTP in ' + timer : 'Resend OTP' }}
     </span>
 
   <button class="shop-btn w-100" (click)="verifyOtp()">

@@ -112,6 +112,10 @@ sendOtp(via:any='') {
           this.startOtpTimer();
           this.forgotStep = 'otp';
         }
+        else{
+             this.closePopup();
+
+        }
         this.globalService.showMsgSnackBar(res);
          }
        });
@@ -266,7 +270,7 @@ setPassword(){
             }, 0);
           } else if (res.error && res.error.message) {
             console.log('error  :', res.error.message);
-            // this.globalService.showMsgSnackBar(res.error);
+            this.globalService.showMsgSnackBar(res.error);
           }
 
           // if (res.success ==true) {
@@ -424,7 +428,7 @@ this.resetPasswordForm = this.fb.group({
  this.dataService.post(payload,'auth/verify-forgot-otp').pipe(
          catchError(err => {
            console.error('Error:', err);
-           return of(null);
+           return of(err);
          })
        )
        .subscribe((res: any) => {
@@ -432,6 +436,10 @@ this.resetPasswordForm = this.fb.group({
            console.log('Response:', res);
            this.globalService.showMsgSnackBar(res);
            this.forgotStep = 'reset-password';
+
+         }
+         else if (res.success == false){
+           this.globalService.showMsgSnackBar(res);
 
          }
        });
