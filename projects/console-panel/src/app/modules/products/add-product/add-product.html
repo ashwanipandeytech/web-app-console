@@ -2,555 +2,681 @@
 <div class="main-content">
   <form [formGroup]="productMultipleOptionForm" (ngSubmit)="submitProductMultipleOptionForm()">
     <div class="breadcrumb mb-30">
-        <h2>Add New Product</h2>
-        <div class="btn-box">
-            <a href="all-product.html" class="btn btn-sm btn-primary">View All</a>
-        </div>
+      <h2>Add New Product</h2>
+      <div class="btn-box">
+        <a href="all-product.html" class="btn btn-sm btn-primary">View All</a>
+      </div>
     </div>
     <div class="row g-4">
-        <div class="col-xxl-9 col-lg-8">
-          <form [formGroup]="productDetails" (ngSubmit)="addProductDetails()">
-            <div class="panel mb-30">
-                <div class="panel-body product-title-input">
-                    <label class="form-label">Product Title</label>
-                    <input type="text" formControlName="productTitle" class="form-control" id="productTitle" placeholder="Title for product" [class.is-invalid]="addProductDetailsValidation['productTitle'].touched && addProductDetailsValidation['productTitle'].invalid" (change)="createPermalink()">
-                  @if (addProductDetailsValidation['productTitle'].touched && addProductDetailsValidation['productTitle'].errors?.['required']) {
-
-                    <div class="text-danger mt-1">
-                        Product title is required.
-                      </div>
-                  }
-                    <p class="perma-txt">
-                        Permalink: <span [attr.data-link]="domain + '/'" class="site-link text-primary" id="productPermalink">{{domain}}/{{permaLink}}</span>
-                        <input type="text" class="form-control form-control-sm" [value]="permaLink" [hidden]="!isInputShow" (change)="getUpdatedValue($event)">
-                        <button class="btn-flush bg-primary"(click)="enableInput()">Edit</button>
-                        <button class="btn-flush bg-success" id="createPerma" (click)="permalinkAction('done')">OK</button>
-                        <button class="btn-flush bg-danger" id="cancelPerma" (click)="permalinkAction('cancel')">Cancel</button>
-                    </p>
-                </div>
-            </div>
-
-            <div class="panel mb-30">
-              <div class="panel-header">
-                <h5>Product Description</h5>
-                <div class="btn-box d-flex gap-2">
-                    <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
-                    <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa fa-angle-up"></i></button>
-                </div>
+      <div class="col-xxl-9 col-lg-8">
+        <form [formGroup]="productDetails" (ngSubmit)="addProductDetails()">
+          <div class="panel mb-30">
+            <div class="panel-body product-title-input">
+              <label class="form-label">Product Title</label>
+              <input type="text" formControlName="productTitle" class="form-control" id="productTitle"
+                placeholder="Title for product"
+                [class.is-invalid]="addProductDetailsValidation['productTitle'].touched && addProductDetailsValidation['productTitle'].invalid"
+                (input)="createPermalink()">
+              @if (addProductDetailsValidation['productTitle'].touched &&
+              addProductDetailsValidation['productTitle'].errors?.['required']) {
+              <div class="text-danger fs-12 mt-1">
+                Product title is required.
               </div>
-              <quill-editor formControlName="productDescription"></quill-editor>
+              }
+              <p class="perma-txt">
+                Permalink: {{domain}}/<span [attr.contenteditable]="isInputShow" [class.border]="isInputShow"
+                  [class.border-primary]="isInputShow" [class.px-1]="isInputShow" class="site-link text-primary"
+                  id="productPermalink" (blur)="onPermalinkBlur($event)">{{permaLink}}</span>
+                <span class="float-end">
+                  <button type="button" class="btn-flush bg-primary" (click)="enableInput()"
+                    [hidden]="isInputShow">Edit</button>
+                  <button type="button" class="btn-flush bg-success me-2" id="createPerma"
+                    (click)="permalinkAction('done')" [hidden]="!isInputShow">OK</button>
+                  <button type="button" class="btn-flush bg-danger" id="cancelPerma" (click)="permalinkAction('cancel')"
+                    [hidden]="!isInputShow">Cancel</button>
+                </span>
+              </p>
             </div>
+          </div>
+
+          <div class="panel mb-30">
+            <div class="panel-header">
+              <h5>Product Description</h5>
+              <div class="btn-box d-flex gap-2">
+                <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
+                <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
+                    class="fa fa-angle-up"></i></button>
+              </div>
+            </div>
+            <quill-editor formControlName="productDescription"></quill-editor>
+          </div>
 
 
-             <div class="panel mb-30">
-                  <div class="panel-body">
-                                  <label for="pstatus" class="form-label">Product Status*</label>
-                                 <select size="4" id="pstatus" class="form-select" formControlName="productStatus">
-                                      @for(item of productStatus; track $index){
-                                        <option [value]="item">{{item}}</option>
-                                      }
-                                    </select>
+          <div class="panel mb-30">
+            <div class="panel-body">
+              <label for="pstatus" class="form-label">Product Status*</label>
+              <select size="4" id="pstatus" class="form-select" formControlName="productStatus">
+                @for(item of productStatus; track $index){
+                <option [value]="item">{{item}}</option>
+                }
+              </select>
 
-                                  <!-- @if (hasError('country', 'required')) {
+              <!-- @if (hasError('country', 'required')) {
                                   <small class="text-danger">Country is required</small>
                                   } -->
-                                </div>
+            </div>
+          </div>
+        </form>
+
+        <div class="panel mb-30">
+          <form [formGroup]="productOptionData" (ngSubmit)="productOptionType()">
+            <div class="panel-header">
+              <h5>Product Detail</h5>
+              <div class="panel-header-right">
+                @if(false){
+
+                <div class="form-check d-flex gap-4">
+                  <div class="form-check">
+                    <input class="form-check-input" formControlName="generalProductData" type="checkbox" value=""
+                      id="generalProductData">
+                    <label class="form-check-label" for="generalProductData">
+                      General
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" formControlName="downloadableProductData" type="checkbox" value=""
+                      id="DownloadableProductData">
+                    <label class="form-check-label" for="DownloadableProductData">
+                      Downloadable
+                    </label>
+                  </div>
+                </div>
+                }
+              </div>
+              <div class="btn-box d-flex gap-2">
+                <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
+                <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
+                    class="fa fa-angle-up"></i></button>
+              </div>
             </div>
           </form>
- 
-          <div class="panel mb-30">
-            <form [formGroup]="productOptionData" (ngSubmit)="productOptionType()">
-            <div class="panel-header">
-                <h5>Product Detail</h5>
-                <div class="panel-header-right">
-                  @if(false){
 
-                    <div class="form-check d-flex gap-4">
-                        <div class="form-check">
-                            <input class="form-check-input" formControlName="generalProductData" type="checkbox" value="" id="generalProductData">
-                            <label class="form-check-label" for="generalProductData">
-                                General
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" formControlName="downloadableProductData" type="checkbox" value="" id="DownloadableProductData">
-                            <label class="form-check-label" for="DownloadableProductData">
-                                Downloadable
-                            </label>
-                        </div>
-                    </div>
-                  }
-                </div>
-                <div class="btn-box d-flex gap-2">
-                  <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
-                  <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa fa-angle-up"></i></button>
-                </div>
+          <div class="panel-body">
+            <nav>
+              <div class="btn-box d-flex flex-wrap gap-1 mb-30" id="nav-tab" role="tablist">
+                <button class="btn btn-sm btn-outline-primary active" id="nav-media-tab" data-bs-toggle="tab"
+                  data-bs-target="#nav-media" type="button" role="tab" aria-controls="nav-media"
+                  aria-selected="true">Media</button>
+                <button class="btn btn-sm btn-outline-primary" id="nav-inventory-tab" data-bs-toggle="tab"
+                  data-bs-target="#nav-inventory" type="button" role="tab" aria-controls="nav-inventory"
+                  aria-selected="false">Inventory</button>
+                <button class="btn btn-sm btn-outline-primary" id="nav-price-tab" data-bs-toggle="tab"
+                  data-bs-target="#nav-price" type="button" role="tab" aria-controls="nav-price"
+                  aria-selected="false">Price</button>
+                <!-- <button class="btn btn-sm btn-outline-primary" id="nav-attribute-tab" data-bs-toggle="tab" data-bs-target="#nav-attribute" type="button" role="tab" aria-controls="nav-attribute" aria-selected="false">Attribute</button> -->
+                <button class="btn btn-sm btn-outline-primary" id="nav-shipping-info-tab" data-bs-toggle="tab"
+                  data-bs-target="#nav-shipping-info" type="button" role="tab" aria-controls="nav-shipping-info"
+                  aria-selected="false">Shipping info</button>
+                <!-- <button class="btn btn-sm btn-outline-primary" id="nav-video-tab" data-bs-toggle="tab" data-bs-target="#nav-video" type="button" role="tab" aria-controls="nav-video" aria-selected="false">Video</button> -->
+                <button class="btn btn-sm btn-outline-primary" id="nav-shipping-configuration-tab" data-bs-toggle="tab"
+                  data-bs-target="#nav-shipping-configuration" type="button" role="tab"
+                  aria-controls="nav-shipping-configuration" aria-selected="false">Shipping Configuration</button>
+                <button class="btn btn-sm btn-outline-primary" id="nav-offer-tab" data-bs-toggle="tab"
+                  data-bs-target="#nav-offer" type="button" role="tab" aria-controls="nav-offer"
+                  aria-selected="false">Offer</button>
               </div>
-            </form>
+            </nav>
 
-            <div class="panel-body">
-              <nav>
-                <div class="btn-box d-flex flex-wrap gap-1 mb-30" id="nav-tab" role="tablist">
-                  <button class="btn btn-sm btn-outline-primary active" id="nav-media-tab" data-bs-toggle="tab" data-bs-target="#nav-media" type="button" role="tab" aria-controls="nav-media" aria-selected="true">Media</button>
-                  <button class="btn btn-sm btn-outline-primary" id="nav-inventory-tab" data-bs-toggle="tab" data-bs-target="#nav-inventory" type="button" role="tab" aria-controls="nav-inventory" aria-selected="false">Inventory</button>
-                  <button class="btn btn-sm btn-outline-primary" id="nav-price-tab" data-bs-toggle="tab" data-bs-target="#nav-price" type="button" role="tab" aria-controls="nav-price" aria-selected="false">Price</button>
-                  <!-- <button class="btn btn-sm btn-outline-primary" id="nav-attribute-tab" data-bs-toggle="tab" data-bs-target="#nav-attribute" type="button" role="tab" aria-controls="nav-attribute" aria-selected="false">Attribute</button> -->
-                  <button class="btn btn-sm btn-outline-primary" id="nav-shipping-info-tab" data-bs-toggle="tab" data-bs-target="#nav-shipping-info" type="button" role="tab" aria-controls="nav-shipping-info" aria-selected="false">Shipping info</button>
-                  <!-- <button class="btn btn-sm btn-outline-primary" id="nav-video-tab" data-bs-toggle="tab" data-bs-target="#nav-video" type="button" role="tab" aria-controls="nav-video" aria-selected="false">Video</button> -->
-                  <button class="btn btn-sm btn-outline-primary" id="nav-shipping-configuration-tab" data-bs-toggle="tab" data-bs-target="#nav-shipping-configuration" type="button" role="tab" aria-controls="nav-shipping-configuration" aria-selected="false">Shipping Configuration</button>
-                  <button class="btn btn-sm btn-outline-primary" id="nav-offer-tab" data-bs-toggle="tab" data-bs-target="#nav-offer" type="button" role="tab" aria-controls="nav-offer" aria-selected="false">Offer</button>
-                </div>
-              </nav>
-
-              <div class="tab-content product-data-tab" id="nav-tabContent">
-                <!-- Media Tab -->
-                <div class="tab-pane fade show active" id="nav-media" role="tabpanel" aria-labelledby="nav-media-tab" tabindex="0">
-                  <form [formGroup]="productMediaSection">
-                    <div class="row">
-                      <div class="col-12">
-                        <div class="add-thumbnail product-image-upload">
-                          <div class="part-txt">
-                            <h5>Main Image 
-                              <span>(jpeg/png)</span>
-                            </h5>
-                          </div>
-                            <input type="file" class="form-control" formControlName="thumbUpload" accept="image/*" (change)="onFileSelectThumb($event)">
-                            @if(thumbPreview!=''){
-                              <img [src]="thumbPreview" class="preview-img rounded mt-1" />
-                            }
-                          </div>
+            <div class="tab-content product-data-tab" id="nav-tabContent">
+              <!-- Media Tab -->
+              <div class="tab-pane fade show active" id="nav-media" role="tabpanel" aria-labelledby="nav-media-tab"
+                tabindex="0">
+                <form [formGroup]="productMediaSection">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="add-thumbnail product-image-upload">
+                        <div class="part-txt">
+                          <h5>Main Image
+                            <span>(jpeg/png)</span>
+                          </h5>
                         </div>
-                      <div class="col-12">
-                        <div class="add-gallery-img product-image-upload">
-                          <div class="part-txt">
-                            <h5>Add gallery <span>(jpeg/png)</span></h5>
-                          </div>
-                            
-                          <input multiple type="file" class="form-control" formControlName="galleryUpload" accept="image/*" (change)="onFileSelect($event)">
-                          @for (item of thumbGallery; track $index) {
-                                <img [src]="item" class="preview-img rounded mt-1" />
-                            }
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-
-                <!-- Inventory Tab -->
-                <div class="tab-pane fade" id="nav-inventory" role="tabpanel" aria-labelledby="nav-inventory-tab" tabindex="0">
-                  <form [formGroup]="productInventrySection">
-                    <div class="row align-items-center g-3 mb-3">
-                      <label class="col-md-2 col-form-label col-form-label-sm">SKU <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
-                      <div class="col-md-10">
-                        <input type="text" class="form-control form-control-sm" formControlName="sku" id="SKU">
-                      </div>
-                    </div>
-                    <div class="row align-items-center g-3 mb-3">
-                      <label class="col-md-2 col-form-label col-form-label-sm">Manage Stock?</label>
-                      <div class="col-md-10">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" formControlName="manageStock" id="manageStock">
-                          <label class="form-check-label" for="manageStock">
-                            Manage stock level (quantity)
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row align-items-center g-3 mb-3">
-                      <label class="col-md-2 col-form-label col-form-label-sm">Stock Status <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
-                      <div class="col-md-10">
-                        <select class="form-control form-control-sm" formControlName="stockStatus">
-                          <option value="0">In stock</option>
-                          <option value="1">Out of stock</option>
-                          <option value="2">On backorder</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="row align-items-center g-3 mb-3">
-                      <label class="col-md-2 col-form-label col-form-label-sm">Sold individually <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
-                      <div class="col-md-10">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" formControlName="soldIndividually" id="soldIndividually">
-                          <label class="form-check-label" for="soldIndividually">
-                            Limit purchases to 1 item per order
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row align-items-center g-3 mb-3">
-                      <label class="col-md-2 col-form-label col-form-label-sm">Product Code <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
-                      <div class="col-md-10">
-                        <input type="text" class="form-control form-control-sm" formControlName="productCode" id="productCode">
-                      </div>
-                    </div>
-                    <div class="row align-items-center g-3 mb-3">
-                      <label for="lowStockWarning" class="col-md-2 col-form-label col-form-label-sm">Low Stock Warning</label>
-                      <div class="col-md-10">
-                        <input type="number" class="form-control form-control-sm" formControlName="lowStockWarning" id="lowStockWarning">
-                      </div>
-                    </div>
-                    <div class="row align-items-center g-3 mb-3">
-                      <label for="showStockQuantity" class="col-md-2 col-8 col-form-label col-form-label-sm">Show Stock Quantity</label>
-                      <div class="col-md-10 col-4">
-                        <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" formControlName="showStockQuantity" id="showStockQuantity">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row align-items-center g-3 mb-3">
-                      <label for="showStockWithText" class="col-md-2 col-8 col-form-label col-form-label-sm">Show Stock With Text</label>
-                      <div class="col-md-10 col-4">
-                        <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" formControlName="showStockWithText" id="showStockWithText">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row align-items-center g-3">
-                      <label for="hideStock" class="col-md-2 col-8 col-form-label col-form-label-sm">Hide Stock</label>
-                      <div class="col-md-10 col-4">
-                        <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" formControlName="hideStock" id="hideStock">
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-
-                <!-- Price Tab -->
-                <div class="tab-pane fade" id="nav-price" role="tabpanel" aria-labelledby="nav-price-tab" tabindex="0">
-                  <form [formGroup]="priceSection">
-                    <div class="row g-3 mb-3">
-                      <label for="regularPrice" class="col-md-2 col-form-label col-form-label-sm">Regular Price (₹)</label>
-                      <div class="col-md-10">
-                        <input type="number" class="form-control form-control-sm" formControlName="regularPrice">
-                      </div>
-                    </div>
-                    <div class="row g-3 mb-3">
-                      <label for="salePrice" class="col-md-2 col-form-label col-form-label-sm">Discount (₹)</label>
-                      <div class="col-md-8">
-                        <input type="number" class="form-control form-control-sm" formControlName="salePrice" (change)="discountPriceChange()">
-                     @if(wrongDiscount){
-                  <div class="text-danger position-absolute">
-                    Discount Price should be less than Regular Price.
-                  </div>
-                }
-                      </div>
-                      <div class="col-md-2">
-                        <div class="form-control-sm p-0">
-                          <select class="form-control form-control-sm" formControlName="discountType">
-                            <option value="Flat">Flat</option>
-                            <option value="Discount">Discount</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    @if(false) {
-                      <div class="row g-3">
-                        <label for="PriceDateStart" class="col-md-2 col-form-label col-form-label-sm">Sale price dates</label>
-                        <div class="col-md-5">
-                        <input
-                          type="datetime-local"
-                          class="form-control form-control-sm"
-                          formControlName="priceDateStart"
-                        />
-                        </div>
-                        <div class="col-md-5">
-                          <input type="datetime-local" class="form-control form-control-sm" formControlName="priceDateEnd" placeholder="DD MMMM YYYY - HH:MM">
-                        </div>
-                      </div>
-                    }
-                  </form>
-                </div>
-
-                <!-- Shipping Info Tab -->
-                <div class="tab-pane fade" id="nav-shipping-info" role="tabpanel" aria-labelledby="nav-shipping-info-tab" tabindex="0">
-                  <form [formGroup]="shippingInfoSection">
-                    <div class="row g-3 mb-3">
-                      <label class="col-md-2 col-form-label col-form-label-sm">Weight (kg) <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
-                      <div class="col-md-10">
-                        <input type="number" class="form-control form-control-sm" formControlName="weight" id="weight" placeholder="0">
-                      </div>
-                    </div>
-                    <div class="row g-3 mb-3">
-                      <label class="col-md-2 col-form-label col-form-label-sm">Dimensions (cm) <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
-                      <div class="col-md-10">
-                        <div class="row g-3">
-                          <div class="col-md-4">
-                            <input type="number" class="form-control form-control-sm" formControlName="length" id="Dimensions" placeholder="Length">
-                          </div>
-                          <div class="col-md-4">
-                            <input type="number" class="form-control form-control-sm" formControlName="width" placeholder="Width">
-                          </div>
-                          <div class="col-md-4">
-                            <input type="number" class="form-control form-control-sm" formControlName="height" placeholder="Height">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row g-3">
-                      <label class="col-md-2 col-form-label col-form-label-sm">Shipping Class <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
-                      <div class="col-md-10">
-                        <select class="form-control form-control-sm" formControlName="shippingClass">
-                          <option value="0">No Shipping Class</option>
-                        </select>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-
-                <!-- Other Tabs (Unmodified for brevity) -->
-                <div class="tab-pane fade" id="nav-attribute" role="tabpanel" aria-labelledby="nav-attribute-tab" tabindex="0">
-                  <form [formGroup]="productAttributesForm">
-                    <div class="add-product-attribute">
-                      <!-- Dropdown + Add button -->
-                      <div class="form-group d-flex align-items-center gap-2">
-                        <select class="form-control form-control-sm" formControlName="selectedAttribute">
-                          <option value="">Custom Product Attribute</option>
-                          <option value="brand">Brand</option>
-                          <option value="color">Color</option>
-                          <option value="size">Size</option>
-                        </select>
-
-                        <button type="button" class="btn btn-sm btn-icon btn-primary" (click)="addAttribute()">
-                          <i class="fa fa-plus"></i>
-                        </button>
-                      </div>
-
-                      <!-- Dynamic Attribute Fields -->
-                      <div formArrayName="attributes">
-                        @for(attr of attributes.controls; let i = $index; track i){
-
-                          <div [formGroupName]="i" class="mt-2">
-                  
-                            <div class="row">
-                              <div class="col-md-5">
-                                <input type="text" class="form-control form-control-sm" placeholder="Attribute Name" formControlName="name">
-                              </div>
-                  
-                              <div class="col-md-5">
-                                <input type="text" class="form-control form-control-sm" placeholder="Attribute Value" formControlName="value">
-                              </div>
-                  
-                              <div class="col-md-2">
-                                <button type="button" class="btn btn-sm btn-danger" (click)="attributes.removeAt(i)">
-                                  <i class="fa fa-xmark"></i>
-                                </button>
-                              </div>
-                            </div>
-                  
-                          </div>
+                        <input type="file" class="form-control" formControlName="thumbUpload" accept="image/*"
+                          (change)="onFileSelectThumb($event)">
+                        @if(thumbPreview!=''){
+                        <img [src]="thumbPreview" class="preview-img rounded mt-1" />
                         }
                       </div>
                     </div>
-                  </form>
-                </div>
+                    <div class="col-12 mt-4">
+                      <div class="add-gallery-img product-image-upload">
+                        <div class="part-txt">
+                          <h5>Add gallery <span>(jpeg/png)</span></h5>
+                        </div>
 
-                <!-- video section  -->
-                <div class="tab-pane fade" id="nav-video" role="tabpanel" aria-labelledby="nav-video-tab" tabindex="0">
+                        <input #galleryInput multiple type="file" class="form-control" formControlName="galleryUpload"
+                          accept="image/*" (change)="onFileSelect($event)">
+                        <div class="d-flex flex-nowrap gap-2 overflow-x-auto mt-2">
+                          @for (item of thumbGallery; track $index) {
+                          <div class="position-relative">
+                            <img [src]="item" class="preview-img rounded"
+                              style="width: 100px; height: 100px; object-fit: cover;" />
+                            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
+                              style="padding: 2px 6px; font-size: 12px;" (click)="removeGalleryImage($index)">
+                              <i class="fa fa-xmark"></i>
+                            </button>
+                          </div>
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Inventory Tab -->
+              <div class="tab-pane fade" id="nav-inventory" role="tabpanel" aria-labelledby="nav-inventory-tab"
+                tabindex="0">
+                <form [formGroup]="productInventrySection">
                   <div class="row align-items-center g-3 mb-3">
-                    <label class="col-md-2 col-form-label col-form-label-sm">Video Provider</label>
+                    <label class="col-md-2 col-form-label col-form-label-sm">SKU <span class="btn-flush fs-14"
+                        data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip"
+                        data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i
+                          class="fa-solid fa-circle-question"></i></span></label>
                     <div class="col-md-10">
-                      <select class="form-control form-control-sm" data-placeholder="Select Provider">
-                        <option value="">Select Provider</option>
-                        <option value="0">Youtube</option>
-                        <option value="1">Vimeo</option>
+                      <input type="text" class="form-control form-control-sm" formControlName="sku" id="SKU">
+                    </div>
+                  </div>
+                  <div class="row align-items-center g-3 mb-3">
+                    <label class="col-md-2 col-form-label col-form-label-sm">Manage Stock?</label>
+                    <div class="col-md-10">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="manageStock" id="manageStock">
+                        <label class="form-check-label" for="manageStock">
+                          Manage stock level (quantity)
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row align-items-center g-3 mb-3">
+                    <label class="col-md-2 col-form-label col-form-label-sm">Stock Status <span class="btn-flush fs-14"
+                        data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip"
+                        data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i
+                          class="fa-solid fa-circle-question"></i></span></label>
+                    <div class="col-md-10">
+                      <select class="form-control form-control-sm" formControlName="stockStatus">
+                        <option value="0">In stock</option>
+                        <option value="1">Out of stock</option>
+                        <option value="2">On backorder</option>
                       </select>
                     </div>
                   </div>
-                  <div class="row g-3">
-                    <label class="col-md-2 col-form-label col-form-label-sm">Video Link</label>
+                  <div class="row align-items-center g-3 mb-3">
+                    <label class="col-md-2 col-form-label col-form-label-sm">Sold individually <span
+                        class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip"
+                        data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i
+                          class="fa-solid fa-circle-question"></i></span></label>
                     <div class="col-md-10">
-                      <input type="url" class="form-control form-control-sm" name="video_link" placeholder="Video Link">
-                      <span class="input-additional-txt">Use proper link without extra parameter. Don't use short share link/embeded iframe code.</span>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="soldIndividually"
+                          id="soldIndividually">
+                        <label class="form-check-label" for="soldIndividually">
+                          Limit purchases to 1 item per order
+                        </label>
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                <!-- shipping configuration  -->
-                <div class="tab-pane fade" id="nav-shipping-configuration" role="tabpanel" aria-labelledby="nav-shipping-configuration-tab" tabindex="0">
-                  <form [formGroup]="shippingConfigForm">
-                    <div class="row align-items-center g-3 mb-3">
-                      <label for="estimateShippingTime" class="col-md-2 col-form-label col-form-label-sm">Estimate Shipping Time</label>
-                      <div class="col-md-10">
-                        <div class="input-group">
-                          <input type="number" formControlName="estimateShippingTime" class="form-control form-control-sm" id="estimateShippingTime">
-                          <span class="input-group-text">Days</span>
-                        </div>
-                      </div>
+                  <div class="row align-items-center g-3 mb-3">
+                    <label class="col-md-2 col-form-label col-form-label-sm">Product Code <span class="btn-flush fs-14"
+                        data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip"
+                        data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i
+                          class="fa-solid fa-circle-question"></i></span></label>
+                    <div class="col-md-10">
+                      <input type="text" class="form-control form-control-sm" formControlName="productCode"
+                        id="productCode">
                     </div>
-                    <div class="row align-items-center g-3 mb-3">
-                      <label for="freeShipping" class="col-md-2 col-8 col-form-label col-form-label-sm">Free Shipping</label>
-                      <div class="col-md-10 col-4">
-                        <div class="form-check form-switch">
-                          <input class="form-check-input" formControlName="freeShipping" type="checkbox" role="switch" id="freeShipping">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row align-items-center g-3 mb-3">
-                      <label for="flatRate" class="col-md-2 col-8 col-form-label col-form-label-sm">Flat Rate</label>
-                      <div class="col-md-10 col-4">
-                        <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" role="switch" formControlName="flatRate" id="flatRate">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row align-items-center g-3 mb-3">
-                      <label for="QuantityMulitiply" class="col-md-2 col-8 col-form-label col-form-label-sm">Quantity Mulitiply</label>
-                      <div class="col-md-10 col-4">
-                        <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" role="switch" formControlName="quantityMulitiply" id="QuantityMulitiply">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row align-items-center g-3">
-                      <label for="cashOnDelivery" class="col-md-2 col-8 col-form-label col-form-label-sm">Cash On Delivery</label>
-                      <div class="col-md-10 col-4">
-                        <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" role="switch" formControlName="cashOnDelivery" id="cashOnDelivery">
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-
-                <!-- offer  -->
-                <div class="tab-pane fade" id="nav-offer" role="tabpanel" aria-labelledby="nav-offer-tab" tabindex="0">
-                  <form [formGroup]="offerForm">
-                    <div class="row align-items-center g-3 mb-3">
-                      <label for="flashDeal" class="col-md-2 col-8 col-form-label col-form-label-sm">Flash Deal</label>
-                      <div class="col-md-10 col-4">
-                        <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" role="switch" formControlName="flashDeal" id="flashDeal">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row align-items-center g-3 mb-3">
-                      <label for="todaysDeal" class="col-md-2 col-8 col-form-label col-form-label-sm">Today's Deal</label>
-                      <div class="col-md-10 col-4">
-                        <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" role="switch" formControlName="todaysDeal"  id="todaysDeal">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row align-items-center g-3">
-                      <label for="featured" class="col-md-2 col-8 col-form-label col-form-label-sm">Featured</label>
-                      <div class="col-md-10 col-4">
-                        <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" role="switch" formControlName="featured" id="featured">
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="panel">
-            <form [formGroup]="seoForm">
-              <div class="panel-header">
-              <h5>SEO Data</h5>
-              <div class="btn-box d-flex gap-2">
-                <button type="button" class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
-                <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa fa-angle-up"></i></button>
-              </div>
-              </div>
-              <div class="panel-body">
-                <div class="row g-3 mb-3">
-                  <label class="col-xxl-2 col-md-3 col-form-label col-form-label-sm pe-0">Focus keyphrase <span class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i class="fa-solid fa-circle-question"></i></span></label>
-                  <div class="col-xxl-10 col-md-9">
-                    <input type="text" class="form-control form-control-sm" id="focusKeyphrase" formControlName="focusKeyphrase">
                   </div>
-                </div>
-                <div class="row g-3 mb-3">
-                  <label for="metaTitle" class="col-xxl-2 col-md-3 col-form-label col-form-label-sm">Meta Title</label>
-                  <div class="col-xxl-10 col-md-9">
-                    <input type="text" class="form-control form-control-sm" id="metaTitle" formControlName="metaTitle">
+                  <div class="row align-items-center g-3 mb-3">
+                    <label for="lowStockWarning" class="col-md-2 col-form-label col-form-label-sm">Low Stock
+                      Warning</label>
+                    <div class="col-md-10">
+                      <input type="number" class="form-control form-control-sm" formControlName="lowStockWarning"
+                        id="lowStockWarning">
+                    </div>
                   </div>
-                </div>
-                <div class="row g-3 mb-3">
-                  <label for="slugText" class="col-xxl-2 col-md-3 col-form-label col-form-label-sm">Slug</label>
-                  <div class="col-xxl-10 col-md-9">
-                    <input type="text" class="form-control form-control-sm" id="slugText" formControlName="slugText">
+                  <div class="row align-items-center g-3 mb-3">
+                    <label for="showStockQuantity" class="col-md-2 col-8 col-form-label col-form-label-sm">Show Stock
+                      Quantity</label>
+                    <div class="col-md-10 col-4">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" formControlName="showStockQuantity"
+                          id="showStockQuantity">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row align-items-center g-3 mb-3">
+                    <label for="showStockWithText" class="col-md-2 col-8 col-form-label col-form-label-sm">Show Stock
+                      With Text</label>
+                    <div class="col-md-10 col-4">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" formControlName="showStockWithText"
+                          id="showStockWithText">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row align-items-center g-3">
+                    <label for="hideStock" class="col-md-2 col-8 col-form-label col-form-label-sm">Hide Stock</label>
+                    <div class="col-md-10 col-4">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" formControlName="hideStock" id="hideStock">
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Price Tab -->
+              <div class="tab-pane fade" id="nav-price" role="tabpanel" aria-labelledby="nav-price-tab" tabindex="0">
+                <form [formGroup]="priceSection">
+                  <div class="row g-3 mb-3">
+                    <label for="regularPrice" class="col-md-2 col-form-label col-form-label-sm">Regular Price
+                      (₹)*</label>
+                    <div class="col-md-10">
+                      <input type="number" class="form-control form-control-sm" formControlName="regularPrice"
+                        [class.is-invalid]="priceSection.get('regularPrice')?.touched && priceSection.get('regularPrice')?.invalid"
+                        (blur)="discountPriceChange()">
+                      @if (priceSection.get('regularPrice')?.touched &&
+                      priceSection.get('regularPrice')?.errors?.['required']) {
+                      <div class="text-danger fs-12 mt-1">
+                        Regular price is required.
+                      </div>
+                      }
+                      @if (priceSection.get('regularPrice')?.touched &&
+                      priceSection.get('regularPrice')?.errors?.['min']) {
+                      <div class="text-danger fs-12 mt-1">
+                        Regular price must be greater than 0.
+                      </div>
+                      }
+                    </div>
+                  </div>
+                  <div class="row g-3 mb-3">
+                    <label for="salePrice" class="col-md-2 col-form-label col-form-label-sm">Discount (₹)</label>
+                    <div class="col-md-8">
+                      <input type="number" class="form-control form-control-sm" formControlName="salePrice"
+                        [class.is-invalid]="(priceSection.get('salePrice')?.touched && priceSection.get('salePrice')?.invalid) || wrongDiscount"
+                        (blur)="discountPriceChange()" (input)="discountPriceChange()">
+                      @if (priceSection.get('salePrice')?.touched && priceSection.get('salePrice')?.errors?.['min']) {
+                      <div class="text-danger fs-12 mt-1">
+                        Discount cannot be negative.
+                      </div>
+                      }
+                      @if (priceSection.get('salePrice')?.touched && priceSection.get('salePrice')?.errors?.['max']) {
+                      <div class="text-danger fs-12 mt-1">
+                        Discount percentage cannot exceed 100%.
+                      </div>
+                      }
+                      @if (wrongDiscount) {
+                      <div class="text-danger fs-12 mt-1">
+                        Discount must be less than Regular Price.
+                      </div>
+                      }
+                    </div>
+                    <div class="col-md-2">
+                      <div class="form-control-sm p-0">
+                        <select class="form-control form-control-sm" formControlName="discountType"
+                          (change)="onDiscountTypeChange()">
+                          <option value="Flat">Flat</option>
+                          <option value="Discount">Discount</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  @if(false) {
+                  <div class="row g-3">
+                    <label for="PriceDateStart" class="col-md-2 col-form-label col-form-label-sm">Sale price
+                      dates</label>
+                    <div class="col-md-5">
+                      <input type="datetime-local" class="form-control form-control-sm"
+                        formControlName="priceDateStart" />
+                    </div>
+                    <div class="col-md-5">
+                      <input type="datetime-local" class="form-control form-control-sm" formControlName="priceDateEnd"
+                        placeholder="DD MMMM YYYY - HH:MM">
+                    </div>
+                  </div>
+                  }
+                </form>
+              </div>
+
+              <!-- Shipping Info Tab -->
+              <div class="tab-pane fade" id="nav-shipping-info" role="tabpanel" aria-labelledby="nav-shipping-info-tab"
+                tabindex="0">
+                <form [formGroup]="shippingInfoSection">
+                  <div class="row g-3 mb-3">
+                    <label class="col-md-2 col-form-label col-form-label-sm">Weight (kg) <span class="btn-flush fs-14"
+                        data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip"
+                        data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i
+                          class="fa-solid fa-circle-question"></i></span></label>
+                    <div class="col-md-10">
+                      <input type="number" class="form-control form-control-sm" formControlName="weight" id="weight"
+                        placeholder="0">
+                    </div>
+                  </div>
+                  <div class="row g-3 mb-3">
+                    <label class="col-md-2 col-form-label col-form-label-sm">Dimensions (cm) <span
+                        class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip"
+                        data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i
+                          class="fa-solid fa-circle-question"></i></span></label>
+                    <div class="col-md-10">
+                      <div class="row g-3">
+                        <div class="col-md-4">
+                          <input type="number" class="form-control form-control-sm" formControlName="length"
+                            id="Dimensions" placeholder="Length">
+                        </div>
+                        <div class="col-md-4">
+                          <input type="number" class="form-control form-control-sm" formControlName="width"
+                            placeholder="Width">
+                        </div>
+                        <div class="col-md-4">
+                          <input type="number" class="form-control form-control-sm" formControlName="height"
+                            placeholder="Height">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row g-3">
+                    <label class="col-md-2 col-form-label col-form-label-sm">Shipping Class <span
+                        class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip"
+                        data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i
+                          class="fa-solid fa-circle-question"></i></span></label>
+                    <div class="col-md-10">
+                      <select class="form-control form-control-sm" formControlName="shippingClass">
+                        <option value="0">No Shipping Class</option>
+                      </select>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Other Tabs (Unmodified for brevity) -->
+              <div class="tab-pane fade" id="nav-attribute" role="tabpanel" aria-labelledby="nav-attribute-tab"
+                tabindex="0">
+                <form [formGroup]="productAttributesForm">
+                  <div class="add-product-attribute">
+                    <!-- Dropdown + Add button -->
+                    <div class="form-group d-flex align-items-center gap-2">
+                      <select class="form-control form-control-sm" formControlName="selectedAttribute">
+                        <option value="">Custom Product Attribute</option>
+                        <option value="brand">Brand</option>
+                        <option value="color">Color</option>
+                        <option value="size">Size</option>
+                      </select>
+
+                      <button type="button" class="btn btn-sm btn-icon btn-primary" (click)="addAttribute()">
+                        <i class="fa fa-plus"></i>
+                      </button>
+                    </div>
+
+                    <!-- Dynamic Attribute Fields -->
+                    <div formArrayName="attributes">
+                      @for(attr of attributes.controls; let i = $index; track i){
+
+                      <div [formGroupName]="i" class="mt-2">
+
+                        <div class="row">
+                          <div class="col-md-5">
+                            <input type="text" class="form-control form-control-sm" placeholder="Attribute Name"
+                              formControlName="name">
+                          </div>
+
+                          <div class="col-md-5">
+                            <input type="text" class="form-control form-control-sm" placeholder="Attribute Value"
+                              formControlName="value">
+                          </div>
+
+                          <div class="col-md-2">
+                            <button type="button" class="btn btn-sm btn-danger" (click)="attributes.removeAt(i)">
+                              <i class="fa fa-xmark"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+                      }
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <!-- video section  -->
+              <div class="tab-pane fade" id="nav-video" role="tabpanel" aria-labelledby="nav-video-tab" tabindex="0">
+                <div class="row align-items-center g-3 mb-3">
+                  <label class="col-md-2 col-form-label col-form-label-sm">Video Provider</label>
+                  <div class="col-md-10">
+                    <select class="form-control form-control-sm" data-placeholder="Select Provider">
+                      <option value="">Select Provider</option>
+                      <option value="0">Youtube</option>
+                      <option value="1">Vimeo</option>
+                    </select>
                   </div>
                 </div>
                 <div class="row g-3">
-                  <label for="metaDscr" class="col-xxl-2 col-md-3 col-form-label col-form-label-sm">Meta Description</label>
-                  <div class="col-xxl-10 col-md-9">
-                    <textarea class="form-control" rows="5" id="metaDscr" formControlName="metaDscr"></textarea>
+                  <label class="col-md-2 col-form-label col-form-label-sm">Video Link</label>
+                  <div class="col-md-10">
+                    <input type="url" class="form-control form-control-sm" name="video_link" placeholder="Video Link">
+                    <span class="input-additional-txt">Use proper link without extra parameter. Don't use short share
+                      link/embeded iframe code.</span>
                   </div>
                 </div>
               </div>
-            </form>
+
+              <!-- shipping configuration  -->
+              <div class="tab-pane fade" id="nav-shipping-configuration" role="tabpanel"
+                aria-labelledby="nav-shipping-configuration-tab" tabindex="0">
+                <form [formGroup]="shippingConfigForm">
+                  <div class="row align-items-center g-3 mb-3">
+                    <label for="estimateShippingTime" class="col-md-2 col-form-label col-form-label-sm">Estimate
+                      Shipping Time</label>
+                    <div class="col-md-10">
+                      <div class="input-group">
+                        <input type="number" formControlName="estimateShippingTime" class="form-control form-control-sm"
+                          id="estimateShippingTime">
+                        <span class="input-group-text">Days</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row align-items-center g-3 mb-3">
+                    <label for="freeShipping" class="col-md-2 col-8 col-form-label col-form-label-sm">Free
+                      Shipping</label>
+                    <div class="col-md-10 col-4">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" formControlName="freeShipping" type="checkbox" role="switch"
+                          id="freeShipping">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row align-items-center g-3 mb-3">
+                    <label for="flatRate" class="col-md-2 col-8 col-form-label col-form-label-sm">Flat Rate</label>
+                    <div class="col-md-10 col-4">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" formControlName="flatRate"
+                          id="flatRate">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row align-items-center g-3 mb-3">
+                    <label for="QuantityMulitiply" class="col-md-2 col-8 col-form-label col-form-label-sm">Quantity
+                      Mulitiply</label>
+                    <div class="col-md-10 col-4">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch"
+                          formControlName="quantityMulitiply" id="QuantityMulitiply">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row align-items-center g-3">
+                    <label for="cashOnDelivery" class="col-md-2 col-8 col-form-label col-form-label-sm">Cash On
+                      Delivery</label>
+                    <div class="col-md-10 col-4">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" formControlName="cashOnDelivery"
+                          id="cashOnDelivery">
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <!-- offer  -->
+              <div class="tab-pane fade" id="nav-offer" role="tabpanel" aria-labelledby="nav-offer-tab" tabindex="0">
+                <form [formGroup]="offerForm">
+                  <div class="row align-items-center g-3 mb-3">
+                    <label for="flashDeal" class="col-md-2 col-8 col-form-label col-form-label-sm">Flash Deal</label>
+                    <div class="col-md-10 col-4">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" formControlName="flashDeal"
+                          id="flashDeal">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row align-items-center g-3 mb-3">
+                    <label for="todaysDeal" class="col-md-2 col-8 col-form-label col-form-label-sm">Today's Deal</label>
+                    <div class="col-md-10 col-4">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" formControlName="todaysDeal"
+                          id="todaysDeal">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row align-items-center g-3">
+                    <label for="featured" class="col-md-2 col-8 col-form-label col-form-label-sm">Featured</label>
+                    <div class="col-md-10 col-4">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" formControlName="featured"
+                          id="featured">
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+            </div>
           </div>
         </div>
 
-        <div class="col-xxl-3 col-lg-4 add-product-sidebar">
-            <div class="mb-30 w-100">
-                <a type="button" class="btn btn-primary d-block" (click)="getProductDetails()">Publish</a>
+        <div class="panel">
+          <form [formGroup]="seoForm">
+            <div class="panel-header">
+              <h5>SEO Data</h5>
+              <div class="btn-box d-flex gap-2">
+                <button type="button" class="btn btn-sm btn-icon btn-outline-primary"><i
+                    class="fa fa-arrows-rotate"></i></button>
+                <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
+                    class="fa fa-angle-up"></i></button>
+              </div>
             </div>
-            @if(false){
-            <div class="panel mb-30" >
-              <div class="panel-header">
-                <h5>Published</h5>
-                <div class="btn-box d-flex gap-2">
-                  <button type="button" class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
-                  <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa fa-angle-up"></i></button>
+            <div class="panel-body">
+              <div class="row g-3 mb-3">
+                <label class="col-xxl-2 col-md-3 col-form-label col-form-label-sm pe-0">Focus keyphrase <span
+                    class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip"
+                    data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i
+                      class="fa-solid fa-circle-question"></i></span></label>
+                <div class="col-xxl-10 col-md-9">
+                  <input type="text" class="form-control form-control-sm" id="focusKeyphrase"
+                    formControlName="focusKeyphrase">
                 </div>
               </div>
-              <div class="panel-body">
-                <div class="row g-3">
-                  <div class="col-6">
-                    <label class="form-label">Status</label>
-                    <select class="form-control form-control-sm" formControlName="status">
-                      <option value="0">Published</option>
-                      <option value="1">Draft</option>
-                    </select>
-                  </div>
-                  <div class="col-6">
-                    <label class="form-label">Visibility</label>
-                    <select class="form-control form-control-sm" formControlName="visibility">
-                      <option value="0">Public</option>
-                      <option value="1">Pass. Protected</option>
-                      <option value="2">Private</option>
-                    </select>
-                  </div>
-                  <div class="col-12">
-                    <div class="publish-date">
-                      <label>Published on: </label>
-                      <input class="input-flush" type="date" id="publishDate"  formControlName="publishDate">
-                      <label for="publishDate" class="cursor-pointer text-primary"><i class="fa fa-pen-to-square"></i></label>
-                    </div>
-                    <!-- <div class="publish-date">
+              <div class="row g-3 mb-3">
+                <label for="metaTitle" class="col-xxl-2 col-md-3 col-form-label col-form-label-sm">Meta Title</label>
+                <div class="col-xxl-10 col-md-9">
+                  <input type="text" class="form-control form-control-sm" id="metaTitle" formControlName="metaTitle">
+                </div>
+              </div>
+              <div class="row g-3 mb-3">
+                <label for="slugText" class="col-xxl-2 col-md-3 col-form-label col-form-label-sm">Slug</label>
+                <div class="col-xxl-10 col-md-9">
+                  <input type="text" class="form-control form-control-sm" id="slugText" formControlName="slugText">
+                </div>
+              </div>
+              <div class="row g-3">
+                <label for="metaDscr" class="col-xxl-2 col-md-3 col-form-label col-form-label-sm">Meta
+                  Description</label>
+                <div class="col-xxl-10 col-md-9">
+                  <textarea class="form-control" rows="5" id="metaDscr" formControlName="metaDscr"></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-xxl-3 col-lg-4 add-product-sidebar">
+        <div class="mb-30 w-100">
+          <a type="button" class="btn btn-primary d-block" (click)="getProductDetails()">Publish</a>
+        </div>
+        @if(false){
+        <div class="panel mb-30">
+          <div class="panel-header">
+            <h5>Published</h5>
+            <div class="btn-box d-flex gap-2">
+              <button type="button" class="btn btn-sm btn-icon btn-outline-primary"><i
+                  class="fa fa-arrows-rotate"></i></button>
+              <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
+                  class="fa fa-angle-up"></i></button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="row g-3">
+              <div class="col-6">
+                <label class="form-label">Status</label>
+                <select class="form-control form-control-sm" formControlName="status">
+                  <option value="0">Published</option>
+                  <option value="1">Draft</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label">Visibility</label>
+                <select class="form-control form-control-sm" formControlName="visibility">
+                  <option value="0">Public</option>
+                  <option value="1">Pass. Protected</option>
+                  <option value="2">Private</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <div class="publish-date">
+                  <label>Published on: </label>
+                  <input class="input-flush" type="date" id="publishDate" formControlName="publishDate">
+                  <label for="publishDate" class="cursor-pointer text-primary"><i
+                      class="fa fa-pen-to-square"></i></label>
+                </div>
+                <!-- <div class="publish-date">
                       <label>Published on: </label>
                       <input class="input-flush" type="datetime-local" id="publishDate" formControlName="publishDate">
                       <label for="publishDate" class="cursor-pointer text-primary"><i class="fa fa-pen-to-square"></i></label>
                     </div> -->
-                  </div>
-                </div>
               </div>
             </div>
-            }
-            <div class="panel mb-30">
-              <div class="panel-header">
-                <h5>Category</h5>
-                <div class="btn-box d-flex gap-2">
-                  <button type="button" class="btn btn-sm btn-icon btn-outline-primary">
-                    <i class="fa fa-arrows-rotate"></i>
-                  </button>
-                  <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close">
-                    <i class="fa fa-angle-up"></i>
-                  </button>
-                </div>
-              </div>
+          </div>
+        </div>
+        }
+        <div class="panel mb-30">
+          <div class="panel-header">
+            <h5>Category</h5>
+            <div class="btn-box d-flex gap-2">
+              <button type="button" class="btn btn-sm btn-icon btn-outline-primary">
+                <i class="fa fa-arrows-rotate"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close">
+                <i class="fa fa-angle-up"></i>
+              </button>
+            </div>
+          </div>
 
-              <app-category-tree [categories]="categoryListData" (selectedId)="onGetId($event)"></app-category-tree>
-            </div>
-            <!-- ✅ wrap everything under one form group -->
-            <!-- <div class="panel-body" [formGroup]="categoryForm"> -->
-                <!-- Search Form -->
-                <!-- <form (ngSubmit)="onSearch()" class="input-group-with-icon mb-20">
+          <app-category-tree [categories]="categoryListData" (selectedId)="onGetId($event)"></app-category-tree>
+        </div>
+        <!-- ✅ wrap everything under one form group -->
+        <!-- <div class="panel-body" [formGroup]="categoryForm"> -->
+        <!-- Search Form -->
+        <!-- <form (ngSubmit)="onSearch()" class="input-group-with-icon mb-20">
                   <span class="input-icon">
                     <i class="fa fa-magnifying-glass"></i>
                   </span>
@@ -562,8 +688,8 @@
                   />
                 </form> -->
 
-                <!-- Category Checkboxes -->
-                <!-- <div class="product-categories" formArrayName="selectedCategories">
+        <!-- Category Checkboxes -->
+        <!-- <div class="product-categories" formArrayName="selectedCategories">
                   @for (control of selectedCategories.controls; track $index) {
                     <div class="form-check">
                       <input
@@ -579,18 +705,18 @@
                   }
                 </div> -->
 
-                <!-- ✅ Visual divider -->
-                <!-- <div class="border-top mt-3 mb-3"></div> -->
+        <!-- ✅ Visual divider -->
+        <!-- <div class="border-top mt-3 mb-3"></div> -->
 
-                <!-- Add New Category -->
-                <!-- <div class="d-flex justify-content-end">
+        <!-- Add New Category -->
+        <!-- <div class="d-flex justify-content-end">
                   <button type="button" class="btn-flush add-category-btn">
                     <i class="fa fa-plus"></i> Add new category
                   </button>
                 </div> -->
 
-                <!-- ✅ Correctly nested child form group -->
-                <!-- <div class="add-new-category-panel mt-3" formGroupName="newCategory">
+        <!-- ✅ Correctly nested child form group -->
+        <!-- <div class="add-new-category-panel mt-3" formGroupName="newCategory">
                   <input
                     type="text"
                     class="form-control form-control-sm mb-3"
@@ -619,84 +745,82 @@
                   </div>
                 </div> -->
 
-              <!-- </div> -->
-            <!-- </div> -->
+        <!-- </div> -->
+        <!-- </div> -->
 
-          @if(tagsForm){
-          <div class="panel" [formGroup]="tagsForm">
-            <div class="panel-header">
-              <h5>Products Tags</h5>
-              <div class="btn-box d-flex gap-2">
-                <button type="button" class="btn btn-sm btn-icon btn-outline-primary">
-                  <i class="fa fa-arrows-rotate"></i>
-                </button>
-                <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close">
-                  <i class="fa fa-angle-up"></i>
-                </button>
-              </div>
+        @if(tagsForm){
+        <div class="panel" [formGroup]="tagsForm">
+          <div class="panel-header">
+            <h5>Products Tags</h5>
+            <div class="btn-box d-flex gap-2">
+              <button type="button" class="btn btn-sm btn-icon btn-outline-primary">
+                <i class="fa fa-arrows-rotate"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close">
+                <i class="fa fa-angle-up"></i>
+              </button>
             </div>
-          
-            <div class="panel-body">
-              <div class="product-tag-area">
-                <!-- <form > -->
-                  <div class="row g-3">
-                    <div class="col-9">
-                      <input
-                        type="text"
-                        class="input-flush form-control"
-                        id="productTags"
-                        placeholder="Enter tags"
-                        formControlName="tagInput"
-                      />
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-sm btn-primary w-100" (click)="addTag()">
-                        Add
-                      </button>
-                    </div>
-                  </div>
-                <!-- </form> -->
-          
-                <span class="input-txt">Use commas to separate tags</span>
-          
-                <!-- Added tags -->
-                <div class="all-tags mt-2">
-                  @for (tag of tagsForm.value.tags; track $index) {
-                    <div class="item d-inline-block">
-                      {{ tag }}
-                      <span class="close-tag" (click)="removeTag($index)">
-                        <i class="fa fa-xmark"></i>
-                      </span>
-                    </div>
-                  }
+          </div>
+
+          <div class="panel-body">
+            <div class="product-tag-area">
+              <!-- <form > -->
+              <div class="row g-3">
+                <div class="col-9">
+                  <input type="text" class="input-flush form-control" id="productTags" placeholder="Enter tags"
+                    formControlName="tagInput" />
                 </div>
-          
-                <!-- Tag History -->
-                <div class="tag-history mt-3">
-                  <span class="choose-used-tag input-txt">Choose from most used tags</span>
-                  <div class="all-tags used-tags active">
-                    @for (tag of commonTags; track $index) {
-                      <div class="item d-inline-block" (click)="selectTag(tag)">
-                        {{ tag }}
-                        <span class="close-tag">
-                          <i class="fa fa-xmark"></i>
-                        </span>
-                      </div>
-                    }
+                <div class="col-3">
+                  <button type="button" class="btn btn-sm btn-primary w-100" (click)="addTag()">
+                    Add
+                  </button>
+                </div>
+              </div>
+              <!-- </form> -->
+
+              <span class="input-txt">Use commas to separate tags</span>
+
+              <!-- Added tags -->
+              <div class="all-tags mt-2">
+                @for (tag of tagsForm.value.tags; track $index) {
+                <div class="item d-inline-block">
+                  {{ tag }}
+                  <span class="close-tag" (click)="removeTag($index)">
+                    <i class="fa fa-xmark"></i>
+                  </span>
+                </div>
+                }
+              </div>
+
+              <!-- Tag History -->
+              <div class="tag-history mt-3">
+                <span class="choose-used-tag input-txt">Choose from most used tags</span>
+                <div class="all-tags used-tags active">
+                  @for (tag of commonTags; track $index) {
+                  <div class="item d-inline-block" (click)="selectTag(tag)">
+                    {{ tag }}
+                    <span class="close-tag">
+                      <i class="fa fa-xmark"></i>
+                    </span>
                   </div>
+                  }
                 </div>
               </div>
             </div>
           </div>
-          }
+        </div>
+        }
 
 
       </div>
     </div>
-    
+
     <!-- footer start -->
     <div class="footer">
-        <p>Copyright© <script>document.write(new Date().getFullYear())</script> All Rights Reserved By <span class="text-primary">safure</span></p>
+      <p>Copyright©
+        <script>document.write(new Date().getFullYear())</script> All Rights Reserved By <span
+          class="text-primary">safure</span>
+      </p>
     </div>
     <!-- footer end -->
   </form>
