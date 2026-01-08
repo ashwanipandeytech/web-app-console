@@ -30,12 +30,14 @@
                                 <div class="product-discount-content">
                                     <h4>-50%</h4>
                                 </div>
+@if(isLogin){
 
-                                <div class="product-cart-items bg-white rounded p-1 position-absolute end-0 pe-3 z-3" 
-                                                (click)="toggleHeart(item)"  
-                                                [ngClass]="{ 'wishlisted': item.is_wishlisted}">
-                                                    <i class="fa-heart" [ngClass]="item.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"></i>
-                                            </div>
+    <div class="product-cart-items bg-white rounded p-1 position-absolute end-0 pe-3 z-3" 
+                    (click)="toggleHeart(item)"  
+                    [ngClass]="{ 'wishlisted': item.is_wishlisted}">
+                        <i class="fa-heart" [ngClass]="item.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"></i>
+                </div>
+}
 
                                 <ngx-slick-carousel id="slick-carousel" class="slick-carousel" [config]="slideConfig">
                                     @for (item of item.images; track $index) {

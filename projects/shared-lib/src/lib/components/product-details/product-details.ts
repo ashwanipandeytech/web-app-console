@@ -7,6 +7,8 @@ import { DataService } from '../../services/data-service';
 import { SlickCarouselModule  } from 'ngx-slick-carousel';
 import { GlobaCommonlService } from '../../services/global-common.service';
 import { GlobalFunctionService } from '../../services/global-function.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Login } from '../auth/login/login';
 
 @Component({
   selector: 'app-product-details',
@@ -19,6 +21,7 @@ export class ProductDetails {
   public dataService:any= inject(DataService);
   public globalService:any= inject(GlobaCommonlService);
   private globalFunctionService = inject(GlobalFunctionService);
+  readonly ngbModal = inject(NgbModal);
 
   isWishlisted = false;
   productListData: any=[];
@@ -70,6 +73,7 @@ export class ProductDetails {
   };
   
   loading: boolean=true;
+  isLogin: boolean=false;
 
   constructor(private cd:ChangeDetectorRef,private route:ActivatedRoute, private sanitizer: DomSanitizer, private renderer: Renderer2,private router: Router){
     this.callAllProductList();
@@ -81,7 +85,17 @@ export class ProductDetails {
 
     this.dataService.getById('products',this.productId).subscribe((res:any) => {
       this.productDetails = res.data;
-      console.log('productId==>',this.productDetails);
+      // console.log('productId==>',this.productDetails);
+      let user = JSON.parse(localStorage.getItem('user') || '{}');
+    console.log('user==>',user);
+
+    if ( typeof user === 'object' && Object.keys(user).length <= 0) {
+      this.isLogin = false;
+    }
+    else{
+      this.isLogin = true;
+
+    }
       this.cd.detectChanges();
     });
   }
@@ -131,19 +145,27 @@ export class ProductDetails {
       )
       .subscribe((res: any) => {
         console.log('Response:', res);
-         if (res.headers) {
-          let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
-          //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
-          if (nonLoggedInUserToken) {
-            localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
-          }
-          this.globalService.showMsgSnackBar(res.body);
-        }
+        //  if (res.headers) {
+        //   let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
+        //   //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
+        //   if (nonLoggedInUserToken) {
+        //     localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+        //   }
+        //   this.globalService.showMsgSnackBar(res.body);
+        // }
          if (res.success == true) {
          // console.info('herer add to cart')
             this.globalFunctionService.getCount();
           this.globalService.showMsgSnackBar(res);
           this.cd.detectChanges();
+          if (action == 'buy') {
+            if (this.isLogin) {
+              this.router.navigate(['/checkout'])
+            }
+            else{
+              this.openLogin();
+            }
+          }
           // this.globalFunctionService.getCount();
         }
         // if (res.success ==true) {
@@ -169,7 +191,20 @@ export class ProductDetails {
       });
 
   }
-
+  openLogin() {
+    const modalRef: NgbModalRef = this.ngbModal.open(Login, {
+      windowClass: 'mobile-modal login-popup',
+      scrollable: true,
+      centered:true
+    });
+    modalRef.result
+      .then((result) => {
+        console.log('Modal closed with result:', result);
+      })
+      .catch((reason) => {
+        console.log('Modal dismissed:', reason);
+      });
+  }
   callAllProductList() {
       this.loading = true;  // show loader
     this.dataService.get('products/search','web').pipe(

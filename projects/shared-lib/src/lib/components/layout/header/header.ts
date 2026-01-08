@@ -42,15 +42,16 @@ export class Header {
   currentAddress: any;
   constructor(private cd: ChangeDetectorRef) {
     this.globalFunctionService.getCount();
-  const countList =  effect(() => {
+  effect(() => {
       this.isLoggedIn = this.signalService.userLoggedIn();
       if (this.signalService.allCounts() != null) {
         this.countsList = this.signalService.allCounts();
+        this.cd.detectChanges();
       }
-      console.log('effect==>',this.signalService.currentLocation());
       
       if (this.signalService.currentLocation() !=null) {
         this.currentAddress = this.signalService.currentLocation();
+        this.cd.detectChanges();
       }
       // else{
       // if (localStorage.getItem('currentLocation')) {
@@ -58,17 +59,33 @@ export class Header {
       // }
       // }
 
-      // this.cd.detectChanges();
     });
     const address = effect(()=>{
        if (this.signalService.currentLocation() !=null) {
         this.currentAddress = this.signalService.currentLocation();
+        this.cd.detectChanges();
       }
       else{
            if (localStorage.getItem('currentLocation')) {
         this.currentAddress = localStorage.getItem('currentLocation');
+        this.cd.detectChanges();
       }
       }
+    })
+
+     effect(()=>{
+      console.log('fsgfdgvdfgdfgfdgf',this.signalService.user());
+      
+         if (this.signalService.user() !=null) {
+        this.userName = this.signalService.user().user.name;
+        this.cd.detectChanges();
+      }
+      // else{
+      //      if (localStorage.getItem('user')) {
+      //   this.currentAddress = localStorage.getItem('currentLocation');
+      //   this.cd.detectChanges();
+      // }
+      // }
     })
       //  else {
       //   this.currentAddress = this.signalService.currentLocation();

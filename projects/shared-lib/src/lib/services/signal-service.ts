@@ -4,13 +4,15 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root'
 })
 export class SignalService {
-// user = signal<any>(null);
+user = signal<any>(null);
   // signal to store counts
   allCounts = signal<any>(null);
   userLoggedIn=signal<any>(false);
   currentLocation = signal<any>(null);
 
   setCounts(data: any) {
+    console.log('signal service ==',data);
+    
     this.allCounts.set(data);
   }
 

@@ -29,7 +29,7 @@ export class AddAddressModal {
   searchText = '';
   suggestions: any[] = [];
   selectedAddress = '';
-  isNewAddress: Boolean=false;
+  isNewAddress: Boolean=true;
   addressForm!: FormGroup;
   lat: any;
   lng: any;
@@ -45,13 +45,13 @@ export class AddAddressModal {
 
     let platformName = this.checkPlatform.checkPlatformType();
     console.log('platformName==>',platformName);
-    if (platformName.Web == true) {
-      this.browser = true;
-      this.isNewAddress = true;
-    }
-    else{
-      this.browser = false;
-    }
+    // if (platformName.Web == true) {
+    //   this.browser = true;
+    //   this.isNewAddress = true;
+    // }
+    // else{
+    //   this.browser = false;
+    // }
   }
 
   newAddress() {
@@ -125,10 +125,13 @@ if (this.searchQuery == '') {
     this.selectedAddress = item.properties.formatted;
     this.suggestions = [];
     this.searchQuery ='';
-    console.log('    this.searchText==>',    this.searchText);
+    console.log('    this.searchText==>',this.searchText);
     // patch values into form values 
           this.signalService.currentLocation.set(this.selectedAddress);
           localStorage.setItem('currentLocation',JSON.stringify(this.selectedAddress))
+          if (!this.isLogin) {
+            this.closePopup('success');
+          }
      this.addressForm.patchValue({
     street: item.properties.county || item.properties.address_line1 || '',
     city: item.properties.city || item.properties.town || '',

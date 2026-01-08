@@ -6,13 +6,13 @@ import { RazorpayService } from 'shared-lib';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { GlobaCommonlService } from '../../../services/global-common.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { GlobalFunctionService } from '../../../services/global-function.service';
 declare const bootstrap: any;
 
 @Component({
   selector: 'web-checkout',
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterLink],
   templateUrl: './checkout.html',
   styleUrl: './checkout.scss'
 })
@@ -34,7 +34,7 @@ export class Checkout {
   cities: any = [];
   states: any;
   email: any;
-  selectedPaymentMethod: any = false;
+  selectedPaymentMethod: any = 'cod';
   isSelectPaymentMethodInput: boolean = true;
   fullAddrress: any = {};
   addressListData: any;
@@ -259,19 +259,20 @@ export class Checkout {
 
   }
   placeOrder() {
-    if (this.selectedPaymentMethod == false) {
-      this.isSelectPaymentMethodInput = false;
+    // if (this.selectedPaymentMethod == false) {
+      // this.isSelectPaymentMethodInput = false;
       console.log('this.addressListData==>',this.addressListData);
       
       if (!this.addressListData || this.addressListData == undefined) {
         this.addressNotfound = true;
+         return;
       }
       //  if (this.checkoutForm.invalid) {
       //   this.checkoutForm.markAllAsTouched();
       // }
-      return;
-    }
-    this.addressListData.id;
+      // return;
+    // }
+
     this.openCheckout(this.addressListData.id);
 
     //  if (this.checkoutForm.invalid) {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, Input, input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, Input, input, OnInit } from '@angular/core';
 import { productSectionSlideConfig } from '../../constants/app-constant';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { catchError, of } from 'rxjs';
@@ -8,6 +8,7 @@ import { GlobaCommonlService } from '../../services/global-common.service';
 import { GlobalFunctionService } from '../../services/global-function.service';
 
 import { CommonModule } from '@angular/common';
+import { SignalService } from '../../services/signal-service';
 
 @Component({
   selector: 'app-product',
@@ -19,6 +20,7 @@ export class ProductComponent implements OnInit {
   productSectionSlideConfig = productSectionSlideConfig;
   public globalService: any = inject(GlobaCommonlService);
   private globalFunctionService = inject(GlobalFunctionService);
+  private signalService = inject(SignalService);
   dataService = inject(DataService);
   cd = inject(ChangeDetectorRef);
   productListData: any = [];
@@ -26,12 +28,48 @@ export class ProductComponent implements OnInit {
   @Input() data: any;
   productData: any;
   isWishlisted: boolean = false;
-  constructor() {}
+  isLogin: boolean=false;
+  constructor() {
+    effect(()=>{
+
+      let isLoggedIn: any = localStorage.getItem('isLoggedIn');
+      console.log('isLoggedIn==>',isLoggedIn,this.signalService.userLoggedIn());
+      
+     if (isLoggedIn  == 'true' || this.signalService.userLoggedIn()) {
+       this.isLogin = true;
+        }
+        else{
+       this.isLogin = false;
+        }
+       this.cd.detectChanges();
+    //  }
+    })
+  }
 
   ngOnInit() {
     this.callAllProductList();
-    this.productData = this.data;
-    this.cd.detectChanges();
+    // effect(()=>{
+    //  this.isLogin = this.signalService.userLoggedIn();
+    // })
+    // let user = JSON.parse(localStorage.getItem('user') || '{}');
+    // if ( typeof user === 'object' && Object.keys(user).length <= 0) {
+    //   this.isLogin = false;
+    // this.cd.detectChanges();
+
+    // }
+    // else{
+    //   console.log('enter isLogin');
+      
+    //   this.isLogin = true;
+    // this.cd.detectChanges();
+
+
+    // }
+    console.log('this.data==>',this.data);
+    if (this.data) {
+      this.productData = this.data;
+      // this.cd.detectChanges();
+    }
   }
 
   openProduct(id: number) {
@@ -68,6 +106,8 @@ export class ProductComponent implements OnInit {
       .subscribe((response: any) => {
         // console.log('Response:', response);
         this.productListData = response.data.data;
+        console.log('productData==>',this.productListData);
+        
         this.cd.detectChanges();
         if (response && response.success) {
         } else if (response) {
@@ -96,14 +136,14 @@ export class ProductComponent implements OnInit {
       .subscribe((res: any) => {
         console.log('Response:', res);
         // console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
-        if (res.headers) {
-          let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
-          //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
-          if (nonLoggedInUserToken) {
-            localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
-          }
-          this.globalService.showMsgSnackBar(res.body);
-        }
+        // if (res.headers) {
+        //   let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
+        //   //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
+        //   if (nonLoggedInUserToken) {
+        //     localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+        //   }
+        //   this.globalService.showMsgSnackBar(res.body);
+        // }
         if (res.success == true) {
          // console.info('herer add to cart')
             // this.globalFunctionService.getCount();

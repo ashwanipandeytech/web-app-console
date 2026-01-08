@@ -16,7 +16,7 @@ declare var bootstrap: any;
 })
 export class AddressSectionComponent implements OnInit {
   @ViewChild('removeAddressModal') removeAddressModal!: ElementRef;
-
+data:any;
   addressListData: any=[];
 private dataService = inject(DataService);
 public globalFunctionService = inject(GlobalFunctionService);
@@ -24,14 +24,28 @@ private globalService = inject(GlobaCommonlService);
 private cd = inject(ChangeDetectorRef);
   currentUser: any;
   deleteAddressId: any;
-  constructor() { }
+  isLoading: boolean=true;
+  constructor() {
+    console.log('data==>',this.data);
+    
+   }
+openAddressPopup(){
+  this.globalFunctionService.openAddressPopup().then((res:any)=>{
+if (res.result == 'success') {
+    this.getAddressList();
+  this.cd.detectChanges();
+}
+     console.log('==>',res);
+   })
 
+}
   ngOnInit() {
     this.getAddressList();
      this.currentUser = JSON.parse(localStorage.getItem('user') || 'null');
   }
 
    getAddressList(){
+    this.isLoading = true;
          this.dataService.get('addresses').pipe(
         catchError((error) => {
           return of(null);
@@ -39,7 +53,8 @@ private cd = inject(ChangeDetectorRef);
       ).subscribe((response: any) => {
         if (response.success == true) {
           this.addressListData = response.data;
-          console.log('this.addressListData==>',this.addressListData);  
+          console.log('this.addressListData==>',this.addressListData);
+          this.isLoading = false;
           this.cd.detectChanges();
         }
       })

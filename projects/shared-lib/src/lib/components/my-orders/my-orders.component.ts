@@ -13,36 +13,100 @@ import { GlobaCommonlService } from '../../services/global-common.service';
 import { DataService } from '../../services/data-service';
 import { NoDataComponent } from '../no-data/no-data.component';
 import { GlobalFunctionService } from '../../services/global-function.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-my-orders',
   templateUrl: './my-orders.component.html',
-  imports: [CommonModule, NoDataComponent],
+  imports: [CommonModule, NoDataComponent,ReactiveFormsModule],
   styleUrls: ['./my-orders.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyOrdersComponent implements OnInit {
   @ViewChild('orderDetail') orderDetail!: ElementRef;
+  @ViewChild('rateusModal') rateusModal!: ElementRef;
+
   dataService = inject(DataService);
   private cd = inject(ChangeDetectorRef);
   public globalService: any = inject(GlobaCommonlService);
   private globalFunctionService = inject(GlobalFunctionService);
+  private fb = inject(FormBuilder);
   orderListData: any = [];
   orderId: any;
-  orderDetailList: any;
-  constructor() {}
+  orderDetailList: any={};
+  isLoading: boolean=true;
+   rateUsForm!: FormGroup;
+  stars = [1, 2, 3, 4, 5];
+  constructor() {
+    this.addRateUsForm();
+  }
 
   ngOnInit() {
-    console.log('enter');
-
     this.orderList();
+  }
+  addRateUsForm(){
+     this.rateUsForm = this.fb.group({
+      rating: [null, Validators.required],
+      comment: [''],
+    });
+  }
+    setRating(value: number): void {
+    this.rateUsForm.patchValue({ rating: value });
+  }
+// openRateUsModal(item:any){
+// console.log('item===>',item);
+// this.orderId = item.id;
+// }
+  submitRating(): void {
+    if (this.rateUsForm.invalid) {
+      this.rateUsForm.markAllAsTouched();
+      return;
+    }
+
+    const payload = this.rateUsForm.value;
+// payload.orderId = this.orderId;
+    console.log('Rating Submitted:', payload);
+ this.dataService
+      .post(payload,`orders/${this.orderId}/rate`)
+      .pipe(
+        catchError((err) => {
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('Response:===>', res);
+
+        if (res?.success == true) {
+          this.globalService.showMsgSnackBar(res);
+          this.closeRatingPopup();
+          this.cd.detectChanges();
+          // this.router.navigate(['/cart']);
+        }
+        else if(res?.success == false){
+
+          this.closeRatingPopup();
+          this.globalService.showMsgSnackBar(res);
+
+        }
+         else if (res.error && res.error.message) {
+          this.globalService.showMsgSnackBar(res.error);
+          this.closeRatingPopup();
+
+          
+        }
+      });
+    // 🔹 API call example
+    // this.apiService.post('rate-us', payload).subscribe()
+
+    this.rateUsForm.reset();
   }
 
   deleteMyOrder(id: any) {
     this.orderId = id;
   }
   orderList() {
+    this.isLoading = true;
     this.dataService
       .get('orders')
       .pipe(
@@ -54,15 +118,29 @@ export class MyOrdersComponent implements OnInit {
         console.log('Response:===>', res);
         if (res.success == true) {
           this.orderListData = res.data.data;
+          this.isLoading = false;
           this.cd.detectChanges();
           // this.router.navigate(['/cart']);
         }
       });
   }
 
+
+  closeRatingPopup(){
+     const modal = bootstrap.Modal.getInstance(
+        this.rateusModal.nativeElement
+      );
+      modal.hide();
+  }
+  cancelOrder(){
+
+  }
+  
   getOrderDetailData(data: any) {
-    console.log('hiii');
     this.orderDetailList = data;
+    console.log('hiii',data);
+    this.orderId = data.id;
+
   }
   // deleteOrder(){
   //  this.dataService.delete('wishlist',this.orderId).subscribe((res:any)=>{

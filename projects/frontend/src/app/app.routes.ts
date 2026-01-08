@@ -36,6 +36,10 @@ export const routes: Routes = [
         canActivate: [authGuard]
          
     },
+    {
+        path: 'reset-password',
+        component: Login
+     },
   
     {
         path: 'category',
