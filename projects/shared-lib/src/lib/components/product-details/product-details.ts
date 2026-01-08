@@ -142,19 +142,22 @@ export class ProductDetails {
       )
       .subscribe((res: any) => {
         console.log('Response:', res);
-         if (res.headers) {
-          let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
-          //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
-          if (nonLoggedInUserToken) {
-            localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
-          }
-          this.globalService.showMsgSnackBar(res.body);
-        }
+        //  if (res.headers) {
+        //   let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
+        //   //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
+        //   if (nonLoggedInUserToken) {
+        //     localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+        //   }
+        //   this.globalService.showMsgSnackBar(res.body);
+        // }
          if (res.success == true) {
          // console.info('herer add to cart')
             this.globalFunctionService.getCount();
           this.globalService.showMsgSnackBar(res);
           this.cd.detectChanges();
+          if (action == 'buy') {
+            this.router.navigate(['/checkout'])
+          }
           // this.globalFunctionService.getCount();
         }
         // if (res.success ==true) {

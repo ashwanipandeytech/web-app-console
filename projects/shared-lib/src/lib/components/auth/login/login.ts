@@ -243,6 +243,8 @@ setPassword(){
           if (res.success == true) {
             this.globalService.showMsgSnackBar(res);
             localStorage.setItem('user', JSON.stringify(res.data));
+            this.signalService.user.set(res.data);
+
             // let tempAddress: any = JSON.parse(localStorage.getItem('tempAddress') || 'null');
               // if (tempAddress !=null) {
               //   this.addAddress(tempAddress);
@@ -336,6 +338,7 @@ setPassword(){
             // }
             //make a signal for emiting the user state
             localStorage.setItem('user', JSON.stringify(res.data));
+            this.signalService.user.set(res.data);
             localStorage.setItem('isLoggedIn', JSON.stringify(true));
             this.globalFunctionService.getCount();
             this.signalService.userLoggedIn.set(true);

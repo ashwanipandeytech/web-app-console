@@ -72,6 +72,21 @@ export class Header {
       }
       }
     })
+
+     effect(()=>{
+      console.log('fsgfdgvdfgdfgfdgf',this.signalService.user());
+      
+         if (this.signalService.user() !=null) {
+        this.userName = this.signalService.user().user.name;
+        this.cd.detectChanges();
+      }
+      // else{
+      //      if (localStorage.getItem('user')) {
+      //   this.currentAddress = localStorage.getItem('currentLocation');
+      //   this.cd.detectChanges();
+      // }
+      // }
+    })
       //  else {
       //   this.currentAddress = this.signalService.currentLocation();
       // }

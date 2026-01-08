@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { DataService } from '../../services/data-service';
 import { catchError, of } from 'rxjs';
 import { GlobalFunctionService } from '../../services/global-function.service';
+import { GlobaCommonlService } from '../../services/global-common.service';
 
 @Component({
   selector: 'app-personal-details',
@@ -16,7 +17,7 @@ export class PersonalDetailsComponent implements OnInit {
   private fb = inject(FormBuilder);
   private dataService = inject(DataService);
   private cd = inject(ChangeDetectorRef);
-
+private globalService = inject(GlobaCommonlService)
   private globalFunctionService = inject(GlobalFunctionService);
   currentUser:any;
   profileListData: any=[];
@@ -61,11 +62,13 @@ get postcode() { return this.profileForm.get('postcode'); }
   }
 
    submitForm() {
-    if (this.profileForm.invalid) {
-      this.profileForm.markAllAsTouched();
-      return;
-    }
-      if (this.profileForm.valid) {
+    console.log('this.profileForm.invalid==>',this.profileForm.invalid);
+    
+    // if (this.profileForm.invalid) {
+    //   this.profileForm.markAllAsTouched();
+    //   return;
+    // }
+      // if (this.profileForm.valid) {
           console.log(this.profileForm.value);
           let fullAddrress = this.profileForm.value;
           // fullAddrress.location = '';
@@ -84,10 +87,13 @@ get postcode() { return this.profileForm.get('postcode'); }
                 .subscribe((res: any) => {
                   console.log('Response:', res);
                   if (res.success == true) {   
+
+                      this.globalService.showMsgSnackBar(res);
+
                     // this.router.navigate(['/cart']);
                   }
                 });
-              }
+              // }
     console.log("Form Value ===>", this.profileForm.value);
   }
 
