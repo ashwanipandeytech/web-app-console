@@ -32,7 +32,7 @@ export class PageComponentFactory {
 
   // async loadComponentInstance(templateVersion: string, item: any, container: ViewContainerRef) {
   //   const componentToLoad = this.componentsRegistry[templateVersion];
-  //   console.log('componentToLoad==>', componentToLoad, templateVersion);
+  //   //console.log('componentToLoad==>', componentToLoad, templateVersion);
 
   //   if (componentToLoad) {
   //     try {
@@ -71,7 +71,7 @@ export class PageComponentFactory {
 
   // async getComponent(templateVersion: string): Promise<Type<any> | null> {
   //   const componentToLoad = this.componentsRegistry[templateVersion];
-  //   console.log('componentToLoad==>', componentToLoad, templateVersion);
+  //   //console.log('componentToLoad==>', componentToLoad, templateVersion);
 
   //   if (componentToLoad) {
   //     try {

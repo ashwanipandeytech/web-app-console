@@ -41,7 +41,7 @@ export class App {
                  })
                )
                .subscribe((res: any) => {
-                 console.log('Response:', res);
+                 //console.log('Response:', res);
                  if (res.success == true) {
                   localStorage.setItem('GUEST_TOKEN', JSON.stringify(res.data.guest_token));
                  }
@@ -81,10 +81,10 @@ export class App {
     this.router.navigate(['']);
     modalRef.result
       .then((result) => {
-        console.log('Modal closed with result:', result);
+        //console.log('Modal closed with result:', result);
       })
       .catch((reason) => {
-        console.log('Modal dismissed:', reason);
+        //console.log('Modal dismissed:', reason);
       });
   }
   openCheckout(amount: number) {

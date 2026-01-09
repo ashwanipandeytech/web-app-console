@@ -55,7 +55,7 @@ newPage:any=
             })
           )
           .subscribe((res: any) => {
-            console.log('Response:', res);
+            //console.log('Response:', res);
               this.globalService.showMsgSnackBar(res);
               this.router.navigate(['/pages']);
           

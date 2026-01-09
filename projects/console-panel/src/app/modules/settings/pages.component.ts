@@ -32,7 +32,7 @@ export class PageList implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         if (res.data) {
           this.pageList = res.data;
           this.cdr.detectChanges()
@@ -44,12 +44,12 @@ export class PageList implements OnInit {
 
 
   viewPage(page: any) {
-    console.log('View Page:', page);
+    //console.log('View Page:', page);
     // open modal or navigate to detail page
   }
 
   editPage(page: any) {
-    console.log('Edit Page:', page);
+    //console.log('Edit Page:', page);
     // navigate to edit page
     this.router.navigate(['/edit-page', page.slug]);
   }
@@ -66,7 +66,7 @@ export class PageList implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         if (res.success) {
          this.globalService.showMsgSnackBar(res);
           this.pageList.splice(index, 1);

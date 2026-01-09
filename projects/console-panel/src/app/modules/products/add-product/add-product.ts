@@ -220,7 +220,7 @@ export class AddProduct {
     });
 
     this.attributes.push(attr);
-    console.log('this.attributes==>', this.attributes);
+    //console.log('this.attributes==>', this.attributes);
   }
 
   shippingConfigForms() {
@@ -357,7 +357,7 @@ export class AddProduct {
   }
 
   onSearch(): void {
-    console.log('Search Query:', this.categoryForm.get('search')?.value);
+    //console.log('Search Query:', this.categoryForm.get('search')?.value);
     // Add search logic here
   }
   getCategoryLabel(index: number): string {
@@ -374,16 +374,16 @@ export class AddProduct {
   }
   addNewCategory(): void {
     const newCat = this.newCategoryForm.value;
-    console.log('New Category:', newCat);
+    //console.log('New Category:', newCat);
   }
 
   // Tags start
 
   addTag() {
-    console.log('this.tagsForm.value==>', this.tagsForm.value);
+    //console.log('this.tagsForm.value==>', this.tagsForm.value);
 
     const tagValue = this.tagsForm.value.tagInput?.trim();
-    console.log('tagValue ==>', tagValue);
+    //console.log('tagValue ==>', tagValue);
 
     if (tagValue) {
       const currentTags = this.tagsForm.value.tags || [];
@@ -432,7 +432,7 @@ export class AddProduct {
       const file = event.target.files[i];
       if (!file) return;
       this.selectedFile.push(file);
-      console.log('this.selectedFile===>', this.selectedFile);
+      //console.log('this.selectedFile===>', this.selectedFile);
 
       // Preview if needed
       const reader = new FileReader();
@@ -447,7 +447,7 @@ export class AddProduct {
     }
     // Call upload immediately
     // this.uploadImage();
-    console.log(' this.thumbGallery===>', this.thumbGallery);
+    //console.log(' this.thumbGallery===>', this.thumbGallery);
   }
 
   onFileSelectThumb(event: any) {
@@ -485,7 +485,7 @@ export class AddProduct {
     this.galleryFiles = event.target.files;
   }
   getProductDetails() {
-    console.log('productDetails==>', this.productDetails.value);
+    //console.log('productDetails==>', this.productDetails.value);
 
     let priceSection = this.priceSection.value;
     priceSection.priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
@@ -514,7 +514,7 @@ export class AddProduct {
         visibility: this.productMultipleOptionForm.value.visibility,
       },
     };
-    console.log('finalData==>', finalData);
+    //console.log('finalData==>', finalData);
     this.dataService
       .post(finalData, 'products')
       .pipe(
@@ -527,13 +527,13 @@ export class AddProduct {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         if (res.error) {
           this.globalService.showMsgSnackBar(res.error);
           return;
         } else if (res.success == true) {
           let id = res.data.id;
-          console.log('this.selectedThumbImg==>', this.selectedThumbImg);
+          //console.log('this.selectedThumbImg==>', this.selectedThumbImg);
 
           if (this.selectedThumbImg != undefined) {
             const formDataThumb = new FormData();
@@ -566,7 +566,7 @@ export class AddProduct {
             //   formData.append("module", "product");
             //   formData.append("module_id", id);
             //   formData.append("type", "gallery");
-            // console.log('formData==>',formData);
+            // //console.log('formData==>',formData);
 
             //   this.callUploadnediaSection(formData);
             // }
@@ -581,9 +581,9 @@ export class AddProduct {
         // this.getCategoryList();
       });
 
-    //   console.log('thumbFile',this.thumbFile);  // FileList
-    //   console.log('galleryFiles',this.galleryFiles);  // FileList
-    // console.log('this.priceSection.value.priceDateStart==>',this.priceSection.value);
+    //   //console.log('thumbFile',this.thumbFile);  // FileList
+    //   //console.log('galleryFiles',this.galleryFiles);  // FileList
+    // //console.log('this.priceSection.value.priceDateStart==>',this.priceSection.value);
     // // price start and end time
     //   const priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
     //   const priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
@@ -594,22 +594,22 @@ export class AddProduct {
     // galleryFiles:this.galleryFiles
     // }
 
-    //   console.log('productDetails==>',this.productDetails.value);
-    //   console.log('productOptionData==>',this.productOptionData.value);
-    // console.log('submitProductMultipleOptionForm==>',this.productMultipleOptionForm.value);
-    // // console.log('New Category:', this.categoryForm.get('newCategory')?.value);
-    // console.log('New Category:', this.newCategoryForm.value);
-    // console.log('this.tagsForm==>',this.tagsForm.value.tags);
-    // console.log('selectedCategories==>',this.selectedCategories.value);
+    //   //console.log('productDetails==>',this.productDetails.value);
+    //   //console.log('productOptionData==>',this.productOptionData.value);
+    // //console.log('submitProductMultipleOptionForm==>',this.productMultipleOptionForm.value);
+    // // //console.log('New Category:', this.categoryForm.get('newCategory')?.value);
+    // //console.log('New Category:', this.newCategoryForm.value);
+    // //console.log('this.tagsForm==>',this.tagsForm.value.tags);
+    // //console.log('selectedCategories==>',this.selectedCategories.value);
 
     // tagsform value
     // const tagsArray = this.tagsForm.value.tags;
     // const tagsString = tagsArray.join(', ');
-    // console.log('tagsString',tagsString);
+    // //console.log('tagsString',tagsString);
   }
 
   callUploadnediaSection(formData: any) {
-    console.log('formData==>', formData);
+    //console.log('formData==>', formData);
 
     this.dataService
       .postForm('media/upload', formData)
@@ -623,7 +623,7 @@ export class AddProduct {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         // this.getCategoryList();
         // setTimeout(() => {
         //   this.globalService.showMsgSnackBar(res);
@@ -643,19 +643,19 @@ export class AddProduct {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         if (res.data) {
           for (let i = 0; i < res.data.length; i++) {
             const element = res.data[i];
-            console.log('element==>', element.thumbnail);
+            //console.log('element==>', element.thumbnail);
             if (element?.thumbnail != null) {
-              console.log('environment.API_URL==>', environment.API_URL);
+              //console.log('environment.API_URL==>', environment.API_URL);
               element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
             }
             this.categoryListData.push(element);
           }
         }
-        console.log('categoryListData==>', this.categoryListData);
+        //console.log('categoryListData==>', this.categoryListData);
         // this.dataSource = this.categoryListData;
         this.cd.detectChanges();
         // this.categoryListData = res.data;
@@ -674,7 +674,7 @@ export class AddProduct {
     this.isInputShow = true;
   }
   getUpdatedValue(event: any) {
-    console.log('event==>', event.target.value);
+    //console.log('event==>', event.target.value);
     let value = event.target.value.replace(/\s+/g, '-').toLowerCase();
     this.permaLink = value;
   }

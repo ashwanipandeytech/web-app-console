@@ -38,7 +38,7 @@ newPage:any
         })
       )
       .subscribe((res: any) => {
-        // console.log('Response:', res.data);
+        // //console.log('Response:', res.data);
         if (res.success) {
           this.newPage = res.data.settings;
         
@@ -63,7 +63,7 @@ newPage:any
           })
         )
         .subscribe((res: any) => {
-          console.log('Response:', res);
+          //console.log('Response:', res);
            this.globalService.showMsgSnackBar(res);
            this.router.navigate(['/pages']);
        

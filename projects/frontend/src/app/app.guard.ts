@@ -8,7 +8,7 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   const ngbModal = inject(NgbModal);
 
   const token = localStorage.getItem('user'); // your login condition
-console.log('token==>',token);
+//console.log('token==>',token);
 function openLogin() {
   const modalRef: NgbModalRef = ngbModal.open(Login, {
     windowClass: 'mobile-modal login-popup',
@@ -19,10 +19,10 @@ function openLogin() {
 
   modalRef.result
     .then((result) => {
-      console.log('Modal closed with result:', result);
+      //console.log('Modal closed with result:', result);
     })
     .catch((reason) => {
-      console.log('Modal dismissed:', reason);
+      //console.log('Modal dismissed:', reason);
     });
 }
   const isLoginPage = route.routeConfig?.path === '' || route.routeConfig?.path === 'login';
@@ -39,10 +39,10 @@ function openLogin() {
 
   // If user IS logged in
   if (token) {
-    console.log('isLoginPage==>',isLoginPage);
+    //console.log('isLoginPage==>',isLoginPage);
     
     if (isLoginPage) {
-        console.log('isLoginPage==>',isLoginPage);
+        //console.log('isLoginPage==>',isLoginPage);
         
       router.navigate(['/']);
       return false;

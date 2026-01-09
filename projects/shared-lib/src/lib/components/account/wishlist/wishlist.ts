@@ -62,7 +62,7 @@ remove(){
       quantity: '1',
       guest_token:isGuest
     };
-    // console.log('finalData==.',finalData);
+    // //console.log('finalData==.',finalData);
     // return;
     this.dataService
       .post(finalData, 'cart')
@@ -72,8 +72,8 @@ remove(){
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
-        // console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
+        //console.log('Response:', res);
+        // //console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
         if (res.headers) {
           let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
           //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT

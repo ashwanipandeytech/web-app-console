@@ -33,7 +33,7 @@ export class ProductComponent implements OnInit {
     effect(()=>{
 
       let isLoggedIn: any = localStorage.getItem('isLoggedIn');
-      console.log('isLoggedIn==>',isLoggedIn,this.signalService.userLoggedIn());
+      //console.log('isLoggedIn==>',isLoggedIn,this.signalService.userLoggedIn());
       
      if (isLoggedIn  == 'true' || this.signalService.userLoggedIn()) {
        this.isLogin = true;
@@ -58,14 +58,14 @@ export class ProductComponent implements OnInit {
 
     // }
     // else{
-    //   console.log('enter isLogin');
+    //   //console.log('enter isLogin');
       
     //   this.isLogin = true;
     // this.cd.detectChanges();
 
 
     // }
-    console.log('this.data==>',this.data);
+    //console.log('this.data==>',this.data);
     if (this.data) {
       this.productData = this.data;
       // this.cd.detectChanges();
@@ -83,12 +83,12 @@ export class ProductComponent implements OnInit {
     if (item.is_wishlisted) {
      item.is_wishlisted = !item.is_wishlisted;
       this.dataService.delete(`wishlist/product${data.product_id}`).subscribe((res: any) => {
-        console.log('wishlist==>', res);
+        //console.log('wishlist==>', res);
       });
     } else {
      item.is_wishlisted = !item.is_wishlisted;
       this.dataService.post(data, 'wishlist').subscribe((res: any) => {
-        console.log('wishlist==>', res);
+        //console.log('wishlist==>', res);
       });
     }
     this.globalFunctionService.getCount();
@@ -104,9 +104,9 @@ export class ProductComponent implements OnInit {
         })
       )
       .subscribe((response: any) => {
-        // console.log('Response:', response);
+        // //console.log('Response:', response);
         this.productListData = response.data.data;
-        console.log('productData==>',this.productListData);
+        //console.log('productData==>',this.productListData);
         
         this.cd.detectChanges();
         if (response && response.success) {
@@ -124,7 +124,7 @@ export class ProductComponent implements OnInit {
       quantity: '1',
       guest_token:isGuest
     };
-    // console.log('finalData==.',finalData);
+    // //console.log('finalData==.',finalData);
     // return;
     this.dataService
       .post(finalData, 'cart')
@@ -134,8 +134,8 @@ export class ProductComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
-        // console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
+        //console.log('Response:', res);
+        // //console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
         // if (res.headers) {
         //   let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
         //   //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT

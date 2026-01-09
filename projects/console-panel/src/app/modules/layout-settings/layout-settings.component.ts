@@ -118,7 +118,7 @@ export class LayoutSettingsComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         if (res.success) {
           this.settingsModel = res.data.settings;
 
@@ -137,7 +137,7 @@ export class LayoutSettingsComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         if (res.data) {
           this.pageList = res.data;
           // this.settingsModel.footer.map((item:any)=>{
@@ -269,7 +269,7 @@ export class LayoutSettingsComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         if (res.success) {
           this.globalService.showMsgSnackBar(res);
           this.getGeneralSetting();
@@ -317,7 +317,7 @@ export class LayoutSettingsComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
       });
   }
 }

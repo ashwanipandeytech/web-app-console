@@ -17,7 +17,7 @@ private cd = inject(ChangeDetectorRef);
 
   ngOnInit() {
       this.http.get('/product-detail.component.json').subscribe((res: any) => {
-      console.log('allInOnePageSections===>',res);
+      //console.log('allInOnePageSections===>',res);
       
     this.allInOnePageSections = res;
     this.cd.detectChanges();
