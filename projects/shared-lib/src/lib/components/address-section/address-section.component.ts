@@ -26,16 +26,17 @@ private cd = inject(ChangeDetectorRef);
   deleteAddressId: any;
   isLoading: boolean=true;
   constructor() {
-    console.log('data==>',this.data);
+    //console.log('data==>',this.data);
     
    }
 openAddressPopup(){
   this.globalFunctionService.openAddressPopup().then((res:any)=>{
+    console.info('res',res)
 if (res.result == 'success') {
     this.getAddressList();
   this.cd.detectChanges();
 }
-     console.log('==>',res);
+     //console.log('==>',res);
    })
 
 }
@@ -44,8 +45,8 @@ if (res.result == 'success') {
      this.currentUser = JSON.parse(localStorage.getItem('user') || 'null');
   }
 
-   getAddressList(){
-    this.isLoading = true;
+   getAddressList(isLoading:boolean=true){
+    this.isLoading = isLoading;
          this.dataService.get('addresses').pipe(
         catchError((error) => {
           return of(null);
@@ -53,7 +54,7 @@ if (res.result == 'success') {
       ).subscribe((response: any) => {
         if (response.success == true) {
           this.addressListData = response.data;
-          console.log('this.addressListData==>',this.addressListData);
+          //console.log('this.addressListData==>',this.addressListData);
           this.isLoading = false;
           this.cd.detectChanges();
         }
@@ -63,7 +64,7 @@ if (res.result == 'success') {
   this.deleteAddressId = id;
 }
 deleteAddress() {
-  console.log('Deleting ID:', this.deleteAddressId);
+  //console.log('Deleting ID:', this.deleteAddressId);
 
   this.dataService.delete(`addresses/${this.deleteAddressId}`).subscribe((res:any) => {
     // uncomment below 

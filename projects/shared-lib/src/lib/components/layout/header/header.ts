@@ -74,7 +74,7 @@ export class Header {
     })
 
      effect(()=>{
-      console.log('fsgfdgvdfgdfgfdgf',this.signalService.user());
+      //console.log('fsgfdgvdfgdfgfdgf',this.signalService.user());
       
          if (this.signalService.user() !=null) {
         this.userName = this.signalService.user().user.name;
@@ -92,9 +92,9 @@ export class Header {
       // }
 
     //  effect(() => {
-    //   // console.log('Cart count changed:', this.signalService.cartCounts());
+    //   // //console.log('Cart count changed:', this.signalService.cartCounts());
     //   if (this.signalService.userLoggedIn() ) {
-    //     console.log('this.signalService.userLoggedIn()==>',this.signalService.userLoggedIn());
+    //     //console.log('this.signalService.userLoggedIn()==>',this.signalService.userLoggedIn());
 
     //     this.countsList = this.signalService.allCounts();
     //     this.cd.detectChanges();
@@ -131,7 +131,7 @@ export class Header {
     // if (data) {
     // let countss = this.signalService.cartCounts;
     // this.countsList = countss();
-    // console.log('this.countsList===>',this.countsList);
+    // //console.log('this.countsList===>',this.countsList);
 
     //   }
     // });
@@ -186,7 +186,7 @@ export class Header {
       .subscribe((res: any) => {
         if (res.data) {
           this.categoryListData = res.data;
-          console.log('this.categoryListData===>',res.data);
+          //console.log('this.categoryListData===>',res.data);
           // for (let i = 0; i < res.data.length; i++) {
           //   const element = res.data[i];
           //   // if (element?.thumbnail != null) {
@@ -208,7 +208,7 @@ export class Header {
         })
       )
       .subscribe((response: any) => {
-        console.log('response==>', response);
+        //console.log('response==>', response);
         if (response.success == true) {
           this.cartItemCount = response.data.data.length;
           this.cd.detectChanges();
@@ -217,7 +217,7 @@ export class Header {
   }
   //   getCartCount(){
   //     this.dataService.get('user/overview-counts').subscribe((res:any)=>{
-  //       console.log('res====>',res);
+  //       //console.log('res====>',res);
   //       this.countsList = res.data;
   //     })
   //   // this.dataService.get((data)=>{
@@ -235,10 +235,10 @@ export class Header {
     modalRef.componentInstance.isfrom = from;
     modalRef.result
       .then((result) => {
-        console.log('Modal closed with result:', result);
+        //console.log('Modal closed with result:', result);
       })
       .catch((reason) => {
-        console.log('Modal dismissed:', reason);
+        //console.log('Modal dismissed:', reason);
       });
   }
   openLogin() {
@@ -249,10 +249,10 @@ export class Header {
     });
     modalRef.result
       .then((result) => {
-        console.log('Modal closed with result:', result);
+        //console.log('Modal closed with result:', result);
       })
       .catch((reason) => {
-        console.log('Modal dismissed:', reason);
+        //console.log('Modal dismissed:', reason);
       });
   }
 }

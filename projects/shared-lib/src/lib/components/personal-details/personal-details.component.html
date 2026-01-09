@@ -1,14 +1,19 @@
 @if(isLoading){
-<div class="loader position-relative">
-  <div class="spinner position-absolute top-50 start-50 translate-middle spinner-border-sm"></div>
+<div class="loader d-flex align-items-center justify-content-center">
+  <div class="spinner-border spinner-border-lg text-primary" role="status"></div>
 </div>
 }
-@if(!isLoading){
 
+@if(!isLoading){
+  <div class="top-section d-flex align-items-center border-bottom pb-1 mb-4">
+    <h3>Personal Detail</h3>
+    <button type="button" class="hover-underline text-primary ms-auto" (click)="toggleEdit()">{{ isEditMode ? 'Cancel' : 'Edit' }}
+</button>
+  </div>
   <form [formGroup]="profileForm" (ngSubmit)="submitForm()">
     <div class="row">
       <div class="col-12">
-        <div class="account-section">
+        <div class="account-section" [ngClass]="{disabled: !isEditMode}">
           <div class="review-form w-100">
             <div class="account-inner-form">
               <div class="review-form-name mb-3">
@@ -106,7 +111,9 @@
   
             <div class="submit-btn">
               <!-- <button type="button" class="shop-btn cancel-btn">Cancel</button> -->
-              <button type="submit" class="shop-btn update-btn">Update Profile</button>
+               @if (isEditMode) {
+                <button type="submit" class="shop-btn update-btn">Save</button>
+               }
             </div>
           </div>
         </div>

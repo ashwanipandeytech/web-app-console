@@ -61,7 +61,7 @@ export class Login {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.isCheckoutPage = params['checkout'] === 'true' ? true : false;
 
-      console.log(this.isCheckoutPage);
+      //console.log(this.isCheckoutPage);
     });
     console.info(this.router);
     this.signUpForm();
@@ -69,7 +69,7 @@ export class Login {
     this.initForgotPasswordForm();
   }
   ngOnInit(){
-    console.log('data==>',this.loginData);
+    //console.log('data==>',this.loginData);
         if (this.loginData) {
         this.isForgotPwd = true;
         this.forgotStep = 'reset-password';
@@ -107,7 +107,7 @@ sendOtp(via:any='') {
   )
   .subscribe((res: any) => {
     if (res.success == true) {  
-      console.log('Response:', res);
+      //console.log('Response:', res);
         if (via == 'otp') {
           this.startOtpTimer();
           this.forgotStep = 'otp';
@@ -136,7 +136,7 @@ resendOtp(){
        )
        .subscribe((res: any) => {
          if (res.success == true) {  
-           console.log('Response:', res);
+           //console.log('Response:', res);
            this.globalService.showMsgSnackBar(res);
          }
        });
@@ -171,7 +171,7 @@ setPassword(){
        )
        .subscribe((res: any) => {
          if (res.success == true) {  
-           console.log('Response:', res);
+           //console.log('Response:', res);
            this.globalService.showMsgSnackBar(res);
            this.closePopup();
          }
@@ -212,7 +212,7 @@ setPassword(){
          })
        )
        .subscribe((res: any) => {
-         console.log('Response:', res);
+         //console.log('Response:', res);
          if (res.success == true) {  
           this.closePopup(); 
           //  this.globalService.showMsgSnackBar(res);
@@ -220,7 +220,7 @@ setPassword(){
        });
   }
   register() {
-    console.log('this.signupForm==>', this.signupForm.invalid);
+    //console.log('this.signupForm==>', this.signupForm.invalid);
     this.submittedRegister = true;
     if (this.signupForm.invalid) {
       // this.signupForm.markAllAsTouched();
@@ -239,7 +239,7 @@ setPassword(){
           })
         )
         .subscribe((res: any) => {
-          // console.log('Response:', res);
+          // //console.log('Response:', res);
           if (res.success == true) {
             this.globalService.showMsgSnackBar(res);
             localStorage.setItem('user', JSON.stringify(res.data));
@@ -271,7 +271,7 @@ setPassword(){
               this.closePopup();
             }, 0);
           } else if (res.error && res.error.message) {
-            console.log('error  :', res.error.message);
+            //console.log('error  :', res.error.message);
             this.globalService.showMsgSnackBar(res.error);
           }
 
@@ -285,7 +285,7 @@ setPassword(){
           // this.getCategoryList();
         });
     }
-    // console.log("Form Data:", this.signupForm.value);
+    // //console.log("Form Data:", this.signupForm.value);
   }
   closePopup(action:any=''){
     if (action == 'deny') {
@@ -296,7 +296,7 @@ setPassword(){
     else{
 
       this.activeModal.close({result:'success'});
-      console.log('enter login');
+      //console.log('enter login');
     }
     
     this.cd.detectChanges();
@@ -323,7 +323,7 @@ setPassword(){
           })
         )
         .subscribe((res: any) => {
-          // console.log('Response:', res.error.message);
+          // //console.log('Response:', res.error.message);
           if (res.success == true) {
             this.globalService.showMsgSnackBar(res);
               //  let tempAddress: any = JSON.parse(localStorage.getItem('tempAddress') || 'null');
@@ -347,7 +347,7 @@ setPassword(){
              this.closePopup();
            }, 0);
           } else if (res.error && res.error.message) {
-            console.log('error  :', res.error.message);
+            //console.log('error  :', res.error.message);
             this.globalService.showMsgSnackBar(res.error);
           }
 
@@ -361,7 +361,7 @@ setPassword(){
           //     data: popupData,
           //   });
           //   dialogRef.afterClosed().subscribe(result => {
-          //     console.log('Dialog closed with:', result);
+          //     //console.log('Dialog closed with:', result);
 
           //     if (result.action === 'ok') {
 
@@ -387,7 +387,7 @@ setPassword(){
   loginWithGoogle() {
     let endpoint = 'auth/google/redirect?redirect=/landing';
     this.dataService.get(endpoint).subscribe((res: any) => {
-      console.log('res===>', res);
+      //console.log('res===>', res);
     });
   }
 
@@ -436,7 +436,7 @@ this.resetPasswordForm = this.fb.group({
        )
        .subscribe((res: any) => {
          if (res.success == true) {  
-           console.log('Response:', res);
+           //console.log('Response:', res);
            this.globalService.showMsgSnackBar(res);
            this.forgotStep = 'reset-password';
 
@@ -462,7 +462,7 @@ sendResetEmail() {
 }
 
 goBack(){
-  console.log('this.forgotStep==>',this.forgotStep);
+  //console.log('this.forgotStep==>',this.forgotStep);
 
   if (this.forgotStep == 'select') {
     this.isForgotPwd = false;

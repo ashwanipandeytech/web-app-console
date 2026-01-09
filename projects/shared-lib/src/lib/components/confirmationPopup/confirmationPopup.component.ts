@@ -18,7 +18,7 @@ export class DynamicPopup implements OnInit {
     private dialogRef: MatDialogRef<DynamicPopup>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log('popupData++++.',data);
+    //console.log('popupData++++.',data);
     
    }
 

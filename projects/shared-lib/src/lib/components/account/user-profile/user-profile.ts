@@ -41,10 +41,10 @@ export class UserProfile {
       this.isLoggedIn = true;
     }
     this.activatedRoute.queryParams.subscribe(params => {
-    console.log(params['key']);
+    //console.log(params['key']);
     if (params['key']) {
       this.activePage =  params['key'];
-      console.log("this.activePage", this.activePage)
+      //console.log("this.activePage", this.activePage)
       this.openComponent(this.activePage);
     }
   });
@@ -59,7 +59,7 @@ export class UserProfile {
     // window.location.reload();
   }
   openComponent(component:any){
-    console.log('component==>',component);
+    //console.log('component==>',component);
     this.activePage = component;
     this.route.navigate([], {
     relativeTo: this.activatedRoute,

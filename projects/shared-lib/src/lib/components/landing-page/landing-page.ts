@@ -53,9 +53,9 @@ export class LandingPage {
       scrollable: true
     });
     modalRef.result.then((result) => {
-      console.log('Modal closed with result:', result);
+      //console.log('Modal closed with result:', result);
     }).catch((reason) => {
-      console.log('Modal dismissed:', reason);
+      //console.log('Modal dismissed:', reason);
     });
   }
 }

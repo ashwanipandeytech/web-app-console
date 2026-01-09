@@ -1,42 +1,43 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import {Sidebar} from "../../../layout/sidebar/sidebar";
-import {Header} from "../../../layout/header/header";
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Sidebar } from '../../../layout/sidebar/sidebar';
+import { Header } from '../../../layout/header/header';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
 import { DataService } from 'shared-lib';
 import { catchError, of } from 'rxjs';
 import { GlobalService } from '../../../global.service';
-import {MatTreeModule} from '@angular/material/tree';
+import { MatTreeModule } from '@angular/material/tree';
 import { environment } from 'environments/environment';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from '../../../shared.module';
 import { CategoryTreeComponent } from './category-tree/category-tree.component';
-import {PRODUCT_TYPE} from 'shared-lib/constants/app-constant';
- 
+import { PRODUCT_TYPE } from 'shared-lib/constants/app-constant';
+
 interface FoodNode {
   name: string;
   children?: FoodNode[];
 }
 @Component({
   selector: 'app-add-customer',
-  imports: [
-    ReactiveFormsModule,
-    QuillModule,
-    MatTreeModule,
-    MatIconModule,
-    CategoryTreeComponent,
-],
+  imports: [ReactiveFormsModule, QuillModule, MatTreeModule, MatIconModule, CategoryTreeComponent],
   templateUrl: './add-product.html',
-  styleUrl: './add-product.scss'
+  styleUrl: './add-product.scss',
 })
-
 export class AddProduct {
-    childrenAccessor = (node: FoodNode) => node.children ?? [];
+  childrenAccessor = (node: FoodNode) => node.children ?? [];
+  @ViewChild('galleryInput') galleryInput!: ElementRef<HTMLInputElement>;
 
   dataSource = [];
 
   hasChild = (_: number, node: FoodNode) => !!node.children && node.children.length > 0;
-  productDetails!:FormGroup;
+  productDetails!: FormGroup;
   inventoryForm!: FormGroup;
   // priceForm!: FormGroup;
   shippingInfoForm!: FormGroup;
@@ -48,9 +49,9 @@ export class AddProduct {
   publishForm!: FormGroup;
   productOptionData!: FormGroup;
   productMultipleOptionForm!: FormGroup;
-    tagsForm!: FormGroup;
+  tagsForm!: FormGroup;
   commonTags = ['mobile', 'tab', 'watch', 't-shirt', 'shirt', 'book', 'monitor', 'cloth'];
-categories = [
+  categories = [
     {
       id: 'catFinance',
       name: 'Finance',
@@ -59,9 +60,9 @@ categories = [
         {
           id: 'catAccounting',
           name: 'Accounting',
-          subCategories: [{ id: 'catBangladeshBank', name: 'BangladeshBank' }]
-        }
-      ]
+          subCategories: [{ id: 'catBangladeshBank', name: 'BangladeshBank' }],
+        },
+      ],
     },
     {
       id: 'catFashion',
@@ -71,47 +72,51 @@ categories = [
         {
           id: 'catShirt',
           name: 'Shirt',
-          subCategories: [{ id: 'catCasualShirt', name: 'Casual Shirt' }]
-        }
-      ]
+          subCategories: [{ id: 'catCasualShirt', name: 'Casual Shirt' }],
+        },
+      ],
     },
     { id: 'catBag', name: 'Bag' },
     { id: 'catMonitor', name: 'Monitor' },
     { id: 'catKeyboard', name: 'Keyboard' },
-    { id: 'catMouse', name: 'Mouse' }
+    { id: 'catMouse', name: 'Mouse' },
   ];
   productMediaSection!: FormGroup;
   thumbFile: any;
   galleryFiles: any;
-  thumbPreview: any=[];
+  thumbPreview: any = [];
   productInventrySection!: FormGroup;
-  priceSection!:FormGroup;
-  shippingInfoSection!:FormGroup;
+  priceSection!: FormGroup;
+  shippingInfoSection!: FormGroup;
   productAttributesForm!: FormGroup;
   public dataService: any = inject(DataService);
-  categoryListData:any=[];
-  parentId!:Number;
+  categoryListData: any = [];
+  parentId!: Number;
   selectedThumbImg: any;
-  thumbGallery: any=[];
+  thumbGallery: any = [];
   permaLink: any;
-  isInputShow: boolean=false;
-  domain: string='';
-  productStatus: string[]=[];
-  wrongDiscount: boolean=false;
-  constructor(private fb: FormBuilder,private globalService:GlobalService,private cd:ChangeDetectorRef){
-    this.initializeForms()
+  isInputShow: boolean = false;
+  domain: string = '';
+  productStatus: string[] = [];
+  wrongDiscount: boolean = false;
+  constructor(
+    private fb: FormBuilder,
+    private globalService: GlobalService,
+    private cd: ChangeDetectorRef
+  ) {
+    this.initializeForms();
     this.initializeCategoryControls();
     this.productStatus = PRODUCT_TYPE;
   }
 
-   onGetId(id: number) {
+  onGetId(id: number) {
     this.parentId = id;
   }
-  ngOnInit(){
+  ngOnInit() {
     this.domain = window.location.origin;
     this.getCategoryList();
   }
-  initializeForms(){
+  initializeForms() {
     this.addProductDetails();
     this.productOptionType();
     this.submitProductMultipleOptionForm();
@@ -128,42 +133,42 @@ categories = [
     // this.addInverntoryForm();
   }
 
-  addProductDetails(){
+  addProductDetails() {
     this.productDetails = this.fb.group({
-      productTitle:['',Validators.required],
-      productDescription:[''],
-      productStatus:[[]]
-    })
+      productTitle: ['', Validators.required],
+      productDescription: [''],
+      productStatus: [[]],
+    });
   }
   get addProductDetailsValidation() {
-  return this.productDetails.controls;
-}
-  productOptionType(){
+    return this.productDetails.controls;
+  }
+  productOptionType() {
     this.productOptionData = this.fb.group({
-      generalProductData:[false],
-      downloadableProductData:[false]
-    })
+      generalProductData: [false],
+      downloadableProductData: [false],
+    });
   }
 
-onStatusChange(event: any) {
-  const selectedOptions = Array.from(event.target.selectedOptions).map(
-    (option: any) => option.value
-  );
+  onStatusChange(event: any) {
+    const selectedOptions = Array.from(event.target.selectedOptions).map(
+      (option: any) => option.value
+    );
 
-  this.productDetails.patchValue({
-    productStatus: selectedOptions
-  });
-}
+    this.productDetails.patchValue({
+      productStatus: selectedOptions,
+    });
+  }
 
-  mediaForm(){
-      this.productMediaSection = this.fb.group({
+  mediaForm() {
+    this.productMediaSection = this.fb.group({
       thumbUpload: ['', Validators.required],
       galleryUpload: [''],
-      })
+    });
   }
 
-  inventryForm(){
-      this.productInventrySection = this.fb.group({
+  inventryForm() {
+    this.productInventrySection = this.fb.group({
       sku: ['', Validators.required],
       manageStock: [false],
       stockStatus: [],
@@ -173,81 +178,83 @@ onStatusChange(event: any) {
       showStockQuantity: [false],
       showStockWithText: [false],
       hideStock: [false],
-      })
+    });
   }
 
   priceForm(){
-this.priceSection = this.fb.group({
-      regularPrice: [0, [Validators.required, Validators.min(1)]],
-      salePrice: [0, Validators.min(1)],
-      discountType: ['1'],
+    this.priceSection = this.fb.group({
+      regularPrice: [null, [Validators.required, Validators.min(1)]],
+      salePrice: [0, [Validators.min(0)]],
+      discountType: ['Flat'],
       priceDateStart: [''],
       priceDateEnd: [''],
-})
+    });
+
+    // Subscribe to discount type changes to update validators
+    this.priceSection.get('discountType')?.valueChanges.subscribe(type => {
+      this.updateDiscountValidators(type);
+    });
   }
-  shippingForm(){
+  shippingForm() {
     this.shippingInfoSection = this.fb.group({
       weight: [0, Validators.min(0)],
       length: [0, Validators.min(0)],
       width: [0, Validators.min(0)],
       height: [0, Validators.min(0)],
       shippingClass: ['0'],
-      
-    })
+    });
   }
-productAttributeForm(){
+  productAttributeForm() {
+    this.productAttributesForm = this.fb.group({
+      selectedAttribute: [''],
+      attributes: this.fb.array([]),
+    });
+  }
+  get attributes(): FormArray {
+    return this.productAttributesForm.get('attributes') as FormArray;
+  }
+  addAttribute() {
+    const attr = this.fb.group({
+      name: [''], // attribute name
+      value: [''], // attribute value
+    });
 
-  this.productAttributesForm = this.fb.group({
-  selectedAttribute: [''],
-  attributes: this.fb.array([])
-});
-}
-get attributes(): FormArray {
-  return this.productAttributesForm.get('attributes') as FormArray;
-}
-addAttribute() {
-  const attr = this.fb.group({
-    name: [''],      // attribute name
-    value: ['']      // attribute value
-  });
+    this.attributes.push(attr);
+    //console.log('this.attributes==>', this.attributes);
+  }
 
-  this.attributes.push(attr);
-  console.log('this.attributes==>',this.attributes);
-  
-}
-
-shippingConfigForms(){
-this.shippingConfigForm = this.fb.group({
+  shippingConfigForms() {
+    this.shippingConfigForm = this.fb.group({
       estimateShippingTime: [''],
       freeShipping: [false],
       flatRate: [false],
       quantityMulitiply: [false],
       cashOnDelivery: [false],
-})
-}
+    });
+  }
 
-offerFormGroup(){
-  this.offerForm = this.fb.group({
-     flashDeal: [false],
+  offerFormGroup() {
+    this.offerForm = this.fb.group({
+      flashDeal: [false],
       todaysDeal: [false],
       featured: [false],
-  })
-}
-seoFormGroup(){
-  this.seoForm = this.fb.group({
+    });
+  }
+  seoFormGroup() {
+    this.seoForm = this.fb.group({
       focusKeyphrase: ['', Validators.required],
       metaTitle: ['', [Validators.required, Validators.maxLength(60)]],
       slugText: ['', [Validators.required, Validators.pattern('^[a-z0-9-]+$')]],
       metaDscr: ['', [Validators.required, Validators.maxLength(160)]],
-  })
-}
+    });
+  }
 
-submitProductMultipleOptionForm(){
-  this.productMultipleOptionForm = this.fb.group({
+  submitProductMultipleOptionForm() {
+    this.productMultipleOptionForm = this.fb.group({
       // Media Tab
       // thumbUpload: ['', Validators.required],
       // galleryUpload: [''],
-      
+
       // Inventory Tab
       // sku: ['', Validators.required],
       // manageStock: [false],
@@ -258,7 +265,7 @@ submitProductMultipleOptionForm(){
       // showStockQuantity: [false],
       // showStockWithText: [false],
       // hideStock: [false],
-      
+
       // Price Tab
       // regularPrice: [0, [Validators.required, Validators.min(0)]],
       // salePrice: [0, Validators.min(0)],
@@ -266,11 +273,8 @@ submitProductMultipleOptionForm(){
       // priceDateStart: [''],
       // priceDateEnd: [''],
 
-
       //attribute
 
-
-      
       // Shipping Info Tab
       // weight: [0, Validators.min(0)],
       // length: [0, Validators.min(0)],
@@ -285,12 +289,12 @@ submitProductMultipleOptionForm(){
       // quantityMulitiply: [false],
       // cashOnDelivery: [false],
 
-      // offer 
+      // offer
       // flashDeal: [false],
       // todaysDeal: [false],
       // featured: [false],
 
-// SEO Data
+      // SEO Data
       // focusKeyphrase: ['', Validators.required],
       // metaTitle: ['', [Validators.required, Validators.maxLength(60)]],
       // slugText: ['', [Validators.required, Validators.pattern('^[a-z0-9-]+$')]],
@@ -305,36 +309,34 @@ submitProductMultipleOptionForm(){
       // categorySearch: [''],
       // newCategoryName: ['', Validators.required],
       // newCategoryParent: ['']
-
     });
-    
-}
+  }
 
-addCategoriesForm(){
- this.categoryForm = this.fb.group({
+  addCategoriesForm() {
+    this.categoryForm = this.fb.group({
       search: [''],
       selectedCategories: this.fb.array([]),
       newCategory: this.fb.group({
         name: [''],
-        parent: ['']
-      })
+        parent: [''],
+      }),
     });
-}
+  }
 
-addTagsForm(){
-   this.tagsForm = this.fb.group({
+  addTagsForm() {
+    this.tagsForm = this.fb.group({
       tagInput: [''],
-      tags: [[]]
+      tags: [[]],
     });
-}
-private initializeCategoryControls(): void {
+  }
+  private initializeCategoryControls(): void {
     const selectedCategories = this.categoryForm.get('selectedCategories') as FormArray;
     selectedCategories.clear();
 
-    this.categories.forEach(category => {
+    this.categories.forEach((category) => {
       selectedCategories.push(new FormControl(false));
       if (category.subCategories) {
-        category.subCategories.forEach(sub => {
+        category.subCategories.forEach((sub) => {
           selectedCategories.push(new FormControl(false));
           if (sub.subCategories) {
             sub.subCategories.forEach(() => {
@@ -354,42 +356,43 @@ private initializeCategoryControls(): void {
     return this.categoryForm.get('newCategory') as FormGroup;
   }
 
-
   onSearch(): void {
-    console.log('Search Query:', this.categoryForm.get('search')?.value);
+    //console.log('Search Query:', this.categoryForm.get('search')?.value);
     // Add search logic here
   }
-   getCategoryLabel(index: number): string {
+  getCategoryLabel(index: number): string {
     // Simplified way to show category name from index
     const flatList: string[] = [];
-    this.categories.forEach(c => {
+    this.categories.forEach((c) => {
       flatList.push(c.name);
-      c.subCategories?.forEach(sub => {
+      c.subCategories?.forEach((sub) => {
         flatList.push('— ' + sub.name);
-        sub.subCategories?.forEach(subSub => flatList.push('—— ' + subSub.name));
+        sub.subCategories?.forEach((subSub) => flatList.push('—— ' + subSub.name));
       });
     });
     return flatList[index] || 'Category ' + index;
   }
   addNewCategory(): void {
     const newCat = this.newCategoryForm.value;
-    console.log('New Category:', newCat);
+    //console.log('New Category:', newCat);
   }
 
+  // Tags start
 
-  // Tags start 
+  addTag() {
+    //console.log('this.tagsForm.value==>', this.tagsForm.value);
 
- addTag() {
-  console.log('this.tagsForm.value==>',this.tagsForm.value);
-  
     const tagValue = this.tagsForm.value.tagInput?.trim();
-    console.log('tagValue ==>', tagValue);
+    //console.log('tagValue ==>', tagValue);
 
     if (tagValue) {
       const currentTags = this.tagsForm.value.tags || [];
       const newTags = [
         ...currentTags,
-        ...tagValue.split(',').map((t: any) => t.trim()).filter(Boolean)
+        ...tagValue
+          .split(',')
+          .map((t: any) => t.trim())
+          .filter(Boolean),
       ];
       this.tagsForm.patchValue({ tags: newTags, tagInput: '' });
     }
@@ -409,308 +412,343 @@ private initializeCategoryControls(): void {
       this.tagsForm.patchValue({ tags: [...currentTags, tag] });
     }
   }
- selectedFile: File[] = [];
-onThumbSelect(event: any) {
-  const file = event.target.files[0];
-  this.thumbFile = file;
+  selectedFile: File[] = [];
+  onThumbSelect(event: any) {
+    const file = event.target.files[0];
+    this.thumbFile = file;
 
-  // Create image preview
-  const reader = new FileReader();
-  reader.onload = () => {
-    this.thumbPreview.push(reader.result as string);
-  };
-  reader.readAsDataURL(file);
-}
-
-// media upload photo fnc 
-onFileSelect(event: any) {
-
-  // const file = event.target.files[0];
-  for (let i = 0; i < event.target.files.length; i++) {
-  const file = event.target.files[i];
-  if (!file) return;
-  this.selectedFile.push(file);
-console.log('this.selectedFile===>',this.selectedFile);
-
-  // Preview if needed
-  const reader = new FileReader();
-  reader.onload = () => {
-    // this.thumbPreview = reader.result as string;
-      this.thumbGallery.push(reader.result as string);
-      this.cd.detectChanges();
-  };
-
-    const element = this.selectedFile[i];
-    reader.readAsDataURL(element);
+    // Create image preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.thumbPreview.push(reader.result as string);
+    };
+    reader.readAsDataURL(file);
   }
-  // Call upload immediately
-  // this.uploadImage();
-  console.log(' this.thumbGallery===>', this.thumbGallery);
-  
-}
 
-onFileSelectThumb(event: any) {
-   const file = event.target.files[0];
-  if (!file) return;
-  // const file = event.target.files[0];
-  // this.selectedFile.push(file);
-this.selectedThumbImg = file;
+  // media upload photo fnc
+  onFileSelect(event: any) {
+    // const file = event.target.files[0];
+    for (let i = 0; i < event.target.files.length; i++) {
+      const file = event.target.files[i];
+      if (!file) return;
+      this.selectedFile.push(file);
+      //console.log('this.selectedFile===>', this.selectedFile);
 
-  // Preview if needed
-  const reader = new FileReader();
-  reader.onload = () => {
-    // this.thumbPreview = reader.result as string;
+      // Preview if needed
+      const reader = new FileReader();
+      reader.onload = () => {
+        // this.thumbPreview = reader.result as string;
+        this.thumbGallery.push(reader.result as string);
+        this.cd.detectChanges();
+      };
+
+      const element = this.selectedFile[i];
+      reader.readAsDataURL(element);
+    }
+    // Call upload immediately
+    // this.uploadImage();
+    //console.log(' this.thumbGallery===>', this.thumbGallery);
+  }
+
+  onFileSelectThumb(event: any) {
+    const file = event.target.files[0];
+    if (!file) return;
+    // const file = event.target.files[0];
+    // this.selectedFile.push(file);
+    this.selectedThumbImg = file;
+
+    // Preview if needed
+    const reader = new FileReader();
+    reader.onload = () => {
+      // this.thumbPreview = reader.result as string;
       this.thumbPreview = reader.result as string;
       this.cd.detectChanges();
-  };
-  reader.readAsDataURL(file);
-  // Call upload immediately
-  // this.uploadImage();
-}
-uploadImage() {
-  if (!this.selectedThumbImg) return;
-  const formData = new FormData();
-  // for (let i = 0; i < this.selectedFile.length; i++) {
+    };
+    reader.readAsDataURL(file);
+    // Call upload immediately
+    // this.uploadImage();
+  }
+  uploadImage() {
+    if (!this.selectedThumbImg) return;
+    const formData = new FormData();
+    // for (let i = 0; i < this.selectedFile.length; i++) {
     // const element = this.selectedFile[i];
-    formData.append("files", this.selectedThumbImg, this.selectedThumbImg.name);
-    formData.append("module", "product");
-    formData.append("module_id", "gallery");
-    formData.append("type", "gallery");
-  // }
-  // Add other parameters if needed
+    formData.append('files', this.selectedThumbImg, this.selectedThumbImg.name);
+    formData.append('module', 'product');
+    formData.append('module_id', 'gallery');
+    formData.append('type', 'gallery');
+    // }
+    // Add other parameters if needed
+  }
 
+  onGallerySelect(event: any) {
+    this.galleryFiles = event.target.files;
+  }
+  getProductDetails() {
+    //console.log('productDetails==>', this.productDetails.value);
 
-
-}
-
-onGallerySelect(event: any) {
-  this.galleryFiles = event.target.files;
-}
-getProductDetails(){
-  console.log('productDetails==>',this.productDetails.value);
-  
-  let priceSection = this.priceSection.value;
-  priceSection.priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
-  priceSection.priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
-  // media payload 
+    let priceSection = this.priceSection.value;
+    priceSection.priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
+    priceSection.priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
+    // media payload
     let mediaSectionPayload = {
-    thumbFile:this.thumbFile,
-    galleryFiles:this.galleryFiles
-    }
-    let finalData:any = {
-      category_id:this.parentId,
+      thumbFile: this.thumbFile,
+      galleryFiles: this.galleryFiles,
+    };
+    let finalData: any = {
+      category_id: this.parentId,
       media: mediaSectionPayload,
-      title:this.productDetails.value.productTitle,
-      description:this.productDetails.value.productDescription,
-      inventory:this.productInventrySection.value,
-      price_data:priceSection,
-      shipping_info:this.shippingInfoSection.value,
-      shipping_config:this.shippingConfigForm.value,
-      offer:this.offerForm.value,
-      seo:this.seoForm.value,
-      tags:this.tagsForm.value,
+      title: this.productDetails.value.productTitle,
+      description: this.productDetails.value.productDescription,
+      inventory: this.productInventrySection.value,
+      price_data: priceSection,
+      shipping_info: this.shippingInfoSection.value,
+      shipping_config: this.shippingConfigForm.value,
+      offer: this.offerForm.value,
+      seo: this.seoForm.value,
+      tags: this.tagsForm.value,
       // visibility:this.productMultipleOptionForm.value,
       visibility: {
-       status: this.productMultipleOptionForm.value.status,
-       publishDate:this.productMultipleOptionForm.value.publishDate,
-       visibility:this.productMultipleOptionForm.value.visibility
-  }
-    }
-    console.log('finalData==>',finalData);
-    this.dataService.post(finalData, 'products')
+        status: this.productMultipleOptionForm.value.status,
+        publishDate: this.productMultipleOptionForm.value.publishDate,
+        visibility: this.productMultipleOptionForm.value.visibility,
+      },
+    };
+    //console.log('finalData==>', finalData);
+    this.dataService
+      .post(finalData, 'products')
       .pipe(
-        catchError(err => {
+        catchError((err) => {
           console.error('Error:', err);
-            setTimeout(() => {
-          // this.globalService.showMsgSnackBar(err);
-        }, 100);
+          setTimeout(() => {
+            // this.globalService.showMsgSnackBar(err);
+          }, 100);
           return of(err);
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
-          if (res.error) {
-            this.globalService.showMsgSnackBar(res.error);
-            return;
-          }
-       else if (res.success ==true) {    
+        //console.log('Response:', res);
+        if (res.error) {
+          this.globalService.showMsgSnackBar(res.error);
+          return;
+        } else if (res.success == true) {
           let id = res.data.id;
-          console.log('this.selectedThumbImg==>',this.selectedThumbImg);
-          
-            if (this.selectedThumbImg !=undefined){
+          //console.log('this.selectedThumbImg==>', this.selectedThumbImg);
 
-              const formDataThumb = new FormData();
-              // for (let i = 0; i < this.selectedFile.length; i++) {
-                // const element = this.selectedFile[i];
-                formDataThumb.append("files", this.selectedThumbImg, this.selectedThumbImg.name);
-                formDataThumb.append("module", "product");
-                formDataThumb.append("module_id", id);
-                formDataThumb.append("type", "thumbnail");
-                this.callUploadnediaSection(formDataThumb);
+          if (this.selectedThumbImg != undefined) {
+            const formDataThumb = new FormData();
+            // for (let i = 0; i < this.selectedFile.length; i++) {
+            // const element = this.selectedFile[i];
+            formDataThumb.append('files', this.selectedThumbImg, this.selectedThumbImg.name);
+            formDataThumb.append('module', 'product');
+            formDataThumb.append('module_id', id);
+            formDataThumb.append('type', 'thumbnail');
+            this.callUploadnediaSection(formDataThumb);
+          } else {
+            if (this.selectedFile?.length) {
+              for (const file of this.selectedFile) {
+                const formData = new FormData();
+                formData.append('files', file);
+                formData.append('module', 'product');
+                formData.append('module_id', id);
+                formData.append('type', 'gallery');
+
+                this.callUploadnediaSection(formData);
+              }
             }
-            else{
-
-if (this.selectedFile?.length) {
-  for (const file of this.selectedFile) {
-
-    const formData = new FormData();
-    formData.append('files', file);
-    formData.append('module', 'product');
-    formData.append('module_id', id);
-    formData.append('type', 'gallery');
-
-    this.callUploadnediaSection(formData);
-  }
-}
-
 
             //   for (let i = 0; i < this.selectedFile.length; i++) {
             //   const element = this.selectedFile[i];
-            
+
             //   const formData = new FormData();   // IMPORTANT: create new for each file
-            
+
             //   formData.append("files", element, element.name);
             //   formData.append("module", "product");
             //   formData.append("module_id", id);
             //   formData.append("type", "gallery");
-            // console.log('formData==>',formData);
-            
+            // //console.log('formData==>',formData);
+
             //   this.callUploadnediaSection(formData);
             // }
-            }
-  setTimeout(() => {
-          this.globalService.showMsgSnackBar(res);
-        }, 100);
+          }
+          setTimeout(() => {
+            this.globalService.showMsgSnackBar(res);
+          }, 100);
         }
         // this.addCategory.reset();
         // this.imagePreview = '';
         // this.imageFile = null;
         // this.getCategoryList();
-      
       });
 
+    //   //console.log('thumbFile',this.thumbFile);  // FileList
+    //   //console.log('galleryFiles',this.galleryFiles);  // FileList
+    // //console.log('this.priceSection.value.priceDateStart==>',this.priceSection.value);
+    // // price start and end time
+    //   const priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
+    //   const priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
 
-
-//   console.log('thumbFile',this.thumbFile);  // FileList
-//   console.log('galleryFiles',this.galleryFiles);  // FileList
-// console.log('this.priceSection.value.priceDateStart==>',this.priceSection.value);
-// // price start and end time 
-//   const priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
-//   const priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
-  
-  // media payload 
+    // media payload
     // let mediaSectionPayload = {
     // thumbFile:this.thumbFile,
     // galleryFiles:this.galleryFiles
     // }
-  
 
+    //   //console.log('productDetails==>',this.productDetails.value);
+    //   //console.log('productOptionData==>',this.productOptionData.value);
+    // //console.log('submitProductMultipleOptionForm==>',this.productMultipleOptionForm.value);
+    // // //console.log('New Category:', this.categoryForm.get('newCategory')?.value);
+    // //console.log('New Category:', this.newCategoryForm.value);
+    // //console.log('this.tagsForm==>',this.tagsForm.value.tags);
+    // //console.log('selectedCategories==>',this.selectedCategories.value);
 
+    // tagsform value
+    // const tagsArray = this.tagsForm.value.tags;
+    // const tagsString = tagsArray.join(', ');
+    // //console.log('tagsString',tagsString);
+  }
 
-//   console.log('productDetails==>',this.productDetails.value);
-//   console.log('productOptionData==>',this.productOptionData.value);
-// console.log('submitProductMultipleOptionForm==>',this.productMultipleOptionForm.value);
-// // console.log('New Category:', this.categoryForm.get('newCategory')?.value);
-// console.log('New Category:', this.newCategoryForm.value);
-// console.log('this.tagsForm==>',this.tagsForm.value.tags);
-// console.log('selectedCategories==>',this.selectedCategories.value);
+  callUploadnediaSection(formData: any) {
+    //console.log('formData==>', formData);
 
-// tagsform value 
-// const tagsArray = this.tagsForm.value.tags;
-// const tagsString = tagsArray.join(', ');
-// console.log('tagsString',tagsString);
-
-
-  
-  
-}
-
-
-
-callUploadnediaSection(formData:any){
-  console.log('formData==>',formData);
-  
-    this.dataService.postForm('media/upload',formData)
+    this.dataService
+      .postForm('media/upload', formData)
       .pipe(
-        catchError(err => {
+        catchError((err) => {
           console.error('Error:', err);
-        //     setTimeout(() => {
-        //   this.globalService.showMsgSnackBar(err);
-        // }, 100);
+          //     setTimeout(() => {
+          //   this.globalService.showMsgSnackBar(err);
+          // }, 100);
           return of(null);
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         // this.getCategoryList();
         // setTimeout(() => {
         //   this.globalService.showMsgSnackBar(res);
         // }, 100);
       });
-}
+  }
 
-// get categories 
+  // get categories
   getCategoryList() {
     this.categoryListData = [];
-    this.dataService.get('categories')
+    this.dataService
+      .get('categories')
       .pipe(
-        catchError(err => {
+        catchError((err) => {
           console.error('Error:', err);
           return of(null);
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         if (res.data) {
-
           for (let i = 0; i < res.data.length; i++) {
             const element = res.data[i];
-            console.log('element==>', element.thumbnail);
+            //console.log('element==>', element.thumbnail);
             if (element?.thumbnail != null) {
-              console.log('environment.API_URL==>', environment.API_URL);
+              //console.log('environment.API_URL==>', environment.API_URL);
               element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
             }
             this.categoryListData.push(element);
           }
         }
-        console.log('categoryListData==>', this.categoryListData);
+        //console.log('categoryListData==>', this.categoryListData);
         // this.dataSource = this.categoryListData;
         this.cd.detectChanges();
         // this.categoryListData = res.data;
       });
   }
 
-
-  createPermalink(){
+  createPermalink() {
     this.productDetails.value.productTitle;
     // let permaLinkValue = this.productDetails.value.productTitle.contains(' ')
     const formatted = this.productDetails.value.productTitle.replace(/\s+/g, '-').toLowerCase();
     this.permaLink = formatted;
-    this.seoForm.patchValue({slugText:formatted});
+    this.seoForm.patchValue({ slugText: formatted });
     this.cd.detectChanges();
   }
-    enableInput(){
-      this.isInputShow = true;
-    }
-    getUpdatedValue(event:any){
-      console.log('event==>',event.target.value);
-      let value = event.target.value.replace(/\s+/g, '-').toLowerCase();;
-      this.permaLink = value;
-   }
-   permalinkAction(action:String){
-     this.isInputShow = false;   
+  enableInput() {
+    this.isInputShow = true;
+  }
+  getUpdatedValue(event: any) {
+    //console.log('event==>', event.target.value);
+    let value = event.target.value.replace(/\s+/g, '-').toLowerCase();
+    this.permaLink = value;
+  }
+  onPermalinkBlur(event: any){
+    const value = event.target.textContent.trim().replace(/\s+/g, '-').toLowerCase();
+    this.permaLink = value;
+    this.cd.detectChanges();
+  }
+  permalinkAction(action: String) {
+    this.isInputShow = false;
     if (action == 'cancel') {
       this.permaLink = '';
     }
-   }
-   discountPriceChange(){
-    if (this.priceSection.value.salePrice > this.priceSection.value.regularPrice) {
+  }
+  discountPriceChange(){
+    const regularPrice = this.priceSection.value.regularPrice;
+    const salePrice = this.priceSection.value.salePrice;
+    const discountType = this.priceSection.value.discountType;
+    
+    // Check if discount is greater than or equal to regular price (only for Flat discount)
+    if (discountType === 'Flat' && regularPrice && salePrice && salePrice >= regularPrice) {
       this.wrongDiscount = true;
-    }
-    else{
+    } else {
       this.wrongDiscount = false;
-
     }
+  }
+  onDiscountTypeChange(){
+    const discountType = this.priceSection.value.discountType;
+    this.updateDiscountValidators(discountType);
+    this.discountPriceChange();
+  }
+
+  updateDiscountValidators(type: string){
+    const salePriceControl = this.priceSection.get('salePrice');
+    
+    if (type === 'Discount') {
+      // For percentage, min 0 and max 100
+      salePriceControl?.setValidators([Validators.min(0), Validators.max(100)]);
+    } else {
+      // For flat amount, just min 0
+      salePriceControl?.setValidators([Validators.min(0)]);
+    }
+    
+    salePriceControl?.updateValueAndValidity();
+    
     this.cd.detectChanges();
-   }
+  }
+
+
+  removeGalleryImage(index: number) {
+    // Remove from the preview array
+    this.thumbGallery.splice(index, 1);
+
+    // Remove from the selected files array
+    if (this.selectedFile && this.selectedFile.length > index) {
+      this.selectedFile.splice(index, 1);
+    }
+
+    // Update the file input with remaining files
+    if (this.galleryInput) {
+      if (this.selectedFile.length === 0) {
+        // Clear input if no files remain
+        this.galleryInput.nativeElement.value = '';
+      } else {
+        // Rebuild the FileList with remaining files
+        const dataTransfer = new DataTransfer();
+        this.selectedFile.forEach((file) => {
+          dataTransfer.items.add(file);
+        });
+        this.galleryInput.nativeElement.files = dataTransfer.files;
+      }
+    }
+
+    // Trigger change detection
+    this.cd.detectChanges();
+  }
 }

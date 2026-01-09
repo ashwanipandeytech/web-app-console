@@ -6673,8 +6673,8 @@ pre .punctuation {
 }
 .main-content .product-image-upload .part-txt {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 12px;
-  margin-bottom: 20px;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
 }
 .main-content .product-image-upload .part-txt h5 {
   font-family: "Lato", sans-serif;

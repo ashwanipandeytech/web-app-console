@@ -55,7 +55,7 @@ export class MyOrdersComponent implements OnInit {
     this.rateUsForm.patchValue({ rating: value });
   }
 // openRateUsModal(item:any){
-// console.log('item===>',item);
+// //console.log('item===>',item);
 // this.orderId = item.id;
 // }
   submitRating(): void {
@@ -66,7 +66,7 @@ export class MyOrdersComponent implements OnInit {
 
     const payload = this.rateUsForm.value;
 // payload.orderId = this.orderId;
-    console.log('Rating Submitted:', payload);
+    //console.log('Rating Submitted:', payload);
  this.dataService
       .post(payload,`orders/${this.orderId}/rate`)
       .pipe(
@@ -75,7 +75,7 @@ export class MyOrdersComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:===>', res);
+        //console.log('Response:===>', res);
 
         if (res?.success == true) {
           this.globalService.showMsgSnackBar(res);
@@ -115,7 +115,7 @@ export class MyOrdersComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:===>', res);
+        //console.log('Response:===>', res);
         if (res.success == true) {
           this.orderListData = res.data.data;
           this.isLoading = false;
@@ -138,7 +138,7 @@ export class MyOrdersComponent implements OnInit {
   
   getOrderDetailData(data: any) {
     this.orderDetailList = data;
-    console.log('hiii',data);
+    //console.log('hiii',data);
     this.orderId = data.id;
 
   }
@@ -158,7 +158,7 @@ export class MyOrdersComponent implements OnInit {
   //  )
   // }
   addToCart(item: any) {
-    console.log('item==>', item);
+    //console.log('item==>', item);
       let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
     let cartPayload = {
       product_id: item.product.id,
@@ -174,7 +174,7 @@ export class MyOrdersComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         if (res.success == true) {
           this.globalService.showMsgSnackBar(res);
           this.globalFunctionService.getCount();

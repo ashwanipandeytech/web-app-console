@@ -74,7 +74,7 @@ export class Category {
     });
 
     for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
+      //console.log(pair[0], pair[1]);
     }
 
     this.dataService.postForm('categories',formData)
@@ -88,7 +88,7 @@ export class Category {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         this.addCategory.reset();
           if (this.fileInput) {
     this.fileInput.nativeElement.value = '';
@@ -112,20 +112,20 @@ export class Category {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         if (res.data) {
 
           for (let i = 0; i < res.data.length; i++) {
             const element = res.data[i];
-            console.log('element==>', element.thumbnail);
+            //console.log('element==>', element.thumbnail);
             if (element?.thumbnail != null) {
-              console.log('environment.API_URL==>', environment.API_URL);
+              //console.log('environment.API_URL==>', environment.API_URL);
               element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
             }
             this.categoryListData.push(element);
           }
         }
-        console.log('categoryListData==>', this.categoryListData);
+        //console.log('categoryListData==>', this.categoryListData);
 
         this.cd.detectChanges();
         // this.categoryListData = res.data;
@@ -143,7 +143,7 @@ export class Category {
       data: popupData,
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog closed with:', result);
+      //console.log('Dialog closed with:', result);
 
       if (result.action === 'delete') {
         // Perform delete
@@ -208,7 +208,7 @@ export class Category {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         if (res.error) {
           this.globalService.showMsgSnackBar(res.err);
           
@@ -239,7 +239,7 @@ else{
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         this.getCategoryList();
           setTimeout(() => {
           this.globalService.showMsgSnackBar(res);

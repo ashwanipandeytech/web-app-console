@@ -32,7 +32,7 @@ export class HostOutletComponent {
     // //this.allInOnePageSections=response?.pageData;
     // response?.pageData.map((item: any) => {  
     //     let  templateVersion=item.fields.cComponentCode
-    //     console.log('this.pageComponentFactory==>',this.pageComponentFactory);
+    //     //console.log('this.pageComponentFactory==>',this.pageComponentFactory);
     //    this.pageComponentFactory.loadComponentInstance('Block-C-22-v1', item, this.hostContainer);
 
     //   })

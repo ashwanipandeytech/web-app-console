@@ -11,7 +11,7 @@ user = signal<any>(null);
   currentLocation = signal<any>(null);
 
   setCounts(data: any) {
-    console.log('signal service ==',data);
+    //console.log('signal service ==',data);
     
     this.allCounts.set(data);
   }

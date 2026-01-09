@@ -85,9 +85,9 @@ export class ProductDetails {
 
     this.dataService.getById('products',this.productId).subscribe((res:any) => {
       this.productDetails = res.data;
-      // console.log('productId==>',this.productDetails);
+      // //console.log('productId==>',this.productDetails);
       let user = JSON.parse(localStorage.getItem('user') || '{}');
-    console.log('user==>',user);
+    //console.log('user==>',user);
 
     if ( typeof user === 'object' && Object.keys(user).length <= 0) {
       this.isLogin = false;
@@ -126,7 +126,7 @@ export class ProductDetails {
 
   addToCart(action:any='') {
       let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
-    console.log('localStorage.getItem -====',localStorage.getItem('user'));
+    //console.log('localStorage.getItem -====',localStorage.getItem('user'));
     // if (localStorage.getItem('user') == null) {
     //   this.router.navigate(['/login']);
     // }
@@ -144,7 +144,7 @@ export class ProductDetails {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         //  if (res.headers) {
         //   let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
         //   //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
@@ -199,10 +199,10 @@ export class ProductDetails {
     });
     modalRef.result
       .then((result) => {
-        console.log('Modal closed with result:', result);
+        //console.log('Modal closed with result:', result);
       })
       .catch((reason) => {
-        console.log('Modal dismissed:', reason);
+        //console.log('Modal dismissed:', reason);
       });
   }
   callAllProductList() {
@@ -212,7 +212,7 @@ export class ProductDetails {
         return of(null); // or you can return a default value if needed
       })
     ).subscribe((response: any) => {
-      // console.log('Response:', response);
+      // //console.log('Response:', response);
     this.productListData = response.data.data;
     for (let i = 0; i <  this.productListData.length; i++) {
       const element =  this.productListData[i];
@@ -222,7 +222,7 @@ export class ProductDetails {
       }
       
     }
-    console.log('productListData==>',this.productListData);
+    //console.log('productListData==>',this.productListData);
     this.loading = false;
     this.cd.detectChanges();
       if (response && response.success) {
@@ -251,18 +251,18 @@ export class ProductDetails {
     let data = {
       product_id:item.id
     }
-    console.log('item==>',item.is_wishlisted);
+    //console.log('item==>',item.is_wishlisted);
     
   if (item.is_wishlisted) {
      item.is_wishlisted = !item.is_wishlisted;
       this.dataService.delete('wishlist/product',data.product_id).subscribe((res:any)=>{
-        console.log('wishlist==>',res);
+        //console.log('wishlist==>',res);
       })
     }
     else{
        item.is_wishlisted = !item.is_wishlisted;
       this.dataService.post(data,'wishlist').subscribe((res:any)=>{
-        console.log('wishlist==>',res);
+        //console.log('wishlist==>',res);
       })
     }
     //  this.callAllProductList();
@@ -274,12 +274,12 @@ export class ProductDetails {
 
     // if (this.isWishlisted) {
     //   this.dataService.post(data,'wishlist').subscribe((res:any)=>{
-    //     console.log('wishlist==>',res);
+    //     //console.log('wishlist==>',res);
     //   })
     // }
     // else{
     //      this.dataService.delete('wishlist/product',data.product_id).subscribe((res:any)=>{
-    //     console.log('wishlist==>',res);
+    //     //console.log('wishlist==>',res);
     //   })
     // }
   }

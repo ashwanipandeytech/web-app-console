@@ -4,7 +4,7 @@ import { CanActivateFn, Router, ActivatedRouteSnapshot } from '@angular/router';
 export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   const router = inject(Router);
   const token = localStorage.getItem('user'); // your login condition
-console.log('token==>',token);
+//console.log('token==>',token);
 
   const isLoginPage = route.routeConfig?.path === '' || route.routeConfig?.path === 'login';
 
