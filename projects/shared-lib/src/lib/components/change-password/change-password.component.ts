@@ -36,10 +36,11 @@ export class ChangePasswordComponent implements OnInit {
                     //   password_confirmation: formData.confirmPassword
                     // }
                 // this.setPassword(payload);
+console.log('this.passwordForm===>',this.passwordForm.value);
 
-    if (this.passwordForm.invalid) {
-      return;
-    }
+    // if (this.passwordForm.invalid) {
+    //   return;
+    // }
     const formData = this.passwordForm.value;
     console.log('Password Data:', formData);
     let payload = {
@@ -51,7 +52,7 @@ export class ChangePasswordComponent implements OnInit {
             .pipe(
               catchError((err) => {
                 console.error('Error:', err);
-                return of(null);
+                return of(err);
               })
             )
             .subscribe((res: any) => {
