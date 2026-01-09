@@ -1,11 +1,12 @@
 
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
 import { GlobalService } from '../../global.service';
+declare var bootstrap: any;
 @Component({
   selector: 'layout-settings',
   templateUrl: './layout-settings.component.html',
@@ -87,8 +88,13 @@ export class LayoutSettingsComponent implements OnInit {
   private globalService:any = inject(GlobalService);
   pageList: any;
   uploadedFile:any;
-
-  constructor(private cdr: ChangeDetectorRef) { }
+  @ViewChild('uploadPhoto') uploadPhoto!: ElementRef;
+  desktopLogoData: any=[];
+  selectedImageobj: any;
+  constructor(private cdr: ChangeDetectorRef) { 
+    this.getImageApi();
+    // this.getDefaultImage();
+  }
 
   ngOnInit() {
 
@@ -123,6 +129,8 @@ export class LayoutSettingsComponent implements OnInit {
     
 
           this.settingsModel = res.data.settings;
+         this.uploadedFile = this.settingsModel.general.logo.desktop.imgSrc
+          
         
 
          this.getPageList()
@@ -130,6 +138,46 @@ export class LayoutSettingsComponent implements OnInit {
         }
 
       });
+  }
+  // getDefaultImage(){
+  //     this.dataService.get('gallery/1/usage')
+  //     .pipe(
+  //       catchError(err => {
+  //         console.error('Error:', err);
+  //         return of(null);
+  //       })
+  //     )
+  //     .subscribe((res: any) => {
+  //       //console.log('Response:', res);
+  //       if (res.data) {
+  //         this.desktopLogoData = res.data;
+  //         console.log('desktopLogoData',this.desktopLogoData);
+          
+  //         this.cdr.detectChanges();
+  //       }
+  //     })
+  // }
+  getSelectedImage(image:any){
+console.log('image==>',image);
+this.selectedImageobj = image;
+  }
+  getImageApi(){
+      this.dataService.get('gallery')
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        //console.log('Response:', res);
+        if (res.data) {
+          this.desktopLogoData = res.data;
+          console.log('desktopLogoData',this.desktopLogoData);
+          
+          this.cdr.detectChanges();
+        }
+      })
   }
   getPageList(){
         this.dataService.get('pages/list')
@@ -301,6 +349,9 @@ export class LayoutSettingsComponent implements OnInit {
   onImageChange(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     this.uploadedFile = file;
+    console.log('this.uploadedFile==>',this.uploadedFile);
+    
+    this.cdr.detectChanges();
     if (!file) return;
 
     const reader = new FileReader();
@@ -317,13 +368,19 @@ export class LayoutSettingsComponent implements OnInit {
   savedImage(){
 //console.log('uploadedFile==>',this.uploadedFile);
   // for (const file of this.uploadedFile) {
-
+if (this.selectedImageobj?.type == "desktoplogo") {
+this.settingsModel.general.logo.desktop.imgSrc = this.selectedImageobj.url;
+  console.log('this.settingsModel==>',this.settingsModel.general.logo.desktop.imgSrc.alt);
+  
+  // this.settingsModel
+}
     const formData = new FormData();
     formData.append('files', this.uploadedFile);
     // formData.append('module', 'product');
     // formData.append('module_id', id);
     formData.append('type', 'desktopLogo');
     this.callUploadnediaSection(formData);
+    this.closePopup();
   // }
   }
   callUploadnediaSection(formData:any){
@@ -339,4 +396,11 @@ export class LayoutSettingsComponent implements OnInit {
         //console.log('Response:', res);
       });
 }
+  closePopup(){
+     const modal = bootstrap.Modal.getInstance(
+        this.uploadPhoto.nativeElement
+      );
+      modal.hide();
+      this.getImageApi();
+  }
 }

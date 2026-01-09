@@ -28,3 +28,20 @@
   max-width: 100px;
   aspect-ratio: 1;
 }
+
+.custom-quill .ql-container {
+  min-height: 200px;
+}
+
+.custom-quill .ql-editor {
+  min-height: 200px;
+}
+:host ::ng-deep quill-editor .ql-container {
+  min-height: 100px;   /* initial height */
+}
+
+:host ::ng-deep quill-editor .ql-editor {
+  min-height: 100px;
+  height: auto !important;
+  overflow-y: hidden; /* prevent scroll */
+}

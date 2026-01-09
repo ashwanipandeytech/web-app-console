@@ -38,7 +38,17 @@
               </p>
             </div>
           </div>
-
+<div class="panel mb-30">
+            <div class="panel-header">
+              <h5>Short Description</h5>
+              <div class="btn-box d-flex gap-2">
+                <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
+                <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
+                    class="fa fa-angle-up"></i></button>
+              </div>
+            </div>
+            <quill-editor formControlName="shortDescription"  rows="5"></quill-editor>
+          </div>
           <div class="panel mb-30">
             <div class="panel-header">
               <h5>Product Description</h5>
@@ -51,6 +61,17 @@
             <quill-editor formControlName="productDescription"></quill-editor>
           </div>
 
+           <div class="panel mb-30">
+            <div class="panel-header">
+              <h5>Features</h5>
+              <!-- <div class="btn-box d-flex gap-2">
+                <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
+                <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
+                    class="fa fa-angle-up"></i></button>
+              </div> -->
+            </div>
+            <quill-editor formControlName="features"></quill-editor>
+          </div>
 
           <div class="panel mb-30">
             <div class="panel-body">
@@ -162,6 +183,29 @@
                               style="width: 100px; height: 100px; object-fit: cover;" />
                             <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
                               style="padding: 2px 6px; font-size: 12px;" (click)="removeGalleryImage($index)">
+                              <i class="fa fa-xmark"></i>
+                            </button>
+                          </div>
+                          }
+                        </div>
+                      </div>
+                    </div>
+                    <hr>
+                       <div class="col-12 mt-4">
+                      <div class="add-gallery-img product-image-upload">
+                        <div class="part-txt">
+                          <h5>Product Description Images <span>(jpeg/png)</span></h5>
+                        </div>
+
+                        <input #descriptionImageGallery multiple type="file" class="form-control" formControlName="productDescriptionImageGallery"
+                          accept="image/*" (change)="onFileProductDescriptionGallery($event)">
+                        <div class="d-flex flex-nowrap gap-2 overflow-x-auto mt-2">
+                          @for (item of prodDescriptionImageGallery; track $index) {
+                          <div class="position-relative">
+                            <img [src]="item" class="preview-img rounded"
+                              style="width: 100px; height: 100px; object-fit: cover;" />
+                            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
+                              style="padding: 2px 6px; font-size: 12px;" (click)="removeProductDescriptionGalleryImage($index)">
                               <i class="fa fa-xmark"></i>
                             </button>
                           </div>

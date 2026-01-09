@@ -386,7 +386,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="uploadPhoto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="uploadPhotoLabel" aria-hidden="true">
+<div #uploadPhoto class="modal fade" id="uploadPhoto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="uploadPhotoLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header py-2">
@@ -475,6 +475,16 @@
               </li> -->
           </ul>
       </div>
+       @if (desktopLogoData.length>0) {
+                  @for (item of desktopLogoData; track $index) {
+                <div class="mt-3">
+                  <small class="text-muted">Preview:</small>
+                  <img [src]="item.url"
+                    [alt]="settingsModel.general.logo.desktop.alt || 'Desktop Logo'"
+                    class="img-fluid img-preview rounded shadow-sm mt-2" (click)="getSelectedImage(item)">
+                </div>
+                }
+              }
         <div class="upload-card" (click)="fileInput.click()">
           <input type="file" accept="image/*" hidden #fileInput (change)="onImageChange($event)" />
 
