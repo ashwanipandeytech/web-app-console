@@ -49,7 +49,7 @@ export class AllProducts {
         return of(null); // or you can return a default value if needed
       })
     ).subscribe((response: any) => {
-      console.log('Response:', response);
+      //console.log('Response:', response);
     this.productListData = response.data.data;
     this.cd.detectChanges();
       if (response && response.success) {
@@ -73,7 +73,7 @@ export class AllProducts {
         data: popupData,
       });
       dialogRef.afterClosed().subscribe(result => {
-        console.log('Dialog closed with:', result);
+        //console.log('Dialog closed with:', result);
   
         if (result.action === 'delete') {
           // Perform delete
@@ -95,7 +95,7 @@ export class AllProducts {
       )
       
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         this.callAllProductList();
           setTimeout(() => {
           this.globalService.showMsgSnackBar(res);

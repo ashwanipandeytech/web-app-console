@@ -1,20 +1,16 @@
 @if(isLoading){
-<div class="loader position-relative">
-  <div class="spinner position-absolute top-50 start-50 translate-middle spinner-border-sm"></div>
+<div class="loader d-flex align-items-center justify-content-center">
+  <div class="spinner-border spinner-border-lg text-primary" role="status"></div>
 </div>
 }
 
 @if(!isLoading){
-
+  <div class="top-section d-flex align-items-center border-bottom pb-1 mb-4">
+    <h3>Manage Addresses</h3>
+    <button type="button" class="text-primary ms-auto hover-underline" (click)="openAddressPopup()">Add New Address</button>
+  </div>
 <div class="address-container">
   <div class="profile-section address-section addresses px-3 px-md-0">
-    <button
-      type="button"
-      (click)="openAddressPopup()"
-      class="shop-btn ms-auto d-block mt-0 mb-3"
-    >
-      Add New Address
-    </button>
     <div class="row g-3">
       @for(item of addressListData; track $index;let i= $index){
       <div class="col-md-6">

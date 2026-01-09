@@ -153,7 +153,7 @@ document.getElementById("saBasic") && document.getElementById("saBasic").addEven
         }
         }).then((result) => {
             if (result.dismiss === Swal.DismissReason.timer) {
-                console.log('I was closed by the timer')
+                //console.log('I was closed by the timer')
             }
         })
 }), document.getElementById("customHtmlAlert") && document.getElementById("customHtmlAlert").addEventListener("click", function() {

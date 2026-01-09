@@ -37,7 +37,7 @@ export class DataService {
       // data.guest_token = guestToken;
       httpOptions = {};
     }
-    console.log('httpOptions===>',httpOptions);
+    //console.log('httpOptions===>',httpOptions);
     
     switch (method.toUpperCase()) {
       case 'GET':

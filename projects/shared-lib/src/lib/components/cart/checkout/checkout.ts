@@ -47,7 +47,7 @@ export class Checkout {
     if (userString) {
       let userObj = JSON.parse(userString);            // convert to object
       this.email = userObj.user.email;                  // access email
-      console.log('Email:', this.email);
+      //console.log('Email:', this.email);
     }
     this.createCheckoutBillingForm();
     this.carList();
@@ -64,7 +64,7 @@ export class Checkout {
         return of(null); // or you can return a default value if needed
       })
     ).subscribe((response: any) => {
-      console.log('response==>', response);
+      //console.log('response==>', response);
       if (response.success == true) {
         this.cartListData = response.data.data;
         for (let i = 0; i < this.cartListData.length; i++) {
@@ -92,7 +92,7 @@ export class Checkout {
       this.subTotal += element.product.price_data.finalPrice;
     }
     this.calculateGrandTotal();
-    // console.log('this.grandTotal==>',this.grandTotal);
+    // //console.log('this.grandTotal==>',this.grandTotal);
   }
   calculateGrandTotal() {
     let shippingCharge = 0;
@@ -104,7 +104,7 @@ export class Checkout {
     //   return;
     // }
     // else{
-    console.log('this.selectedPaymentMethod==>', this.selectedPaymentMethod);
+    //console.log('this.selectedPaymentMethod==>', this.selectedPaymentMethod);
 
     if (this.selectedPaymentMethod == 'cod') {
       this.router.navigate(['/thank-you'])
@@ -123,7 +123,7 @@ export class Checkout {
         .subscribe({
           next: (response: any) => {
             if (response.success) {
-              console.log("Payment Success:", response);
+              //console.log("Payment Success:", response);
               this.orderSubmit(addressId, this.selectedPaymentMethod, response);
               this.router.navigate(['/thank-you'])
             }
@@ -155,7 +155,7 @@ export class Checkout {
     //         delete item.product.shipping_info;
     //   return item;
     // });
-    console.log('res ----////==>', paymentResponse);
+    //console.log('res ----////==>', paymentResponse);
 
 
     const payload = this.cartListData.map((cartItem: any) => ({
@@ -179,7 +179,7 @@ export class Checkout {
       )
       .subscribe((res: any) => {
         if (res.success == true) {
-          console.log('Response:', res);
+          //console.log('Response:', res);
           this.globalService.showMsgSnackBar(res);
           if (paymentMethod != 'cod') {
             this.paymentUpdate(res, paymentResponse);
@@ -248,7 +248,7 @@ export class Checkout {
       )
       .subscribe((res: any) => {
         if (res.success == true) {
-          console.log('Response: FINAL OUTPUT', res);
+          //console.log('Response: FINAL OUTPUT', res);
         }
         else {
           if (res.err) {
@@ -261,7 +261,7 @@ export class Checkout {
   placeOrder() {
     // if (this.selectedPaymentMethod == false) {
       // this.isSelectPaymentMethodInput = false;
-      console.log('this.addressListData==>',this.addressListData);
+      //console.log('this.addressListData==>',this.addressListData);
       
       if (!this.addressListData || this.addressListData == undefined) {
         this.addressNotfound = true;
@@ -280,7 +280,7 @@ export class Checkout {
     //   return;
     // }
     //       else if (this.checkoutForm.valid) {
-    //       console.log(this.checkoutForm.value);
+    //       //console.log(this.checkoutForm.value);
     //       this.fullAddrress = this.checkoutForm.value;
     //        this.fullAddrress.label = this.checkoutForm.value.type;
     //        this.fullAddrress.name = this.checkoutForm.value.fname + ' ' + this.checkoutForm.value.lname;
@@ -292,7 +292,7 @@ export class Checkout {
     //               })
     //             )
     //             .subscribe((res: any) => {
-    //               console.log('Response:', res);
+    //               //console.log('Response:', res);
     //               if (res.success == true) { 
 
     //                 this.openCheckout(res.data.id);
@@ -361,7 +361,7 @@ export class Checkout {
 
     this.globalFunctionService.getCountries().subscribe((res: any) => {
       this.countries = res.data;
-      console.log('res====>', this.countries);
+      //console.log('res====>', this.countries);
       this.states = this.countries[98].states;
     })
     // this.getCountries().subscribe({
@@ -376,7 +376,7 @@ export class Checkout {
 
   onStateChange(event: Event) {
     const value = (event.target as HTMLSelectElement).value;
-    console.log('Selected index:', value);
+    //console.log('Selected index:', value);
     this.globalFunctionService.getCities("India", value)
       .subscribe(cities => {
         this.cities = cities;
@@ -385,9 +385,9 @@ export class Checkout {
 
   onCountryChange(event: Event) {
     const index = Number((event.target as HTMLSelectElement).value);
-    console.log('Selected index:', index);
+    //console.log('Selected index:', index);
     this.states = this.countries[index].states;
-    console.log('this.cities===>', this.states);
+    //console.log('this.cities===>', this.states);
 
     // Example: load cities dynamically
     // this.loadCities(selectedCountry);
@@ -415,7 +415,7 @@ export class Checkout {
   // }
   choosePaymentMethod(method: any) {
     this.selectedPaymentMethod = method;
-    console.log('menthodi==.', method);
+    //console.log('menthodi==.', method);
 
   }
 
@@ -425,13 +425,13 @@ export class Checkout {
         return of(null); // or you can return a default value if needed
       })
     ).subscribe((response: any) => {
-      console.log('response==>', response);
+      //console.log('response==>', response);
       if (response.success == true) {
         this.AllAddressList = response.data;
         this.addressListData = response.data.find(
           (item: any) => item.is_default === 1
         );
-        console.log('addressListData===>', this.addressListData);
+        //console.log('addressListData===>', this.addressListData);
 
         this.cd.detectChanges();
       }
@@ -446,13 +446,13 @@ export class Checkout {
           this.addressNotfound = false;
         }
         this.getAddressList();
-      console.log('addressResp==========>',res);
+      //console.log('addressResp==========>',res);
     })
     
     this.cd.detectChanges();
   }
   getSelectedAddress(item: any) {
-    console.log('item===>', item);
+    //console.log('item===>', item);
     this.changedSelectedAddress = item;
 
   }

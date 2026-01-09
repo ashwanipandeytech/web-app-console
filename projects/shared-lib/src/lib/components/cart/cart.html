@@ -120,8 +120,8 @@
 </div>
 
 @if(loading){
-<div class="loader position-relative">
-  <div class="spinner position-absolute top-50 start-50 translate-middle spinner-border-sm"></div>
+<div class="loader d-flex align-items-center justify-content-center">
+  <div class="spinner-border spinner-border-lg text-primary" role="status"></div>
 </div>
 }
 <!--------------- blog-tittle-section-end---------------->
@@ -130,7 +130,7 @@
 <section class="product-cart w-1100 mx-auto box-shadows rounded-4 py-md-3 px-4 mb-5">
   <div class="container">
     <!-- Blank cart start -->
-    @if(cartListData.length==0) {
+    @if(cartListData.length==0 && !loading ) {
     <div class="blog-item aos-init aos-animate" data-aos="fade-up">
       <div class="cart-img">
         <img src="./images/homepage-one/empty-cart.webp" alt="" />

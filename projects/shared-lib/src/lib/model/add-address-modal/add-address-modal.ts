@@ -44,7 +44,7 @@ export class AddAddressModal {
     // this.getAddressList();
 
     let platformName = this.checkPlatform.checkPlatformType();
-    console.log('platformName==>',platformName);
+    //console.log('platformName==>',platformName);
     // if (platformName.Web == true) {
     //   this.browser = true;
     //   this.isNewAddress = true;
@@ -79,9 +79,9 @@ if (this.searchQuery == '') {
 
      this.http.get(url)
     .subscribe((res: any) => {
-      console.log('res===>',res);
+      //console.log('res===>',res);
       this.suggestions = res.features;
-      console.log('this.suggestions==>',this.suggestions);
+      //console.log('this.suggestions==>',this.suggestions);
       this.cd.detectChanges();
       // properties.formatted
     });
@@ -95,7 +95,7 @@ if (this.searchQuery == '') {
 
   ngOnInit(){
     let user = JSON.parse(localStorage.getItem('user') || '{}');
-    console.log('user==>',user);
+    //console.log('user==>',user);
 
     if ( typeof user === 'object' && Object.keys(user).length <= 0) {
       this.isLogin = false;
@@ -119,13 +119,13 @@ if (this.searchQuery == '') {
     }
   }
   selectSuggestion(item: any) {
-    // console.log('searchText==>',item);
+    // //console.log('searchText==>',item);
       this.searchText = '';
   this.suggestions = [];
     this.selectedAddress = item.properties.formatted;
     this.suggestions = [];
     this.searchQuery ='';
-    console.log('    this.searchText==>',this.searchText);
+    //console.log('    this.searchText==>',this.searchText);
     // patch values into form values 
           this.signalService.currentLocation.set(this.selectedAddress);
           localStorage.setItem('currentLocation',JSON.stringify(this.selectedAddress))
@@ -150,7 +150,7 @@ if (this.searchQuery == '') {
 
       this.http.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${this.lat}&lon=${this.lng}`)
         .subscribe((res: any) => {
-          console.log('res==>',res);
+          //console.log('res==>',res);
          this.addressForm.patchValue({
           state: res.address.state,
           country: res.address.country,
@@ -160,7 +160,7 @@ if (this.searchQuery == '') {
 
 
           this.selectedAddress = res.display_name;
-          console.log('this.selectedAddress===>',this.selectedAddress);
+          //console.log('this.selectedAddress===>',this.selectedAddress);
           this.signalService.currentLocation.set(this.selectedAddress);
           localStorage.setItem('currentLocation',JSON.stringify(this.selectedAddress))
           this.isNewAddress = true;
@@ -213,7 +213,7 @@ if (this.searchQuery == '') {
     //  else {
     //   this.isLoggedIn = true;
     // }
-      console.log(this.addressForm.value);
+      //console.log(this.addressForm.value);
       let fullAddrress = this.addressForm.value;
       if (this.lat && this.lng) {
           fullAddrress.location = {
@@ -226,7 +226,7 @@ if (this.searchQuery == '') {
     
       fullAddrress.label = this.addressForm.value.type;
       fullAddrress.is_default=true;
-console.log('userData==>',userData);
+//console.log('userData==>',userData);
 
 if (userData == null) {
   localStorage.removeItem('tempAddress');
@@ -248,7 +248,7 @@ else{
          })
        )
        .subscribe((res: any) => {
-         console.log('Response:', res);
+         //console.log('Response:', res);
          if (res.success == true) {   
            this.closePopup('success');
            this.globalService.showMsgSnackBar(res);
@@ -264,7 +264,7 @@ else{
       //  return;
       //     }
 
-      console.log('addresss=====>',fullAddrress);
+      //console.log('addresss=====>',fullAddrress);
       
     } else {
       this.addressForm.markAllAsTouched();
@@ -278,7 +278,7 @@ else{
 
    updateAddress() {
     if (this.addressForm.valid) {
-      console.log(this.addressForm.value);
+      //console.log(this.addressForm.value);
       let fullAddrress = this.addressForm.value;
       if (this.lat && this.lng) {
           fullAddrress.location = {
@@ -299,7 +299,7 @@ else{
               })
             )
             .subscribe((res: any) => {
-              console.log('Response:', res);
+              //console.log('Response:', res);
               if (res.success == true) {   
                 this.closePopup('success');
                 this.globalService.showMsgSnackBar(res);
@@ -308,14 +308,14 @@ else{
                 // this.router.navigate(['/cart']);
               }
             });
-      console.log('addresss=====>',fullAddrress);
+      //console.log('addresss=====>',fullAddrress);
       
     } else {
       this.addressForm.markAllAsTouched();
     }
   }
 onSelectAddress(item: any) {
-  console.log("Selected:", item);
+  //console.log("Selected:", item);
 }
   getAddressList(){
        this.dataService.get('addresses').pipe(
@@ -323,7 +323,7 @@ onSelectAddress(item: any) {
         return of(null); // or you can return a default value if needed
       })
     ).subscribe((response: any) => {
-console.log('response==>',response);
+//console.log('response==>',response);
 if (response.success == true) {
   this.addressListData = response.data;
   this.cd.detectChanges();

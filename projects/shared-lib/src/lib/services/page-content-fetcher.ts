@@ -62,7 +62,7 @@ export class PageContentFetcher {
 
   //   // Return item only if conditions are met
   //   if (!isRestricted && isViewCompatible && !fields.selectDesign) {
-  //    // console.log('Processing item:', item);
+  //    // //console.log('Processing item:', item);
   //     return item;
   //   }
 

@@ -18,7 +18,7 @@ export class ConfirmationPopupComponent implements OnInit {
     private dialogRef: MatDialogRef<ConfirmationPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log('popupData++++.',data);
+    //console.log('popupData++++.',data);
     
    }
 

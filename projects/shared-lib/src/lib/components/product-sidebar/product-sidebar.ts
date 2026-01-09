@@ -42,8 +42,8 @@ ngOnInit() {
     if (id) {
       this.isLoading = true;
       this.productId = id;
-      // console.log('this.productListData==>',this.productListData);
-      // console.log('defaultProductListData==>',this.defaultProductListData);
+      // //console.log('this.productListData==>',this.productListData);
+      // //console.log('defaultProductListData==>',this.defaultProductListData);
       if (this.defaultProductListData) {
         
         this.productListData = this.defaultProductListData.filter(
@@ -57,7 +57,7 @@ ngOnInit() {
   });
 
   // this.productId = this.route.snapshot.paramMap.get('id');
-  // console.log(this.productId);
+  // //console.log(this.productId);
 }
   callAllProductList() {
 this.isLoading = true;
@@ -75,7 +75,7 @@ this.isLoading = true;
         return of(null); // or you can return a default value if needed
       })
     ).subscribe((response: any) => {
-      // console.log('Response:', response);
+      // //console.log('Response:', response);
     this.defaultProductListData = response.data.data;
     if(this.productId != 'all'){
 
@@ -90,7 +90,7 @@ this.isLoading = false;
 this.isLoading = false;
 
     }
-console.log('this.productListData.length',this.productListData.length);
+//console.log('this.productListData.length',this.productListData.length);
 
     this.cd.detectChanges();
       // if (response && response.success) {
@@ -112,7 +112,7 @@ console.log('this.productListData.length',this.productListData.length);
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         if (res.data) {
 
           for (let i = 0; i < res.data.length; i++) {
@@ -139,7 +139,7 @@ console.log('this.productListData.length',this.productListData.length);
       quantity: '1',
       guest_token:isGuest
     };
-    // console.log('finalData==.',finalData);
+    // //console.log('finalData==.',finalData);
     // return;
     this.dataService
       .post(finalData, 'cart')
@@ -149,8 +149,8 @@ console.log('this.productListData.length',this.productListData.length);
         })
       )
       .subscribe((res: any) => {
-        // console.log('Response:', res);
-        // console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
+        // //console.log('Response:', res);
+        // //console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
           if (res.headers) {
           let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
           //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
@@ -180,13 +180,13 @@ console.log('this.productListData.length',this.productListData.length);
     if (item.is_wishlisted) {
       item.is_wishlisted = !item.is_wishlisted;
             this.dataService.delete('wishlist/product',data.product_id).subscribe((res:any)=>{
-        console.log('wishlist==>',res);
+        //console.log('wishlist==>',res);
       })
     }
     else{
       item.is_wishlisted = !item.is_wishlisted
       this.dataService.post(data,'wishlist').subscribe((res:any)=>{
-        console.log('wishlist==>',res);
+        //console.log('wishlist==>',res);
       })
     }
     // this.callAllProductList();

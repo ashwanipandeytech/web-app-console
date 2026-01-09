@@ -1,11 +1,13 @@
 <!--------------- wishlist-section---------------->
 @if(isLoading){
-<div class="loader position-relative">
-  <div class="spinner position-absolute top-50 start-50 translate-middle spinner-border-sm"></div>
+<div class="loader d-flex align-items-center justify-content-center">
+  <div class="spinner-border spinner-border-lg text-primary" role="status"></div>
 </div>
 }
 @if(!isLoading){
-
+  <div class="top-section d-flex align-items-center border-bottom pb-1 mb-4">
+    <h3>Wishlist Items</h3>
+  </div>
   <section class="wishlist-container w-1100 mx-auto">
     @for (item of wishListData; track $index) {
     <div class="border rounded mt-3 p-3 row wrapper">

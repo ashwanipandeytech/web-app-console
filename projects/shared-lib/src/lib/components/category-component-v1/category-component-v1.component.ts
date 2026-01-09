@@ -16,7 +16,7 @@ export class CategoryComponentV1Component implements OnInit {
   private route = inject(Router);
   categoryListData: any = [];
   constructor() {
-    console.log('CategoryComponentV1Component Load');
+    //console.log('CategoryComponentV1Component Load');
   }
 
   ngOnInit() {

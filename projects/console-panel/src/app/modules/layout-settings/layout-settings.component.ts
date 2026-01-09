@@ -118,7 +118,7 @@ export class LayoutSettingsComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         if (res.success) {
     
 
@@ -140,7 +140,7 @@ export class LayoutSettingsComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         if (res.data) {
           this.pageList = res.data;
           // this.settingsModel.footer.map((item:any)=>{
@@ -286,7 +286,7 @@ export class LayoutSettingsComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
         if (res.success) {
   this.globalService.showMsgSnackBar(res);
   this.getGeneralSetting()
@@ -315,7 +315,7 @@ export class LayoutSettingsComponent implements OnInit {
 
 
   savedImage(){
-console.log('uploadedFile==>',this.uploadedFile);
+//console.log('uploadedFile==>',this.uploadedFile);
   // for (const file of this.uploadedFile) {
 
     const formData = new FormData();
@@ -327,7 +327,7 @@ console.log('uploadedFile==>',this.uploadedFile);
   // }
   }
   callUploadnediaSection(formData:any){
-  console.log('formData==>',formData);
+  //console.log('formData==>',formData);
   
     this.dataService.postForm('gallery',formData)
       .pipe(
@@ -336,7 +336,7 @@ console.log('uploadedFile==>',this.uploadedFile);
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        //console.log('Response:', res);
       });
 }
 }

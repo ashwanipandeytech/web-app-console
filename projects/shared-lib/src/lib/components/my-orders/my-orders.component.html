@@ -1,66 +1,70 @@
 
 @if(isLoading){
-<div class="loader position-relative">
-  <div class="spinner position-absolute top-50 start-50 translate-middle spinner-border-sm"></div>
+<div class="loader d-flex align-items-center justify-content-center">
+  <div class="spinner-border spinner-border-lg text-primary" role="status"></div>
 </div>
 }
 @if(!isLoading){
-<div class="order-container px-3 px-md-0">
-  @for (item of orderListData; track $index) {
-  <div
-    class="border rounded mb-3 p-3 row wrapper cursor-pointer"
-    data-bs-toggle="modal"
-    data-bs-target="#orderDetail"
-    (click)="getOrderDetailData(item)"
-  >
-    <div class="col-2">
-      <div class="wrapper-img bg-light p-2 rounded-2">
-        <img
-          [src]="item?.items[0]?.product?.media?.uploadedImages[0]?.url"
-          alt=""
-          class="object-fit-contain rounded-2 w-100"
-        />
-      </div>
-    </div>
-
-    <div class="col-10">
-      <div class="wrapper-content">
-        <div class="d-flex align-items-center">
-          <h5 class="heading text-truncate text-capitalize">{{ item?.items[0].product.title }}</h5>
-          <!-- <button class="lh-0 btn cancel-btn" data-bs-toggle="modal" data-bs-target="#removeProject">
-                                <i class="fa-solid fa-trash fa-xl" (click)="deleteMyOrder(item.id)"></i>
-                            </button> -->
-        </div>
-        <ul>
-          <li class="my-md-2 mt-0">
-            <span class="fw-semibold d-inline-block config-title">price</span>
-            <span>₹{{ item.total_amount }}</span>
-          </li>
-        </ul>
-
-        <p class="text-muted fs-14 fw-bold">Delivery expected by Jan 05</p>
-
-        <button type="button" class="icon-link icon-link-hover text-primary mt-3">
-          Order detail
-          <svg xmlns="http://www.w3.org/2000/svg" class="bi" viewBox="0 0 16 16" aria-hidden="true">
-            <path
-              d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
-            />
-          </svg>
-        </button>
-      </div>
-    </div>
+  <div class="top-section d-flex align-items-center border-bottom pb-1 mb-4">
+    <h3>My Order</h3>
   </div>
-  }
-  <app-no-data
-    *ngIf="!orderListData || orderListData.length === 0"
-    title="No Orders Found"
-    message="There are no data available right now."
-    [showAction]="false"
-    actionText="Reload"
-  >
-  </app-no-data>
-</div>
+
+  <div class="order-container px-3 px-md-0">
+    @for (item of orderListData; track $index) {
+    <div
+      class="border rounded mb-3 p-3 row wrapper cursor-pointer"
+      data-bs-toggle="modal"
+      data-bs-target="#orderDetail"
+      (click)="getOrderDetailData(item)"
+    >
+      <div class="col-2">
+        <div class="wrapper-img bg-light p-2 rounded-2">
+          <img
+            [src]="item?.items[0]?.product?.media?.uploadedImages[0]?.url"
+            alt=""
+            class="object-fit-contain rounded-2 w-100"
+          />
+        </div>
+      </div>
+
+      <div class="col-10">
+        <div class="wrapper-content">
+          <div class="d-flex align-items-center">
+            <h5 class="heading text-truncate text-capitalize">{{ item?.items[0].product.title }}</h5>
+            <!-- <button class="lh-0 btn cancel-btn" data-bs-toggle="modal" data-bs-target="#removeProject">
+                                  <i class="fa-solid fa-trash fa-xl" (click)="deleteMyOrder(item.id)"></i>
+                              </button> -->
+          </div>
+          <ul>
+            <li class="my-md-2 mt-0">
+              <span class="fw-semibold d-inline-block config-title">price</span>
+              <span>₹{{ item.total_amount }}</span>
+            </li>
+          </ul>
+
+          <p class="text-muted fs-14 fw-bold">Delivery expected by Jan 05</p>
+
+          <button type="button" class="icon-link icon-link-hover text-primary mt-3">
+            Order detail
+            <svg xmlns="http://www.w3.org/2000/svg" class="bi" viewBox="0 0 16 16" aria-hidden="true">
+              <path
+                d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    }
+    <app-no-data
+      *ngIf="!orderListData || orderListData.length === 0"
+      title="No Orders Found"
+      message="There are no data available right now."
+      [showAction]="false"
+      actionText="Reload"
+    >
+    </app-no-data>
+  </div>
 
 <!-- Delete product Modal -->
 <!-- <div #deleteorder class="modal fade" id="removeProject" tabindex="-1" aria-labelledby="removeProjectLabel" aria-hidden="true">
