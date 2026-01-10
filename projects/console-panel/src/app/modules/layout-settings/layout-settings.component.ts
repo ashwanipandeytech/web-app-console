@@ -51,6 +51,13 @@ export class LayoutSettingsComponent implements OnInit {
         url: '',
       },
     ],
+      home_Promo_Slider_testimonials: [
+      {
+        imgSrc: '',
+        alt: '',
+        url: '',
+      },
+  ],
     social: [
       {
         label: 'facebook',
@@ -92,6 +99,7 @@ export class LayoutSettingsComponent implements OnInit {
   desktopLogoData: any=[];
   selectedImageobj: any=[];
   uploadIsFrom: any;
+  isSelectedImage: boolean=false;
   constructor(private cdr: ChangeDetectorRef) { 
     this.getImageApi();
     // this.getDefaultImage();
@@ -130,7 +138,7 @@ export class LayoutSettingsComponent implements OnInit {
     
 
           this.settingsModel = res.data.settings;
-         this.uploadedFile = this.settingsModel.general.logo.desktop.imgSrc
+        //  this.uploadedFile = this.settingsModel.general.logo.desktop.imgSrc
           
         
 
@@ -160,6 +168,7 @@ export class LayoutSettingsComponent implements OnInit {
   // }
   getSelectedImage(image:any){
 console.log('image==>',image);
+this.isSelectedImage = true;
 console.log('this.uploadIsFrom',this.uploadIsFrom);
 image.isFrom = this.uploadIsFrom;
 this.selectedImageobj.push(image);
@@ -253,6 +262,9 @@ this.selectedImageobj.push(image);
   }
   // Add new empty slide
   addSlide(type: string) {
+    console.log('this.settingsModel[type]==>',this.settingsModel);
+    console.log('type==>',type);
+    
     this.settingsModel[type].push({
       imgSrc: '',
       alt: '',
@@ -305,7 +317,7 @@ this.selectedImageobj.push(image);
   }
   saveSettings() {
     let settingData=JSON.parse(JSON.stringify(this.settingsModel))
-   
+  console.log('settingData==>',settingData);
    for (let i = 0; i < settingData.footer.length; i++) {
    
     let data=settingData.footer[i].pageList.filter((item: any) => item.isSelected);
@@ -353,7 +365,13 @@ this.selectedImageobj.push(image);
     const file = (event.target as HTMLInputElement).files?.[0];
     this.uploadedFile = file;
     console.log('this.uploadedFile==>',this.uploadedFile);
-    
+    if (file) {
+      this.isSelectedImage = false;
+    }
+    else{
+      this.isSelectedImage = true;
+
+    }
     this.cdr.detectChanges();
     if (!file) return;
 
@@ -370,46 +388,188 @@ this.selectedImageobj.push(image);
 uploadFrom(from:any){
 this.uploadIsFrom = from;
 }
-  savedImage(){
-console.log('uploadedFile==>',this.uploadedFile);
+ async savedImage(){
 console.log('uploadisFrom',this.uploadIsFrom);
 
 console.log('this.selectedImageobj?.type==>',this.selectedImageobj);
   // for (const file of this.uploadedFile) {
 
-if (this.selectedImageobj.length>0) {
+// if (this.selectedImageobj.length>0) {
   
-  for (let i = 0; i < this.selectedImageobj.length; i++) {
-    const element = this.selectedImageobj[i];
-    if (element.isFrom == 'desktop') {
-    this.settingsModel.general.logo.desktop.imgSrc = element.url;
-    }
-     if (element.isFrom == 'mobile') {
-    this.settingsModel.general.logo.mobile.imgSrc = element.url;
-    }
-    if (element.isFrom == 'fav_mobile') {
-    this.settingsModel.general.favico.mobile.imgSrc = element.url;
-    }
-    if (element.isFrom == 'fav_desktop') {
-    this.settingsModel.general.favico.desktop.imgSrc = element.url;
-    }
-       if (element.isFrom == 'slider') {
-for (let j = 0; j < this.settingsModel.home_Banner_Slider.length; j++) {
-  const banner = this.settingsModel.home_Banner_Slider[j];
-  banner.imgSrc=element.url;
-}
-       }
-  }
-  for (const file of this.selectedImageobj) {
-    const formData = new FormData();
-      formData.append('files', file);
-    formData.append('type', file.isFrom);
-    this.callUploadnediaSection(formData);
-    this.closePopup();
+//   for (let i = 0; i < this.selectedImageobj.length; i++) {
+//     const element = this.selectedImageobj[i];
+//     if (element.isFrom == 'desktop') {
+//     this.settingsModel.general.logo.desktop.imgSrc = element.url;
+//     }
+//      if (element.isFrom == 'mobile') {
+//     this.settingsModel.general.logo.mobile.imgSrc = element.url;
+//     }
+//     if (element.isFrom == 'fav_mobile') {
+//     this.settingsModel.general.favico.mobile.imgSrc = element.url;
+//     }
+//     if (element.isFrom == 'fav_desktop') {
+//     this.settingsModel.general.favico.desktop.imgSrc = element.url;
+//     }
+//        if (element.isFrom == 'slider'+i) {
+// // for (let j = 0; j < this.settingsModel.home_Banner_Slider.length; j++) {
+//   // const banner = this.settingsModel.home_Banner_Slider;
+//   // banner.imgSrc=element.url;
+//   this.settingsModel.home_Banner_Slider.push({imgSrc:element.url})
+// // }
+//        }
+//   }
+//   for (const fileObj  of this.selectedImageobj) {
+//     const formData = new FormData();
+//       formData.append('files', fileObj .file);
+//     formData.append('type', fileObj .isFrom);
+//     this.callUploadnediaSection(formData);
+//     this.closePopup();
 
+//   }
+// }
+
+
+if (this.isSelectedImage) {
+  if (this.selectedImageobj.length > 0) {
+  
+    // 🔹 Preview assignment (unchanged logic)
+    for (let i = 0; i < this.selectedImageobj.length; i++) {
+      const element = this.selectedImageobj[i];
+  
+      if (element.isFrom === 'desktop') {
+        this.settingsModel.general.logo.desktop.imgSrc = element.url;
+      }
+  
+      if (element.isFrom === 'mobile') {
+        this.settingsModel.general.logo.mobile.imgSrc = element.url;
+      }
+  
+      if (element.isFrom === 'fav_mobile') {
+        this.settingsModel.general.favico.mobile.imgSrc = element.url;
+      }
+  
+      if (element.isFrom === 'fav_desktop') {
+        this.settingsModel.general.favico.desktop.imgSrc = element.url;
+      }
+  console.log(
+    'home_Banner_Slider =>',
+    this.settingsModel.home_Banner_Slider
+  );
+  
+  if (element.isFrom?.startsWith('slider')) {
+  
+    // slider0 → 0, slider1 → 1
+    const index = Number(element.isFrom.replace('slider', ''));
+  
+    // ✅ Replace only that index
+    if (this.settingsModel.home_Banner_Slider[index]) {
+      this.settingsModel.home_Banner_Slider[index].imgSrc = element.url;
+    } else {
+      // optional: if index does not exist, add it
+      this.settingsModel.home_Banner_Slider[index] = {
+        imgSrc: element.url
+      };
+    }
+  console.log('ggggggg',this.settingsModel.home_Banner_Slider[index].imgSrc);
+  
+    this.cdr.detectChanges();
+  }
+    if (element.isFrom?.startsWith('promoslider')) {
+  
+    // slider0 → 0, slider1 → 1
+    const index = Number(element.isFrom.replace('promoslider', ''));
+  
+    // ✅ Replace only that index
+    if (this.settingsModel.home_Promo_Slider[index]) {
+      this.settingsModel.home_Promo_Slider[index].imgSrc = element.url;
+    } else {
+      // optional: if index does not exist, add it
+      this.settingsModel.home_Promo_Slider[index] = {
+        imgSrc: element.url
+      };
+    }
+  console.log('ggggggg',this.settingsModel.home_Promo_Slider[index].imgSrc);
+  
+    this.cdr.detectChanges();
+  // }
+
+    }
+     if (element.isFrom?.startsWith('promoslidertestimonial')) {
+  
+    // slider0 → 0, slider1 → 1
+    const index = Number(element.isFrom.replace('promoslidertestimonial', ''));
+  
+    // ✅ Replace only that index
+    if (this.settingsModel.home_Promo_Slider_testimonials[index]) {
+      this.settingsModel.home_Promo_Slider_testimonials[index].imgSrc = element.url;
+    } else {
+      // optional: if index does not exist, add it
+      this.settingsModel.home_Promo_Slider_testimonials[index] = {
+        imgSrc: element.url
+      };
+    }
+  console.log('ggggggg',this.settingsModel.home_Promo_Slider_testimonials[index].imgSrc);
+  
+    this.cdr.detectChanges();
+  // }
+
+    }
+
+      if (element.isFrom?.startsWith('homebottombanner')) {
+  
+    // slider0 → 0, slider1 → 1
+    const index = Number(element.isFrom.replace('homebottombanner', ''));
+  
+    // ✅ Replace only that index
+    if (this.settingsModel.home_Promo_Slider_bottom[index]) {
+      this.settingsModel.home_Promo_Slider_bottom[index].imgSrc = element.url;
+    } else {
+      // optional: if index does not exist, add it
+      this.settingsModel.home_Promo_Slider_bottom[index] = {
+        imgSrc: element.url
+      };
+    }
+  console.log('ggggggg',this.settingsModel.home_Promo_Slider_bottom[index].imgSrc);
+  
+    this.cdr.detectChanges();
+  // }
+
+    }
+      this.closePopup();
+  
+    }
+  
+    // 🔹 Upload section (FIXED)
+  
+    // this.closePopup();
   }
 }
-else{
+console.log('uploadedFile==>',this.uploadedFile);
+console.log('uploadIsFrom==>',this.uploadIsFrom);
+
+     if (this.uploadedFile) {
+        const formData = new FormData();
+      formData.append('files', this.uploadedFile);
+      formData.append('type', this.uploadIsFrom);
+      this.callUploadnediaSection(formData);
+      this.closePopup();
+      // for (const fileObj of this.selectedImageobj) {
+    
+      //   const file = await this.urlToFile(
+      //     fileObj.url,
+      //     `image_${Date.now()}.jpg`
+      //   );
+    
+      //   const formData = new FormData();
+      //   formData.append('files', file);     // ✅ REAL FILE
+      //   formData.append('type', fileObj.isFrom);
+    
+      //   this.callUploadnediaSection(formData);
+      // }
+    }
+
+
+// else{
 
   // if (this.uploadIsFrom == "desktop") {
   // this.settingsModel.general.logo.desktop.imgSrc = this.selectedImageobj.url;
@@ -421,16 +581,58 @@ else{
   //   console.log('this.settingsModel==>',this.settingsModel.general.logo.desktop.imgSrc.alt);
   //   // this.settingsModel
   // }
-    const formData = new FormData();
-    formData.append('files', this.uploadedFile);
-    formData.append('type', this.uploadIsFrom);
-    this.callUploadnediaSection(formData);
-    this.closePopup();
-}
+  
+// }
+  // }
+
+
+  //       if (this.uploadIsFrom === 'desktop') {
+  //       this.settingsModel.general.logo.desktop.imgSrc = element.url;
+  //     }
+  
+  //     if (this.uploadIsFrom === 'mobile') {
+  //       this.settingsModel.general.logo.mobile.imgSrc = element.url;
+  //     }
+  
+  //     if (this.uploadIsFrom === 'fav_mobile') {
+  //       this.settingsModel.general.favico.mobile.imgSrc = element.url;
+  //     }
+  
+  //     if (this.uploadIsFrom.isFrom === 'fav_desktop') {
+  //       this.settingsModel.general.favico.desktop.imgSrc = element.url;
+  //     }
+  // console.log(
+  //   'home_Banner_Slider =>',
+  //   this.settingsModel.home_Banner_Slider
+  // );
+  
+  // if (this.uploadIsFrom.isFrom?.startsWith('slider')) {
+  
+  //   // slider0 → 0, slider1 → 1
+  //   const index = Number(this.uploadIsFrom.isFrom.replace('slider', ''));
+  
+  //   // ✅ Replace only that index
+  //   if (this.settingsModel.home_Banner_Slider[index]) {
+  //     this.settingsModel.home_Banner_Slider[index].imgSrc = element.url;
+  //   } else {
+  //     // optional: if index does not exist, add it
+  //     this.settingsModel.home_Banner_Slider[index] = {
+  //       imgSrc: element.url
+  //     };
+  //   }
+  // console.log('ggggggg',this.settingsModel.home_Banner_Slider[index].imgSrc);
+  
+  //   this.cdr.detectChanges();
   // }
   }
+  async urlToFile(url: string, filename: string): Promise<File> {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  return new File([blob], filename, { type: blob.type });
+}
+
   callUploadnediaSection(formData:any){
-  //console.log('formData==>',formData);
+  console.log('formData==>',formData);
   
     this.dataService.postForm('gallery',formData)
       .pipe(
@@ -455,24 +657,84 @@ else{
               this.cdr.detectChanges();
               // this.settingsModel
             }
-             if (element.isFrom == 'fav_mobile') {
+             if (element.type == 'fav_mobile') {
     this.settingsModel.general.favico.mobile.imgSrc = element.url;
               this.cdr.detectChanges();
 
     }
-    if (element.isFrom == 'fav_desktop') {
+    if (element.type == 'fav_desktop') {
     this.settingsModel.general.favico.desktop.imgSrc = element.url;
               this.cdr.detectChanges();
 
     }
-      if (element.isFrom == 'slider') {
-for (let j = 0; j < this.settingsModel.home_Banner_Slider.length; j++) {
-  const banner = this.settingsModel.home_Banner_Slider[j];
-  banner.imgSrc.push(element.url);
-}
-              this.cdr.detectChanges();
+      // if (element.isFrom == 'slider') {
+// for (let j = 0; j < this.settingsModel.home_Banner_Slider.length; j++) {
+//   const banner = this.settingsModel.home_Banner_Slider[j];
+//   banner.imgSrc.push(element.url);
+// }
+ if (element.type?.startsWith('slider')) {
+  
+    // slider0 → 0, slider1 → 1
+    const index = Number(element.type.replace('slider', ''));
+  
+    // ✅ Replace only that index
+    if (this.settingsModel.home_Banner_Slider[index]) {
+      this.settingsModel.home_Banner_Slider[index].imgSrc = element.url;
+    } else {
+      // optional: if index does not exist, add it
+      this.settingsModel.home_Banner_Slider[index] = {
+        imgSrc: element.url
+      };
+    }
+  console.log('ggggggg',this.settingsModel.home_Banner_Slider[index].imgSrc);
+  
+    this.cdr.detectChanges();
+  // }
 
     }
+    console.log('element.type===>',element.type);
+    console.log('this.settingsModel.home_Promo_Slider==>',this.settingsModel.home_Promo_Slider);
+    
+     if (element.type?.startsWith('promoslider')) {
+    // slider0 → 0, slider1 → 1
+    const index = Number(element.type.replace('promoslider', ''));
+  
+    // ✅ Replace only that index
+    if (this.settingsModel.home_Promo_Slider[index]) {
+      this.settingsModel.home_Promo_Slider[index].imgSrc = element.url;
+    } else {
+      // optional: if index does not exist, add it
+      this.settingsModel.home_Promo_Slider[index] = {
+        imgSrc: element.url
+      };
+    }
+  console.log('ggggggg',this.settingsModel.home_Promo_Slider[index].imgSrc);
+  
+    this.cdr.detectChanges();
+  // }
+
+    }
+    if (element.type?.startsWith('homebottombanner')) {
+  
+    // slider0 → 0, slider1 → 1
+    const index = Number(element.type.replace('homebottombanner', ''));
+  
+    // ✅ Replace only that index
+    if (this.settingsModel.home_Promo_Slider_bottom[index]) {
+      this.settingsModel.home_Promo_Slider_bottom[index].imgSrc = element.url;
+    } else {
+      // optional: if index does not exist, add it
+      this.settingsModel.home_Promo_Slider_bottom[index] = {
+        imgSrc: element.url
+      };
+    }
+  console.log('ggggggg',this.settingsModel.home_Promo_Slider_bottom[index].imgSrc);
+  
+    this.cdr.detectChanges();
+  // }
+
+    }
+
             
           }
         }
