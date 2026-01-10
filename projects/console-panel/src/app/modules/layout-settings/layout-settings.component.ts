@@ -90,7 +90,8 @@ export class LayoutSettingsComponent implements OnInit {
   uploadedFile:any;
   @ViewChild('uploadPhoto') uploadPhoto!: ElementRef;
   desktopLogoData: any=[];
-  selectedImageobj: any;
+  selectedImageobj: any=[];
+  uploadIsFrom: any;
   constructor(private cdr: ChangeDetectorRef) { 
     this.getImageApi();
     // this.getDefaultImage();
@@ -159,7 +160,9 @@ export class LayoutSettingsComponent implements OnInit {
   // }
   getSelectedImage(image:any){
 console.log('image==>',image);
-this.selectedImageobj = image;
+console.log('this.uploadIsFrom',this.uploadIsFrom);
+image.isFrom = this.uploadIsFrom;
+this.selectedImageobj.push(image);
   }
   getImageApi(){
       this.dataService.get('gallery')
@@ -364,23 +367,66 @@ this.selectedImageobj = image;
     this.imagePreview = null;
   }
 
-
-  savedImage(){
-//console.log('uploadedFile==>',this.uploadedFile);
-  // for (const file of this.uploadedFile) {
-if (this.selectedImageobj?.type == "desktoplogo") {
-this.settingsModel.general.logo.desktop.imgSrc = this.selectedImageobj.url;
-  console.log('this.settingsModel==>',this.settingsModel.general.logo.desktop.imgSrc.alt);
-  
-  // this.settingsModel
+uploadFrom(from:any){
+this.uploadIsFrom = from;
 }
+  savedImage(){
+console.log('uploadedFile==>',this.uploadedFile);
+console.log('uploadisFrom',this.uploadIsFrom);
+
+console.log('this.selectedImageobj?.type==>',this.selectedImageobj);
+  // for (const file of this.uploadedFile) {
+
+if (this.selectedImageobj.length>0) {
+  
+  for (let i = 0; i < this.selectedImageobj.length; i++) {
+    const element = this.selectedImageobj[i];
+    if (element.isFrom == 'desktop') {
+    this.settingsModel.general.logo.desktop.imgSrc = element.url;
+    }
+     if (element.isFrom == 'mobile') {
+    this.settingsModel.general.logo.mobile.imgSrc = element.url;
+    }
+    if (element.isFrom == 'fav_mobile') {
+    this.settingsModel.general.favico.mobile.imgSrc = element.url;
+    }
+    if (element.isFrom == 'fav_desktop') {
+    this.settingsModel.general.favico.desktop.imgSrc = element.url;
+    }
+       if (element.isFrom == 'slider') {
+for (let j = 0; j < this.settingsModel.home_Banner_Slider.length; j++) {
+  const banner = this.settingsModel.home_Banner_Slider[j];
+  banner.imgSrc=element.url;
+}
+       }
+  }
+  for (const file of this.selectedImageobj) {
     const formData = new FormData();
-    formData.append('files', this.uploadedFile);
-    // formData.append('module', 'product');
-    // formData.append('module_id', id);
-    formData.append('type', 'desktopLogo');
+      formData.append('files', file);
+    formData.append('type', file.isFrom);
     this.callUploadnediaSection(formData);
     this.closePopup();
+
+  }
+}
+else{
+
+  // if (this.uploadIsFrom == "desktop") {
+  // this.settingsModel.general.logo.desktop.imgSrc = this.selectedImageobj.url;
+  //   console.log('this.settingsModel==>',this.settingsModel.general.logo.desktop.imgSrc.alt);
+  //   // this.settingsModel
+  // }
+  // if (this.uploadIsFrom == "mobile") {
+  // this.settingsModel.general.logo.mobile.imgSrc = this.selectedImageobj.url;
+  //   console.log('this.settingsModel==>',this.settingsModel.general.logo.desktop.imgSrc.alt);
+  //   // this.settingsModel
+  // }
+    const formData = new FormData();
+    formData.append('files', this.uploadedFile);
+    formData.append('type', this.uploadIsFrom);
+    this.callUploadnediaSection(formData);
+    this.closePopup();
+}
   // }
   }
   callUploadnediaSection(formData:any){
@@ -393,7 +439,43 @@ this.settingsModel.general.logo.desktop.imgSrc = this.selectedImageobj.url;
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        console.log('Response:', res);
+        if (res?.data) {
+          for (let i = 0; i < res.data.length; i++) {
+            const element = res.data[i];
+            if (element.type == "desktop") {
+            this.settingsModel.general.logo.desktop.imgSrc = element.url;
+              console.log('this.settingsModel==>',this.settingsModel.general.logo.desktop.imgSrc.alt);
+              this.cdr.detectChanges();
+              // this.settingsModel
+            }
+            if (element.type == "mobile") {
+            this.settingsModel.general.logo.mobile.imgSrc = element.url;
+              console.log('this.settingsModel==>',this.settingsModel.general.logo.desktop.imgSrc.alt);
+              this.cdr.detectChanges();
+              // this.settingsModel
+            }
+             if (element.isFrom == 'fav_mobile') {
+    this.settingsModel.general.favico.mobile.imgSrc = element.url;
+              this.cdr.detectChanges();
+
+    }
+    if (element.isFrom == 'fav_desktop') {
+    this.settingsModel.general.favico.desktop.imgSrc = element.url;
+              this.cdr.detectChanges();
+
+    }
+      if (element.isFrom == 'slider') {
+for (let j = 0; j < this.settingsModel.home_Banner_Slider.length; j++) {
+  const banner = this.settingsModel.home_Banner_Slider[j];
+  banner.imgSrc.push(element.url);
+}
+              this.cdr.detectChanges();
+
+    }
+            
+          }
+        }
       });
 }
   closePopup(){

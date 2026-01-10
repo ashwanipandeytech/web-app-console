@@ -26,7 +26,7 @@
                     [(ngModel)]="settingsModel.general.logo.desktop.imgSrc"
                     placeholder="https://example.com/desktop-logo.png">
                     
-                  <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto">Upload</button>
+                  <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto" (click)="uploadFrom('desktop')">Upload</button>
                 </div>
 
                 @if (settingsModel.general.logo.desktop.imgSrc) {
@@ -54,7 +54,7 @@
                     [(ngModel)]="settingsModel.general.logo.mobile.imgSrc"
                     placeholder="https://example.com/mobile-logo.png">
 
-                  <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto">Upload</button>
+                  <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto" (click)="uploadFrom('mobile')">Upload</button>
                 </div>
 
                 @if (settingsModel.general.logo.mobile.imgSrc) {
@@ -95,7 +95,7 @@
                   <input type="text" class="form-control" name="general.favico.desktop.imgSrc"
                     [(ngModel)]="settingsModel.general.favico.desktop.imgSrc"
                     placeholder="https://example.com/favicon.ico">
-                  <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto">Upload</button>
+                  <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto" (click)="uploadFrom('fav_desktop')">Upload</button>
                 </div>
 
                 @if (settingsModel.general.favico.desktop.imgSrc) {
@@ -111,7 +111,7 @@
                     [(ngModel)]="settingsModel.general.favico.mobile.imgSrc"
                     placeholder="https://example.com/mobile-favicon.png">
                   
-                  <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto">Upload</button>
+                  <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto" (click)="uploadFrom('fav_mobile')">Upload</button>
                 </div>
 
                 @if (settingsModel.general.favico.mobile.imgSrc) {
@@ -158,7 +158,7 @@
                       <input type="text" class="form-control" [name]="'home_Banner_Slider[' + $index + '].imgSrc'"
                         [(ngModel)]="slide.imgSrc" placeholder="https://example.com/slide.jpg">
 
-                      <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto">Upload</button>
+                      <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto" (click)="uploadFrom('slider')">Upload</button>
                     </div>
 
                     @if (slide.imgSrc) {
