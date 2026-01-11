@@ -24,7 +24,10 @@
     "templateCode": "Category-Component-v1"
   },
    {
-    "templateCode": "Grid-V1"
+    "templateCode": "Grid-V1",
+     "data":{
+    "title":"home_Promo_Slider"
+     }
   },
   {
     "templateCode": "ProductComponent",
