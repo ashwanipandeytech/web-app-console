@@ -10,6 +10,8 @@ import {Header} from "../../layout/header/header";
 import { ConfirmationPopupComponent } from '../../confirmationPopup/confirmationPopup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { GlobalService } from '../../global.service';
+import { AddProduct } from './add-product/add-product';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-all-products',
   imports: [],
@@ -24,6 +26,7 @@ export class AllProducts {
   public dataService:any= inject(DataService);
   private activatedRoute= inject(ActivatedRoute);
   readonly dialog = inject(MatDialog);
+  readonly ngbModal = inject(NgbModal);
   public router=inject(Router)
  //add toastr library private activatedRoute= inject(ActivatedRoute);
   email:any='superadmin@demohandler.com'
@@ -60,7 +63,24 @@ export class AllProducts {
     });
     
   }
+editoProduct(item:any){
+   const dialogRef: NgbModalRef = this.ngbModal.open(AddProduct, {
+    windowClass: 'mobile-modal product-edit-popup',
+    scrollable: true,
+    centered: true,
+    size:'xl',
+    backdrop: 'static' // optional
+  });
+  dialogRef.componentInstance.data = item;
 
+       dialogRef.result
+      .then((result) => {
+        //console.log('Modal closed with result:', result);
+      })
+      .catch((reason) => {
+        //console.log('Modal dismissed:', reason);
+      });
+}
 
     openDialog(id: any): void {
       let popupData = {

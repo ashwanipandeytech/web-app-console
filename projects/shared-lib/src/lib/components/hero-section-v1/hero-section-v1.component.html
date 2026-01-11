@@ -8,17 +8,17 @@
   }
 
   <div class="hero-section">
-    <!-- @if (slides.length === 1) {
+    @if (dataService.getSpecificGeneralSettings(data.data.title).length === 1) {
       <div class="single-banner">
         <img
-          [src]="slides[0].img"
+          [src]="dataService.getSpecificGeneralSettings(data.data.title)[0].imgSrc"
           loading="lazy"
           class="w-100"
           alt=""
         />
       </div>
-    } -->
-    <!-- @if (slides.length > 1) { -->
+    }
+    @if (dataService.getSpecificGeneralSettings(data.data.title).length > 1) {
       <ngx-slick-carousel
         class="hero-slider slick-carousel"
         [config]="heroBannerSlideConfig"
@@ -36,7 +36,7 @@
           </div>
         }
       </ngx-slick-carousel>
-    <!-- } -->
+    }
 
   </div>
 </section>
