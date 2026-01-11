@@ -33,6 +33,9 @@ interface FoodNode {
 export class AddProduct {
   childrenAccessor = (node: FoodNode) => node.children ?? [];
   @ViewChild('galleryInput') galleryInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('descriptionImageGallery') descriptionImageGallery!: ElementRef<HTMLInputElement>;
+
+
 
   dataSource = [];
 
@@ -99,6 +102,9 @@ export class AddProduct {
   domain: string = '';
   productStatus: string[] = [];
   wrongDiscount: boolean = false;
+  selectProductDesciptionImageGallery:  File[] = [];
+  prodDescriptionImageGallery: any=[];
+   selectedFile: File[] = [];
   constructor(
     private fb: FormBuilder,
     private globalService: GlobalService,
@@ -136,7 +142,9 @@ export class AddProduct {
   addProductDetails() {
     this.productDetails = this.fb.group({
       productTitle: ['', Validators.required],
+      shortDescription:[''],
       productDescription: [''],
+      features:[''],
       productStatus: [[]],
     });
   }
@@ -164,6 +172,7 @@ export class AddProduct {
     this.productMediaSection = this.fb.group({
       thumbUpload: ['', Validators.required],
       galleryUpload: [''],
+      productDescriptionImageGallery:['']
     });
   }
 
@@ -412,7 +421,6 @@ export class AddProduct {
       this.tagsForm.patchValue({ tags: [...currentTags, tag] });
     }
   }
-  selectedFile: File[] = [];
   onThumbSelect(event: any) {
     const file = event.target.files[0];
     this.thumbFile = file;
@@ -449,7 +457,31 @@ export class AddProduct {
     // this.uploadImage();
     //console.log(' this.thumbGallery===>', this.thumbGallery);
   }
+ onFileProductDescriptionGallery(event: any) {
+    // const file = event.target.files[0];
+    for (let i = 0; i < event.target.files.length; i++) {
+      const file = event.target.files[i];
+      if (!file) return;
+      this.selectProductDesciptionImageGallery.push(file);
+      //console.log('this.selectedFile===>', this.selectedFile);
 
+      // Preview if needed
+      const reader = new FileReader();
+      reader.onload = () => {
+        // this.thumbPreview = reader.result as string;
+        this.prodDescriptionImageGallery.push(reader.result as string);
+        this.cd.detectChanges();
+      };
+
+      const element = this.selectProductDesciptionImageGallery[i];
+      reader.readAsDataURL(element);
+        this.cd.detectChanges();
+
+    }
+    // Call upload immediately
+    // this.uploadImage();
+    //console.log(' this.thumbGallery===>', this.thumbGallery);
+  }
   onFileSelectThumb(event: any) {
     const file = event.target.files[0];
     if (!file) return;
@@ -500,6 +532,9 @@ export class AddProduct {
       media: mediaSectionPayload,
       title: this.productDetails.value.productTitle,
       description: this.productDetails.value.productDescription,
+      shortDescription: this.productDetails.value.shortDescription,
+      features: this.productDetails.value.features,
+      productStatus:this.productDetails.value.productStatus,
       inventory: this.productInventrySection.value,
       price_data: priceSection,
       shipping_info: this.shippingInfoSection.value,
@@ -544,7 +579,17 @@ export class AddProduct {
             formDataThumb.append('module_id', id);
             formDataThumb.append('type', 'thumbnail');
             this.callUploadnediaSection(formDataThumb);
-          } else {
+          }
+          if(this.selectProductDesciptionImageGallery?.length){
+              for (const file of this.selectProductDesciptionImageGallery) {
+                const formData = new FormData();
+                formData.append('files', file);
+                formData.append('module', 'product');
+                formData.append('module_id', id);
+                formData.append('type', 'photoDescriptionImageGallery');
+                this.callUploadnediaSection(formData);
+          }
+        }
             if (this.selectedFile?.length) {
               for (const file of this.selectedFile) {
                 const formData = new FormData();
@@ -555,7 +600,7 @@ export class AddProduct {
 
                 this.callUploadnediaSection(formData);
               }
-            }
+            
 
             //   for (let i = 0; i < this.selectedFile.length; i++) {
             //   const element = this.selectedFile[i];
@@ -751,4 +796,44 @@ export class AddProduct {
     // Trigger change detection
     this.cd.detectChanges();
   }
+   removeProductDescriptionGalleryImage(index: number) {
+    // Remove from the preview array
+    this.prodDescriptionImageGallery.splice(index, 1);
+
+    // Remove from the selected files array
+    if (this.selectProductDesciptionImageGallery && this.selectProductDesciptionImageGallery.length > index) {
+      this.selectProductDesciptionImageGallery.splice(index, 1);
+    }
+
+    // Update the file input with remaining files
+    if (this.descriptionImageGallery) {
+      if (this.selectProductDesciptionImageGallery.length === 0) {
+        // Clear input if no files remain
+        this.descriptionImageGallery.nativeElement.value = '';
+      } else {
+        // Rebuild the FileList with remaining files
+        const dataTransfer = new DataTransfer();
+        this.selectProductDesciptionImageGallery.forEach((file) => {
+          dataTransfer.items.add(file);
+        });
+        this.descriptionImageGallery.nativeElement.files = dataTransfer.files;
+      }
+    }
+
+    // Trigger change detection
+    this.cd.detectChanges();
+  }
+//    uploadPrdouctDescriptionImageGallery(){
+//  if (this.selectedFile?.length) {
+//               for (const file of this.selectedFile) {
+//                 const formData = new FormData();
+//                 formData.append('files', file);
+//                 formData.append('module', 'product');
+//                 formData.append('module_id', id);
+//                 formData.append('type', 'gallery');
+
+//                 this.callUploadnediaSection(formData);
+//               }
+//             }
+//    }
 }

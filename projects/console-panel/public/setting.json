@@ -26,11 +26,6 @@
       "imgSrc": "",
       "alt": "",
       "url": ""
-    },
-    {
-      "imgSrc": "",
-      "alt": "",
-      "url": ""
     }
   ],
 
@@ -39,7 +34,16 @@
       "imgSrc": "",
       "alt": "",
       "url": ""
-    },
+    }
+  ],
+   "home_Promo_Slider_testimonials": [
+    {
+      "imgSrc": "",
+      "alt": "",
+      "url": ""
+    }
+  ],
+     "home_Promo_Slider_bottom": [
     {
       "imgSrc": "",
       "alt": "",

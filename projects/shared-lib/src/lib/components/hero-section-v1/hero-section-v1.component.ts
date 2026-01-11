@@ -1,6 +1,7 @@
 import { NgOptimizedImage, NgClass } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { DataService } from '../../services/data-service';
 
 @Component({
   selector: 'app-hero-section-v1',
@@ -11,6 +12,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 export class HeroSectionV1Component implements OnInit {
   @Input() data: any;
   slides: any;
+  dataService = inject(DataService)
   heroBannerSlideConfig = {
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -24,6 +26,6 @@ export class HeroSectionV1Component implements OnInit {
 
   ngOnInit() {
     console.log('HeroSectionV1Component load', this.data);
-    this.slides = this.data.data.heroImage;
+    // this.slides = this.data.data.heroImage;
   }
 }
