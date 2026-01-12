@@ -6,7 +6,45 @@
 
     <!-- Accordion Container -->
     <div class="accordion" id="settingsAccordion">
-
+<div class="accordion-item">
+  <h2 class="accordion-header" id="headingLogo">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeo"
+            aria-expanded="true" aria-controls="collapseSeo">
+            <i class="fa fa-image me-2"></i> SEO Settings
+          </button>
+        </h2>
+        <div id="collapseSeo" class="accordion-collapse collapse show" aria-labelledby="headingLogo">
+           <div class="accordion-body">
+        
+         <!-- Focus Keyphrase -->
+         <div class="mb-3">
+           <label class="form-label">Focus Keyphrase</label>
+           <input type="text"
+                  class="form-control"
+                  name="keywords"
+                  >
+         </div>
+        
+         <!-- SEO Meta Title -->
+         <div class="mb-3">
+           <label class="form-label">SEO Meta Title</label>
+           <input type="text"
+                  class="form-control"
+                  name="metaTitle"
+                >
+         </div>
+        
+         <!-- SEO Meta Description -->
+         <div class="mb-3">
+           <label class="form-label">SEO Meta Description</label>
+           <textarea class="form-control"
+                     rows="3"
+                     name="metaDescription"
+                    ></textarea>
+         </div>
+        </div>
+        </div>
+</div>
       <!-- 1. General - Logo -->
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingLogo">
