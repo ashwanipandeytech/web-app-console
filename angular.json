@@ -20,13 +20,12 @@
             "browser": "projects/frontend/src/main.ts",
             "tsConfig": "projects/frontend/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-           "assets": [
-                    {
-                      "glob": "**/*",
-                      "input": "projects/frontend/public"
-                    }
-                  ],
-
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/frontend/public"
+              }
+            ],
             "styles": [
               "projects/frontend/src/styles.scss",
               "node_modules/slick-carousel/slick/slick.css",
@@ -36,16 +35,19 @@
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/slick-carousel/slick/slick.min.js"
             ]
-            
           },
           "configurations": {
-            "web-production": {
+            "web-production-ssr": {
+              "server": "projects/frontend/src/main.server.ts",
+              "outputMode": "server",
+              "ssr": {
+                "entry": "projects/frontend/src/server.ts"
+              },
               "fileReplacements": [
                 {
                   "replace": "environments/environment.ts",
                   "with": "projects/frontend/environments/production.environment.ts"
                 }
-
               ],
               "budgets": [
                 {
@@ -60,7 +62,31 @@
                 }
               ],
               "outputHashing": "all",
-                "optimization": true,
+              "optimization": true,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
+            "web-production": {
+              "fileReplacements": [
+                {
+                  "replace": "environments/environment.ts",
+                  "with": "projects/frontend/environments/production.environment.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "3MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "40kB",
+                  "maximumError": "80kB"
+                }
+              ],
+              "outputHashing": "all",
+              "optimization": true,
               "extractLicenses": false,
               "sourceMap": true
             },
@@ -70,7 +96,6 @@
                   "replace": "environments/environment.ts",
                   "with": "projects/frontend/environments/development.environment.ts"
                 }
-
               ],
               "optimization": true,
               "extractLicenses": false,
@@ -82,6 +107,9 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
+             "web-production-ssr": {
+              "buildTarget": "frontend:build:web-production-ssr"
+            },
             "web-production": {
               "buildTarget": "frontend:build:web-production"
             },
@@ -112,7 +140,6 @@
         }
       }
     },
-   
     "console-panel": {
       "projectType": "application",
       "schematics": {
@@ -142,13 +169,11 @@
           },
           "configurations": {
             "console-production": {
-
               "fileReplacements": [
                 {
                   "replace": "environments/environment.ts",
                   "with": "projects/console-panel/environments/production.environment.ts"
                 }
-
               ],
               "budgets": [
                 {
@@ -170,7 +195,6 @@
                   "replace": "environments/environment.ts",
                   "with": "projects/console-panel/environments/development.environment.ts"
                 }
-
               ],
               "optimization": false,
               "extractLicenses": false,
