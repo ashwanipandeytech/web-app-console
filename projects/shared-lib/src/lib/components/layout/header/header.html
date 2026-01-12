@@ -229,9 +229,9 @@
 </nav>
 
 <!-- CATEGORY BAR -->
-<div class="border-bottom bg-white">
-  <div class="container d-flex align-items-center px-0">
-    <ul class="nav category-nav gap-1 flex-nowrap overflow-auto">
+<div class="category-wrapper border-bottom">
+  <div class="container d-flex align-items-center justify-content-sm-center px-0">
+    <ul class="nav category-nav gap-2 flex-nowrap overflow-auto">
        @for (item of categoryListData; track $index) {
         <!-- <pre>{{categoryListData | json}}</pre> -->
         <li class="nav-item">

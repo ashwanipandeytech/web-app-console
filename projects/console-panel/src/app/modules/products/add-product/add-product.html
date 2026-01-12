@@ -157,8 +157,8 @@
                     <div class="col-12">
                       <div class="add-thumbnail product-image-upload">
                         <div class="part-txt">
-                          <h5>Main Image
-                            <span>(jpeg/png)</span>
+                          <h5>Main Image:
+                            <span>Upload a square image required (1:1 aspect ratio) — recommended size: 400 × 400 px.(jpeg/png/webp)</span>
                           </h5>
                         </div>
                         <input type="file" class="form-control" formControlName="thumbUpload" accept="image/*"
@@ -171,7 +171,7 @@
                     <div class="col-12 mt-4">
                       <div class="add-gallery-img product-image-upload">
                         <div class="part-txt">
-                          <h5>Add gallery <span>(jpeg/png)</span></h5>
+                          <h5>Add gallery: <span>Upload a square image required (1:1 aspect ratio) — recommended size: 400 × 400 px.(jpeg/png/webp)</span></h5>
                         </div>
 
                         <input #galleryInput multiple type="file" class="form-control" formControlName="galleryUpload"
@@ -191,7 +191,19 @@
                       </div>
                     </div>
                     <hr>
-                       <div class="col-12 mt-4">
+
+                     <div class="panel mb-30">
+            <div class="panel-header">
+              <h5>Product Description Images <span>(jpeg/png)</span></h5>
+              <!-- <div class="btn-box d-flex gap-2">
+                <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
+                <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
+                    class="fa fa-angle-up"></i></button>
+              </div> -->
+            </div>
+            <quill-editor formControlName="productDescriptionImageGallery"></quill-editor>
+          </div>
+                       <!-- <div class="col-12 mt-4">
                       <div class="add-gallery-img product-image-upload">
                         <div class="part-txt">
                           <h5>Product Description Images <span>(jpeg/png)</span></h5>
@@ -212,7 +224,7 @@
                           }
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </form>
               </div>
