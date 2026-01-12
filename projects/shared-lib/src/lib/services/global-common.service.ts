@@ -14,7 +14,7 @@ export class GlobaCommonlService {
     this.snackBar.open(response.message, 'OK', {
       duration: 2000,
       horizontalPosition: 'end',
-      verticalPosition: 'top',
+      verticalPosition: 'bottom',
       panelClass: [response.success ? 'snackbar-success' : 'snackbar-error']
     });
   }
