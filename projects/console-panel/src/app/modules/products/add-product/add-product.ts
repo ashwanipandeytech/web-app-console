@@ -34,7 +34,13 @@ export class AddProduct {
   childrenAccessor = (node: FoodNode) => node.children ?? [];
   @ViewChild('galleryInput') galleryInput!: ElementRef<HTMLInputElement>;
   @ViewChild('descriptionImageGallery') descriptionImageGallery!: ElementRef<HTMLInputElement>;
-@Output() data:any;
+@Output() data:any={
+  price_data:{},
+  shipping_info:{},
+  shipping_config:{},
+  offer:{},
+
+};
 
 
   dataSource = [];
@@ -118,15 +124,14 @@ export class AddProduct {
   }
   ngOnInit() {
     this.domain = window.location.origin;
-    this.getCategoryList();
-        this.initializeForms();
+    this.initializeForms();
     this.initializeCategoryControls();
+    this.getCategoryList();
     
   }
   initializeForms() {
     console.log('data',this.data);
     if (this.data) {
-      
       this.addProductDetails();
       this.productOptionType();
       this.submitProductMultipleOptionForm();
@@ -142,7 +147,7 @@ export class AddProduct {
       this.seoFormGroup();
     }
     else{
-            this.addProductDetails();
+      this.addProductDetails();
       this.productOptionType();
       this.submitProductMultipleOptionForm();
       this.addCategoriesForm();
@@ -162,10 +167,11 @@ export class AddProduct {
   addProductDetails() {
     this.productDetails = this.fb.group({
       productTitle: [this.data.title, Validators.required],
-      shortDescription:[''],
-      productDescription: [this.data.description],
-      features:[''],
-      productStatus: [[]],
+      shortDescription:[this.data.attributes?.productDetailsObj?.shortDescription],
+      productDescription: [this.data.attributes?.productDetailsObj?.description],
+      features:[this.data.attributes?.productDetailsObj?.features],
+      productStatus: [this.data.attributes?.productDetailsObj?.productStatus],
+      productDescriptionImageGallery:[this.data.attributes?.productDetailsObj?.productDescriptionImageGallery]
     });
   }
   get addProductDetailsValidation() {
@@ -191,8 +197,7 @@ export class AddProduct {
   mediaForm() {
     this.productMediaSection = this.fb.group({
       thumbUpload: ['', Validators.required],
-      galleryUpload: [this.data.images],
-      productDescriptionImageGallery:['']
+      galleryUpload: [this.data.images]
     });
   }
 
@@ -568,6 +573,17 @@ export class AddProduct {
         publishDate: this.productMultipleOptionForm.value.publishDate,
         visibility: this.productMultipleOptionForm.value.visibility,
       },
+      attributes:{
+        productDetailsObj: this.productDetails.value
+        
+    //      productDetailsObj : {
+    //   productDetails :this.productDetails.value.productTitle,
+    //   shortDescription:this.productDetails.value.shortDescription,
+    //   productDescription: this.productDetails.value.description,
+    //   features:this.productDetails.value.features,
+    //   productStatus: [[]],
+    // }
+      }
     };
     //console.log('finalData==>', finalData);
     this.dataService
