@@ -120,7 +120,7 @@
 </div>
 
 @if(loading){
-<div class="loader d-flex align-items-center justify-content-center">
+<div class="loader d-flex align-items-center justify-content-center position-absolute" style="inset-inline: 0;">
   <div class="spinner-border spinner-border-lg text-primary" role="status"></div>
 </div>
 }
@@ -152,7 +152,7 @@
           <div class="col-12 col-md-3">
             <div class="wrapper-img bg-light p-2 rounded-2">
               <img
-                [src]="item.product.media.uploadedImages[0].url"
+                [src]="item?.product?.media?.uploadedImages[0]?.url"
                 alt=""
                 class="object-fit-cover rounded-2 w-100"
               />
@@ -161,27 +161,45 @@
           <div class="col-12 col-md-9">
             <div class="wrapper-content">
               <div class="d-flex align-items-center">
-                <h5 class="heading text-truncate">{{ item.product.title }}</h5>
-                <button
-                  class="lh-0 btn cancel-btn p-2 d-flex align-items-center"
-                  data-bs-toggle="modal"
-                  data-bs-target="#removeProject"
-                  title="Remove"
-                >
-                  <i class="fa-solid fa-trash text-danger" (click)="deleteCartItem(item.id)"></i>
-                </button>
+                <h5 class="heading text-truncate text-capitalize">{{ item.product.title }}</h5>
+
+                  <button
+                  (click)="deleteCartItem(item.id)"
+                    title="Remove"
+                    class="lh-0 btn cancel-btn p-2 d-flex align-items-center"
+                    [ngClass]="{'invisible': item.quantity <= 1}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#removeProject"
+                  >
+                    <i class="fa-solid fa-trash text-danger"></i>
+                  </button>
+                
               </div>
               <ul>
                 <li class="counter d-flex align-items-center">
                   <span class="fw-semibold config-title">Quantity</span>
                   <div class="rounded-2 counter d-flex align-items-center mt-1 border">
-                    <button
-                      class="minus btn px-2 py-1 rounded-start rounded-end-0 lh-0 opacity-75"
-                      (click)="decrease(item.quantity, i)"
-                    >
-                      <i class="fa-solid fa-minus fa-sm"></i>
-                    </button>
+                    @if(item.quantity > 1){
+                      <button
+                        class="minus btn px-2 py-1 rounded-start rounded-end-0 lh-0 opacity-75"
+                        (click)="decrease(item.quantity, i)"
+                      >
+                        <i class="fa-solid fa-minus fa-sm"></i>
+                      </button>
+                    }
+                    @if(item.quantity == 1){
+                      <button
+                        class="btn px-2 py-1 rounded-start rounded-end-0 lh-0 opacity-75"
+                        data-bs-toggle="modal"
+                        data-bs-target="#removeProject"
+                        (click)="deleteCartItem(item.id)"
+                      >
+                        <i class="fa-solid fa-trash text-danger fa-sm"></i>
+                      </button>
+                    }
+
                     <span class="number fw-500 px-2">{{ item.quantity }}</span>
+                    
                     <button
                       class="plus btn px-2 py-1 rounded-end rounded-start-0 lh-0 opacity-75"
                       (click)="increase(item.quantity, i)"
