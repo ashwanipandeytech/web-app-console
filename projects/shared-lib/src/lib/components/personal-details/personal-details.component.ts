@@ -104,7 +104,7 @@ export class PersonalDetailsComponent implements OnInit {
         }
       });
     // }
-    //console.log("Form Value ===>", this.profileForm.value);
+    this.isEditMode = false;
   }
 
   getProfileList() {

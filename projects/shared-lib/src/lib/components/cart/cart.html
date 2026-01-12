@@ -181,7 +181,7 @@
                   <div class="rounded-2 counter d-flex align-items-center mt-1 border">
                     @if(item.quantity > 1){
                       <button
-                        class="minus btn px-2 py-1 rounded-start rounded-end-0 lh-0 opacity-75"
+                        class="minus btn px-2 py-1 rounded-start rounded-end-0 opacity-75"
                         (click)="decrease(item.quantity, i)"
                       >
                         <i class="fa-solid fa-minus fa-sm"></i>
@@ -189,7 +189,7 @@
                     }
                     @if(item.quantity == 1){
                       <button
-                        class="btn px-2 py-1 rounded-start rounded-end-0 lh-0 opacity-75"
+                        class="btn px-2 py-1 rounded-start rounded-end-0 opacity-75"
                         data-bs-toggle="modal"
                         data-bs-target="#removeProject"
                         (click)="deleteCartItem(item.id)"
@@ -201,7 +201,7 @@
                     <span class="number fw-500 px-2">{{ item.quantity }}</span>
                     
                     <button
-                      class="plus btn px-2 py-1 rounded-end rounded-start-0 lh-0 opacity-75"
+                      class="plus btn px-2 py-1 rounded-end rounded-start-0 opacity-75"
                       (click)="increase(item.quantity, i)"
                     >
                       <i class="fa-solid fa-plus fa-sm"></i>

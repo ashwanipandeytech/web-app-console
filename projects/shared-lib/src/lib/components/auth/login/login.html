@@ -30,7 +30,7 @@
         <div class="mb-3 position-relative">
             <input formControlName="email" id="email" class="form-control" placeholder="Enter your email"/>
             @if (submitted && f['email'].errors) {
-            <div class="text-danger fs-14 position-absolute">
+            <div class="text-danger fs-14 position-absolute lh-0 mt-1">
               @if (f['email'].errors['required']) {
               <small>Email is required.</small>
               } @if (f['email'].errors['email']) {
@@ -49,7 +49,7 @@
           </span>
           }
           @if (submitted && f['password'].errors) {
-          <div class="text-danger fs-14 position-absolute">
+          <div class="text-danger fs-14 position-absolute lh-0 mt-1">
             @if (f['password'].errors['required']) {
             <small>Password is required.</small>
             } @if (f['password'].errors['minlength']) {
@@ -65,7 +65,7 @@
             <input class="form-check-input" type="checkbox" id="remember">
             <label class="form-check-label small cursor-pointer fs-14" for="remember">Remember me</label>
             </div>
-            <a (click)="forgotPaaword();forgotStep = 'select'" class="small text-primary fw-semibold text-decoration-none hover-underline fs-14">Forgot password?</a>
+            <a (click)="forgotPaaword();forgotStep = 'select'" class="small text-primary fw-semibold cursor-pointer text-decoration-none hover-underline fs-14">Forgot password?</a>
         </div>
 
         <!-- Sign In Button -->
@@ -114,7 +114,7 @@
           <input formControlName="name" id="name" class="form-control" placeholder="Enter your name" />
 
           @if (submittedRegister && s['name'].errors) {
-          <div class="text-danger fs-14 position-absolute">
+          <div class="text-danger fs-14 position-absolute lh-0 mt-1">
             @if (s['name'].errors['required']) {
             <small>Name is required.</small>
             }
@@ -125,7 +125,7 @@
         <div class="mb-3 position-relative">
           <input formControlName="email" id="email" class="form-control" placeholder="Enter your email" />
           @if (submittedRegister && s['email'].errors) {
-          <div class="text-danger fs-14 position-absolute">
+          <div class="text-danger fs-14 position-absolute lh-0 mt-1">
             @if (s['email'].errors['required']) {
             <small>Email is required.</small>
             } @if (s['email'].errors['email']) {
@@ -139,7 +139,7 @@
           <input formControlName="phone" id="phone" class="form-control" placeholder="Enter phone number" />
 
           @if (submittedRegister && s['phone'].errors) {
-          <div class="text-danger fs-14 position-absolute">
+          <div class="text-danger fs-14 position-absolute lh-0 mt-1">
             @if (s['phone'].errors['pattern']) {
             <small>Phone number must be exactly 10 digits.</small>
             }
@@ -157,7 +157,7 @@
           />
 
           @if (submittedRegister && s['password'].errors) {
-          <div class="text-danger fs-14 position-absolute">
+          <div class="text-danger fs-14 position-absolute lh-0 mt-1">
             @if (s['password'].errors['required']) {
             <small>Password is required.</small>
             }
@@ -176,7 +176,7 @@
 
           
           @if (submittedRegister && s['password_confirmation'].errors) {
-          <div class="text-danger fs-14 position-absolute">
+          <div class="text-danger fs-14 position-absolute lh-0 mt-1">
             @if (s['password_confirmation'].errors['required']) {
             <small>Confirm Password is required.</small>
             }
@@ -206,7 +206,7 @@
               width="20"
               alt="Google"
               />
-              Sign in with Google
+              Sign up with Google
           </button>
   
           <!-- Google Button -->
@@ -217,7 +217,7 @@
               alt="Facebook"
               class="bg-primary"
               />
-              Sign in with Facebook
+              Sign up with Facebook
           </button>
         </div>
 
