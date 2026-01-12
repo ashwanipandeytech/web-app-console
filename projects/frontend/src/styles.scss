@@ -1155,7 +1155,7 @@ table {
 }
 
 .snackbar-success {
-  background: #4caf50 !important; /* green */
+  background:$theme-color!important; /* green */
   color: #fff !important;
    z-index: 9999;
 }
