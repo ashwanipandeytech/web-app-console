@@ -203,28 +203,30 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @for(order of orderListData; track $index){
                             <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </td>
-                                <td><a href="invoices.html">#22120101</a></td>
-                                <td>Rajesh</td>
-                                <td><span class="text-danger">Pending</span></td>
-                                <td>12</td>
-                                <td>₹256</td>
-                                <td>Cash on</td>
-                                <td><span class="badge bg-success">Delivered</span></td>
-                                <td>12/24/2023 - 01:05 PM</td>
-                                <td>
-                                    <div class="btn-box">
-                                        <button><i class="fa fa-eye"></i></button>
-                                        <button><i class="fa fa-pen"></i></button>
-                                        <button><i class="fa fa-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox">
+                                        </div>
+                                    </td>
+                                    <td><a href="invoices.html">{{order.id}}</a></td>
+                                    <td>{{order.user.name}}</td>
+                                    <td><span class="text-danger">{{order.status}}</span></td>
+                                    <td>{{order?.items[0]?.product?.title}}</td>
+                                    <td>{{order.total_amount}}</td>
+                                    <td>{{order.payment_method}}</td>
+                                    <td><span class="badge bg-success">Delivered</span></td>
+                                    <td>{{order.created_at | date:'hh:mm a'}}</td>
+                                    <td>
+                                        <div class="btn-box">
+                                            <button><i class="fa fa-eye"></i></button>
+                                            <button><i class="fa fa-pen"></i></button>
+                                            <button><i class="fa fa-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
                             <!-- <tr>
                                 <td>
                                     <div class="form-check">
