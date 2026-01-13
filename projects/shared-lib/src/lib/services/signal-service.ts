@@ -9,6 +9,7 @@ user = signal<any>(null);
   allCounts = signal<any>(null);
   userLoggedIn=signal<any>(false);
   currentLocation = signal<any>(null);
+  profileChanged=signal<any>(false);
 
   setCounts(data: any) {
     //console.log('signal service ==',data);

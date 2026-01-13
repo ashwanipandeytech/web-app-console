@@ -451,6 +451,22 @@ export class Checkout {
     
     this.cd.detectChanges();
   }
+  async addAddress(){
+    let addresss = {
+      isNewAddress:true
+    };
+      this.globalFunctionService.openAddressPopup(addresss).then((res:any)=>{
+        if (res.result ==='success') {
+          this.cd.detectChanges();
+          this.addressNotfound = false;
+        }
+        this.getAddressList();
+      //console.log('addressResp==========>',res);
+    })
+    
+    this.cd.detectChanges();
+
+  }
   getSelectedAddress(item: any) {
     //console.log('item===>', item);
     this.changedSelectedAddress = item;

@@ -9,7 +9,17 @@
     }
   </h1>
   } @if (this.data) {
-  <h1 class="modal-title fs-5" id="addressModalLabel">Update Address Details</h1>
+
+    
+  <h1 class="modal-title fs-5" id="addressModalLabel">
+
+ @if(isNewAddressCartPage){ New Address Details }
+  @if(!isNewAddressCartPage){ Update Address Details }
+
+
+
+
+  </h1>
 
   }
   <button type="button" class="opacity-75 close-btn" data-bs-dismiss="modal" aria-label="Close" (click)="closePopup('')">
@@ -89,7 +99,7 @@
 
   } 
   <!-- {{isNewAddress}} -->
-  @if (isNewAddress || this.data) {
+  @if (isNewAddress || isNewAddressCartPage || this.data) {
   <ng-container>
     <!-- <div class="d-flex align-items-start bg-primary-light rounded p-3 mb-3">
         <img src="assets/images/svg/indictor.svg" alt="" class="pt-1">
@@ -293,13 +303,13 @@
   }
 </div>
 
-@if (isNewAddress && !this.data && isLogin) {
+@if ((isNewAddress && !this.data && isLogin)|| isNewAddressCartPage) {
 <div class="modal-footer border-0">
   <button type="button" class="shop-btn w-100" (click)="submitForm()">
     Save address
   </button>
 </div>
-} @if (this.data) {
+} @if (this.data && !isNewAddressCartPage) {
 <div class="modal-footer border-0">
   <button type="button" class="shop-btn w-100" (click)="updateAddress()">
     Update address

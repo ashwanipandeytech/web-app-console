@@ -65,6 +65,9 @@
           <div class="card border-primary">
             <div class="card-header bg-primary text-white fw-semibold">
               DELIVERY ADDRESS
+              
+              <a (click)="addAddress()"  style="background-color: red;" class="icon-link bg-primary-light icon-link-hover cursor-pointer text-primary ms-auto fs-14 fw-normal"> Add <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true" class="bi"><path  d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"></path></svg></a>
+              
             </div>
 
             <div class="card-body">
@@ -84,8 +87,14 @@
 
                   </div>
 
+
+                  
+
                  <a (click)="editAddress(addressListData)" class="icon-link icon-link-hover cursor-pointer text-primary ms-auto fs-14 fw-normal"> Edit <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true" class="bi"><path  d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"></path></svg></a>
-              </div>
+              
+              
+              
+                </div>
             </div>
           </div>
            @if (addressNotfound) {

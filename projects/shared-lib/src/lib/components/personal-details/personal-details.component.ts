@@ -10,6 +10,7 @@ import { DataService } from '../../services/data-service';
 import { catchError, of } from 'rxjs';
 import { GlobalFunctionService } from '../../services/global-function.service';
 import { GlobaCommonlService } from '../../services/global-common.service';
+import { SignalService } from '../../services/signal-service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -23,6 +24,7 @@ export class PersonalDetailsComponent implements OnInit {
   profileForm!: FormGroup;
   private fb = inject(FormBuilder);
   private dataService = inject(DataService);
+  private signalService = inject(SignalService);
   private cd = inject(ChangeDetectorRef);
   private globalService = inject(GlobaCommonlService);
   private globalFunctionService = inject(GlobalFunctionService);
@@ -32,7 +34,7 @@ export class PersonalDetailsComponent implements OnInit {
   states: any;
   cities: any = [];
   isLoading: boolean = true;
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
     this.profileDetailsForm();
@@ -51,13 +53,16 @@ export class PersonalDetailsComponent implements OnInit {
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
-      country: ['India', Validators.required],
-      address: ['', Validators.required],
-      city: ['', Validators.required],
-      postcode: ['', [Validators.required, Validators.pattern(/^[0-9]{4,10}$/)]],
-      logo: [null], // file input
+      // country: ['India', Validators.required],
+      // address: ['', Validators.required],
+      // city: ['', Validators.required],
+      // postcode: ['', [Validators.required, Validators.pattern(/^[0-9]{4,10}$/)]],
+      //logo: [null], // file input
     });
-    this.getProfileList();
+    //  this.loadCountries();
+      this.getProfileList();
+      this.cd.detectChanges();
+   
   }
   get phone() {
     return this.profileForm.get('phone');
@@ -85,23 +90,47 @@ export class PersonalDetailsComponent implements OnInit {
     // fullAddrress.label = 'home';
     // fullAddrress.isDefault = 1;
     fullAddrress.name = fullAddrress.firstName + ' ' + fullAddrress.lastName;
-
+        // fullAddrress.phone=fullAddrress.phone.toString()
+        // fullAddrress.postcode=fullAddrress.postcode.toString()
+    // console.info('fullAddrress',fullAddrress)
     this.dataService
       .put(fullAddrress, 'profile')
       .pipe(
         catchError((err) => {
           console.error('Error:', err);
-
+  //  this.globalService.showMsgSnackBar(err);
           return of(null);
         })
       )
       .subscribe((res: any) => {
         //console.log('Response:', res);
+          // this.globalService.showMsgSnackBar(res);
         if (res.success == true) {
           this.globalService.showMsgSnackBar(res);
 
+         
+          let userData:any = localStorage.getItem("user");
+
+          let userObj = JSON.parse(userData);
+
+        
+          userObj.user.name = fullAddrress.name;
+          userObj.user.phone = fullAddrress.phone;
+          userObj.user.email = fullAddrress.email;
+
+          // 4. Save updated object back to localStorage
+        
+          localStorage.setItem("user", JSON.stringify(userObj));
+          console.log("Updated User:", JSON.parse(localStorage.getItem("user")!));
+
+          this.signalService.profileChanged.set(fullAddrress.name)
+
           // this.router.navigate(['/cart']);
         }
+        else if (res.error && res.error.message) {
+            //console.log('error  :', res.error.message);
+            this.globalService.showMsgSnackBar(res.error);
+          }
       });
     // }
     this.isEditMode = false;
@@ -143,7 +172,8 @@ export class PersonalDetailsComponent implements OnInit {
         const email = this.profileListData.email;
         const phone = this.profileListData.phone;
 
-        this.loadCountries();
+       
+        console.info('cities',this.cities,data.city)
         if (this.profileListData && response.success) {
           // ✅ patchValue is safe even if fields are empty
           this.profileForm.patchValue({
@@ -151,10 +181,10 @@ export class PersonalDetailsComponent implements OnInit {
             lastName: last,
             email: email,
             phone: phone,
-            country: data.country ?? '',
-            address: data.street ?? '',
-            city: data.city ?? '',
-            postcode: data.postal_code ?? '',
+            // country: data.country ?? '',
+            // address: data.street ?? '',
+            // city: data.city ?? '',
+            // postcode: data.postal_code ?? '',
           });
           this.isLoading = false;
 
@@ -176,12 +206,13 @@ export class PersonalDetailsComponent implements OnInit {
   getCities() {
     this.globalFunctionService.getCities('India', 'Uttar Pradesh').subscribe((cities) => {
       this.cities = cities;
-      this.cd.detectChanges();
+      //  this.getProfileList();
+      // this.cd.detectChanges();
     });
   }
 
   isEditMode = false;
-  toggleEdit(){
+  toggleEdit() {
     this.isEditMode = !this.isEditMode;
   }
 

@@ -3,7 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DataService } from '../../services/data-service';
 import { catchError, of } from 'rxjs';
-import { GlobaCommonlService } from 'shared-lib/services/global-common.service';
+import { GlobaCommonlService } from '../../services/global-common.service';
 
 @Component({
   selector: 'app-change-password',
@@ -70,6 +70,14 @@ console.log('this.passwordForm===>',this.passwordForm.value);
 
   }
   setPassword(payload:any){
+    // if(payload.currentPassword==payload.new_password){
+    //   let data={
+    //     message:'Please Use Different Password',
+    //     success:false
+    //   }
+    //     this.globalService.showMsgSnackBar(data);
+    // }
+    // return
      this.dataService.post(payload, 'auth/set-password')
             .pipe(
               catchError((err) => {
