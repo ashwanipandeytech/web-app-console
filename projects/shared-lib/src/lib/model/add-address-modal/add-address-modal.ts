@@ -293,6 +293,7 @@ else{
       }
       fullAddrress.id = this.data.id;
       fullAddrress.label = this.addressForm.value.type;
+    
        this.dataService.put(fullAddrress,  `addresses/${this.data.id}`,)
             .pipe(
               catchError(err => {
