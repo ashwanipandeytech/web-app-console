@@ -1,56 +1,101 @@
 <section class="product">
-    <div class="container">
-        <div class="section-title">
-            <h3>{{productData?.data?.title}}</h3>
-            <a href="/category-details/all" class="fs-16 icon-link icon-link-hover text-primary fw-semibold">View All
-                <svg xmlns="http://www.w3.org/2000/svg" class="bi" viewBox="0 0 16 16" aria-hidden="true">
-                    <path d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-                </svg>
-            </a>
-        </div>
-        <!-- <div class="top-selling-section"> -->
-        <div class="fresh-section">
-            <ngx-slick-carousel slickModal="slick-carousel" id="slick-carousel" class="slick-carousel" 
-            [config]="productSectionSlideConfig">
-                @for (item of productListData; track $index) {
-                <div class="product-wrapper me-md-3 mx-2 bg-white p-3 rounded-2 border d-flex flex-column h-100" ngxSlickItem>
-                    <div class="product-img" style="height: 190px;">
-                        <a (click)="openProduct(item.id)">
-                            <img [src]="item?.images[0]?.url" alt="product-img">
-                        </a>
-
-                        @if(isLogin==true){
-                            <div class="product-cart-items bg-white rounded p-1" 
-                            (click)="toggleHeart(item)"  
-                            [ngClass]="{ 'wishlisted': item.is_wishlisted}">
-                                <i class="fa-heart" [ngClass]="item.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"></i>
-                            </div>
-                        }
-                    </div>
-
-                    <div class="product-info pb-0 h-100">
-                        <a (click)="openProduct(item.id)" class="product-details fs-14 fw-semibold text-dark text-capitalize w-100">{{item.title}}</a>
-                        <div class="product-description d-flex align-items-center justify-content-between w-100 my-2">
-                            <div class="price gap-2">
-                                <span class="price-cut fs-14">₹{{item.price_data.regularPrice}}</span>
-                                <span class="new-price fs-14">₹{{item.price_data.salePrice}}</span>
-                            </div>
-                            <div class="ratings mt-0">
-                                <svg width="75" height="18" viewbox="0 0 75 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z" fill="#FFA800"></path>
-                                    <path d="M22.5 0L24.1839 5.18237H29.6329L25.2245 8.38525L26.9084 13.5676L22.5 10.3647L18.0916 13.5676L19.7755 8.38525L15.3671 5.18237H20.8161L22.5 0Z" fill="#FFA800"></path>
-                                    <path d="M37.5 0L39.1839 5.18237H44.6329L40.2245 8.38525L41.9084 13.5676L37.5 10.3647L33.0916 13.5676L34.7755 8.38525L30.3671 5.18237H35.8161L37.5 0Z" fill="#FFA800"></path>
-                                    <path d="M52.5 0L54.1839 5.18237H59.6329L55.2245 8.38525L56.9084 13.5676L52.5 10.3647L48.0916 13.5676L49.7755 8.38525L45.3671 5.18237H50.8161L52.5 0Z" fill="#FFA800"></path>
-                                    <path d="M67.5 0L69.1839 5.18237H74.6329L70.2245 8.38525L71.9084 13.5676L67.5 10.3647L63.0916 13.5676L64.7755 8.38525L60.3671 5.18237H65.8161L67.5 0Z" fill="#FFA800"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <button class="product-btn w-auto shop-btn mt-auto" (click)="addToCart(item)">Add to Cart</button>
-
-                    </div>
-                </div>
-                }
-            </ngx-slick-carousel>
-        </div>
+  <div class="container">
+    <div class="section-title">
+      <h3>{{ productData?.data?.title }}</h3>
+      <a
+        href="/category-details/all"
+        class="fs-16 icon-link icon-link-hover text-primary fw-semibold"
+        >View All
+        <svg xmlns="http://www.w3.org/2000/svg" class="bi" viewBox="0 0 16 16" aria-hidden="true">
+          <path
+            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
+          />
+        </svg>
+      </a>
     </div>
+    <!-- <div class="top-selling-section"> -->
+    <div class="fresh-section">
+      <ngx-slick-carousel
+        slickModal="slick-carousel"
+        id="slick-carousel"
+        class="slick-carousel"
+        [config]="productSectionSlideConfig"
+      >
+        @for (item of productListData; track $index) {
+        <div
+          class="product-wrapper me-md-3 mx-2 bg-white p-3 rounded-2 border d-flex flex-column h-100"
+          ngxSlickItem
+        >
+          <div class="product-img" style="height: 190px">
+            <a (click)="openProduct(item.id)" class="h-100 w-100 overflow-hidden">
+              <img [src]="item?.images[0]?.url" class="h-100" alt="product-img" />
+            </a>
+
+            @if(isLogin==true){
+            <div
+              class="product-cart-items bg-white rounded p-1"
+              (click)="toggleHeart(item)"
+              [ngClass]="{ wishlisted: item.is_wishlisted }"
+            >
+              <i
+                class="fa-heart"
+                [ngClass]="item.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"
+              ></i>
+            </div>
+            }
+          </div>
+
+          <div class="product-info pb-0 h-100">
+            <a
+              (click)="openProduct(item.id)"
+              class="product-details fs-14 fw-semibold text-dark text-capitalize w-100 text-truncate"
+              >{{ item.title }}</a
+            >
+            <div
+              class="product-description d-md-flex align-items-center justify-content-between w-100 my-2"
+            >
+              <div class="price gap-2">
+                <span class="price-cut fs-14">₹{{ item.price_data.regularPrice }}</span>
+                <span class="new-price fs-14">₹{{ item.price_data.salePrice }}</span>
+              </div>
+              <div class="ratings mt-0">
+                <svg
+                  width="75"
+                  height="18"
+                  viewbox="0 0 75 15"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z"
+                    fill="#FFA800"
+                  ></path>
+                  <path
+                    d="M22.5 0L24.1839 5.18237H29.6329L25.2245 8.38525L26.9084 13.5676L22.5 10.3647L18.0916 13.5676L19.7755 8.38525L15.3671 5.18237H20.8161L22.5 0Z"
+                    fill="#FFA800"
+                  ></path>
+                  <path
+                    d="M37.5 0L39.1839 5.18237H44.6329L40.2245 8.38525L41.9084 13.5676L37.5 10.3647L33.0916 13.5676L34.7755 8.38525L30.3671 5.18237H35.8161L37.5 0Z"
+                    fill="#FFA800"
+                  ></path>
+                  <path
+                    d="M52.5 0L54.1839 5.18237H59.6329L55.2245 8.38525L56.9084 13.5676L52.5 10.3647L48.0916 13.5676L49.7755 8.38525L45.3671 5.18237H50.8161L52.5 0Z"
+                    fill="#FFA800"
+                  ></path>
+                  <path
+                    d="M67.5 0L69.1839 5.18237H74.6329L70.2245 8.38525L71.9084 13.5676L67.5 10.3647L63.0916 13.5676L64.7755 8.38525L60.3671 5.18237H65.8161L67.5 0Z"
+                    fill="#FFA800"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <button class="product-btn w-auto shop-btn mt-auto" (click)="addToCart(item)">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+        }
+      </ngx-slick-carousel>
+    </div>
+  </div>
 </section>

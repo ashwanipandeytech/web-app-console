@@ -87,6 +87,9 @@
 }
 
 .footer-center {
+  @media screen and (max-width:576px) {
+    padding-bottom: 30px;
+  }
   hr {
     color: rgba($primary-color, 0.3);
   }

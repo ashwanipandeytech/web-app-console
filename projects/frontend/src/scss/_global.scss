@@ -163,7 +163,7 @@ button {
     position: relative;
     // overflow: hidden;
     @media #{$sm} {
-      height: initial!important;
+      height: 100px!important;
     }
 
     img {
@@ -258,7 +258,7 @@ button {
     //border: 1px solid $theme-color;
     .product-img {
       img {
-        transform: scale(1.1);
+        transform: scale(1.05);
       }
     }
 
@@ -276,6 +276,7 @@ button {
   @media #{$sm} {
     .price {
       @include flexItem($gap: 1rem);
+      justify-content: start;
       @media #{$sm} {
         span {
           font-size: 2rem;

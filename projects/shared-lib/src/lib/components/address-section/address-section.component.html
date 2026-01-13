@@ -5,7 +5,7 @@
 }
 
 @if(!isLoading){
-  <div class="top-section d-flex align-items-center border-bottom pb-1 mb-4">
+  <div class="top-section d-flex align-items-center border-bottom pb-1 mb-4 px-3 px-md-0">
     <h3>Manage Addresses</h3>
     <button type="button" class="text-primary ms-auto hover-underline" (click)="openAddressPopup()">Add New Address</button>
   </div>
@@ -22,7 +22,7 @@
               <i class="ms-2 fa fa-check fa-sm text-success"></i>
               }
             </span>
-            <button class="btn border actionIcon" (click)="globalFunctionService.openAddressPopup(item)" title="Edit your address">
+            <button class="btn border actionIcon" (click)="editAddress(item)" title="Edit your address">
               <i class="fa-solid fa-pen-to-square fa-sm"></i>
             </button>
             <button

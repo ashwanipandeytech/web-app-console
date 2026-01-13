@@ -87,6 +87,15 @@ export class Header {
       // }
       // }
     })
+
+    let profileUpdate= effect(()=>{
+      if(this.signalService.profileChanged()){
+this.userName = this.signalService.profileChanged();
+        this.cd.detectChanges();
+      }
+       
+    })
+
       //  else {
       //   this.currentAddress = this.signalService.currentLocation();
       // }

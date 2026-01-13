@@ -5,7 +5,7 @@
 }
 
 @if(!isLoading){
-  <div class="top-section d-flex align-items-center border-bottom pb-1 mb-4">
+  <div class="top-section d-flex align-items-center border-bottom pb-1 mb-4 px-3 px-md-0">
     <h3>Personal Detail</h3>
     <button type="button" class="hover-underline text-primary ms-auto" (click)="toggleEdit()">{{ isEditMode ? 'Cancel' : 'Edit' }}
 </button>
@@ -63,16 +63,8 @@
               </div>
             </div>
   
-            <div class="account-inner-form">
-              <!-- <div class="review-form-name mb-3">
-                <label class="form-label fw-semibold">Country*</label>
-                <select id="country" class="form-select" formControlName="country">
-                  <option value="">Choose...</option>
-                  @for(item of countries; track $index){
-                  <option [value]="$index"  [selected]="item.name === 'India'">{{item.name}}</option>
-                  }
-                </select>
-              </div> -->
+            <!-- <div class="account-inner-form d-none" >
+            
               <div class="review-form-name mb-3">
                 <label class="form-label fw-semibold">Address*</label>
                 <input
@@ -82,15 +74,15 @@
                   formControlName="address"
                 />
               </div>
-            </div>
+            </div> -->
   
-            <div class="account-inner-form city-inner-form">
+            <!-- <div class="account-inner-form city-inner-form  d-none">
               <div class="review-form-name mb-3">
                 <label class="form-label fw-semibold">Town / City*</label>
                 <select id="city" class="form-select" formControlName="city">
                   <option value="">Choose...</option>
                   @for(city of cities; track $index){
-                  <option>{{ city }}</option>
+                  <option [value]="city">{{ city }}</option>
                   }
                 </select>
               </div>
@@ -107,7 +99,7 @@
                 <div class="text-danger position-absolute">Enter a valid postal code.</div>
                 }
               </div>
-            </div>
+            </div> -->
   
             <div class="submit-btn">
               <!-- <button type="button" class="shop-btn cancel-btn">Cancel</button> -->

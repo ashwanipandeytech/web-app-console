@@ -16,10 +16,9 @@ import { Login } from '../auth/login/login';
 declare const google: any;
 declare const bootstrap: any;
 
-
 @Component({
   selector: 'app-cart',
-  imports: [CommonModule, ReactiveFormsModule,RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './cart.html',
   styleUrl: './cart.scss',
 })
@@ -29,7 +28,7 @@ export class CartCommon {
   private dataService: any = inject(DataService);
   private globalService: any = inject(GlobaCommonlService);
   private globalFunctionService = inject(GlobalFunctionService);
-  private route = inject(Router); 
+  private route = inject(Router);
   readonly dialog = inject(MatDialog);
   readonly ngbModal = inject(NgbModal);
 
@@ -343,8 +342,10 @@ export class CartCommon {
 
   // deleteItem(id:any){
 
-  deleteCartItem(id:any){
-this.cartItemId = id;
+  deleteCartItem(id: any) {
+    if (id) {
+      this.cartItemId = id;
+    }
   }
   // deleteItem(): void {
   //   let popupData = {
@@ -367,37 +368,36 @@ this.cartItemId = id;
   // }
 
   deleteItem() {
+    if (this.cartItemId) {
+      this.dataService
+        .delete(`cart/${this.cartItemId}`)
+        .pipe(
+          catchError((err) => {
+            console.error('Error:', err);
+            setTimeout(() => {
+              // this.globalService.showMsgSnackBar(err);
+            }, 100);
+            return of(err);
+          })
+        )
+        .subscribe((res: any) => {
+          //console.log('Response:', res);
 
-    this.dataService
-      .delete(`cart/${this.cartItemId}`)
-      .pipe(
-        catchError((err) => {
-          console.error('Error:', err);
-          setTimeout(() => {
-            // this.globalService.showMsgSnackBar(err);
-          }, 100);
-          return of(err);
-        })
-      )
-      .subscribe((res: any) => {
-        //console.log('Response:', res);
-
-        if (res.success == true) {
-          this.globalService.showMsgSnackBar(res);
- const modal = bootstrap.Modal.getInstance(
-        this.deleteCart.nativeElement
-      );
-      modal.hide();
-          this.carList();
-           this.globalFunctionService.getCount();
-          this.cd.detectChanges();
-        } else if (res.error && res.error.message) {
-          //console.log('error  :', res.error.message);
-          this.globalService.showMsgSnackBar(res.error);
-        }
-        // this.getCategoryList();
-        // this.categoryListData = res.data;
-      });
+          if (res.success == true) {
+            this.globalService.showMsgSnackBar(res);
+            const modal = bootstrap.Modal.getInstance(this.deleteCart.nativeElement);
+            modal.hide();
+            this.carList();
+            this.globalFunctionService.getCount();
+            this.cd.detectChanges();
+          } else if (res.error && res.error.message) {
+            //console.log('error  :', res.error.message);
+            this.globalService.showMsgSnackBar(res.error);
+          }
+          // this.getCategoryList();
+          // this.categoryListData = res.data;
+        });
+    }
   }
   // address payload
   // 'type' => 'home',
@@ -410,43 +410,40 @@ this.cartItemId = id;
   // 'postal_code' => '12345',
   // 'country' => 'IN',
   // 'location' => ['lat' => 12.34, 'lng' => 56.78],
-proccedToCheckout(){
-  if (this.isLoggedIn) {
-    this.route.navigate(['/checkout']);
+  proccedToCheckout() {
+    if (this.isLoggedIn) {
+      this.route.navigate(['/checkout']);
+    } else {
+      this.openLogin('checkout');
+    }
   }
-  else{
-    this.openLogin('checkout');
-  }
-}
-     openLogin(from:any='') {
-  const modalRef: NgbModalRef = this.ngbModal.open(Login, {
-    windowClass: 'mobile-modal login-popup',
-    scrollable: true,
-    centered: true,
-    backdrop: 'static' // optional
-  });
-
-  modalRef.result
-    .then((result) => {
-      //console.log('Modal closed with result:', result);
-      //console.log('from==>',from);
-      //console.log('result.result===>',result.result);
-      
-      if (result.result == 'success' && from == 'checkout') {
-        this.carList();
-            this.route.navigate(['/checkout']);
-      }
-     else {
-      //console.log('result.result=================>');
-      
-        this.carList();
-        this.cd.detectChanges();
-      }
-      // this.route.navigate(['/checkout']);
-
-    })
-    .catch((reason) => {
-      //console.log('Modal dismissed:', reason);
+  openLogin(from: any = '') {
+    const modalRef: NgbModalRef = this.ngbModal.open(Login, {
+      windowClass: 'mobile-modal login-popup',
+      scrollable: true,
+      centered: true,
+      backdrop: 'static', // optional
     });
-}
+
+    modalRef.result
+      .then((result) => {
+        //console.log('Modal closed with result:', result);
+        //console.log('from==>',from);
+        //console.log('result.result===>',result.result);
+
+        if (result.result == 'success' && from == 'checkout') {
+          this.carList();
+          this.route.navigate(['/checkout']);
+        } else {
+          //console.log('result.result=================>');
+
+          this.carList();
+          this.cd.detectChanges();
+        }
+        // this.route.navigate(['/checkout']);
+      })
+      .catch((reason) => {
+        //console.log('Modal dismissed:', reason);
+      });
+  }
 }

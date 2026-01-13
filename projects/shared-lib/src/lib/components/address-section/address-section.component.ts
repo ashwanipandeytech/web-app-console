@@ -6,6 +6,8 @@ import { GlobalFunctionService } from '../../services/global-function.service';
 import { GlobaCommonlService } from '../../services/global-common.service';
 import { CommonModule } from '@angular/common';
 import { NoDataComponent } from '../no-data/no-data.component';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { AddAddressModal } from '../../model/add-address-modal/add-address-modal';
 declare var bootstrap: any;
 
 @Component({
@@ -22,6 +24,8 @@ private dataService = inject(DataService);
 public globalFunctionService = inject(GlobalFunctionService);
 private globalService = inject(GlobaCommonlService);
 private cd = inject(ChangeDetectorRef);
+  readonly ngbModal = inject(NgbModal);
+
   currentUser: any;
   deleteAddressId: any;
   isLoading: boolean=true;
@@ -81,6 +85,26 @@ deleteAddress() {
 }
 
 editAddress(item:any){
+    const modalRef: NgbModalRef = this.ngbModal.open(AddAddressModal, {
+      windowClass: 'mobile-modal',
+      scrollable: true,
+      centered: true,
+    });
+    modalRef.componentInstance.data = item;
+    modalRef.result.then((res) => {
+      // console.log('result===>',res);
+      if (res.result === 'success') {
+        this.getAddressList();
+        this.cd.detectChanges();
+      }
+      
+      //console.log('Modal closed with result:', result);
+      // return res;
+    }).catch((reason) => {
+      //console.log('Modal dismissed:', reason);
+      return reason;
 
+    });
+    // return modalRef.result;
 }
 }
