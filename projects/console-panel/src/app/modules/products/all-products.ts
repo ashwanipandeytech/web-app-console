@@ -64,6 +64,8 @@ export class AllProducts {
     
   }
 editoProduct(item:any){
+  console.log('item==>',item);
+  
    const dialogRef: NgbModalRef = this.ngbModal.open(AddProduct, {
     windowClass: 'mobile-modal product-edit-popup',
     scrollable: true,
@@ -75,7 +77,10 @@ editoProduct(item:any){
 
        dialogRef.result
       .then((result) => {
-        //console.log('Modal closed with result:', result);
+        console.log('Modal closed with result:', result);
+        if (result == 'success') {
+          this.callAllProductList();
+        }
       })
       .catch((reason) => {
         //console.log('Modal dismissed:', reason);

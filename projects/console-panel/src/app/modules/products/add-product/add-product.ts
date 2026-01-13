@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from '../../../shared.module';
 import { CategoryTreeComponent } from './category-tree/category-tree.component';
 import { PRODUCT_TYPE } from 'shared-lib/constants/app-constant';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 interface FoodNode {
   name: string;
@@ -99,30 +100,38 @@ export class AddProduct {
   shippingInfoSection!: FormGroup;
   productAttributesForm!: FormGroup;
   public dataService: any = inject(DataService);
-  categoryListData: any = [];
+  categoryListData: any = {
+    isSelectedCategory:{},
+    categories:[]
+  };
   parentId!: Number;
   selectedThumbImg: any;
   thumbGallery: any = [];
   permaLink: any;
   isInputShow: boolean = false;
   domain: string = '';
-  productStatus: string[] = [];
+  productStatus:any = [];
   wrongDiscount: boolean = false;
   selectProductDesciptionImageGallery:  File[] = [];
   prodDescriptionImageGallery: any=[];
    selectedFile: File[] = [];
+  statusMap: any=[];
+  isUpdateproduct: boolean=false;
   constructor(
     private fb: FormBuilder,
     private globalService: GlobalService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private activeModal:NgbActiveModal
   ) {
     this.productStatus = PRODUCT_TYPE;
+   
   }
 
   onGetId(id: number) {
     this.parentId = id;
   }
   ngOnInit() {
+    
     this.domain = window.location.origin;
     this.initializeForms();
     this.initializeCategoryControls();
@@ -131,7 +140,33 @@ export class AddProduct {
   }
   initializeForms() {
     console.log('data',this.data);
-    if (this.data) {
+    console.log('this.data.category.length ===>',this.data.images );
+  if (this.data?.flags) {
+    console.log('this.data.category.length ===>',this.data.flags );
+
+    this.productStatus = this.data.flags;
+  }
+    if (this.data?.images) {
+     this.thumbGallery = this.data?.images
+  ?.filter((img: any) => img.type === 'gallery')
+  .map((img: any) => img.url);
+
+     this.thumbPreview = this.data?.images
+  ?.filter((img: any) => img.type === "thumbnail")
+  .map((img: any) => img.url);
+      console.log('thumbPreview===>',this.thumbGallery);
+      
+      // this.thumbPreview =  environment.DOMAIN + '/' + this.data?.thumbnail;
+      // console.log('thumbPreview==>',this.thumbPreview);
+      
+      // this.cd.detectChanges();
+    }
+    if (this.data?.category) {
+      console.log(' this.data?.category==>',Array.isArray(this.data?.category));
+      
+    this.isUpdateproduct = true;
+
+  // category exists and is NOT blank
       this.addProductDetails();
       this.productOptionType();
       this.submitProductMultipleOptionForm();
@@ -144,7 +179,7 @@ export class AddProduct {
       this.productAttributeForm();
       this.shippingConfigForms();
       this.offerFormGroup();
-      this.seoFormGroup();
+      this.seoFormGroup();  
     }
     else{
       this.addProductDetails();
@@ -163,20 +198,42 @@ export class AddProduct {
     }
     // this.addInverntoryForm();
   }
-
+closeModal(){
+  this.activeModal.close();
+}
   addProductDetails() {
     this.productDetails = this.fb.group({
-      productTitle: [this.data.title, Validators.required],
-      shortDescription:[this.data.attributes?.productDetailsObj?.shortDescription],
-      productDescription: [this.data.attributes?.productDetailsObj?.description],
-      features:[this.data.attributes?.productDetailsObj?.features],
-      productStatus: [this.data.attributes?.productDetailsObj?.productStatus],
-      productDescriptionImageGallery:[this.data.attributes?.productDetailsObj?.productDescriptionImageGallery]
+      productTitle: [this.data?.title, Validators.required], //product_title
+      shortDescription:[this.data.product_details?.short_description], //short_description
+      productDescription: [this.data.product_details?.description], //description
+      features:[this.data.product_details?.features], //features
+      // productStatus: [this.data.attributes?.productDetailsObj?.productStatus],
+      productDescriptionImageGallery:[this.data.product_details?.product_description_image_gallery]
     });
   }
   get addProductDetailsValidation() {
     return this.productDetails.controls;
   }
+
+//   getStatusKeys(): string[] {
+//   return Object.keys(this.productStatus);
+// }
+
+onStatusChange(index: any, event: any) {
+  this.productStatus[index].isActive = event.target.checked;
+
+  console.log('Updated productStatus =>', this.productStatus);
+}
+
+
+  // if (event.target.checked) {
+  //   this.productStatusArray.push(new FormControl(value));
+  // } else {
+  //   const index = this.productStatusArray.controls
+  //     .findIndex(x => x.value === value);
+
+  //   this.productStatusArray.removeAt(index);
+  // }
   productOptionType() {
     this.productOptionData = this.fb.group({
       generalProductData: [false],
@@ -184,20 +241,20 @@ export class AddProduct {
     });
   }
 
-  onStatusChange(event: any) {
-    const selectedOptions = Array.from(event.target.selectedOptions).map(
-      (option: any) => option.value
-    );
+  // onStatusChange(event: any) {
+  //   const selectedOptions = Array.from(event.target.selectedOptions).map(
+  //     (option: any) => option.value
+  //   );
 
-    this.productDetails.patchValue({
-      productStatus: selectedOptions,
-    });
-  }
+  //   this.productDetails.patchValue({
+  //     productStatus: selectedOptions,
+  //   });
+  // }
 
   mediaForm() {
     this.productMediaSection = this.fb.group({
       thumbUpload: ['', Validators.required],
-      galleryUpload: [this.data.images]
+      galleryUpload: []
     });
   }
 
@@ -541,6 +598,119 @@ export class AddProduct {
   onGallerySelect(event: any) {
     this.galleryFiles = event.target.files;
   }
+  updateProduct(){
+    console.log('this.data?.id===>',this.data?.id);
+    
+        let priceSection = this.priceSection.value;
+        priceSection.priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
+        priceSection.priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
+        let mediaSectionPayload = {
+      thumbFile: this.thumbFile,
+      galleryFiles: this.galleryFiles,
+    };
+    let finalData: any = {
+      category_id: this.parentId,
+      media: mediaSectionPayload,
+      title: this.productDetails.value.productTitle,
+      description: this.productDetails.value.productDescription,
+      shortDescription: this.productDetails.value.shortDescription,
+      features: this.productDetails.value.features,
+      inventory: this.productInventrySection.value,
+      price_data: priceSection,
+      shipping_info: this.shippingInfoSection.value,
+      shipping_config: this.shippingConfigForm.value,
+      offer: this.offerForm.value,
+      seo: this.seoForm.value,
+      tags: this.tagsForm.value,
+      flags:this.productStatus,
+      product_details:this.productDetails.value,
+      visibility: {
+        status: this.productMultipleOptionForm.value.status,
+        publishDate: this.productMultipleOptionForm.value.publishDate,
+        visibility: this.productMultipleOptionForm.value.visibility,
+      },
+      attributes:{
+      }
+    };
+    let url = `products/${this.data?.id}`
+   this.dataService
+      .put(finalData, url)
+      .pipe(
+        catchError((err) => {
+          console.error('Error:', err);
+          setTimeout(() => {
+            // this.globalService.showMsgSnackBar(err);
+          }, 100);
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        //console.log('Response:', res);
+        if (res.error) {
+          this.globalService.showMsgSnackBar(res.error);
+          return;
+        } else if (res.success == true) {
+          let id = res.data.id;
+          //console.log('this.selectedThumbImg==>', this.selectedThumbImg);
+
+          if (this.selectedThumbImg != undefined) {
+            const formDataThumb = new FormData();
+            // for (let i = 0; i < this.selectedFile.length; i++) {
+            // const element = this.selectedFile[i];
+            formDataThumb.append('files', this.selectedThumbImg, this.selectedThumbImg.name);
+            formDataThumb.append('module', 'product');
+            formDataThumb.append('module_id', id);
+            formDataThumb.append('type', 'thumbnail');
+            this.callUploadnediaSection(formDataThumb);
+          }
+          if(this.selectProductDesciptionImageGallery?.length){
+              for (const file of this.selectProductDesciptionImageGallery) {
+                const formData = new FormData();
+                formData.append('files', file);
+                formData.append('module', 'product');
+                formData.append('module_id', id);
+                formData.append('type', 'photoDescriptionImageGallery');
+                this.callUploadnediaSection(formData);
+          }
+        }
+            if (this.selectedFile?.length) {
+              for (const file of this.selectedFile) {
+                const formData = new FormData();
+                formData.append('files', file);
+                formData.append('module', 'product');
+                formData.append('module_id', id);
+                formData.append('type', 'gallery');
+
+                this.callUploadnediaSection(formData);
+              }
+            
+
+            //   for (let i = 0; i < this.selectedFile.length; i++) {
+            //   const element = this.selectedFile[i];
+
+            //   const formData = new FormData();   // IMPORTANT: create new for each file
+
+            //   formData.append("files", element, element.name);
+            //   formData.append("module", "product");
+            //   formData.append("module_id", id);
+            //   formData.append("type", "gallery");
+            // //console.log('formData==>',formData);
+
+            //   this.callUploadnediaSection(formData);
+            // }
+          }
+          setTimeout(() => {
+            this.globalService.showMsgSnackBar(res);
+            this.activeModal.close('success');
+          }, 100);
+        }
+        // this.addCategory.reset();
+        // this.imagePreview = '';
+        // this.imageFile = null;
+        // this.getCategoryList();
+      });
+
+  }
   getProductDetails() {
     //console.log('productDetails==>', this.productDetails.value);
 
@@ -559,7 +729,7 @@ export class AddProduct {
       description: this.productDetails.value.productDescription,
       shortDescription: this.productDetails.value.shortDescription,
       features: this.productDetails.value.features,
-      productStatus:this.productDetails.value.productStatus,
+      // productStatus:this.productDetails.value.productStatus,
       inventory: this.productInventrySection.value,
       price_data: priceSection,
       shipping_info: this.shippingInfoSection.value,
@@ -567,6 +737,8 @@ export class AddProduct {
       offer: this.offerForm.value,
       seo: this.seoForm.value,
       tags: this.tagsForm.value,
+      flags:this.productStatus,
+      product_details:this.productDetails.value,
       // visibility:this.productMultipleOptionForm.value,
       visibility: {
         status: this.productMultipleOptionForm.value.status,
@@ -574,7 +746,7 @@ export class AddProduct {
         visibility: this.productMultipleOptionForm.value.visibility,
       },
       attributes:{
-        productDetailsObj: this.productDetails.value
+        // product_details: this.productDetails.value
         
     //      productDetailsObj : {
     //   productDetails :this.productDetails.value.productTitle,
@@ -585,7 +757,7 @@ export class AddProduct {
     // }
       }
     };
-    //console.log('finalData==>', finalData);
+    console.log('finalData==>', finalData);
     this.dataService
       .post(finalData, 'products')
       .pipe(
@@ -714,7 +886,7 @@ export class AddProduct {
 
   // get categories
   getCategoryList() {
-    this.categoryListData = [];
+    this.categoryListData = {};
     this.dataService
       .get('categories')
       .pipe(
@@ -724,6 +896,7 @@ export class AddProduct {
         })
       )
       .subscribe((res: any) => {
+        let filteredData = [];
         //console.log('Response:', res);
         if (res.data) {
           for (let i = 0; i < res.data.length; i++) {
@@ -733,8 +906,24 @@ export class AddProduct {
               //console.log('environment.API_URL==>', environment.API_URL);
               element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
             }
-            this.categoryListData.push(element);
+            if (this.data ) {
+
+              if (element.id == this.data?.category?.id) {
+                element.checked = true;
+              }
+              else{
+                element.checked = false;
+  
+              }
+            }
+            filteredData.push(element);
           }
+          this.categoryListData.categories = filteredData;
+          // Assign categories
+            // this.categoryListData.categories.forEach((cat: any) => {
+            //   cat.checked = this.data.category.id == cat.id;
+            // });
+
         }
         //console.log('categoryListData==>', this.categoryListData);
         // this.dataSource = this.categoryListData;

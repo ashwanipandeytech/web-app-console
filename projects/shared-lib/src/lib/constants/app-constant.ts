@@ -1,4 +1,8 @@
-export const PRODUCT_TYPE = ['Top Selling','Popular Sale','New Arrivals'];
+export const PRODUCT_TYPE = [
+  {label:'Top Selling',isActive:false,key:'top_selling'},
+  {label:'Popular Sale',isActive:false,key:'popular_sale'},
+  {label:'New Arrivals',isActive:false,key:'new_arrivals'}
+];
 
 export const  promoBannerSlideConfig = {
     slidesToShow: 3,

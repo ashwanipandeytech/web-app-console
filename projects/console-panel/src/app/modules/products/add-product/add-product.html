@@ -4,7 +4,8 @@
     <div class="breadcrumb mb-30">
       <h2>Add New Product</h2>
       <div class="btn-box">
-        <a href="all-product.html" class="btn btn-sm btn-primary">View All</a>
+           <button type="button" class="btn btn-secondary fs-14" (click)="closeModal()">Close</button>
+        <!-- <a href="all-product.html" class="btn btn-sm btn-primary">View All</a> -->
       </div>
     </div>
     <div class="row g-4">
@@ -76,11 +77,30 @@
           <div class="panel mb-30">
             <div class="panel-body">
               <label for="pstatus" class="form-label">Product Status*</label>
-              <select size="4" id="pstatus" class="form-select" formControlName="productStatus">
+              <!-- <select size="4" id="pstatus" class="form-select" formControlName="productStatus">
                 @for(item of productStatus; track $index){
                 <option [value]="item">{{item}}</option>
                 }
-              </select>
+              </select> -->
+              <div class="d-flex flex-column gap-2">
+  @for (key of productStatus; track $index) {
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      [checked]="key.isActive"
+      (change)="onStatusChange($index, $event)"
+      id="status{{$index}}">
+
+    <label class="form-check-label" for="status{{$index}}">
+      {{ key.label }}
+    </label>
+  </div>
+}
+
+
+</div>
+
 
               <!-- @if (hasError('country', 'required')) {
                                   <small class="text-danger">Country is required</small>
@@ -201,7 +221,10 @@
                     class="fa fa-angle-up"></i></button>
               </div> -->
             </div>
-            <quill-editor formControlName="productDescriptionImageGallery"></quill-editor>
+            <form [formGroup]="productDetails">
+
+              <quill-editor formControlName="productDescriptionImageGallery"></quill-editor>
+            </form>
           </div>
                        <!-- <div class="col-12 mt-4">
                       <div class="add-gallery-img product-image-upload">
@@ -667,7 +690,15 @@
 
       <div class="col-xxl-3 col-lg-4 add-product-sidebar">
         <div class="mb-30 w-100">
-          <a type="button" class="btn btn-primary d-block" (click)="getProductDetails()">Publish</a>
+          @if (!this.isUpdateproduct) {
+
+            <a type="button" class="btn btn-primary d-block" (click)="getProductDetails()">Publish</a>
+          }
+ 
+          @if (this.isUpdateproduct) {
+            <a type="button" class="btn btn-primary d-block" (click)="updateProduct()">Update</a>
+          }
+
         </div>
         @if(false){
         <div class="panel mb-30">
@@ -727,7 +758,7 @@
             </div>
           </div>
 
-          <app-category-tree [categories]="categoryListData" (selectedId)="onGetId($event)"></app-category-tree>
+          <app-category-tree [categoriesData]="categoryListData" (selectedId)="onGetId($event)" ></app-category-tree>
         </div>
         <!-- ✅ wrap everything under one form group -->
         <!-- <div class="panel-body" [formGroup]="categoryForm"> -->
