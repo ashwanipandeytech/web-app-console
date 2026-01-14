@@ -467,7 +467,7 @@ onStatusChange(index: any, event: any) {
   addTagsForm() {
     this.tagsForm = this.fb.group({
       tagInput: [''],
-      tags: [[]],
+      tags: [this.data?.tags?.tags],
     });
   }
   // private initializeCategoryControls(): void {
@@ -702,7 +702,7 @@ onStatusChange(index: any, event: any) {
           this.globalService.showMsgSnackBar(res.error);
           return;
         } else if (res.success == true) {
-          let id = res.data.id;
+          let id = res.data.data.id;
           //console.log('this.selectedThumbImg==>', this.selectedThumbImg);
 
           if (this.selectedThumbImg != undefined) {

@@ -1842,3 +1842,10 @@ input[type="number"] {
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
+
+
+safure-root{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
