@@ -91,7 +91,7 @@ export class PersonalDetailsComponent implements OnInit {
     // fullAddrress.isDefault = 1;
     fullAddrress.name = fullAddrress.firstName + ' ' + fullAddrress.lastName;
         fullAddrress.phone=fullAddrress.phone.toString()
-        fullAddrress.postcode=fullAddrress.postcode.toString()
+       // fullAddrress.postcode=fullAddrress.postcode.toString()
     // console.info('fullAddrress',fullAddrress)
     this.dataService
       .put(fullAddrress, 'profile')
