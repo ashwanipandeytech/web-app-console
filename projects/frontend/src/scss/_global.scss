@@ -127,6 +127,7 @@ button {
 
 .shop-btn {
   @include shopBtn();
+  border: 1px solid transparent;
   z-index: 1;
   &-warning {
     background: #ffbb38;

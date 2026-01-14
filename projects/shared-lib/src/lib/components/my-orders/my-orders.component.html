@@ -40,7 +40,7 @@
           </li>
         </ul>
 
-        <p class="text-muted fs-14 fw-bold">Delivery expected by Jan 05</p>
+        <p class="text-muted fs-14 fw-bold">Delivery expected by Jan 05 / Shipped / Delivered / Refund completed / Cancelled</p>
 
         <button type="button" class="icon-link icon-link-hover text-primary mt-3">
           Order detail
@@ -111,133 +111,119 @@
 
           <div class="border rounded p-3 wrapper">
             <div class="row">
-              <div class="col-2">
-                <div class="wrapper-img bg-light p-2 rounded-2">
+              <div class="col-4">
+                <div class="wrapper-img bg-light p-2 rounded-2 h-100">
                   <img
                     [src]="item.product.media?.uploadedImages[0]?.url"
                     alt=""
-                    class="object-fit-contain rounded-2 w-100"
-                    style="height: 40px"
+                    class="object-fit-contain rounded-2 w-100 h-100"
                   />
                 </div>
               </div>
 
-              <div class="col-10">
+              <div class="col-8">
                 <div class="wrapper-content">
                   <div class="d-flex align-items-center">
-                    <h5 class="heading text-truncate">{{ item?.product.title }}</h5>
+                    <h5 class="heading text-truncate text-capitalize">{{ item?.product.title }}</h5>
                   </div>
                   <ul>
                     <li class="mt-md-2 mt-0">
                       <span class="fw-semibold d-inline-block config-title">price</span>
                       <span>₹{{ item.price }}</span>
                     </li>
+                    <li class="mt-md-2 mt-0">
+                      <span class="fw-semibold d-inline-block config-title">Status</span>
+                      <span>Shipped</span>
+                    </li>
                   </ul>
-
-                  <div>
-                    <!-- <button type="button" class="btn shop-btn px-3 py-2 fs-5">Re-order</button> -->
-                    <button
-                      type="button"
-                      class="icon-link icon-link-hover text-primary mt-3"
-                      (click)="addToCart(item)"
-                    >
-                      Add to Cart
-                      <svg
-                        _ngcontent-ng-c3478470960=""
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
-                        aria-hidden="true"
-                        class="bi"
-                      >
-                        <path
-                          _ngcontent-ng-c3478470960=""
-                          d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                        ></path>
-                      </svg>
-                    </button>
-                  </div>
                 </div>
+              </div>
+
+              <hr class="my-3">
+
+              <div class="d-flex align-items-center gap-2 justify-content-center flex-wrap">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary fs-14"
+                  (click)="addToCart(item)">
+                  Add to Cart
+                  <!-- <svg
+                    _ngcontent-ng-c3478470960=""
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16"
+                    aria-hidden="true"
+                    class="bi"
+                  >
+                    <path
+                      _ngcontent-ng-c3478470960=""
+                      d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
+                    ></path>
+                  </svg> -->
+                </button>
+
+                <button
+                  class="fs-14 btn btn-outline-secondary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#rateusModal"
+                >
+                  Rate Product
+                </button>
+
+                <button
+                  class="fs-14 btn btn-outline-secondary"
+                  (click)="cancelOrder()"
+                  data-bs-toggle="modal"
+                  data-bs-target="#confirmCancelOrder"
+                >
+                  Cancel Order
+                </button>
               </div>
             </div>
           </div>
 
+          <!-- <div class="card border-0 shadow-sm p-3"> -->
+            <!-- <h6 class="fw-semibold mb-3 d-flex align-items-center">
+              Rate your experience
+            </h6> -->
+
+            <!-- <div class="rounded-3 p-3" style="background-color: #f1f2f7">
+              <div class="d-flex align-items-start">
+                <i class="fa-solid fa-truck me-3"></i>
+                <span class="fw-medium text-dark small"> How was your experience </span>
+              </div>
+            </div> -->
+          <!-- </div> -->
+
+          } }
+
           <div class="card border-0 shadow-sm p-3">
             <h6 class="fw-semibold mb-3 d-flex align-items-center">
               Delivery details
-              <a
-                class="icon-link icon-link-hover text-primary ms-auto fs-14 fw-normal"
-                (click)="cancelOrder()"
-                data-bs-toggle="modal"
-                data-bs-target="#confirmCancelOrder"
-              >
-                Cancel Order
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="bi"
-                  viewBox="0 0 16 16"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                  />
-                </svg>
-              </a>
             </h6>
 
             <div class="rounded-3 p-3" style="background-color: #f1f2f7">
               <!-- Address -->
-              <div class="d-flex align-items-start mb-3">
+              <div class="d-flex align-items-start mb-2">
                 <i class="fa-solid fa-location-dot me-2"></i>
-                <span class="fw-medium text-dark small">
-                  {{ orderDetailList?.address?.address_line
-                  }}{{ orderDetailList?.address?.city }},{{ orderDetailList?.address?.state }}
-                  <!-- Other Noida, greater noida, Delhi -->
+                <span class="fw-medium text-dark small text-capitalize fs-14">
+                  {{ orderDetailList?.address?.address_line}},
+                  {{ orderDetailList?.address?.city }},
+                  {{ orderDetailList?.address?.state }}
                 </span>
               </div>
 
               <!-- User -->
               <div class="d-flex align-items-center">
                 <i class="fa-regular fa-user me-2"></i>
-                <span class="fw-medium text-dark small">
-                  {{ orderDetailList?.addres?.name }}
-                  <span class="text-muted ms-1">{{ orderDetailList?.address?.phone }}</span>
-                </span>
+                @if(orderDetailList?.addres?.name){
+                  <span class="fw-medium text-dark small text-capitalize fs-14">{{ orderDetailList?.addres?.name }},</span>
+                }
+                <span class="text-muted ms-1 fs-14">{{ orderDetailList?.address?.phone }}</span>
               </div>
             </div>
+            
           </div>
-
-          <div class="card border-0 shadow-sm p-3">
-            <h6 class="fw-semibold mb-3 d-flex align-items-center">
-              Rate your experience
-              <a
-                class="icon-link icon-link-hover text-primary ms-auto fs-14 fw-normal cursor-pointer"
-                data-bs-toggle="modal"
-                data-bs-target="#rateusModal"
-              >
-                Rate Us
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="bi"
-                  viewBox="0 0 16 16"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                  />
-                </svg>
-              </a>
-            </h6>
-
-            <div class="rounded-3 p-3" style="background-color: #f1f2f7">
-              <!-- Address -->
-              <div class="d-flex align-items-start">
-                <i class="fa-solid fa-truck me-3"></i>
-                <span class="fw-medium text-dark small"> How was your experience </span>
-              </div>
-            </div>
-          </div>
-
-          } }
+          
         </div>
       </div>
       <!-- <div class="modal-footer border-0">

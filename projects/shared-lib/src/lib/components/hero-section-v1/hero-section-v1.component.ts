@@ -25,7 +25,7 @@ export class HeroSectionV1Component implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    console.log('HeroSectionV1Component load', this.data);
+    // console.log('HeroSectionV1Component load', this.data);
     // this.slides = this.data.data.heroImage;
   }
 }

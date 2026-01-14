@@ -1,3 +1,7 @@
 .disabled{
     input, select{pointer-events: none;}
 }
+
+.cursor-not{
+    cursor: not-allowed;
+}
