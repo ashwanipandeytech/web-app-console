@@ -242,6 +242,7 @@ if (userData == null) {
 }
 else{
 
+  console.info('fullAddrress',fullAddrress)
   this.dataService.post(fullAddrress, 'addresses')
        .pipe(
          catchError(err => {
