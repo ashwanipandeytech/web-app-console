@@ -263,24 +263,33 @@
 
 <ng-template #userProfile>
   @if(!isLoggedIn){
-  <a class="icon-menu" (click)="openLogin()">
+  <!-- <a class="icon-menu" (click)="openLogin()">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-icon lucide-user-round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
      <span class="fs-14 d-block">Login</span>
-  </a>
-  } @if(isLoggedIn) {
+  </a> -->
+  } @if(true) {
   <div class="dropdown user-account icon-menu">
     <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-check-icon lucide-user-round-check"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path d="m16 19 2 2 4-4"/></svg>
+       <span [hidden]="isLoggedIn">
+         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-icon lucide-user-round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+     <span class="fs-14 d-block">Login</span>
+       </span>
+        
+     
+     <span [hidden]="!isLoggedIn">
+       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-check-icon lucide-user-round-check"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path d="m16 19 2 2 4-4"/></svg>
       <span class="fs-14 d-block">Profile</span>
+     </span>
+    
     </button>
     <ul
       class="dropdown-menu dropdown-menu-end bg-white border-0 shadow rounded-3 pt-0"
       style="z-index: 9999"
     >
-      <li class="text-nowrap px-3 py-2 fw-semibold bg-light fs-14 mb-2">Hello, {{ userName }}</li>
+      <li class="text-nowrap px-3 py-2 fw-semibold bg-light fs-14 mb-2">Hello, {{ userName==undefined?'Guest': userName}}</li>
       <!-- Active class would be  bg-primary text-white -->
       <li class="mb-1">
-        <a
+        <a 
           class="dropdown-item px-3 py-2 fs-14"
           [routerLink]="['/user-profile']"
           [queryParams]="{ key: 'account' }"
@@ -315,7 +324,7 @@
           ><span><i class="fa-solid fa-lg opacity-75 fa-house"></i></span> Address</a
         >
       </li>
-      <li>
+      <li [hidden]="!isLoggedIn">
         <a class="dropdown-item px-3 py-2 fs-14 cursor-pointer" (click)="logout()"
           ><span><i class="fa-solid fa-lg opacity-75 fa-arrow-right-from-bracket"></i></span
           >Logout</a

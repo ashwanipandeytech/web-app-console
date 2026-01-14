@@ -43,6 +43,7 @@ export class AddAddressModal {
   constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDetectorRef,private activeModal:NgbActiveModal){
     this.addAddressForm();
     // this.getAddressList();
+    
    
     let platformName = this.checkPlatform.checkPlatformType();
     //console.log('platformName==>',platformName);
@@ -95,7 +96,7 @@ if (this.searchQuery == '') {
   }
 
   ngOnInit(){
-     this.isNewAddressCartPage=this.data.isNewAddress
+     this.isNewAddressCartPage=this.data?.isNewAddress
 
     let user = JSON.parse(localStorage.getItem('user') || '{}');
     //console.log('user==>',user);

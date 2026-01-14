@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  effect,
   inject,
   OnInit,
 } from '@angular/core';
@@ -34,9 +35,29 @@ export class PersonalDetailsComponent implements OnInit {
   states: any;
   cities: any = [];
   isLoading: boolean = true;
-  constructor() {}
+  constructor() {
+
+    effect(() => {
+      if (this.signalService.userLoggedIn()) {
+
+    this.profileDetailsForm();
+        this.getProfileList();
+        this.cd.detectChanges();
+      }
+
+    });
+  }
 
   ngOnInit() {
+    let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+
+    if (!isLoggedIn) {
+
+      this.signalService.openLoginPopup.set(true)
+      return;
+
+    }
+
     this.profileDetailsForm();
 
     this.currentUser = JSON.parse(localStorage.getItem('user') || 'null');
@@ -89,8 +110,8 @@ export class PersonalDetailsComponent implements OnInit {
     // fullAddrress.label = 'home';
     // fullAddrress.isDefault = 1;
     fullAddrress.name = fullAddrress.firstName + ' ' + fullAddrress.lastName;
-        fullAddrress.phone=fullAddrress.phone.toString()
-       // fullAddrress.postcode=fullAddrress.postcode.toString()
+    fullAddrress.phone = fullAddrress.phone.toString()
+    // fullAddrress.postcode=fullAddrress.postcode.toString()
     // console.info('fullAddrress',fullAddrress)
     this.dataService
       .put(fullAddrress, 'profile')

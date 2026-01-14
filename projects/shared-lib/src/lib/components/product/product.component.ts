@@ -76,19 +76,24 @@ export class ProductComponent implements OnInit {
     this.router.navigate(['/product-details', id]);
   }
   toggleHeart(item: any) {
+    console.info('item',item)
     this.isWishlisted = !this.isWishlisted;
     let data = {
       product_id: item.id,
     };
     if (item.is_wishlisted) {
      item.is_wishlisted = !item.is_wishlisted;
-      this.dataService.delete(`wishlist/product${data.product_id}`).subscribe((res: any) => {
+      this.dataService.delete(`wishlist/product/${data.product_id}`).subscribe((res: any) => {
         //console.log('wishlist==>', res);
+          this.globalFunctionService.getCount();
+    this.cd.detectChanges();
       });
     } else {
      item.is_wishlisted = !item.is_wishlisted;
       this.dataService.post(data, 'wishlist').subscribe((res: any) => {
         //console.log('wishlist==>', res);
+         this.globalFunctionService.getCount();
+    this.cd.detectChanges();
       });
     }
     this.globalFunctionService.getCount();

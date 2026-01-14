@@ -10,6 +10,8 @@ user = signal<any>(null);
   userLoggedIn=signal<any>(false);
   currentLocation = signal<any>(null);
   profileChanged=signal<any>(false);
+  openLoginPopup=signal<any>(false);
+  openLoginTrigger = signal(0);
 
   setCounts(data: any) {
     //console.log('signal service ==',data);

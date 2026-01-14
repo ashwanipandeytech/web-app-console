@@ -42,14 +42,25 @@ export class Header {
   currentAddress: any;
   constructor(private cd: ChangeDetectorRef) {
     this.globalFunctionService.getCount();
-  effect(() => {
+
+    effect(() => {
+      this.signalService.openLoginTrigger(); // track trigger
+
+      const shouldOpen = this.signalService.openLoginPopup();
+      if (shouldOpen) {
+        this.openLogin();
+        this.cd.detectChanges();
+      }
+    });
+
+    effect(() => {
       this.isLoggedIn = this.signalService.userLoggedIn();
       if (this.signalService.allCounts() != null) {
         this.countsList = this.signalService.allCounts();
         this.cd.detectChanges();
       }
-      
-      if (this.signalService.currentLocation() !=null) {
+
+      if (this.signalService.currentLocation() != null) {
         this.currentAddress = this.signalService.currentLocation();
         this.cd.detectChanges();
       }
@@ -60,23 +71,23 @@ export class Header {
       // }
 
     });
-    const address = effect(()=>{
-       if (this.signalService.currentLocation() !=null) {
+    const address = effect(() => {
+      if (this.signalService.currentLocation() != null) {
         this.currentAddress = this.signalService.currentLocation();
         this.cd.detectChanges();
       }
-      else{
-           if (localStorage.getItem('currentLocation')) {
-        this.currentAddress = localStorage.getItem('currentLocation');
-        this.cd.detectChanges();
-      }
+      else {
+        if (localStorage.getItem('currentLocation')) {
+          this.currentAddress = localStorage.getItem('currentLocation');
+          this.cd.detectChanges();
+        }
       }
     })
 
-     effect(()=>{
+    effect(() => {
       //console.log('fsgfdgvdfgdfgfdgf',this.signalService.user());
-      
-         if (this.signalService.user() !=null) {
+
+      if (this.signalService.user() != null) {
         this.userName = this.signalService.user().user.name;
         this.cd.detectChanges();
       }
@@ -88,17 +99,17 @@ export class Header {
       // }
     })
 
-    let profileUpdate= effect(()=>{
-      if(this.signalService.profileChanged()){
-this.userName = this.signalService.profileChanged();
+    let profileUpdate = effect(() => {
+      if (this.signalService.profileChanged()) {
+        this.userName = this.signalService.profileChanged();
         this.cd.detectChanges();
       }
-       
+
     })
 
-      //  else {
-      //   this.currentAddress = this.signalService.currentLocation();
-      // }
+    //  else {
+    //   this.currentAddress = this.signalService.currentLocation();
+    // }
 
     //  effect(() => {
     //   // //console.log('Cart count changed:', this.signalService.cartCounts());
@@ -130,9 +141,9 @@ this.userName = this.signalService.profileChanged();
       this.userName = JSON.parse(userData).user.name;
       this.cd.detectChanges();
     }
-      //       if (localStorage.getItem('currentLocation')) {
-      //   this.currentAddress = localStorage.getItem('currentLocation');
-      // }
+    //       if (localStorage.getItem('currentLocation')) {
+    //   this.currentAddress = localStorage.getItem('currentLocation');
+    // }
     // this.carList();
     this.getCategoryList();
     // this.getCartCount();
@@ -239,7 +250,7 @@ this.userName = this.signalService.profileChanged();
     const modalRef: NgbModalRef = this.ngbModal.open(AddAddressModal, {
       windowClass: 'mobile-modal',
       scrollable: true,
-      centered:true
+      centered: true
     });
     modalRef.componentInstance.isfrom = from;
     modalRef.result
@@ -251,17 +262,28 @@ this.userName = this.signalService.profileChanged();
       });
   }
   openLogin() {
-    const modalRef: NgbModalRef = this.ngbModal.open(Login, {
-      windowClass: 'mobile-modal login-popup',
-      scrollable: true,
-      centered:true
-    });
-    modalRef.result
-      .then((result) => {
-        //console.log('Modal closed with result:', result);
-      })
-      .catch((reason) => {
-        //console.log('Modal dismissed:', reason);
-      });
+
+
+    setTimeout(() => {
+      let isLogginOpened = document.getElementById('loginOpened')
+      let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+
+      if (!isLogginOpened && !isLoggedIn) {
+        const modalRef: NgbModalRef = this.ngbModal.open(Login, {
+          windowClass: 'mobile-modal login-popup',
+          scrollable: true,
+          centered: true
+        });
+        modalRef.result
+          .then((result) => {
+            //console.log('Modal closed with result:', result);
+          })
+          .catch((reason) => {
+            //console.log('Modal dismissed:', reason);
+          });
+      }
+
+    }, 200);
+
   }
 }
