@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { GlobalService } from '../../global.service';
 import { AddProduct } from './add-product/add-product';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'shared-lib/environments/environment';
 @Component({
   selector: 'app-all-products',
   imports: [],
@@ -63,7 +64,7 @@ export class AllProducts {
     });
     
   }
-  openAddProductModal(){
+  openAddProductModal(action:any){
      const dialogRef: NgbModalRef = this.ngbModal.open(AddProduct, {
     windowClass: 'mobile-modal product-edit-popup',
     scrollable: true,
@@ -71,7 +72,7 @@ export class AllProducts {
     size:'xl',
     backdrop: 'static' // optional
   });
-  dialogRef.componentInstance.data = null;
+  dialogRef.componentInstance.data = action;
   }
 editoProduct(item:any){
   console.log('item==>',item);
@@ -117,8 +118,12 @@ editoProduct(item:any){
         }
       })
     }
+    previewProduct(id:any){
+      let url = `${environment.WEB_URL}/product-details/${id}?preview=1`
+window.open(url,'_blank')
+    }
       deleteProduct(id: any) {
-    this.dataService.delete('products', id)
+    this.dataService.delete(`products/${id}`)
       .pipe(
         catchError(err => {
           console.error('Error:', err);

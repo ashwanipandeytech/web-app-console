@@ -96,7 +96,7 @@
                                 <hr class="border-dark my-2">
                                 <div class="product-availability">
                                     <span>Availabillity : </span>
-                                    <strong class="inner-text text-black">132 Products Available</strong>
+                                    <strong class="inner-text text-black">{{item.inventory.manageStock}} Products Available</strong>
                                 </div>
                                 <div class="d-none product-size">
                                     <p class="size-title">Weight</p>
@@ -139,8 +139,14 @@
 
                                 <div class="product-details">
                                     <p class="category">Category : <strong class="inner-text text-black">{{item.category.name}}</strong></p>
-                                    <p class="tags">Tags : <strong class="inner-text text-black">Beer, Foamer</strong></p>
-                                    <p class="sku">SKU : <strong class="inner-text text-black">KE-91039</strong></p>
+                                    <p class="tags">Tags :
+                                        @for (tag of item.tags.tags; track $index) {
+
+                                            <strong class="inner-text text-black">{{tag}}</strong>
+                                        }
+                                        
+                                        </p>
+                                    <p class="sku">SKU : <strong class="inner-text text-black">{{item.sku}}</strong></p>
                                 </div>
                                 <hr>
                                 
@@ -266,7 +272,8 @@
                                                 type specimen book.
                                             </p> -->
                                         </div>
-                                        <div class="product-feature">
+                                        <div [innerHTML]="item.product_details.features"></div>
+                                        <!-- <div class="product-feature">
                                             <h5>Features :</h5>
                                             <ul>
                                                 <li>
@@ -283,7 +290,7 @@
                                                         gesture support</p>
                                                 </li>
                                             </ul>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div class="tab-pane fade" id="nav-review" role="tabpanel" aria-labelledby="nav-review-tab" tabindex="0">
                                         <div class="product-review-section" data-aos="fade-up">
@@ -335,9 +342,20 @@
                             </div>
                         </div>
                     </section>
-                    }
+                     <!-- @if (productId != item.id) { -->
+                
+            <!-- } -->
+                }
+                <!-- <app-no-data 
+      title="No Details Found"
+      [message]="isPreview == 1?'This Product has No preview':'There are no data available right now'"
+      [showAction]="false"
+      actionText="Reload"
+              >
+              </app-no-data> -->
                 }
             }
+          
         </div>
     </div>
 </section>

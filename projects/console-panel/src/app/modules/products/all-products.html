@@ -70,7 +70,7 @@
                             </ul>
                         </div> -->
                         <div class="btn-box">
-                            <a class="btn btn-sm btn-primary" (click)="openAddProductModal()"><i class="fa fa-plus"></i> Add New</a>
+                            <a class="btn btn-sm btn-primary" (click)="openAddProductModal('isNew')"><i class="fa fa-plus"></i> Add New</a>
                         </div>
                     </div>
                 </div>
@@ -212,7 +212,7 @@
             </div>
         </td>
         <td>{{item.sku}}</td>
-        <td>12</td>
+        <td>{{item.inventory.manageStock}}</td>
         <td>{{item.price_data.regularPrice}}</td>
         <td>{{item.price_data.salePrice}}</td>
         <td class="d-none">
@@ -230,7 +230,7 @@
         <td>12/24/2023 01:05 PM</td>
         <td>
             <div class="btn-box">
-                <button><i class="fa fa-eye"></i></button>
+                <button><i class="fa fa-eye" (click)="previewProduct(item.id)"></i></button>
                 <button><i class="fa fa-pen" (click)="editoProduct(item)"></i></button>
                 <button><i class="fa fa-trash" (click)="openDialog(item.id)"></i></button>
             </div>

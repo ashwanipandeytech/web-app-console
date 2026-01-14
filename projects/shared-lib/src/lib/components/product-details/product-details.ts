@@ -9,10 +9,11 @@ import { GlobaCommonlService } from '../../services/global-common.service';
 import { GlobalFunctionService } from '../../services/global-function.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Login } from '../auth/login/login';
+import { NoDataComponent } from '../no-data/no-data.component';
 
 @Component({
   selector: 'app-product-details',
-  imports: [CommonModule, SlickCarouselModule],
+  imports: [CommonModule, SlickCarouselModule,NoDataComponent],
   templateUrl: './product-details.html',
   styleUrl: './product-details.scss'
 })
@@ -74,6 +75,7 @@ export class ProductDetails {
   
   loading: boolean=true;
   isLogin: boolean=false;
+  isPreview: any;
 
   constructor(private cd:ChangeDetectorRef,private route:ActivatedRoute, private sanitizer: DomSanitizer, private renderer: Renderer2,private router: Router){
     this.callAllProductList();
@@ -82,10 +84,15 @@ export class ProductDetails {
   ngOnInit() {
     window.scrollTo(0,0);
     this.productId = this.route.snapshot.paramMap.get('id');
-
+    this.route.queryParams.subscribe((param:any)=>{
+     console.log('paramsss=>',param.preview);
+     this.isPreview = param.preview;
+    })
+    console.log('previeww===',this.isPreview);
+    
     this.dataService.getById('products',this.productId).subscribe((res:any) => {
       this.productDetails = res.data;
-      // //console.log('productId==>',this.productDetails);
+      console.log('productId==>',this.productDetails);
       let user = JSON.parse(localStorage.getItem('user') || '{}');
     //console.log('user==>',user);
 

@@ -2,10 +2,9 @@
 <div class="main-content modal-body">
   <form [formGroup]="productMultipleOptionForm" (ngSubmit)="submitProductMultipleOptionForm()">
     <div class="breadcrumb mb-30">
-      <h2>Add New Product</h2>
+      <h2>{{isUpdateproduct?'Update Product':'Add New Product'}}</h2>
       <div class="btn-box">
-        @if (this.activeModal) {
-
+        @if (activeModal) {
           <button type="button" class="btn btn-secondary fs-14" (click)="closeModal()">Close</button>
         }
         <!-- <a href="all-product.html" class="btn btn-sm btn-primary">View All</a> -->
@@ -272,10 +271,10 @@
                     <label class="col-md-2 col-form-label col-form-label-sm">Manage Stock?</label>
                     <div class="col-md-10">
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" formControlName="manageStock" id="manageStock">
-                        <label class="form-check-label" for="manageStock">
+                        <input class="form-control form-control-sm" type="number" formControlName="manageStock" id="manageStock">
+                        <!-- <label class="form-check-label" for="manageStock">
                           Manage stock level (quantity)
-                        </label>
+                        </label> -->
                       </div>
                     </div>
                   </div>
@@ -381,7 +380,7 @@
                     </div>
                   </div>
                   <div class="row g-3 mb-3">
-                    <label for="salePrice" class="col-md-2 col-form-label col-form-label-sm">Discount (₹)</label>
+                    <label for="salePrice" class="col-md-2 col-form-label col-form-label-sm">Sale Price (₹)</label>
                     <div class="col-md-8">
                       <input type="number" class="form-control form-control-sm" formControlName="salePrice"
                         [class.is-invalid]="(priceSection.get('salePrice')?.touched && priceSection.get('salePrice')?.invalid) || wrongDiscount"
@@ -402,7 +401,7 @@
                       </div>
                       }
                     </div>
-                    <div class="col-md-2">
+                    <!-- <div class="col-md-2">
                       <div class="form-control-sm p-0">
                         <select class="form-control form-control-sm" formControlName="discountType"
                           (change)="onDiscountTypeChange()">
@@ -410,7 +409,40 @@
                           <option value="Discount">Discount</option>
                         </select>
                       </div>
+                    </div> -->
+                  </div>
+                   <div class="row g-3 mb-3">
+                    <label for="gst" class="col-md-2 col-form-label col-form-label-sm">Gst (%)</label>
+                    <div class="col-md-8">
+                      <input type="number" class="form-control form-control-sm" formControlName="gstPercent"
+                        [class.is-invalid]="(priceSection.get('gstPercent')?.touched && priceSection.get('gstPercent')?.invalid)"
+                        (blur)="discountPriceChange()" (input)="discountPriceChange()"
+                        >
+                      <!-- @if (priceSection.get('salePrice')?.touched && priceSection.get('salePrice')?.errors?.['min']) {
+                      <div class="text-danger fs-12 mt-1">
+                        Discount cannot be negative.
+                      </div>
+                      }
+                      @if (priceSection.get('salePrice')?.touched && priceSection.get('salePrice')?.errors?.['max']) {
+                      <div class="text-danger fs-12 mt-1">
+                        Discount percentage cannot exceed 100%.
+                      </div>
+                      }
+                      @if (wrongDiscount) {
+                      <div class="text-danger fs-12 mt-1">
+                        Discount must be less than Regular Price.
+                      </div>
+                      } -->
                     </div>
+                    <!-- <div class="col-md-2">
+                      <div class="form-control-sm p-0">
+                        <select class="form-control form-control-sm" formControlName="discountType"
+                          (change)="onDiscountTypeChange()">
+                          <option value="Flat">Flat</option>
+                          <option value="Discount">Discount</option>
+                        </select>
+                      </div>
+                    </div> -->
                   </div>
                   @if(false) {
                   <div class="row g-3">

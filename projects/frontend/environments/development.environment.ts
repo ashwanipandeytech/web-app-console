@@ -11,6 +11,7 @@ export const environment = {
 'API_URL':'https://api.demohandler.in/api/v1/',
 'DOMAIN':'https://api.demohandler.in',
 'RAZORPAY_KEY_ID':'rzp_test_Rkp1Rm8aI8wDkH',
+'WEB_URL':'https://safure.demohandler.in/',
 'ADDRESS_API_KEY':'25d261a6a2cc45deb0954b14270ac706'
 
 };

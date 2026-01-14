@@ -38,7 +38,7 @@ export class DataService {
       httpOptions = {};
     }
     //console.log('httpOptions===>',httpOptions);
-    
+    let commonurl = "https://api.demohandler.in/api/v1/"; 
     switch (method.toUpperCase()) {
       case 'GET':
         return this.http.get<Commonresponseobject>(`${environment.API_URL}${endpoint}`, httpOptions);
@@ -46,6 +46,8 @@ export class DataService {
       case 'POST':
         return this.http.post<Commonresponseobject>(`${environment.API_URL}${endpoint}`, data, httpOptions);
 
+       case 'POST_COMMON':
+        return this.http.post<Commonresponseobject>(`${commonurl}${endpoint}`, data, httpOptions);
       case 'PATCH':
         return this.http.patch<Commonresponseobject>(`${environment.API_URL}${endpoint}`, data, httpOptions);
 
@@ -97,6 +99,9 @@ export class DataService {
 
   update(endpoint: string, data: any, id: any) {
     return this.request('POST', `${endpoint}/${id}`, data);
+  }
+   postCommonApi(data: any, endpoint: string,) {
+    return this.request('POST_COMMON', endpoint, data);
   }
 
 
