@@ -30,6 +30,7 @@ interface FoodNode {
   imports: [ReactiveFormsModule, QuillModule, MatTreeModule, MatIconModule, CategoryTreeComponent],
   templateUrl: './add-product.html',
   styleUrl: './add-product.scss',
+  providers: [NgbActiveModal]
 })
 export class AddProduct {
   childrenAccessor = (node: FoodNode) => node.children ?? [];

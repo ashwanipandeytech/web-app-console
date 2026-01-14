@@ -12,9 +12,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { GlobalService } from '../../global.service';
 import { AddProduct } from './add-product/add-product';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { JsonPipe } from '@angular/common';
 @Component({
   selector: 'app-all-products',
-  imports: [],
+  imports: [JsonPipe],
   templateUrl: './all-products.html',
   styleUrl: './all-products.scss'
 })

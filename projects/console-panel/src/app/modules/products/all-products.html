@@ -7,7 +7,8 @@
                     <h5>All Products</h5>
                     <div class="btn-box d-flex flex-wrap gap-2">
                         <div id="tableSearch"></div>
-                        <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
+                        <button class="btn btn-sm btn-icon btn-outline-primary"><i
+                                class="fa fa-arrows-rotate"></i></button>
                         <!-- <div class="digi-dropdown dropdown">
                             <button class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="fa fa-ellipsis-vertical"></i></button>
                             <ul class="digi-dropdown-menu dropdown-menu">
@@ -90,7 +91,8 @@
                                     <div class="col">
                                         <form class="row g-2">
                                             <div class="col">
-                                                <select class="form-control form-control-sm" data-placeholder="Bulk action">
+                                                <select class="form-control form-control-sm"
+                                                    data-placeholder="Bulk action">
                                                     <option value="">Bulk action</option>
                                                     <option value="0">Edit</option>
                                                     <option value="1">Move To Trash</option>
@@ -170,7 +172,8 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped" id="allProductTable">
+                    <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped"
+                        id="allProductTable">
                         <thead>
                             <tr>
                                 <th class="no-sort">
@@ -189,55 +192,55 @@
                             </tr>
                         </thead>
                         <tbody>
-@for(item of productListData; track $index){
+                            <pre>{{productListData.length}}</pre>
+                            @for(item of productListData; track $index){
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="table-product-card">
+                                        @if(item && item.images.length>0){
 
-    <tr>
-        <td>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox">
-            </div>
-        </td>
-        <td>
-            <div class="table-product-card">
-                @if(item && item.images.length>0){
+                                        <div class="part-img">
+                                            <img [src]="item?.images[0]?.url" alt="Image">
+                                        </div>
+                                        }
+                                        <div class="part-txt">
+                                            <span class="product-name">{{item.title}}</span>
+                                            <span class="product-category">{{item.category.name}}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{item.sku}}</td>
+                                <td>12</td>
+                                <td>{{item.price_data.regularPrice}}</td>
+                                <td>{{item.price_data.salePrice}}</td>
+                                <td class="d-none">
+                                    <div class="rating">
+                                        <div class="star">
+                                            <i class="fa-sharp fa-solid fa-star starred"></i>
+                                            <i class="fa-sharp fa-solid fa-star starred"></i>
+                                            <i class="fa-sharp fa-solid fa-star starred"></i>
+                                            <i class="fa-sharp fa-solid fa-star starred"></i>
+                                            <i class="fa-sharp fa-solid fa-star"></i>
+                                        </div>
+                                        <div class="rating-amount">(42)</div>
+                                    </div>
+                                </td>
+                                <td>12/24/2023 01:05 PM</td>
+                                <td>
+                                    <div class="btn-box">
+                                        <button><i class="fa fa-eye"></i></button>
+                                        <button><i class="fa fa-pen" (click)="editoProduct(item)"></i></button>
+                                        <button><i class="fa fa-trash" (click)="openDialog(item.id)"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            }
 
-                    <div class="part-img">
-                      <img [src]="item?.images[0]?.url" alt="Image">
-                    </div>
-                }
-                <div class="part-txt">
-                    <span class="product-name">{{item.title}}</span>
-                    <span class="product-category">{{item.category.name}}</span>
-                </div>
-            </div>
-        </td>
-        <td>{{item.sku}}</td>
-        <td>12</td>
-        <td>{{item.price_data.regularPrice}}</td>
-        <td>{{item.price_data.salePrice}}</td>
-        <td class="d-none">
-            <div class="rating">
-                <div class="star">
-                    <i class="fa-sharp fa-solid fa-star starred"></i>
-                    <i class="fa-sharp fa-solid fa-star starred"></i>
-                    <i class="fa-sharp fa-solid fa-star starred"></i>
-                    <i class="fa-sharp fa-solid fa-star starred"></i>
-                    <i class="fa-sharp fa-solid fa-star"></i>
-                </div>
-                <div class="rating-amount">(42)</div>
-            </div>
-        </td>
-        <td>12/24/2023 01:05 PM</td>
-        <td>
-            <div class="btn-box">
-                <button><i class="fa fa-eye"></i></button>
-                <button><i class="fa fa-pen" (click)="editoProduct(item)"></i></button>
-                <button><i class="fa fa-trash" (click)="openDialog(item.id)"></i></button>
-            </div>
-        </td>
-    </tr>
-}
-                        
                         </tbody>
                     </table>
                     <div class="table-bottom-control"></div>
@@ -248,7 +251,10 @@
 
     <!-- footer start -->
     <div class="footer">
-        <p>Copyright© <script>document.write(new Date().getFullYear())</script> All Rights Reserved By <span class="text-primary">Safure</span></p>
+        <p>Copyright©
+            <script>document.write(new Date().getFullYear())</script> All Rights Reserved By <span
+                class="text-primary">Safure</span>
+        </p>
     </div>
     <!-- footer end -->
 </div>
