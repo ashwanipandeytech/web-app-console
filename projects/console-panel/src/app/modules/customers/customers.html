@@ -120,19 +120,20 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <div class="product-table-quantity d-flex justify-content-between align-items-center mb-20">
+                    <!-- <div class="product-table-quantity d-flex justify-content-between align-items-center mb-20">
                         <ul class="mb-0">
-                            <!-- <li class="text-white">All (23)</li>
+                            <li class="text-white">All (23)</li>
                             <li>Pending (19)</li>
                             <li>Draft (05)</li>
-                            <li>Trush (05)</li> -->
+                            <li>Trush (05)</li>
                         </ul>
                         <div class="btn-box d-md-flex d-none gap-2">
                             <button class="btn btn-sm btn-icon btn-outline-primary" title="Download Excel" id="downloadExcel"><i class="fa fa-file-spreadsheet"></i></button>
                             <button class="btn btn-sm btn-icon btn-outline-primary" title="Download PDF" id="downloadPdf"><i class="fa fa-file-pdf"></i></button>
                         </div>
-                    </div>
-                    <div class="table-filter-option">
+                    </div> -->
+                    
+                    <!-- <div class="table-filter-option">
                         <div class="row g-3">
                             <div class="col-xl-10 col-9 col-xs-12">
                                 <div class="row g-3">
@@ -157,7 +158,8 @@
                                             <option value="3">Hold</option>
                                         </select>
                                     </div>
-                                    <!-- <div class="col">
+
+                                    <div class="col">
                                         <input type="text" class="form-control form-control-sm" name="basic" id="orderTableFilter" readonly>
                                     </div>
                                     <div class="col">
@@ -186,22 +188,22 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                    </div> -->
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-xl-2 col-3 col-xs-12 d-flex justify-content-end">
                                 <div id="productTableLength"></div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped" id="allProductTable">
                         <thead>
                             <tr>
-                                <th class="no-sort">
+                                <!-- <th class="no-sort">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="markAllProduct">
                                     </div>
-                                </th>
+                                </th> -->
                                 <th>Name</th>
                                 <!-- <th>Username</th> -->
                                 <th>Status</th>
@@ -210,7 +212,6 @@
                                 <th>Orders</th>
                                 <th>Total Spend</th>
                                 <th>Current Cart</th>
-
                                 <th>Current Wishlist</th>
                                 <th>Country / Region</th>
                                 <!-- <th>City</th> -->
@@ -219,241 +220,27 @@
                             </tr>
                         </thead>
                         <tbody>
-   @for (item of customerList; track $index) {
-
-       <tr>
-   
-                                   <td>
-                                       <div class="form-check">
-                                           <input class="form-check-input" type="checkbox">
-                                       </div>
-                                   </td>
-                                   <td><a >{{item.name}}</a></td>
-                                   <td>{{item.is_active}}</td>
-                                   <td>{{item.created_at}}</td>
-                                   <td>{{item.email}}</td>
-                                   <!-- <td>November 23, 2021</td> -->
-                                   <!-- <td><a href="#">testgmail.com</a></td> -->
-                                   <td>{{item.orders_count}}</td>
-                                   <td>₹{{item.total_spent}}</td>
-                                   <td>{{item.cart_count}}</td>
-                                   <td>{{item.wishlist_count}}</td>
-                                   <td>IN</td>
-                                   <!-- <td>12563</td> -->
-                               </tr>
-   }                     
-
-
-                            <!-- <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </td>
-                                <td><a href="#">Shaikh Abu Dardah</a></td>
-                                <td>admin</td>
-                                <td>December 27, 2022</td>
-                                <td>November 23, 2021</td>
-                                <td><a href="#">example@info.com</a></td>
-                                <td>2</td>
-                                <td>₹74.00</td>
-                                <td>₹74.00</td>
-                                <td>IN</td>
-                                <td>Delhi</td>
-                                <td>CA</td>
-                                <td>12563</td>
-                            </tr>
+                            @for (item of customerList; track $index) {
                             <tr>
-                                <td>
+                                <!-- <td>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox">
                                     </div>
-                                </td>
-                                <td><a href="#">Shaikh Abu Dardah</a></td>
-                                <td>admin</td>
-                                <td>December 27, 2022</td>
-                                <td>November 23, 2021</td>
-                                <td><a href="#">example@info.com</a></td>
-                                <td>2</td>
-                                <td>₹74.00</td>
-                                <td>₹74.00</td>
+                                </td> -->
+                                <td><a>{{item.name}}</a></td>
+                                <td>{{item.is_active}}</td>
+                                <td>{{item.created_at}}</td>
+                                <td>{{item.email}}</td>
+                                <!-- <td>November 23, 2021</td> -->
+                                <!-- <td><a href="#">testgmail.com</a></td> -->
+                                <td>{{item.orders_count}}</td>
+                                <td>₹{{item.total_spent}}</td>
+                                <td>{{item.cart_count}}</td>
+                                <td>{{item.wishlist_count}}</td>
                                 <td>IN</td>
-                                <td>Delhi</td>
-                                <td>CA</td>
-                                <td>12563</td>
+                                <!-- <td>12563</td> -->
                             </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </td>
-                                <td><a href="#">Shaikh Abu Dardah</a></td>
-                                <td>admin</td>
-                                <td>December 27, 2022</td>
-                                <td>November 23, 2021</td>
-                                <td><a href="#">example@info.com</a></td>
-                                <td>2</td>
-                                <td>₹74.00</td>
-                                <td>₹74.00</td>
-                                <td>IN</td>
-                                <td>Delhi</td>
-                                <td>CA</td>
-                                <td>12563</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </td>
-                                <td><a href="#">Shaikh Abu Dardah</a></td>
-                                <td>admin</td>
-                                <td>December 27, 2022</td>
-                                <td>November 23, 2021</td>
-                                <td><a href="#">example@info.com</a></td>
-                                <td>2</td>
-                                <td>₹74.00</td>
-                                <td>₹74.00</td>
-                                <td>IN</td>
-                                <td>Delhi</td>
-                                <td>CA</td>
-                                <td>12563</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </td>
-                                <td><a href="#">Shaikh Abu Dardah</a></td>
-                                <td>admin</td>
-                                <td>December 27, 2022</td>
-                                <td>November 23, 2021</td>
-                                <td><a href="#">example@info.com</a></td>
-                                <td>2</td>
-                                <td>₹74.00</td>
-                                <td>₹74.00</td>
-                                <td>IN</td>
-                                <td>Delhi</td>
-                                <td>CA</td>
-                                <td>12563</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </td>
-                                <td><a href="#">Shaikh Abu Dardah</a></td>
-                                <td>admin</td>
-                                <td>December 27, 2022</td>
-                                <td>November 23, 2021</td>
-                                <td><a href="#">example@info.com</a></td>
-                                <td>2</td>
-                                <td>₹74.00</td>
-                                <td>₹74.00</td>
-                                <td>IN</td>
-                                <td>Delhi</td>
-                                <td>CA</td>
-                                <td>12563</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </td>
-                                <td><a href="#">Shaikh Abu Dardah</a></td>
-                                <td>admin</td>
-                                <td>December 27, 2022</td>
-                                <td>November 23, 2021</td>
-                                <td><a href="#">example@info.com</a></td>
-                                <td>2</td>
-                                <td>₹74.00</td>
-                                <td>₹74.00</td>
-                                <td>IN</td>
-                                <td>Delhi</td>
-                                <td>CA</td>
-                                <td>12563</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </td>
-                                <td><a href="#">Shaikh Abu Dardah</a></td>
-                                <td>admin</td>
-                                <td>December 27, 2022</td>
-                                <td>November 23, 2021</td>
-                                <td><a href="#">example@info.com</a></td>
-                                <td>2</td>
-                                <td>₹74.00</td>
-                                <td>₹74.00</td>
-                                <td>IN</td>
-                                <td>Delhi</td>
-                                <td>CA</td>
-                                <td>12563</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </td>
-                                <td><a href="#">Shaikh Abu Dardah</a></td>
-                                <td>admin</td>
-                                <td>December 27, 2022</td>
-                                <td>November 23, 2021</td>
-                                <td><a href="#">example@info.com</a></td>
-                                <td>2</td>
-                                <td>₹74.00</td>
-                                <td>₹74.00</td>
-                                <td>IN</td>
-                                <td>Delhi</td>
-                                <td>CA</td>
-                                <td>12563</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </td>
-                                <td><a href="#">Shaikh Abu Dardah</a></td>
-                                <td>admin</td>
-                                <td>December 27, 2022</td>
-                                <td>November 23, 2021</td>
-                                <td><a href="#">example@info.com</a></td>
-                                <td>2</td>
-                                <td>₹74.00</td>
-                                <td>₹74.00</td>
-                                <td>IN</td>
-                                <td>Delhi</td>
-                                <td>CA</td>
-                                <td>12563</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </td>
-                                <td><a href="#">Shaikh Abu Dardah</a></td>
-                                <td>admin</td>
-                                <td>December 27, 2022</td>
-                                <td>November 23, 2021</td>
-                                <td><a href="#">example@info.com</a></td>
-                                <td>2</td>
-                                <td>₹74.00</td>
-                                <td>₹74.00</td>
-                                <td>IN</td>
-                                <td>Delhi</td>
-                                <td>CA</td>
-                                <td>12563</td>
-                            </tr> -->
-                        
+                            }
                         </tbody>
                     </table>
                     <div class="table-bottom-control"></div>
@@ -464,7 +251,10 @@
 
     <!-- footer start -->
     <div class="footer">
-        <p>Copyright© <script>document.write(new Date().getFullYear())</script> All Rights Reserved By <span class="text-primary">safure</span></p>
+        <p>Copyright©
+            <script>document.write(new Date().getFullYear())</script> All Rights Reserved By <span
+                class="text-primary">safure</span>
+        </p>
     </div>
     <!-- footer end -->
 </div>
