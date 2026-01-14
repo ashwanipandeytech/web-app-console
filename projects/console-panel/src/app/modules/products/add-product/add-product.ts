@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, Optional, Output, ViewChild } from '@angular/core';
 import { Sidebar } from '../../../layout/sidebar/sidebar';
 import { Header } from '../../../layout/header/header';
 import {
@@ -121,7 +121,7 @@ export class AddProduct {
     private fb: FormBuilder,
     private globalService: GlobalService,
     private cd: ChangeDetectorRef,
-    private activeModal:NgbActiveModal
+    @Optional() public activeModal:NgbActiveModal
   ) {
     this.productStatus = PRODUCT_TYPE;
    
