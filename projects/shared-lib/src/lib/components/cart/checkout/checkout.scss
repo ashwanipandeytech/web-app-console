@@ -15,13 +15,28 @@
     }
   }
 
-  .info-title {
-    width: 90px;
-  }
+  .info-title {width: 90px;}
 
   &.ch {
     &:hover {
       box-shadow: 0 1px 12px 2px #dbdbdb;
     }
+  }
+}
+
+.address-box {
+  border: 2px dashed #e5e5e5;
+  transition: all 0.3s ease;
+  &:hover {
+    border-color: $theme-color;
+  }
+}
+
+.oder-btn {
+  @media screen and (max-width:575px) {
+    position: fixed;
+    bottom: 0;
+    inset-inline: 0;
+    border-radius: 0;
   }
 }

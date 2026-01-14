@@ -117,6 +117,7 @@ export class AddProduct {
    selectedFile: File[] = [];
   statusMap: any=[];
   isUpdateproduct: boolean=false;
+  finalpriceObj: any;
   constructor(
     private fb: FormBuilder,
     private globalService: GlobalService,
@@ -133,16 +134,25 @@ export class AddProduct {
   ngOnInit() {
     
     this.domain = window.location.origin;
-    this.initializeForms();
-    this.initializeCategoryControls();
     this.getCategoryList();
+    this.initializeForms();
+    // this.initializeCategoryControls();
     
   }
+  isNotEmpty(obj: any): boolean {
+  return obj && Object.keys(obj).length > 0;
+}
   initializeForms() {
     // console.log('data',this.data);
     // console.log('this.data.category.length ===>',this.data.images );
-    if (this.data) {
-      
+    console.log('log==>',this.data);
+  //    Object.keys(this.data.flags || {}).length ||
+  // Object.keys(this.data.images || {}).length ||
+    const hasValidData =
+  Object.keys(this.data?.product_details || {}).length;
+    if (this.data && hasValidData) {
+    console.log('log==> enrer',this.data);
+
       if (this.data?.flags) {
         console.log('this.data.category.length ===>',this.data.flags );
     
@@ -169,10 +179,11 @@ export class AddProduct {
         this.isUpdateproduct = true;
     
       // category exists and is NOT blank
+      // this.getCategoryList();
           this.addProductDetails();
           this.productOptionType();
           this.submitProductMultipleOptionForm();
-          this.addCategoriesForm();
+          // this.addCategoriesForm();
           this.addTagsForm();
           this.mediaForm();
           this.inventryForm();
@@ -188,7 +199,7 @@ export class AddProduct {
       this.addProductDetails();
       this.productOptionType();
       this.submitProductMultipleOptionForm();
-      this.addCategoriesForm();
+      // this.addCategoriesForm();
       this.addTagsForm();
       this.mediaForm();
       this.inventryForm();
@@ -207,15 +218,15 @@ closeModal(){
   addProductDetails() {
     this.productDetails = this.fb.group({
       productTitle: [this.data?.title, Validators.required], //product_title
-      shortDescription:[this.data?.product_details?.short_description], //short_description
-      productDescription: [this.data?.product_details?.description], //description
+      shortDescription:[this.data?.product_details?.shortDescription], //short_description
+      productDescription: [this.data?.product_details?.productDescription], //description
       features:[this.data?.product_details?.features], //features
       // productStatus: [this.data.attributes?.productDetailsObj?.productStatus],
-      productDescriptionImageGallery:[this.data?.product_details?.product_description_image_gallery]
+      productDescriptionImageGallery:[this.data?.product_details?.productDescriptionImageGallery]
     });
   }
   get addProductDetailsValidation() {
-    return this.productDetails.controls;
+    return this.productDetails?.controls;
   }
 
 //   getStatusKeys(): string[] {
@@ -263,22 +274,23 @@ onStatusChange(index: any, event: any) {
 
   inventryForm() {
     this.productInventrySection = this.fb.group({
-      sku: ['', Validators.required],
-      manageStock: [false],
-      stockStatus: [],
-      soldIndividually: [false],
-      productCode: [''],
-      lowStockWarning: [0],
-      showStockQuantity: [false],
-      showStockWithText: [false],
-      hideStock: [false],
+      sku: [this.data?.sku, Validators.required],
+      manageStock: [this.data?.inventory?.manageStock],
+      stockStatus: [this.data?.inventory?.stockStatus],
+      soldIndividually: [this.data?.inventory?.soldIndividually],
+      productCode: [this.data?.inventory?.productCode],
+      lowStockWarning: [this.data?.inventory?.lowStockWarning],
+      showStockQuantity: [this.data?.inventory?.showStockQuantity],
+      showStockWithText: [this.data?.inventory?.showStockWithText],
+      hideStock: [this.data?.inventory?.hideStock],
     });
   }
 
   priceForm(){
     this.priceSection = this.fb.group({
-      regularPrice: [this.data?.price_data.regularPrice, [Validators.required, Validators.min(1)]],
-      salePrice: [this.data?.price_data.salePrice, [Validators.min(0)]],
+      regularPrice: [this.data?.price_data?.regularPrice, [Validators.required, Validators.min(1)]],
+      salePrice: [this.data?.price_data?.salePrice, [Validators.min(0)]],
+      gstPercent:[this.data?.price_data?.gstPercent],
       discountType: ['Flat'],
       priceDateStart: [''],
       priceDateEnd: [''],
@@ -289,12 +301,47 @@ onStatusChange(index: any, event: any) {
       this.updateDiscountValidators(type);
     });
   }
+  getGstDiscount(){
+    this.finalpriceObj = this.priceSection.value;
+    this.finalpriceObj.lastUpdatedDate = new Date().getTime();
+    let finalPayload:any={};
+    // console.log('priceObj==>',finalpriceObj);
+    
+    if (this.finalpriceObj.regularPrice >=this.finalpriceObj.salePrice) {
+      finalPayload.salePrice = this.finalpriceObj.salePrice;
+    }
+    else{
+      finalPayload.salePrice = this.finalpriceObj.regularPrice;
+    }
+    finalPayload.quantity = 1;
+    finalPayload.gstPercent = this.priceSection.value.gstPercent;
+    
+    // let payLoad = 
+     this.dataService
+      .postCommonApi(finalPayload, 'calculate-prices')
+      .pipe(
+        catchError((err) => {
+          console.error('Error:', err);
+          setTimeout(() => {
+            // this.globalService.showMsgSnackBar(err);
+          }, 100);
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('res==>',res);
+        if (res.success) {
+          this.finalpriceObj.caclulatedObj = res.data;
+          this.cd.detectChanges(); 
+        }
+      })
+  }
   shippingForm() {
     this.shippingInfoSection = this.fb.group({
-      weight: [this.data?.shipping_info.weight, Validators.min(0)],
-      length: [this.data?.shipping_info.length, Validators.min(0)],
-      width: [this.data?.shipping_info.width, Validators.min(0)],
-      height: [this.data?.shipping_info.height, Validators.min(0)],
+      weight: [this.data?.shipping_info?.weight, Validators.min(0)],
+      length: [this.data?.shipping_info?.length, Validators.min(0)],
+      width: [this.data?.shipping_info?.width, Validators.min(0)],
+      height: [this.data?.shipping_info?.height, Validators.min(0)],
       shippingClass: ['0'],
     });
   }
@@ -319,19 +366,19 @@ onStatusChange(index: any, event: any) {
 
   shippingConfigForms() {
     this.shippingConfigForm = this.fb.group({
-      estimateShippingTime: [this.data?.shipping_config.estimateShippingTime],
-      freeShipping: [this.data?.shipping_config.freeShipping],
-      flatRate: [this.data?.shipping_config.flatRate],
-      quantityMulitiply: [this.data?.shipping_config.quantityMulitiply],
-      cashOnDelivery: [this.data?.shipping_config.cashOnDelivery],
+      estimateShippingTime: [this.data?.shipping_config?.estimateShippingTime],
+      freeShipping: [this.data?.shipping_config?.freeShipping],
+      flatRate: [this.data?.shipping_config?.flatRate],
+      quantityMulitiply: [this.data?.shipping_config?.quantityMulitiply],
+      cashOnDelivery: [this.data?.shipping_config?.cashOnDelivery],
     });
   }
 
   offerFormGroup() {
     this.offerForm = this.fb.group({
-      flashDeal: [this.data?.offer.flashDeal],
-      todaysDeal: [this.data?.offer.todaysDeal],
-      featured: [this.data?.offer.featured],
+      flashDeal: [this.data?.offer?.flashDeal],
+      todaysDeal: [this.data?.offer?.todaysDeal],
+      featured: [this.data?.offer?.featured],
     });
   }
   seoFormGroup() {
@@ -406,45 +453,45 @@ onStatusChange(index: any, event: any) {
     });
   }
 
-  addCategoriesForm() {
-    this.categoryForm = this.fb.group({
-      search: [''],
-      selectedCategories: this.fb.array([]),
-      newCategory: this.fb.group({
-        name: [''],
-        parent: [''],
-      }),
-    });
-  }
+  // addCategoriesForm() {
+  //   this.categoryForm = this.fb.group({
+  //     search: [''],
+  //     selectedCategories: this.fb.array([]),
+  //     newCategory: this.fb.group({
+  //       name: [''],
+  //       parent: [''],
+  //     }),
+  //   });
+  // }
 
   addTagsForm() {
     this.tagsForm = this.fb.group({
       tagInput: [''],
-      tags: [[]],
+      tags: [this.data?.tags?.tags],
     });
   }
-  private initializeCategoryControls(): void {
-    const selectedCategories = this.categoryForm.get('selectedCategories') as FormArray;
-    selectedCategories.clear();
+  // private initializeCategoryControls(): void {
+  //   const selectedCategories = this.categoryForm.get('selectedCategories') as FormArray;
+  //   selectedCategories.clear();
 
-    this.categories.forEach((category) => {
-      selectedCategories.push(new FormControl(false));
-      if (category.subCategories) {
-        category.subCategories.forEach((sub) => {
-          selectedCategories.push(new FormControl(false));
-          if (sub.subCategories) {
-            sub.subCategories.forEach(() => {
-              selectedCategories.push(new FormControl(false));
-            });
-          }
-        });
-      }
-    });
-  }
+  //   this.categories.forEach((category) => {
+  //     selectedCategories.push(new FormControl(false));
+  //     if (category.subCategories) {
+  //       category.subCategories.forEach((sub) => {
+  //         selectedCategories.push(new FormControl(false));
+  //         if (sub.subCategories) {
+  //           sub.subCategories.forEach(() => {
+  //             selectedCategories.push(new FormControl(false));
+  //           });
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
 
-  get selectedCategories(): FormArray {
-    return this.categoryForm.get('selectedCategories') as FormArray;
-  }
+  // get selectedCategories(): FormArray {
+  //   return this.categoryForm.get('selectedCategories') as FormArray;
+  // }
 
   get newCategoryForm(): FormGroup {
     return this.categoryForm.get('newCategory') as FormGroup;
@@ -604,9 +651,11 @@ onStatusChange(index: any, event: any) {
   updateProduct(){
     console.log('this.data?.id===>',this.data?.id);
     
-        let priceSection = this.priceSection.value;
-        priceSection.priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
-        priceSection.priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
+        this.finalpriceObj = this.priceSection.value;
+    this.finalpriceObj.lastUpdatedDate = new Date().getTime();
+
+        // priceSection.priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
+        // priceSection.priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
         let mediaSectionPayload = {
       thumbFile: this.thumbFile,
       galleryFiles: this.galleryFiles,
@@ -619,7 +668,7 @@ onStatusChange(index: any, event: any) {
       shortDescription: this.productDetails.value.shortDescription,
       features: this.productDetails.value.features,
       inventory: this.productInventrySection.value,
-      price_data: priceSection,
+      price_data: this.finalpriceObj,
       shipping_info: this.shippingInfoSection.value,
       shipping_config: this.shippingConfigForm.value,
       offer: this.offerForm.value,
@@ -718,8 +767,8 @@ onStatusChange(index: any, event: any) {
     //console.log('productDetails==>', this.productDetails.value);
 
     let priceSection = this.priceSection.value;
-    priceSection.priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
-    priceSection.priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
+    // priceSection.priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
+    // priceSection.priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
     // media payload
     let mediaSectionPayload = {
       thumbFile: this.thumbFile,
@@ -734,7 +783,7 @@ onStatusChange(index: any, event: any) {
       features: this.productDetails.value.features,
       // productStatus:this.productDetails.value.productStatus,
       inventory: this.productInventrySection.value,
-      price_data: priceSection,
+      price_data: this.finalpriceObj,
       shipping_info: this.shippingInfoSection.value,
       shipping_config: this.shippingConfigForm.value,
       offer: this.offerForm.value,
@@ -973,6 +1022,9 @@ onStatusChange(index: any, event: any) {
     } else {
       this.wrongDiscount = false;
     }
+    setTimeout(() => {
+      this.getGstDiscount();
+    }, 1000);
   }
   onDiscountTypeChange(){
     const discountType = this.priceSection.value.discountType;

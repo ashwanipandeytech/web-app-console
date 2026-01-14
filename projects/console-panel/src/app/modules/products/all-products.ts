@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { GlobalService } from '../../global.service';
 import { AddProduct } from './add-product/add-product';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'shared-lib/environments/environment';
 @Component({
   selector: 'app-all-products',
   imports: [],
@@ -32,19 +33,17 @@ export class AllProducts {
   email:any='superadmin@demohandler.com'
   password:any='R9!hQ7k$2Pm@A1eZx4LwT8uV#cN0sBf'
   productListData: any=[];
-
+  defaultPage = 1;
   constructor(private cd:ChangeDetectorRef,private globalService:GlobalService) {
   this.callAllProductList()
   }
   callAllProductList() {
-
+this.productListData = [];
     const payload = {
       email: this.email,
       password: this.password
     };
-
-    
-    this.dataService.get('products').pipe(
+    this.dataService.get(`products?page=${this.defaultPage}`).pipe(
       catchError((error) => {
         console.error('Error occurred during login:', error);
        //add toaserfnc alert('Login failed: ' + response.message);
@@ -53,7 +52,7 @@ export class AllProducts {
       })
     ).subscribe((response: any) => {
       //console.log('Response:', response);
-    this.productListData = response.data.data;
+    this.productListData = response.data;
     this.cd.detectChanges();
       if (response && response.success) {
       
@@ -63,7 +62,11 @@ export class AllProducts {
     });
     
   }
-  openAddProductModal(){
+  nextPage(page:any){
+this.defaultPage = page;
+this.callAllProductList();
+  }
+  openAddProductModal(action:any){
      const dialogRef: NgbModalRef = this.ngbModal.open(AddProduct, {
     windowClass: 'mobile-modal product-edit-popup',
     scrollable: true,
@@ -71,7 +74,7 @@ export class AllProducts {
     size:'xl',
     backdrop: 'static' // optional
   });
-  dialogRef.componentInstance.data = null;
+  dialogRef.componentInstance.data = action;
   }
 editoProduct(item:any){
   console.log('item==>',item);
@@ -117,8 +120,12 @@ editoProduct(item:any){
         }
       })
     }
+    previewProduct(id:any){
+      let url = `${environment.WEB_URL}/product-details/${id}?preview=1`
+window.open(url,'_blank')
+    }
       deleteProduct(id: any) {
-    this.dataService.delete('products', id)
+    this.dataService.delete(`products/${id}`)
       .pipe(
         catchError(err => {
           console.error('Error:', err);

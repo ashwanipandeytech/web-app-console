@@ -1715,6 +1715,11 @@ select{
 .w-1100{max-width: 1100px;}
 .modal-open{
   padding-right: 0!important;
+  .modal-footer{
+    .btn-secondary{padding: 6px 14px;}
+  }
+}
+.modal-header{
   .close-btn{
     padding: 4px 9px;
     border-radius: 6px;
@@ -1722,10 +1727,8 @@ select{
       background: #f1f2f7;
     }
   }
-  .modal-footer{
-    .btn-secondary{padding: 6px 14px;}
-  }
 }
+.btn-outline-secondary{padding: 6px 14px;}
 input[type=checkbox], input[type=radio]{
   cursor: pointer;
   &:focus{box-shadow: none;}
@@ -1734,7 +1737,7 @@ input[type=checkbox]{transform: scale(1.2);}
 input[type=radio]{transform: scale(0.8);}
 .cursor-pointer{cursor: pointer;}
 .shop-btn.w-100{padding-block: 10px;}
-.text-primary{color:$theme-color ;}
+.text-primary{color:$theme-color!important;}
 .hover-underline{
   &:hover{
     text-decoration: underline!important;
@@ -1797,7 +1800,7 @@ input[type=radio]{transform: scale(0.8);}
 }
 .slick-dots {
   li {
-    margin-inline: 0;
+    margin-inline: 0!important;
     button {&:before {font-size: 12px!important;}}
     &.slick-active {
       button {&:before {color: $theme-color!important;}}
@@ -1838,4 +1841,11 @@ input[type="number"] {
   border-top: 6px solid #3498db; /* Blue */
   border-radius: 50%;
   animation: spin 1s linear infinite;
+}
+
+
+safure-root{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }

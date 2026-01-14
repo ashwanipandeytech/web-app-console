@@ -34,7 +34,7 @@ export class PersonalDetailsComponent implements OnInit {
   states: any;
   cities: any = [];
   isLoading: boolean = true;
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.profileDetailsForm();
@@ -60,9 +60,8 @@ export class PersonalDetailsComponent implements OnInit {
       //logo: [null], // file input
     });
     //  this.loadCountries();
-      this.getProfileList();
-      this.cd.detectChanges();
-   
+    this.getProfileList();
+    this.cd.detectChanges();
   }
   get phone() {
     return this.profileForm.get('phone');
@@ -98,39 +97,36 @@ export class PersonalDetailsComponent implements OnInit {
       .pipe(
         catchError((err) => {
           console.error('Error:', err);
-  //  this.globalService.showMsgSnackBar(err);
+          //  this.globalService.showMsgSnackBar(err);
           return of(null);
         })
       )
       .subscribe((res: any) => {
         //console.log('Response:', res);
-          // this.globalService.showMsgSnackBar(res);
+        // this.globalService.showMsgSnackBar(res);
         if (res.success == true) {
           this.globalService.showMsgSnackBar(res);
 
-         
-          let userData:any = localStorage.getItem("user");
+          let userData: any = localStorage.getItem('user');
 
           let userObj = JSON.parse(userData);
 
-        
           userObj.user.name = fullAddrress.name;
           userObj.user.phone = fullAddrress.phone;
           userObj.user.email = fullAddrress.email;
 
           // 4. Save updated object back to localStorage
-        
-          localStorage.setItem("user", JSON.stringify(userObj));
-          console.log("Updated User:", JSON.parse(localStorage.getItem("user")!));
 
-          this.signalService.profileChanged.set(fullAddrress.name)
+          localStorage.setItem('user', JSON.stringify(userObj));
+          console.log('Updated User:', JSON.parse(localStorage.getItem('user')!));
+
+          this.signalService.profileChanged.set(fullAddrress.name);
 
           // this.router.navigate(['/cart']);
+        } else if (res.error && res.error.message) {
+          //console.log('error  :', res.error.message);
+          this.globalService.showMsgSnackBar(res.error);
         }
-        else if (res.error && res.error.message) {
-            //console.log('error  :', res.error.message);
-            this.globalService.showMsgSnackBar(res.error);
-          }
       });
     // }
     this.isEditMode = false;
@@ -172,8 +168,7 @@ export class PersonalDetailsComponent implements OnInit {
         const email = this.profileListData.email;
         const phone = this.profileListData.phone;
 
-       
-        console.info('cities',this.cities,data.city)
+        console.info('cities', this.cities, data.city);
         if (this.profileListData && response.success) {
           // ✅ patchValue is safe even if fields are empty
           this.profileForm.patchValue({
@@ -215,5 +210,4 @@ export class PersonalDetailsComponent implements OnInit {
   toggleEdit() {
     this.isEditMode = !this.isEditMode;
   }
-
 }
