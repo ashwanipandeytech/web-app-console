@@ -1,7 +1,7 @@
 
 
 <ul class="category-tree">
-  @for(cat of categories; track $index){
+  @for(cat of categoriesData?.categories; track $index){
     <ng-container>
       <li>
 
@@ -18,7 +18,7 @@
         <!-- Recursive children -->
         @if (cat.children?.length) {
           <app-category-tree
-            [categories]="cat.children"
+            [categoriesData]="cat.children"
             [selectedIds]="selectedIds">
           </app-category-tree>
         }

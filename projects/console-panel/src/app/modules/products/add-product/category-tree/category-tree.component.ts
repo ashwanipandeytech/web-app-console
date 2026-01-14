@@ -14,7 +14,7 @@ import { QuillModule } from 'ngx-quill';
   styleUrls: ['./category-tree.component.scss']
 })
 export class CategoryTreeComponent implements OnInit {
-  @Input() categories: any[] = [];
+  @Input() categoriesData:any = {};
  @Input() selectedIds: number[] = [];   // shared between recursive component calls
 @Output() selectedId = new EventEmitter<number>();
   onCheckboxChange(cat: any) {
@@ -52,7 +52,7 @@ export class CategoryTreeComponent implements OnInit {
   }
 
   // Helper: find category inside nested tree
-  findCategoryById(id: number, nodes = this.categories): any {
+  findCategoryById(id: number, nodes = this.categoriesData.categories): any {
     for (let c of nodes) {
       if (c.id === id) return c;
       if (c.children?.length) {
@@ -68,6 +68,8 @@ export class CategoryTreeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('categoriesData==/',this.categoriesData);
+    
   }
 
 }
