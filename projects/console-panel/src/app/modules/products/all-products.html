@@ -189,7 +189,7 @@
                             </tr>
                         </thead>
                         <tbody>
-@for(item of productListData; track $index){
+@for(item of productListData?.data; track $index){
 
     <tr>
         <td>
@@ -240,7 +240,17 @@
                         
                         </tbody>
                     </table>
-                    <div class="table-bottom-control"></div>
+
+@for (page of productListData?.meta?.links; track $index) {
+   
+                    <div (click)="nextPage(page.page)">
+ {{page.label}}
+                    </div>
+                }
+                    <!-- <div class="table-bottom-control">
+                        <div>{{productListData.meta.current_page}}-{{productListData.meta.last_page}}</div>
+                        <span (click)="nextPage(productListData.meta.current_page)">Next</span>
+                    </div> -->
                 </div>
             </div>
         </div>

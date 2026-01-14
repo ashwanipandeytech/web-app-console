@@ -467,7 +467,7 @@ onStatusChange(index: any, event: any) {
   addTagsForm() {
     this.tagsForm = this.fb.group({
       tagInput: [''],
-      tags: [[]],
+      tags: [this.data?.tags?.tags],
     });
   }
   // private initializeCategoryControls(): void {
