@@ -242,6 +242,7 @@ if (userData == null) {
 }
 else{
 
+  console.info('fullAddrress',fullAddrress)
   this.dataService.post(fullAddrress, 'addresses')
        .pipe(
          catchError(err => {
@@ -293,6 +294,9 @@ else{
       }
       fullAddrress.id = this.data.id;
       fullAddrress.label = this.addressForm.value.type;
+
+      fullAddrress.phone = fullAddrress.phone.toString()
+      fullAddrress.postal_code = fullAddrress.postal_code.toString()
     
        this.dataService.put(fullAddrress,  `addresses/${this.data.id}`,)
             .pipe(

@@ -7,7 +7,7 @@
 @if(!isLoading){
   <div class="top-section d-flex align-items-center border-bottom pb-1 mb-4 px-3 px-md-0">
     <h3>Personal Detail</h3>
-    <button type="button" class="hover-underline text-primary ms-auto" (click)="toggleEdit()">{{ isEditMode ? 'Cancel' : 'Edit' }}
+    <button type="button" class="hover-underline text-primary ms-auto fs-16" (click)="toggleEdit()">{{ isEditMode ? 'Cancel' : 'Edit' }}
 </button>
   </div>
   <form [formGroup]="profileForm" (ngSubmit)="submitForm()">
@@ -42,7 +42,7 @@
                 <label class="form-label fw-semibold">Email*</label>
                 <input
                   type="email"
-                  class="form-control"
+                  class="form-control cursor-not"
                   placeholder="user@gmail.com"
                   formControlName="email"
                   readonly="true"

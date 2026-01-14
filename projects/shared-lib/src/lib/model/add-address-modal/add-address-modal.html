@@ -1,28 +1,23 @@
 <div class="modal-header py-2">
   @if (isNewAddress && !this.data) {
   <h1 class="modal-title fs-5" id="addressModalLabel">
-    @if(isLogin){
-      New Address Details
-    }
-      @if(!isLogin){
-      Current Location
-    }
+    @if(isLogin){ New Address Details } @if(!isLogin){ Current Location }
   </h1>
   } @if (this.data) {
 
-    
   <h1 class="modal-title fs-5" id="addressModalLabel">
-
- @if(isNewAddressCartPage){ New Address Details }
-  @if(!isNewAddressCartPage){ Update Address Details }
-
-
-
-
+    @if(isNewAddressCartPage){ New Address Details } @if(!isNewAddressCartPage){ Update Address
+    Details }
   </h1>
 
   }
-  <button type="button" class="opacity-75 close-btn" data-bs-dismiss="modal" aria-label="Close" (click)="closePopup('')">
+  <button
+    type="button"
+    class="opacity-75 close-btn"
+    data-bs-dismiss="modal"
+    aria-label="Close"
+    (click)="closePopup('')"
+  >
     <i class="fa-solid fa-xmark"></i>
   </button>
 </div>
@@ -97,7 +92,7 @@
     }
   </ng-container>
 
-  } 
+  }
   <!-- {{isNewAddress}} -->
   @if (isNewAddress || isNewAddressCartPage || this.data) {
   <ng-container>
@@ -111,7 +106,7 @@
 
     <!-- Reactive Form -->
     <form [formGroup]="addressForm" (ngSubmit)="submitForm()">
-    @if(suggestions.length == 0 && isLogin){
+      @if(suggestions.length == 0 && isLogin){
       <div class="row g-3 review-form">
         <div class="col-12 col-sm-6">
           <!-- NAME -->
@@ -140,7 +135,9 @@
           @if(phone?.errors?.['required'] && phone?.touched){
           <div class="text-danger fs-12 position-absolute">Phone number is required.</div>
           } @if(phone?.errors?.['pattern'] && phone?.touched){
-          <div class="text-danger position-absolute fs-12">Enter a valid 10-digit phone number.</div>
+          <div class="text-danger position-absolute fs-12">
+            Enter a valid 10-digit phone number.
+          </div>
           }
         </div>
         <div class="col-12 col-sm-6">
@@ -259,7 +256,7 @@
           </div>
         </div>
       </div>
-    }
+      }
 
       <!-- <button class="btn btn-primary mt-2" type="submit">
     Save Address
@@ -287,7 +284,7 @@
         >{{ item.street }} {{ item.city }}, {{ item.state }} - {{ item.postal_code }}</label
       >
       } -->
-      <!-- <span class="d-block fs-12 text-muted">Address here 256, Street 65/4, 635412</span> -->
+    <!-- <span class="d-block fs-12 text-muted">Address here 256, Street 65/4, 635412</span> -->
     <!-- </div> -->
     <!-- <div class="form-check mb-3">
         <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault1">
@@ -305,14 +302,10 @@
 
 @if ((isNewAddress && !this.data && isLogin)|| isNewAddressCartPage) {
 <div class="modal-footer border-0">
-  <button type="button" class="shop-btn w-100" (click)="submitForm()">
-    Save address
-  </button>
+  <button type="button" class="shop-btn w-100" (click)="submitForm()">Save address</button>
 </div>
 } @if (this.data && !isNewAddressCartPage) {
 <div class="modal-footer border-0">
-  <button type="button" class="shop-btn w-100" (click)="updateAddress()">
-    Update address
-  </button>
+  <button type="button" class="shop-btn w-100" (click)="updateAddress()">Update address</button>
 </div>
 }

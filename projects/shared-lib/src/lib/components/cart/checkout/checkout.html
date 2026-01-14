@@ -15,58 +15,30 @@
 <!--------------- blog-tittle-section-end---------------->
 
 <!--------------- checkout-section---------------->
-<section class="checkout product w-1100 mx-auto box-shadows rounded-4 p-lg-4">
+<section class="checkout product w-1100 mx-auto box-shadows rounded-4 p-lg-4 mb-5">
   <div class="container">
     <div class="checkout-section">
       <div class="row gy-5 gy-lg-0">
         <div class="col-md-8 col-12">
-          
-          <!-- <div class="checkout-wrapper">
-            <div class="account-section billing-section p-4 border">
-              <div class="d-flex align-items-center mb-4">
-                <h3 class="wrapper-heading">Billings Details</h3>
-                  <a data-bs-toggle="modal"
-                  data-bs-target="#changeAddress" class="icon-link icon-link-hover cursor-pointer text-primary ms-auto fs-14 fw-normal"> Change Address <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true" class="bi"><path  d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"></path></svg></a>
-              </div>
 
-              <div class="seller-info border rounded py-3 px-4">
-                <h5 class="heading mb-3 d-flex align-items-center border-bottom pb-3">
-                  <span class="me-auto ">{{addressListData?.type.toUpperCase()}}</span>
-                  <button class="btn border" (click)="editAddress(addressListData)"><i class="fa-solid fa-pen-to-square"></i></button>
-                </h5>
-                <div class="info-list">
-                  <ul class="d-flex flex-column gap-2">
-                    <li><span class="info-title d-inline-block fw-semibold">Name :</span>{{addressListData?.name}}</li>
-                    <li><span class="info-title d-inline-block fw-semibold">Email :</span>{{email}}</li>
-                    <li><span class="info-title d-inline-block fw-semibold">Phone :</span>{{addressListData?.phone}}
-                    </li>
-                    <li><span class="info-title d-inline-block fw-semibold">City :</span>{{addressListData?.city}}</li>
-                    <li><span class="info-title d-inline-block fw-semibold">Zip :</span>{{addressListData?.postal_code}}
-                    </li>
-                  </ul>
-                </div>
+          <!-- ALL ADDRESSES -->
+          @if (AllAddressList?.length>1) {
+            <div class="card mb-3">
+              <div class="card-body d-flex justify-content-between align-items-center">
+                <strong class="text-uppercase text-secondary">Billings Addresses</strong>
+                <a data-bs-toggle="modal"
+                    data-bs-target="#changeAddress" class="icon-link icon-link-hover cursor-pointer text-primary ms-auto fs-14 fw-normal"> Change Address <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true" class="bi"><path  d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"></path></svg>
+                </a>
               </div>
             </div>
-          </div> -->
-
-@if (AllAddressList.length>1) {
-
-  <div class="card mb-3">
-    <div class="card-body d-flex justify-content-between align-items-center">
-      <strong class="text-uppercase text-secondary">Billings Details</strong>
-      <a data-bs-toggle="modal"
-          data-bs-target="#changeAddress" class="icon-link icon-link-hover cursor-pointer text-primary ms-auto fs-14 fw-normal"> Change Address <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true" class="bi"><path  d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"></path></svg>
-      </a>
-    </div>
-  </div>
-}
+          }
 
           <!-- DELIVERY ADDRESS STEP -->
           <div class="card border-primary">
             <div class="card-header bg-primary text-white fw-semibold">
               DELIVERY ADDRESS
-              
-              <a (click)="addAddress()"  style="background-color: red;" class="icon-link bg-primary-light icon-link-hover cursor-pointer text-primary ms-auto fs-14 fw-normal"> Add <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true" class="bi"><path  d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"></path></svg></a>
+
+              <!-- <a (click)="addAddress()"  style="background-color: red;" class="icon-link bg-primary-light icon-link-hover cursor-pointer text-primary ms-auto fs-14 fw-normal"> Add <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true" class="bi"><path  d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"></path></svg></a> -->
               
             </div>
 
@@ -87,21 +59,27 @@
 
                   </div>
 
-
-                  
-
                  <a (click)="editAddress(addressListData)" class="icon-link icon-link-hover cursor-pointer text-primary ms-auto fs-14 fw-normal"> Edit <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true" class="bi"><path  d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"></path></svg></a>
-              
               
               
                 </div>
             </div>
           </div>
-           @if (addressNotfound) {
-                  <small class="text-danger">Add or Select Address First</small>
-                  }
+
+
+          <!-- NEW ADDRESS -->
+          <div class="address-box d-flex align-items-center px-4 py-3 rounded mt-3 cursor-pointer" (click)="addAddress()">
+            <span class="add-icon me-2 text-primary">+</span>
+            <span class="add-text fw-semibold fs-16 text-primary">Add New Address</span>
+          </div>
+
+          @if (addressNotfound) {
+            <small class="text-danger">Add or Select Address First</small>
+          }
         </div>
 
+
+        <!-- Price section start from here -->
         <div class="col-md-4 col-12">
           <div class="checkout-wrapper rounded pt-2 px-2 shadow-sm bg-white">
             <div class="account-section billing-section p-0">
@@ -113,10 +91,15 @@
                 </div>
                 <hr />
                 <div class="subtotal product-total px-3">
-                  <ul class="product-list">
+                  <ul class="product-list gap-2">
                     @for(item of cartListData; track $index){
-                    <li>
-                      <div class="product-info">
+                    <li class="align-items-center">
+                      <div class="product-info d-flex flex-row align-items-center">
+                         <img
+                          [src]="item?.product?.media?.uploadedImages[0]?.url"
+                          alt="" width="50"
+                          class="object-fit-cover rounded-2"
+                        />
                         <h5 class="wrapper-heading">{{ item.product.title }}</h5>
                         <!-- <p class="paragraph" [innerHtml]="item.product.description"></p> -->
                       </div>
@@ -175,11 +158,13 @@
                   }
                 </div>
 
-                <a (click)="placeOrder()" class="shop-btn w-100">Place Order Now</a>
+                <a (click)="placeOrder()" class="shop-btn w-100 oder-btn">Place Order Now</a>
               </div>
             </div>
           </div>
         </div>
+        <!-- Price section end  here -->
+
       </div>
     </div>
   </div>
