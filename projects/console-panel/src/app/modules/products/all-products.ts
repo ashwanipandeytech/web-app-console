@@ -63,6 +63,16 @@ export class AllProducts {
     });
     
   }
+  openAddProductModal(){
+     const dialogRef: NgbModalRef = this.ngbModal.open(AddProduct, {
+    windowClass: 'mobile-modal product-edit-popup',
+    scrollable: true,
+    centered: true,
+    size:'xl',
+    backdrop: 'static' // optional
+  });
+  dialogRef.componentInstance.data = null;
+  }
 editoProduct(item:any){
   console.log('item==>',item);
   

@@ -139,47 +139,50 @@ export class AddProduct {
     
   }
   initializeForms() {
-    console.log('data',this.data);
-    console.log('this.data.category.length ===>',this.data.images );
-  if (this.data?.flags) {
-    console.log('this.data.category.length ===>',this.data.flags );
-
-    this.productStatus = this.data.flags;
-  }
-    if (this.data?.images) {
-     this.thumbGallery = this.data?.images
-  ?.filter((img: any) => img.type === 'gallery')
-  .map((img: any) => img.url);
-
-     this.thumbPreview = this.data?.images
-  ?.filter((img: any) => img.type === "thumbnail")
-  .map((img: any) => img.url);
-      console.log('thumbPreview===>',this.thumbGallery);
+    // console.log('data',this.data);
+    // console.log('this.data.category.length ===>',this.data.images );
+    if (this.data) {
       
-      // this.thumbPreview =  environment.DOMAIN + '/' + this.data?.thumbnail;
-      // console.log('thumbPreview==>',this.thumbPreview);
-      
-      // this.cd.detectChanges();
-    }
-    if (this.data?.category) {
-      console.log(' this.data?.category==>',Array.isArray(this.data?.category));
-      
-    this.isUpdateproduct = true;
-
-  // category exists and is NOT blank
-      this.addProductDetails();
-      this.productOptionType();
-      this.submitProductMultipleOptionForm();
-      this.addCategoriesForm();
-      this.addTagsForm();
-      this.mediaForm();
-      this.inventryForm();
-      this.priceForm();
-      this.shippingForm();
-      this.productAttributeForm();
-      this.shippingConfigForms();
-      this.offerFormGroup();
-      this.seoFormGroup();  
+      if (this.data?.flags) {
+        console.log('this.data.category.length ===>',this.data.flags );
+    
+        this.productStatus = this.data.flags;
+      }
+        if (this.data?.images) {
+         this.thumbGallery = this.data?.images
+      ?.filter((img: any) => img.type === 'gallery')
+      .map((img: any) => img.url);
+    
+         this.thumbPreview = this.data?.images
+      ?.filter((img: any) => img.type === "thumbnail")
+      .map((img: any) => img.url);
+          console.log('thumbPreview===>',this.thumbGallery);
+          
+          // this.thumbPreview =  environment.DOMAIN + '/' + this.data?.thumbnail;
+          // console.log('thumbPreview==>',this.thumbPreview);
+          
+          // this.cd.detectChanges();
+        }
+        if (this.data?.category) {
+          console.log(' this.data?.category==>',Array.isArray(this.data?.category));
+          
+        this.isUpdateproduct = true;
+    
+      // category exists and is NOT blank
+          this.addProductDetails();
+          this.productOptionType();
+          this.submitProductMultipleOptionForm();
+          this.addCategoriesForm();
+          this.addTagsForm();
+          this.mediaForm();
+          this.inventryForm();
+          this.priceForm();
+          this.shippingForm();
+          this.productAttributeForm();
+          this.shippingConfigForms();
+          this.offerFormGroup();
+          this.seoFormGroup();  
+        }
     }
     else{
       this.addProductDetails();
@@ -204,11 +207,11 @@ closeModal(){
   addProductDetails() {
     this.productDetails = this.fb.group({
       productTitle: [this.data?.title, Validators.required], //product_title
-      shortDescription:[this.data.product_details?.short_description], //short_description
-      productDescription: [this.data.product_details?.description], //description
-      features:[this.data.product_details?.features], //features
+      shortDescription:[this.data?.product_details?.short_description], //short_description
+      productDescription: [this.data?.product_details?.description], //description
+      features:[this.data?.product_details?.features], //features
       // productStatus: [this.data.attributes?.productDetailsObj?.productStatus],
-      productDescriptionImageGallery:[this.data.product_details?.product_description_image_gallery]
+      productDescriptionImageGallery:[this.data?.product_details?.product_description_image_gallery]
     });
   }
   get addProductDetailsValidation() {
@@ -274,8 +277,8 @@ onStatusChange(index: any, event: any) {
 
   priceForm(){
     this.priceSection = this.fb.group({
-      regularPrice: [this.data.price_data.regularPrice, [Validators.required, Validators.min(1)]],
-      salePrice: [this.data.price_data.salePrice, [Validators.min(0)]],
+      regularPrice: [this.data?.price_data.regularPrice, [Validators.required, Validators.min(1)]],
+      salePrice: [this.data?.price_data.salePrice, [Validators.min(0)]],
       discountType: ['Flat'],
       priceDateStart: [''],
       priceDateEnd: [''],
@@ -288,10 +291,10 @@ onStatusChange(index: any, event: any) {
   }
   shippingForm() {
     this.shippingInfoSection = this.fb.group({
-      weight: [this.data.shipping_info.weight, Validators.min(0)],
-      length: [this.data.shipping_info.length, Validators.min(0)],
-      width: [this.data.shipping_info.width, Validators.min(0)],
-      height: [this.data.shipping_info.height, Validators.min(0)],
+      weight: [this.data?.shipping_info.weight, Validators.min(0)],
+      length: [this.data?.shipping_info.length, Validators.min(0)],
+      width: [this.data?.shipping_info.width, Validators.min(0)],
+      height: [this.data?.shipping_info.height, Validators.min(0)],
       shippingClass: ['0'],
     });
   }
@@ -316,27 +319,27 @@ onStatusChange(index: any, event: any) {
 
   shippingConfigForms() {
     this.shippingConfigForm = this.fb.group({
-      estimateShippingTime: [this.data.shipping_config.estimateShippingTime],
-      freeShipping: [this.data.shipping_config.freeShipping],
-      flatRate: [this.data.shipping_config.flatRate],
-      quantityMulitiply: [this.data.shipping_config.quantityMulitiply],
-      cashOnDelivery: [this.data.shipping_config.cashOnDelivery],
+      estimateShippingTime: [this.data?.shipping_config.estimateShippingTime],
+      freeShipping: [this.data?.shipping_config.freeShipping],
+      flatRate: [this.data?.shipping_config.flatRate],
+      quantityMulitiply: [this.data?.shipping_config.quantityMulitiply],
+      cashOnDelivery: [this.data?.shipping_config.cashOnDelivery],
     });
   }
 
   offerFormGroup() {
     this.offerForm = this.fb.group({
-      flashDeal: [this.data.offer.flashDeal],
-      todaysDeal: [this.data.offer.todaysDeal],
-      featured: [this.data.offer.featured],
+      flashDeal: [this.data?.offer.flashDeal],
+      todaysDeal: [this.data?.offer.todaysDeal],
+      featured: [this.data?.offer.featured],
     });
   }
   seoFormGroup() {
     this.seoForm = this.fb.group({
-      focusKeyphrase: [this.data.focus_keyword, Validators.required],
-      metaTitle: [this.data.meta_title, [Validators.required, Validators.maxLength(60)]],
-      slugText: [this.data.slug, [Validators.required, Validators.pattern('^[a-z0-9-]+$')]],
-      metaDscr: [this.data.meta_description, [Validators.required, Validators.maxLength(160)]],
+      focusKeyphrase: [this.data?.focus_keyword, Validators.required],
+      metaTitle: [this.data?.meta_title, [Validators.required, Validators.maxLength(60)]],
+      slugText: [this.data?.slug, [Validators.required, Validators.pattern('^[a-z0-9-]+$')]],
+      metaDscr: [this.data?.meta_description, [Validators.required, Validators.maxLength(160)]],
     });
   }
 

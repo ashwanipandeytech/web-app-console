@@ -4,7 +4,10 @@
     <div class="breadcrumb mb-30">
       <h2>Add New Product</h2>
       <div class="btn-box">
-           <button type="button" class="btn btn-secondary fs-14" (click)="closeModal()">Close</button>
+        @if (this.activeModal) {
+
+          <button type="button" class="btn btn-secondary fs-14" (click)="closeModal()">Close</button>
+        }
         <!-- <a href="all-product.html" class="btn btn-sm btn-primary">View All</a> -->
       </div>
     </div>

@@ -221,7 +221,7 @@
                                     <td>
                                         <div class="btn-box">
                                             <button><i class="fa fa-eye"></i></button>
-                                            <button><i class="fa fa-pen"></i></button>
+                                            <button><i class="fa fa-pen" (click)="openEditModal(order)"></i></button>
                                             <button><i class="fa fa-trash"></i></button>
                                         </div>
                                     </td>
@@ -484,3 +484,57 @@
     <!-- footer end -->
 </div>
 <!-- main content end -->
+
+
+<!-- Modal start  -->
+
+<ng-template #editOrderModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Edit Order</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+
+  <form [formGroup]="orderForm" (ngSubmit)="submit(modal)">
+    <div class="modal-body">
+
+      <div class="mb-3">
+        <label>Customer</label>
+        <input class="form-control" formControlName="customer">
+      </div>
+
+      <div class="mb-3">
+        <label>Status</label>
+        <select class="form-control" formControlName="status">
+          <option value="confirmed">Confirmed</option>
+          <option value="pending">Pending</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label>Product</label>
+        <input class="form-control" formControlName="product">
+      </div>
+
+      <div class="mb-3">
+        <label>Price</label>
+        <input type="number" class="form-control" formControlName="price">
+      </div>
+
+      <div class="mb-3">
+        <label>Payment Method</label>
+        <select class="form-control" formControlName="payment_method">
+          <option value="cod">COD</option>
+          <option value="online">Online</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="orderForm.invalid">
+        Update
+      </button>
+    </div>
+  </form>
+</ng-template>
