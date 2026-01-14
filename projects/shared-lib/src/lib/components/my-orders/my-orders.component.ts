@@ -45,6 +45,7 @@ export class MyOrdersComponent implements OnInit {
    
   effect(() => {
       if (this.signalService.userLoggedIn()) {
+          this.addRateUsForm();
        this.orderList();
         this.cd.detectChanges();
       }
