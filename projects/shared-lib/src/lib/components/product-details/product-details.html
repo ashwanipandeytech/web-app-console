@@ -8,6 +8,7 @@
         <span class="d-inline-block">Back</span>
     </button>
 </div>
+
 @if(loading){
 <div class="loader position-relative">
     <div class="spinner position-absolute top-50 start-50 translate-middle"></div>
@@ -27,29 +28,23 @@
         <div class="product-info-section">
             @if (productDetails && productDetails.data.length>0) {
             @for (item of productDetails.data; track $index) {
-                @if (productId == item.id) {
-                <!-- {{item | json}} -->
+            @if (productId == item.id) {
             <div class="row">
                 <div class="col-md-6 mt-0">
-                    <div class="position-relative product-info-img bg-white rounded-4 overflow-hidden w-100"
-                        data-aos="fade-right">
+                    <div class="position-relative product-info-img bg-white rounded-4 overflow-hidden w-100" data-aos="fade-right">
                         <div class="product-discount-content">
                             <h4>-50%</h4>
                         </div>
                         @if(isLogin){
-
-                        <div class="product-cart-items bg-white rounded p-1 position-absolute end-0 pe-3 z-3"
-                            (click)="toggleHeart(item)" [ngClass]="{ 'wishlisted': item.is_wishlisted}">
-                            <i class="fa-heart"
-                                [ngClass]="item.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"></i>
+                        <div class="product-cart-items bg-white rounded p-1 position-absolute end-0 pe-3 z-3" (click)="toggleHeart(item)" [ngClass]="{ 'wishlisted': item.is_wishlisted}">
+                            <i class="fa-heart" [ngClass]="item.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"></i>
                         </div>
                         }
 
                         <ngx-slick-carousel id="slick-carousel" class="slick-carousel" [config]="slideConfig">
                             @for (item of item.images; track $index) {
                             <div ngxSlickItem>
-                                <img src="{{item.url}}" alt="img" class="object-fit-contain"
-                                    [ngStyle]="{'aspect-ratio':'1'}">
+                                <img src="{{item.url}}" alt="img" class="object-fit-contain" [ngStyle]="{'aspect-ratio':'1'}">
                             </div>
                             }
                         </ngx-slick-carousel>
@@ -60,6 +55,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-6 mt-0">
                     <div class="product-info-content bg-white rounded-4 h-100" data-aos="fade-left">
                         <div class="product-info-content-price rounded-3">
@@ -74,14 +70,6 @@
                             </div>
 
                             <div class="product-quantity align-items-start justify-content-start mt-2">
-                                <!-- <div class="quantity-wrapper">
-                                            <div class="quantity">
-                                                <span class="minus" (click)="decrease()">-</span>
-                                                <span class="number">{{ quantity }}</span>
-                                                <span class="plus" (click)="increase()">+</span>
-                                            </div>
-                                        </div> -->
-
                                 <div class="ratings mt-0">
                                     <span>
                                         <svg width="75" height="15" viewbox="0 0 75 15" fill="none"
@@ -109,13 +97,13 @@
                             </div>
                         </div>
 
+                        <div class="text-break" [innerHTML]="item?.product_details?.shortDescription"></div>
 
-                        <p class="content-paragraph fs-5 lh-base" [innerHTML]="item?.product_details?.shortDescription" style="word-wrap: break-word;"></p>
                         <hr class="border-dark my-2">
+
                         <div class="product-availability">
                             <span>Availabillity : </span>
-                            <strong class="inner-text text-black">{{item.inventory.manageStock}} Products
-                                Available</strong>
+                            <strong class="inner-text text-black">{{item.inventory.manageStock}} Products Available</strong>
                         </div>
                         <div class="d-none product-size">
                             <p class="size-title">Weight</p>
@@ -160,11 +148,10 @@
 
                         <div class="product-details">
                             <p class="category">Category : <strong class="inner-text text-black">{{item.category.name}}</strong></p>
-                            <p class="tags">Tags : 
+                            <p class="tags">Tags :
                                 @for (tag of item.tags.tags; track $index) {
-                                    <strong class="inner-text text-black">{{tag}}</strong>
+                                <strong class="inner-text text-black">{{tag}}</strong>
                                 }
-
                             </p>
                             <p class="sku">SKU : <strong class="inner-text text-black">{{item.sku}}</strong></p>
                         </div>
@@ -247,6 +234,7 @@
                     </div>
                 </div>
             </div>
+
             <section class="product product-description">
                 <div class="container">
                     <div class="product-detail-section">
@@ -271,9 +259,9 @@
                             <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
                                 aria-labelledby="nav-home-tab" tabindex="0" data-aos="fade-up">
                                 <div class="product-intro-section">
-                                    <h5>Introduction</h5>
+                                    <!-- <h5>Introduction</h5> -->
                                     <div [innerHTML]="item?.product_details?.productDescription"></div>
-                                    
+
                                     <!-- <p class="product-details">
                                                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
                                                 has been the industry's standard dummy text ever since the 1500s, when an unknown
@@ -373,24 +361,12 @@
                     </div>
                 </div>
             </section>
-            
+
             <div [innerHTML]="item?.product_details?.productDescriptionImageGallery"></div>
-
-            }
-            <!-- <app-no-data 
-      title="No Details Found"
-      [message]="isPreview == 1?'This Product has No preview':'There are no data available right now'"
-      [showAction]="false"
-      actionText="Reload"
-              >
-              </app-no-data> -->
             }
             }
-
+            }
         </div>
     </div>
 </section>
-<!--------------- products-info-end--------------->
-
-<!--------------- products-details-section--------------->
-<!--------------- products-details-end--------------->
+<!---------------  products-info-end  --------------->

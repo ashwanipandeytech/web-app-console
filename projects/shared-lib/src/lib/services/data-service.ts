@@ -6,20 +6,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { firstValueFrom, of } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
-
   private http = inject(HttpClient);
   private snackBar = inject(MatSnackBar);
   private authToken: any;
   generalSetting: any;
 
-  constructor() {
-
-  }
+  constructor() {}
   request(method: string, endpoint: string, postdata?: any, options: any = {}) {
-    let data:any = postdata;
+    let data: any = postdata;
     let user = JSON.parse(localStorage.getItem('user') || '{}');
     let guestToken = JSON.parse(localStorage.getItem('GUEST_TOKEN') || '{}');
     let headers: any;
@@ -27,35 +24,52 @@ export class DataService {
     if (user?.token) {
       this.authToken = user?.token;
       headers = new HttpHeaders({
-        'Authorization': `Bearer ${this.authToken}`
+        Authorization: `Bearer ${this.authToken}`,
       });
-      httpOptions = { headers }
-    }
-    else {
+      httpOptions = { headers };
+    } else {
       this.authToken = guestToken;
-      endpoint = `${endpoint}?guest_token=${guestToken}`
+      endpoint = `${endpoint}?guest_token=${guestToken}`;
       // data.guest_token = guestToken;
       httpOptions = {};
     }
     //console.log('httpOptions===>',httpOptions);
-    let commonurl = "https://api.demohandler.in/api/v1/"; 
+    let commonurl = 'https://api.demohandler.in/api/v1/';
     switch (method.toUpperCase()) {
       case 'GET':
-        return this.http.get<Commonresponseobject>(`${environment.API_URL}${endpoint}`, httpOptions);
+        return this.http.get<Commonresponseobject>(
+          `${environment.API_URL}${endpoint}`,
+          httpOptions
+        );
 
       case 'POST':
-        return this.http.post<Commonresponseobject>(`${environment.API_URL}${endpoint}`, data, httpOptions);
+        return this.http.post<Commonresponseobject>(
+          `${environment.API_URL}${endpoint}`,
+          data,
+          httpOptions
+        );
 
-       case 'POST_COMMON':
+      case 'POST_COMMON':
         return this.http.post<Commonresponseobject>(`${commonurl}${endpoint}`, data, httpOptions);
       case 'PATCH':
-        return this.http.patch<Commonresponseobject>(`${environment.API_URL}${endpoint}`, data, httpOptions);
+        return this.http.patch<Commonresponseobject>(
+          `${environment.API_URL}${endpoint}`,
+          data,
+          httpOptions
+        );
 
       case 'PUT':
-        return this.http.put<Commonresponseobject>(`${environment.API_URL}${endpoint}`, data, httpOptions);
+        return this.http.put<Commonresponseobject>(
+          `${environment.API_URL}${endpoint}`,
+          data,
+          httpOptions
+        );
 
       case 'DELETE':
-        return this.http.delete<Commonresponseobject>(`${environment.API_URL}${endpoint}`, httpOptions);
+        return this.http.delete<Commonresponseobject>(
+          `${environment.API_URL}${endpoint}`,
+          httpOptions
+        );
 
       default:
         throw new Error(`Invalid HTTP Method: ${method}`);
@@ -63,22 +77,20 @@ export class DataService {
   }
 
   get(endpoint: string, from: string = '') {
-
     if (from === 'web') {
-      const headers = new HttpHeaders({ 'Authorization': `Bearer ${this.authToken}` });
+      const headers = new HttpHeaders({ Authorization: `Bearer ${this.authToken}` });
       return this.http.get<Commonresponseobject>(`${environment.API_URL}${endpoint}`, { headers });
     }
     return this.request('GET', endpoint);
   }
 
-  post(data: any, endpoint: string,) {
-
+  post(data: any, endpoint: string) {
     let finalData = data;
     return this.request('POST', endpoint, data);
   }
 
   postForm(endpoint: string, data: FormData) {
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${this.authToken}` });
+    const headers = new HttpHeaders({ Authorization: `Bearer ${this.authToken}` });
     return this.request('POST', endpoint, data, { headers });
   }
 
@@ -100,11 +112,9 @@ export class DataService {
   update(endpoint: string, data: any, id: any) {
     return this.request('POST', `${endpoint}/${id}`, data);
   }
-   postCommonApi(data: any, endpoint: string,) {
+  postCommonApi(data: any, endpoint: string) {
     return this.request('POST_COMMON', endpoint, data);
   }
-
-
 
   // Called by APP_INITIALIZER; returns a Promise that resolves when loaded
   loadGeneralSettings(endpoint: string): Promise<void> {
@@ -117,7 +127,7 @@ export class DataService {
         console.info('GeneralSettings loaded', this.generalSetting);
         //console.info('EnvService: environment loaded', this.generalSetting);
       })
-      .catch(err => {
+      .catch((err) => {
         // fallback to minimal env on error
         //	console.error('EnvService: failed to load environment from assets', err);
         this.generalSetting = {};
@@ -126,7 +136,9 @@ export class DataService {
 
   // access a key with optional default
   getSpecificGeneralSettings<T = any>(key: string, defaultValue?: T): T | undefined {
-    return (this.generalSetting && key in this.generalSetting) ? (this.generalSetting[key] as T) : defaultValue;
+    return this.generalSetting && key in this.generalSetting
+      ? (this.generalSetting[key] as T)
+      : defaultValue;
   }
 
   // return whole env object
