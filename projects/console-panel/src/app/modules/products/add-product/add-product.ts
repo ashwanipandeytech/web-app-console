@@ -152,7 +152,7 @@ export class AddProduct {
   Object.keys(this.data?.product_details || {}).length;
     if (this.data && hasValidData) {
     console.log('log==> enrer',this.data);
-
+        this.isUpdateproduct = true;
       if (this.data?.flags) {
         console.log('this.data.category.length ===>',this.data.flags );
     
@@ -175,9 +175,7 @@ export class AddProduct {
         }
         if (this.data?.category) {
           console.log(' this.data?.category==>',Array.isArray(this.data?.category));
-          
-        this.isUpdateproduct = true;
-    
+              
       // category exists and is NOT blank
       // this.getCategoryList();
           this.addProductDetails();
@@ -214,6 +212,8 @@ export class AddProduct {
   }
 closeModal(){
   this.activeModal.close();
+  this.isUpdateproduct = true;
+
 }
   addProductDetails() {
     this.productDetails = this.fb.group({
@@ -827,7 +827,8 @@ onStatusChange(index: any, event: any) {
           this.globalService.showMsgSnackBar(res.error);
           return;
         } else if (res.success == true) {
-          let id = res.data.id;
+          // let id = res.data.id;
+          let id = res.data.data.id;
           //console.log('this.selectedThumbImg==>', this.selectedThumbImg);
 
           if (this.selectedThumbImg != undefined) {
