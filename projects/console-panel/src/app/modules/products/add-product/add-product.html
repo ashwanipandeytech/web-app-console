@@ -2,6 +2,7 @@
 <div class="main-content modal-body">
   <form [formGroup]="productMultipleOptionForm" (ngSubmit)="submitProductMultipleOptionForm()">
     <div class="breadcrumb mb-30">
+      {{isUpdateproduct}}
       <h2>{{isUpdateproduct?'Update Product':'Add New Product'}}</h2>
       <div class="btn-box">
         @if (activeModal) {

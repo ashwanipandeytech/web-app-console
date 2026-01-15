@@ -26,7 +26,7 @@ export class ProductDetails {
 
   isWishlisted = false;
   productListData: any=[];
-  productDetails: any;
+  productDetails: any={};
   productId: any;
   quantity: any=1;
   selectedProduct: any;
@@ -87,44 +87,45 @@ export class ProductDetails {
     this.route.queryParams.subscribe((param:any)=>{
      console.log('paramsss=>',param.preview);
      this.isPreview = param.preview;
+     console.log('this.preview==>',this.productId);
+     let apiId;
+     this.dataService.get(`products/${this.productId}`).subscribe((res:any) => {
+       console.log('productId==>',res.data);
+       this.productDetails = res.data.data;
+       let user = JSON.parse(localStorage.getItem('user') || '{}');
+     //console.log('user==>',user);
+ 
+     if ( typeof user === 'object' && Object.keys(user).length <= 0) {
+       this.isLogin = false;
+     }
+     else{
+       this.isLogin = true;
+ 
+     }
+       this.cd.detectChanges();
+     });
     })
-    console.log('previeww===',this.isPreview);
-    
-    this.dataService.getById('products',this.productId).subscribe((res:any) => {
-      this.productDetails = res.data;
-      console.log('productId==>',this.productDetails);
-      let user = JSON.parse(localStorage.getItem('user') || '{}');
-    //console.log('user==>',user);
 
-    if ( typeof user === 'object' && Object.keys(user).length <= 0) {
-      this.isLogin = false;
-    }
-    else{
-      this.isLogin = true;
-
-    }
-      this.cd.detectChanges();
-    });
   }
 
-  renderDescription(html: string) {
-    const safeHtml = this.sanitizer.bypassSecurityTrustHtml(html);
-    const div = this.renderer.createElement('div');
-    div.innerHTML = safeHtml as string;
-    this.renderer.appendChild(this.descBox.nativeElement, div);
-  }
+  // renderDescription(html: string) {
+  //   const safeHtml = this.sanitizer.bypassSecurityTrustHtml(html);
+  //   const div = this.renderer.createElement('div');
+  //   div.innerHTML = safeHtml as string;
+  //   this.renderer.appendChild(this.descBox.nativeElement, div);
+  // }
 
   ngAfterViewInit() {
-    if (this.productDetails) {  
-      for (let index = 0; index < this.productDetails.length; index++) {
-        const element = this.productDetails[index];
-        if (element.id == this.productId) {
-          this.renderDescription(element.description);
-          this.cd.detectChanges();
+    // if (this.productDetails) {  
+    //   for (let index = 0; index < this.productDetails.length; index++) {
+    //     const element = this.productDetails[index];
+    //     if (element.id == this.productId) {
+    //       this.renderDescription(element.description);
+    //       this.cd.detectChanges();
   
-        }
-      }
-    }
+    //     }
+    //   }
+    // }
   }
 
   // openProduct(id: number) {

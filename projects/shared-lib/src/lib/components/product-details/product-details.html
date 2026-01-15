@@ -26,9 +26,9 @@
         </div>
 
         <div class="product-info-section">
-            @if (productDetails && productDetails.data.length>0) {
-            @for (item of productDetails.data; track $index) {
-            @if (productId == item.id) {
+            <!-- @if (productDetails && productDetails.data.length>0) { -->
+            <!-- @for (item of productDetails.data; track $index) { -->
+            <!-- @if (productId == item.id) { -->
             <div class="row">
                 <div class="col-md-6 mt-0">
                     <div class="position-relative product-info-img bg-white rounded-4 overflow-hidden w-100" data-aos="fade-right">
@@ -36,13 +36,13 @@
                             <h4>-50%</h4>
                         </div>
                         @if(isLogin){
-                        <div class="product-cart-items bg-white rounded p-1 position-absolute end-0 pe-3 z-3" (click)="toggleHeart(item)" [ngClass]="{ 'wishlisted': item.is_wishlisted}">
-                            <i class="fa-heart" [ngClass]="item.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"></i>
+                        <div class="product-cart-items bg-white rounded p-1 position-absolute end-0 pe-3 z-3" (click)="toggleHeart(productDetails)" [ngClass]="{ 'wishlisted': productDetails.is_wishlisted}">
+                            <i class="fa-heart" [ngClass]="productDetails.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"></i>
                         </div>
                         }
 
                         <ngx-slick-carousel id="slick-carousel" class="slick-carousel" [config]="slideConfig">
-                            @for (item of item.images; track $index) {
+                            @for (item of productDetails.images; track $index) {
                             <div ngxSlickItem>
                                 <img src="{{item.url}}" alt="img" class="object-fit-contain" [ngStyle]="{'aspect-ratio':'1'}">
                             </div>
@@ -59,13 +59,13 @@
                 <div class="col-md-6 mt-0">
                     <div class="product-info-content bg-white rounded-4 h-100" data-aos="fade-left">
                         <div class="product-info-content-price rounded-3">
-                            <span class="wrapper-subtitle">{{item.category.name}}</span>
-                            <h3 class="wrapper-heading fs-20 mt-2">{{item.title}}</h3>
+                            <span class="wrapper-subtitle">{{productDetails.category.name}}</span>
+                            <h3 class="wrapper-heading fs-20 mt-2">{{productDetails.title}}</h3>
 
                             <div class="d-flex justify-content-between mt-2">
                                 <div class="price my-0 gap-2">
-                                    <span class="price-cut">₹{{item.price_data.regularPrice}}</span>
-                                    <span class="new-price">₹{{item.price_data.salePrice}}</span>
+                                    <span class="price-cut">₹{{productDetails.price_data.regularPrice}}</span>
+                                    <span class="new-price">₹{{productDetails.price_data.salePrice}}</span>
                                 </div>
                             </div>
 
@@ -97,13 +97,13 @@
                             </div>
                         </div>
 
-                        <div class="text-break" [innerHTML]="item?.product_details?.shortDescription"></div>
+                        <div class="text-break" [innerHTML]="productDetails?.product_details?.shortDescription"></div>
 
                         <hr class="border-dark my-2">
 
                         <div class="product-availability">
                             <span>Availabillity : </span>
-                            <strong class="inner-text text-black">{{item.inventory.manageStock}} Products Available</strong>
+                            <strong class="inner-text text-black">{{productDetails.inventory.manageStock}} Products Available</strong>
                         </div>
                         <div class="d-none product-size">
                             <p class="size-title">Weight</p>
@@ -147,13 +147,13 @@
                         <hr class="border-dark my-2">
 
                         <div class="product-details">
-                            <p class="category">Category : <strong class="inner-text text-black">{{item.category.name}}</strong></p>
+                            <p class="category">Category : <strong class="inner-text text-black">{{productDetails.category.name}}</strong></p>
                             <p class="tags">Tags :
-                                @for (tag of item.tags.tags; track $index) {
+                                @for (tag of productDetails.tags.tags; track $index) {
                                 <strong class="inner-text text-black">{{tag}}</strong>
                                 }
                             </p>
-                            <p class="sku">SKU : <strong class="inner-text text-black">{{item.sku}}</strong></p>
+                            <p class="sku">SKU : <strong class="inner-text text-black">{{productDetails.sku}}</strong></p>
                         </div>
                         <hr>
 
@@ -229,7 +229,7 @@
                         <!-- product-feature  -->
                         <div class="mt-4">
                             <!-- <h5>Features :</h5> -->
-                            <div class="text-break" [innerHTML]="item?.product_details?.features"></div>
+                            <div class="text-break" [innerHTML]="productDetails?.product_details?.features"></div>
                         </div>
                     </div>
                 </div>
@@ -260,7 +260,7 @@
                                 aria-labelledby="nav-home-tab" tabindex="0" data-aos="fade-up">
                                 <div class="product-intro-section">
                                     <!-- <h5>Introduction</h5> -->
-                                    <div [innerHTML]="item?.product_details?.productDescription"></div>
+                                    <div [innerHTML]="productDetails?.product_details?.productDescription"></div>
 
                                     <!-- <p class="product-details">
                                                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
@@ -362,10 +362,10 @@
                 </div>
             </section>
 
-            <div [innerHTML]="item?.product_details?.productDescriptionImageGallery"></div>
+            <div [innerHTML]="productDetails?.product_details?.productDescriptionImageGallery"></div>
+            <!-- }
             }
-            }
-            }
+            } -->
         </div>
     </div>
 </section>

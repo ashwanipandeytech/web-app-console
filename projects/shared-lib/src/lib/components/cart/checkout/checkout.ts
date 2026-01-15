@@ -25,7 +25,7 @@ export class Checkout {
   private http = inject(HttpClient);
   private cd = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
-  cartListData: any = [];
+  cartListData: any = {};
   grandTotal = 0;
   subTotal: any = 0;
   checkoutForm!: FormGroup;
@@ -41,6 +41,9 @@ export class Checkout {
   AllAddressList: any;
   changedSelectedAddress: any;
   addressNotfound: boolean=false;
+  appliedCoupon: any='';
+  gstSummary: any={};
+  isLoading: boolean=true;
 
   ngOnInit() {
     let userString: any = localStorage.getItem('user'); // this is a string
@@ -64,31 +67,69 @@ export class Checkout {
         return of(null); // or you can return a default value if needed
       })
     ).subscribe((response: any) => {
+      this.isLoading = true;
       //console.log('response==>', response);
       if (response.success == true) {
-        this.cartListData = response.data.data;
-        for (let i = 0; i < this.cartListData.length; i++) {
-          const element = this.cartListData[i];
+        this.cartListData = response.data;
+        this.calculateGstPrice(response.data);
+        for (let i = 0; i < this.cartListData.data.length; i++) {
+          const element = this.cartListData.data[i];
           // if (element.) {
-          this.globalService.calculatePrice(element.quantity, i, element.product.price_data.salePrice, this.cartListData);
+          this.globalService.calculatePrice(element.quantity, i, element.product.price_data.salePrice, this.cartListData.data);
           // }
           //  element.product.price_data['finalPrice'] = element?.product.price_data?.salePrice;
           //    this.calculatePrice(element.quantity,i,element.product.price_data.regularPrice);
 
         }
         this.calculateSubTotal();
-        this.grandTotal = this.globalService.calculateGrandTotal(this.cartListData);
+        this.grandTotal = this.globalService.calculateGrandTotal(this.cartListData.data);
         this.cd.detectChanges();
       }
 
     })
   }
 
+    calculateGstPrice(dataObj:any){
+      let data = dataObj.data;
+    let payload:any={
+      items:[]
+    };
+    console.log('data=====>',data);
+    payload.coupon_code = this.appliedCoupon;
+    for (let i = 0; i < data.length; i++) {
+      const element = data[i];
+      payload.items.push({
+        quantity : element?.quantity,
+        product_id:element?.product.id,
+        salePrice:element?.product?.price_data?.salePrice,
+        gstPercent:element?.product?.price_data?.caclulatedObj?.gstPercent
+      })   
+    }
+    this.dataService.postCommonApi(payload,'calculate-prices')
+      .pipe(
+        catchError((err) => {
+          console.error('Error:', err);
+          setTimeout(() => {
+            this.globalService.showMsgSnackBar(err);
+          }, 100);
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('payload===>',res.data.summary);
+        this.gstSummary = res.data.summary;
+        this.isLoading = false;
+        console.log('this.cartListData==>',this.gstSummary);
+        
+        this.cd.detectChanges();
+      })
+
+  }
   calculateSubTotal() {
     // this.grandTotal = 0;
     this.subTotal = 0;
-    for (let i = 0; i < this.cartListData.length; i++) {
-      const element = this.cartListData[i];
+    for (let i = 0; i < this.cartListData.data.length; i++) {
+      const element = this.cartListData.data[i];
       this.subTotal += element.product.price_data.finalPrice;
     }
     this.calculateGrandTotal();
@@ -158,7 +199,7 @@ export class Checkout {
     //console.log('res ----////==>', paymentResponse);
 
 
-    const payload = this.cartListData.map((cartItem: any) => ({
+    const payload = this.cartListData.data.map((cartItem: any) => ({
       product_id: cartItem.product.id,
       quantity: cartItem.quantity,
       price: cartItem.product.price_data.salePrice

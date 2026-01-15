@@ -27,12 +27,15 @@
 
         @for (slide of dataService.getSpecificGeneralSettings(data.data.title); track slide.img) {
           <div ngxSlickItem class="slide position-relative">
-            <img
-              [src]="slide.imgSrc"
-              loading="lazy"
-              alt=""
-              class="w-100"
-            />
+          <a [routerLink]="slide.url">
+  <img
+    [src]="slide.imgSrc"
+    loading="lazy"
+    [alt]="slide.alt"
+    class="w-100"
+  />
+</a>
+
           </div>
         }
       </ngx-slick-carousel>

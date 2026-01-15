@@ -109,6 +109,7 @@ export class LayoutSettingsComponent implements OnInit {
   uploadIsFrom: any;
   isSelectedImage: boolean = false;
   selectedImageIndex: any;
+  homeSliderDataArr: any=[];
   constructor(private cdr: ChangeDetectorRef) {
     this.getImageApi();
     // this.getDefaultImage();
@@ -303,6 +304,7 @@ export class LayoutSettingsComponent implements OnInit {
     data.splice(index, 1);
   }
   saveSettings() {
+    
     let settingData = JSON.parse(JSON.stringify(this.settingsModel));
     console.log('settingData==>', settingData);
     for (let i = 0; i < settingData.footer.length; i++) {
@@ -369,6 +371,23 @@ export class LayoutSettingsComponent implements OnInit {
     this.imagePreview = null;
   }
 
+    heroBannerSliderUrlValue(slide: any, index: number,containerName:any) {
+  let imageUrl = slide.imgSrc;
+  let linkUrl = slide.url;
+  let imageAlt = slide.alt;
+  if (containerName == 'slider'+index) {  
+    this.homeSliderDataArr.push({
+        "imgSrc": imageUrl,
+        "alt": imageAlt,
+        "url": linkUrl
+    })
+  }
+  console.log('Slide Index:', index);
+  console.log('Image URL:', imageUrl);
+  console.log('Link URL:', linkUrl);
+
+  // ✅ you now have BOTH values
+  }
   uploadFrom(from: any) {
     this.uploadIsFrom = from;
   }
@@ -435,23 +454,23 @@ export class LayoutSettingsComponent implements OnInit {
           }
           console.log('home_Banner_Slider =>', this.settingsModel.home_Banner_Slider);
 
-          if (element.isFrom?.startsWith('slider')) {
-            // slider0 → 0, slider1 → 1
-            const index = Number(element.isFrom.replace('slider', ''));
+          // if (element.isFrom?.startsWith('slider')) {
+          //   // slider0 → 0, slider1 → 1
+          //   const index = Number(element.isFrom.replace('slider', ''));
 
-            // ✅ Replace only that index
-            if (this.settingsModel.home_Banner_Slider[index]) {
-              this.settingsModel.home_Banner_Slider[index].imgSrc = element.url;
-            } else {
-              // optional: if index does not exist, add it
-              this.settingsModel.home_Banner_Slider[index] = {
-                imgSrc: element.url,
-              };
-            }
-            console.log('ggggggg', this.settingsModel.home_Banner_Slider[index].imgSrc);
+          //   // ✅ Replace only that index
+          //   if (this.settingsModel.home_Banner_Slider[index]) {
+          //     this.settingsModel.home_Banner_Slider[index].imgSrc = element.url;
+          //   } else {
+          //     // optional: if index does not exist, add it
+          //     this.settingsModel.home_Banner_Slider[index] = {
+          //       imgSrc: element.url,
+          //     };
+          //   }
+          //   console.log('ggggggg', this.settingsModel.home_Banner_Slider[index].imgSrc);
 
-            this.cdr.detectChanges();
-          }
+          //   this.cdr.detectChanges();
+          // }
           if (element.isFrom?.startsWith('promoslider')) {
             // slider0 → 0, slider1 → 1
             const index = Number(element.isFrom.replace('promoslider', ''));
@@ -509,7 +528,7 @@ export class LayoutSettingsComponent implements OnInit {
           }
           this.closePopup();
         }
-
+ this.settingsModel.home_Banner_Slider = this.homeSliderDataArr;
         // 🔹 Upload section (FIXED)
 
         // this.closePopup();

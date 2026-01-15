@@ -14,7 +14,14 @@
 </section>
 <!--------------- blog-tittle-section-end---------------->
 
+@if(isLoading){
+<div class="loader d-flex align-items-center justify-content-center position-absolute" style="inset-inline: 0;">
+  <div class="spinner-border spinner-border-lg text-primary" role="status"></div>
+</div>
+}
 <!--------------- checkout-section---------------->
+
+@if (!isLoading) {
 <section class="checkout product w-1100 mx-auto box-shadows rounded-4 p-lg-4 mb-5">
   <div class="container">
     <div class="checkout-section">
@@ -92,8 +99,8 @@
                 <hr />
                 <div class="subtotal product-total px-3">
                   <ul class="product-list gap-2">
-                    @for(item of cartListData; track $index){
-                    <li class="align-items-center">
+                    @for(item of cartListData.data; track $index){
+                      <li class="align-items-center">
                       <div class="product-info d-flex flex-row align-items-center">
                          <img
                           [src]="item?.product?.media?.uploadedImages[0]?.url"
@@ -111,14 +118,33 @@
                   </ul>
                 </div>
                 <hr />
-                <div class="subtotal product-total px-3">
-                  <h5 class="wrapper-heading fw-semibold">Subtotal</h5>
-                  <h5 class="wrapper-heading">₹{{ subTotal }}</h5>
-                </div>
-                <div class="subtotal product-total px-3">
-                  <h5 class="wrapper-heading fw-semibold">Shipping</h5>
-                  <h5 class="wrapper-heading"></h5>
-                </div>
+               <div class="subtotal product-total px-3">
+  <h5 class="wrapper-heading fw-semibold">Subtotal</h5>
+  <h5 class="wrapper-heading">₹{{ gstSummary?.base_total | number:'1.2-2' }}</h5>
+</div>
+
+<div class="subtotal product-total px-3">
+  <h5 class="wrapper-heading fw-semibold">CGST</h5>
+  <h5 class="wrapper-heading">₹{{ gstSummary?.total_cgst | number:'1.2-2' }}</h5>
+</div>
+
+<div class="subtotal product-total px-3">
+  <h5 class="wrapper-heading fw-semibold">SGST</h5>
+  <h5 class="wrapper-heading">₹{{ gstSummary?.total_sgst | number:'1.2-2' }}</h5>
+</div>
+
+<div class="subtotal product-total px-3">
+  <h5 class="wrapper-heading fw-semibold">Total Tax</h5>
+  <h5 class="wrapper-heading">₹{{ gstSummary?.total_tax | number:'1.2-2' }}</h5>
+</div>
+
+<div class="subtotal product-total px-3">
+  <h5 class="wrapper-heading fw-semibold">Grand Total</h5>
+  <h5 class="wrapper-heading fw-bold text-success">
+    ₹{{gstSummary?.final_total | number:'1.2-2' }}
+  </h5>
+</div>
+
                 <!-- <div class="subtotal product-total px-3">
                   <ul class="product-list">
                     <li>
@@ -215,3 +241,4 @@
     </div>
   </div>
 </div>
+}

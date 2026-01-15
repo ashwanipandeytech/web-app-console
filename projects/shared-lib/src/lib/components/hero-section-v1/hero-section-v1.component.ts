@@ -2,11 +2,12 @@ import { NgOptimizedImage, NgClass } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { DataService } from '../../services/data-service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-hero-section-v1',
   templateUrl: './hero-section-v1.component.html',
-  imports: [SlickCarouselModule, NgClass],
+  imports: [SlickCarouselModule, NgClass,RouterLink],
   styleUrls: ['./hero-section-v1.component.scss'],
 })
 export class HeroSectionV1Component implements OnInit {

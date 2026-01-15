@@ -52,6 +52,7 @@ export class CartCommon {
   loading: boolean = true;
   isLoggedIn: boolean = false;
   cartItemId: any;
+  appliedCoupon: any='';
   constructor(private http: HttpClient, private fb: FormBuilder, private cd: ChangeDetectorRef) {
     this.addAddressForm();
     // this.getAddressList();
@@ -262,6 +263,7 @@ export class CartCommon {
         //console.log('response==>', response);
         if (response.success == true) {
           this.cartListData = response.data.data;
+this.calculateGstPrice(response.data.data);
           for (let i = 0; i < this.cartListData.length; i++) {
             const element = this.cartListData[i];
             // if (element.) {
@@ -280,6 +282,37 @@ export class CartCommon {
           this.cd.detectChanges();
         }
       });
+  }
+
+  calculateGstPrice(data:any){
+    let payload:any={
+      items:[]
+    };
+    console.log('data=====>',data);
+    payload.coupon_code = this.appliedCoupon;
+    for (let i = 0; i < data.length; i++) {
+      const element = data[i];
+      payload.items.push({
+        quantity : element?.quantity,
+        product_id:element?.product.id,
+        salePrice:element?.product?.price_data?.salePrice,
+        gstPercent:element?.product?.price_data?.caclulatedObj?.gstPercent
+      })   
+    }
+    this.dataService.postCommonApi(payload,'calculate-prices')
+      .pipe(
+        catchError((err) => {
+          console.error('Error:', err);
+          setTimeout(() => {
+            this.globalService.showMsgSnackBar(err);
+          }, 100);
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('payload===>',res);
+      })
+
   }
   increase(quantity: any, index: any) {
     this.cartListData[index].quantity++;

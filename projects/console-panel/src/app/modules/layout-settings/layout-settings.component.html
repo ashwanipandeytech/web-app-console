@@ -217,7 +217,7 @@
                   <div class="col-md-4">
                     <label class="form-label fw-semibold">Link URL</label>
                     <input type="text" class="form-control" [name]="'home_Banner_Slider[' + $index + '].url'"
-                      [(ngModel)]="slide.url" placeholder="https://example.com">
+                      [(ngModel)]="slide.url" placeholder="https://example.com"  (ngModelChange)="heroBannerSliderUrlValue(slide, $index,'slider'+ $index)">
                   </div>
                 </div>
               </div>
