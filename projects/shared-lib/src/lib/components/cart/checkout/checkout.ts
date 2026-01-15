@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, effect, ElementRef, inject, ViewChild } f
 import { DataService } from '../../../services/data-service';
 import { catchError, map, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { RazorpayService } from 'shared-lib';
+import { RazorpayService } from '../../../services/payment-razor';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { GlobaCommonlService } from '../../../services/global-common.service';
@@ -229,14 +229,15 @@ export class Checkout {
     const payload = this.cartListData.data.map((cartItem: any) => ({
       product_id: cartItem.product.id,
       quantity: cartItem.quantity,
-      price: cartItem.product.price_data.salePrice
+      price: cartItem.product.price_data.salePrice,
     }));
     let OrderSubmitPayload = {
       items: payload,
       total_amount: this.grandTotal,
       address_id: addressId,
       payment_method: this.selectedPaymentMethod,
-      shipping_address: addressId
+      shipping_address: addressId,
+      tax_invoice:this.gstSummary
     }
     this.dataService.post(OrderSubmitPayload, 'orders')
       .pipe(
