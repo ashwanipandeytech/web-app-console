@@ -6,5 +6,13 @@
 
 <web-footer></web-footer>
 
+@if (signalService.isLoading()) {
+  <div class="loader-overlay">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+}
+
 
 <!-- <button (click)="openCheckout(500)">Pay ₹500</button> -->

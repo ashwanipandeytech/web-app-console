@@ -13,6 +13,16 @@ user = signal<any>(null);
   openLoginPopup=signal<any>(false);
   openLoginTrigger = signal(0);
 
+  isLoading = signal<boolean>(false);
+
+  show() {
+    this.isLoading.set(true);
+  }
+
+  hide() {
+    this.isLoading.set(false);
+  }
+
   setCounts(data: any) {
     //console.log('signal service ==',data);
     
