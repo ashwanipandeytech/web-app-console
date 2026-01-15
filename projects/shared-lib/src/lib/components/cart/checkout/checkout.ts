@@ -23,7 +23,7 @@ export class Checkout {
   private globalFunctionService = inject(GlobalFunctionService);
   private router = inject(Router);
   private globalService = inject(GlobaCommonlService);
-  private signalService = inject(SignalService);
+  public signalService = inject(SignalService);
   private http = inject(HttpClient);
   private cd = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
