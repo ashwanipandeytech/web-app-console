@@ -6,6 +6,8 @@ import { Header } from 'shared-lib/components/layout/header/header';
 import { Footer } from 'shared-lib/components/layout/footer/footer';
 import { RazorpayService } from 'shared-lib';
 import { PlatformDetectionService } from 'shared-lib';
+
+import { SignalService } from 'shared-lib';
 import { DataService } from 'shared-lib';
 import { catchError, of } from 'rxjs';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -25,6 +27,7 @@ export class App {
   protected readonly platFormType:string;
   public dataService: any = inject(DataService);
   public razorpayService:any= inject(RazorpayService);
+  public signalService:any=inject(SignalService)
   public platformDetectionService:any= inject(PlatformDetectionService);
   constructor(    private router: Router,
     private activatedRoute: ActivatedRoute){

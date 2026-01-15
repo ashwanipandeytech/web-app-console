@@ -228,25 +228,6 @@
   </div>
 </nav>
 
-<!-- CATEGORY BAR -->
-<div class="category-wrapper border-bottom">
-  <div class="container d-flex align-items-center justify-content-center px-0">
-    <ul class="nav category-nav gap-2 flex-nowrap overflow-auto">
-       @for (item of categoryListData; track $index) {
-        <!-- <pre>{{categoryListData | json}}</pre> -->
-        <li class="nav-item">
-          <a  [routerLink]="['/category-details', item.id]" routerLinkActive="active" class="nav-link fs-14 fw-semibold d-flex align-items-center">
-            <!-- <img src="{{item.thumbnail}}" alt="catImg" width="24px" height="24px" class="me-1"> -->
-            <img src="{{baseUrl}}/{{item.thumbnail}}" alt="catImg" width="24px" height="24px" class="me-1">
-
-            {{ item.name }}
-          </a>
-        </li>
-        }
-    </ul>
-     <!-- <a href="/contact-us" class="shop-btn ms-auto lh-lg">Bulk Order</a> -->
-  </div>
-</div>
 
 <ng-template #cart>
   <a routerLink="/cart" class="cart-item position-relative icon-menu d-inline-block">
@@ -272,12 +253,13 @@
     <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
        <span [hidden]="isLoggedIn">
          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-icon lucide-user-round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
-     <span class="fs-14 d-block">Login</span>
+          <span class="fs-14 d-block">Login</span>
+          <span class="spinner-grow" role="status"></span>
        </span>
         
      
-     <span [hidden]="!isLoggedIn">
-       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-check-icon lucide-user-round-check"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path d="m16 19 2 2 4-4"/></svg>
+     <span [hidden]="!isLoggedIn" class="position-relative">
+       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-check-icon lucide-user-round-check"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path class="text-primary" d="m16 19 2 2 4-4"/></svg>
       <span class="fs-14 d-block">Profile</span>
      </span>
     
@@ -324,6 +306,13 @@
           ><span><i class="fa-solid fa-lg opacity-75 fa-house"></i></span> Address</a
         >
       </li>
+      <li [hidden]="isLoggedIn">
+        <a class="dropdown-item px-3 py-2 fs-14 cursor-pointer" (click)="openLogin()"
+          ><span><i class="fa-solid fa-arrow-right-to-bracket fa-lg opacity-75"></i></span
+          >Login</a
+        >
+      </li>
+      
       <li [hidden]="!isLoggedIn">
         <a class="dropdown-item px-3 py-2 fs-14 cursor-pointer" (click)="logout()"
           ><span><i class="fa-solid fa-lg opacity-75 fa-arrow-right-from-bracket"></i></span
@@ -334,6 +323,26 @@
   </div>
   }
 </ng-template>
+
+<!-- CATEGORY BAR -->
+<div class="category-wrapper border-bottom">
+  <div class="container d-flex align-items-center justify-content-center px-0">
+    <ul class="nav category-nav gap-2 flex-nowrap overflow-auto">
+       @for (item of categoryListData; track $index) {
+        <!-- <pre>{{categoryListData | json}}</pre> -->
+        <li class="nav-item">
+          <a  [routerLink]="['/category-details', item.id]" routerLinkActive="active" class="nav-link fs-14 fw-semibold d-flex align-items-center">
+            <!-- <img src="{{item.thumbnail}}" alt="catImg" width="24px" height="24px" class="me-1"> -->
+            <img src="{{baseUrl}}/{{item.thumbnail}}" alt="catImg" width="24px" height="24px" class="me-1">
+
+            {{ item.name }}
+          </a>
+        </li>
+        }
+    </ul>
+     <!-- <a href="/contact-us" class="shop-btn ms-auto lh-lg">Bulk Order</a> -->
+  </div>
+</div>
 
 <!-- General Settings -->
 <!-- <pre> {{this.dataService.getAllGeneralSettings() | json}} </pre> -->

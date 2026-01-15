@@ -37,7 +37,9 @@ export class AddressSectionComponent implements OnInit {
     //console.log('data==>',this.data);
     effect(() => {
       if (this.signalService.userLoggedIn()) {
+        this.currentUser = JSON.parse(localStorage.getItem('user') || 'null');
         this.getAddressList();
+        
         this.cd.detectChanges();
       }
 
@@ -49,7 +51,7 @@ export class AddressSectionComponent implements OnInit {
       console.info('res', res)
       if (res.result == 'success') {
         this.getAddressList();
-        this.cd.detectChanges();
+        //this.cd.detectChanges();
       }
       //console.log('==>',res);
     })
@@ -59,7 +61,7 @@ export class AddressSectionComponent implements OnInit {
     let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
 
     if (!isLoggedIn) {
-
+      this.addressListData = []
       this.signalService.openLoginPopup.set(true)
       return;
 
@@ -77,7 +79,7 @@ export class AddressSectionComponent implements OnInit {
     ).subscribe((response: any) => {
       if (response.success == true) {
         this.addressListData = response.data;
-        //console.log('this.addressListData==>',this.addressListData);
+        console.log('this.addressListData==>', this.addressListData);
         this.isLoading = false;
         this.cd.detectChanges();
       }

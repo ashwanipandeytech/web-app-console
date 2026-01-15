@@ -1,4 +1,11 @@
-import { ChangeDetectorRef, Component, inject, Input, Output, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  Input,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -31,21 +38,21 @@ export class Login {
   public globalFunctionService: any = inject(GlobalFunctionService);
   public signalService: any = inject(SignalService);
   private cd = inject(ChangeDetectorRef);
-  forgotStep!:| 'select'| 'phone'| 'otp'| 'reset-password'| 'email';
+  forgotStep!: 'select' | 'phone' | 'otp' | 'reset-password' | 'email';
   // readonly dialog = inject(MatDialog);
-  @Output () loginData:any;
+  @Output() loginData: any;
   isSignUp = false;
   signupForm!: FormGroup;
   loginform!: FormGroup;
-  forgotPhoneForm!:FormGroup;
-  otpForm!:FormGroup;
+  forgotPhoneForm!: FormGroup;
+  otpForm!: FormGroup;
   submitted: boolean = false;
   submittedRegister: boolean = false;
   isCheckoutPage: boolean = false;
   showCurrentPassword: boolean = false;
   showNewPassword: boolean = false;
   showConfirmPassword: boolean = false;
-  isForgotPwd: boolean=false;
+  isForgotPwd: boolean = false;
   forgotEmailForm!: FormGroup;
   resetPasswordForm!: FormGroup;
   resetPasswordVia: any;
@@ -57,7 +64,7 @@ export class Login {
     private fb: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute
-  ) {    
+  ) {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.isCheckoutPage = params['checkout'] === 'true' ? true : false;
 
@@ -68,116 +75,118 @@ export class Login {
     this.loginForm();
     this.initForgotPasswordForm();
   }
-  ngOnInit(){
+  ngOnInit() {
     //console.log('data==>',this.loginData);
-        if (this.loginData) {
-        this.isForgotPwd = true;
-        this.forgotStep = 'reset-password';
-        }
+    if (this.loginData) {
+      this.isForgotPwd = true;
+      this.forgotStep = 'reset-password';
+    }
   }
   timer = 60;
-otpTimerRunning = false;
-interval: any;
+  otpTimerRunning = false;
+  interval: any;
 
-startOtpTimer() {
-  this.timer = 60;
-  this.otpTimerRunning = true;
+  startOtpTimer() {
+    this.timer = 60;
+    this.otpTimerRunning = true;
 
-  this.interval = setInterval(() => {
-    this.timer--;
-    this.cd.detectChanges();
-    if (this.timer === 0) {
-      clearInterval(this.interval);
-      this.otpTimerRunning = false;
-    this.cd.detectChanges();
-    }
-  }, 1000);
-}
-sendOtp(via:any='') {
-  if (this.forgotEmailForm.invalid) return;
-  let payload = {
-    email:this.forgotEmailForm.value.email,
-    via:via
+    this.interval = setInterval(() => {
+      this.timer--;
+      this.cd.detectChanges();
+      if (this.timer === 0) {
+        clearInterval(this.interval);
+        this.otpTimerRunning = false;
+        this.cd.detectChanges();
+      }
+    }, 1000);
   }
-  this.dataService.post(payload,'auth/forgot-password').pipe(
-    catchError(err => {
-      console.error('Error:', err);
-      return of(null);
-    })
-  )
-  .subscribe((res: any) => {
-    if (res.success == true) {  
-      //console.log('Response:', res);
-        if (via == 'otp') {
-          this.startOtpTimer();
-          this.forgotStep = 'otp';
+  sendOtp(via: any = '') {
+    if (this.forgotEmailForm.invalid) return;
+    let payload = {
+      email: this.forgotEmailForm.value.email,
+      via: via,
+    };
+    this.dataService
+      .post(payload, 'auth/forgot-password')
+      .pipe(
+        catchError((err) => {
+          console.error('Error:', err);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        if (res.success == true) {
+          //console.log('Response:', res);
+          if (via == 'otp') {
+            this.startOtpTimer();
+            this.forgotStep = 'otp';
+          } else {
+            this.closePopup();
+          }
+          this.globalService.showMsgSnackBar(res);
         }
-        else{
-             this.closePopup();
-
+      });
+    // API CALL: send OTP
+  }
+  resendOtp() {
+    this.startOtpTimer();
+    // this.forgotStep = 'otp';
+    let payload = {
+      email: this.forgotEmailForm.value.email,
+      type: 'forgot_password',
+    };
+    this.dataService
+      .post(payload, 'auth/resend-otp')
+      .pipe(
+        catchError((err) => {
+          console.error('Error:', err);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        if (res.success == true) {
+          //console.log('Response:', res);
+          this.globalService.showMsgSnackBar(res);
         }
-        this.globalService.showMsgSnackBar(res);
-         }
-       });
-  // API CALL: send OTP
-}
-resendOtp(){
-   this.startOtpTimer();
-  // this.forgotStep = 'otp';
-  let payload = {
-  email: this.forgotEmailForm.value.email,
-  type: "forgot_password"
+      });
+  }
+
+  setPassword() {
+    let payload: any;
+    let apiUrl: any;
+    if (this.resetPasswordForm.invalid) return;
+    if (this.resetPasswordVia == 'otp') {
+      payload = {
+        email: this.forgotEmailForm.value.email,
+        password: this.resetPasswordForm.value.password,
+        password_confirmation: this.resetPasswordForm.value.confirmPassword,
+      };
+      apiUrl = 'auth/reset-password';
+    } else {
+      payload = {
+        email: this.loginData?.email,
+        token: this.loginData?.token,
+        password: this.resetPasswordForm.value.password,
+        password_confirmation: this.resetPasswordForm.value.confirmPassword,
+      };
+      apiUrl = 'auth/reset-password-token';
     }
-  this.dataService.post(payload,'auth/resend-otp').pipe(
-         catchError(err => {
-           console.error('Error:', err);
-           return of(null);
-         })
-       )
-       .subscribe((res: any) => {
-         if (res.success == true) {  
-           //console.log('Response:', res);
-           this.globalService.showMsgSnackBar(res);
-         }
-       });
-}
-
-setPassword(){
-  let payload:any;
-  let apiUrl:any;
-  if (this.resetPasswordForm.invalid) return;
-  if (this.resetPasswordVia == 'otp') {  
-    payload = {
-     email: this.forgotEmailForm.value.email,
-     password: this.resetPasswordForm.value.password,
-     password_confirmation: this.resetPasswordForm.value.confirmPassword
-   }
-   apiUrl = 'auth/reset-password';
+    this.dataService
+      .post(payload, apiUrl)
+      .pipe(
+        catchError((err) => {
+          console.error('Error:', err);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        if (res.success == true) {
+          //console.log('Response:', res);
+          this.globalService.showMsgSnackBar(res);
+          this.closePopup();
+        }
+      });
   }
-  else{
- payload = {
-     email: this.loginData?.email,
-     token:this.loginData?.token,
-     password: this.resetPasswordForm.value.password,
-     password_confirmation: this.resetPasswordForm.value.confirmPassword
-   }
-   apiUrl = 'auth/reset-password-token';
-  }
- this.dataService.post(payload,apiUrl).pipe(
-         catchError(err => {
-           console.error('Error:', err);
-           return of(null);
-         })
-       )
-       .subscribe((res: any) => {
-         if (res.success == true) {  
-           //console.log('Response:', res);
-           this.globalService.showMsgSnackBar(res);
-           this.closePopup();
-         }
-       });
-
-}
   signUpForm() {
     this.signupForm = this.fb.group({
       name: ['', Validators.required],
@@ -200,24 +209,24 @@ setPassword(){
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       remember: [false],
-
     });
   }
-  addAddress(address:any){
-     this.dataService.post(address, 'addresses')
-       .pipe(
-         catchError(err => {
-           console.error('Error:', err);
-           return of(null);
-         })
-       )
-       .subscribe((res: any) => {
-         //console.log('Response:', res);
-         if (res.success == true) {  
-          this.closePopup(); 
+  addAddress(address: any) {
+    this.dataService
+      .post(address, 'addresses')
+      .pipe(
+        catchError((err) => {
+          console.error('Error:', err);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        //console.log('Response:', res);
+        if (res.success == true) {
+          this.closePopup();
           //  this.globalService.showMsgSnackBar(res);
-         }
-       });
+        }
+      });
   }
   register() {
     //console.log('this.signupForm==>', this.signupForm.invalid);
@@ -226,8 +235,8 @@ setPassword(){
       // this.signupForm.markAllAsTouched();
       return;
     } else {
-    let isNonUserToken: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
-       let formData = this.signupForm.value;
+      let isNonUserToken: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+      let formData = this.signupForm.value;
       formData.guest_token = isNonUserToken;
       this.dataService
         .post(formData, 'auth/register')
@@ -246,10 +255,10 @@ setPassword(){
             this.signalService.user.set(res.data);
 
             // let tempAddress: any = JSON.parse(localStorage.getItem('tempAddress') || 'null');
-              // if (tempAddress !=null) {
-              //   this.addAddress(tempAddress);
-              // }
-              // let isNonUserToken: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+            // if (tempAddress !=null) {
+            //   this.addAddress(tempAddress);
+            // }
+            // let isNonUserToken: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
             if (isNonUserToken) {
               localStorage.removeItem('GUEST_TOKEN');
             }
@@ -287,29 +296,27 @@ setPassword(){
     }
     // //console.log("Form Data:", this.signupForm.value);
   }
-  closePopup(action:any=''){
+  closePopup(action: any = '') {
     if (action == 'deny') {
-    // this.activeModal.close({result:null});
-    this.activeModal.dismiss();
-     this.router.navigate(['/']).then(() => {
-              window.location.reload(); // Reload the page after navigating
-            });
-    
-      // return;
-    }
-    else{
+      // this.activeModal.close({result:null});
+      this.activeModal.dismiss();
+      this.router.navigate(['/']).then(() => {
+        window.location.reload(); // Reload the page after navigating
+      });
 
-      this.activeModal.close({result:'success'});
+      // return;
+    } else {
+      this.activeModal.close({ result: 'success' });
       //console.log('enter login');
     }
-    
+
     this.cd.detectChanges();
   }
   loginUser() {
     let isNonUserToken: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
-        // if (isNonUserToken) {
-        //   localStorage.removeItem('GUEST_TOKEN');
-        // }
+    // if (isNonUserToken) {
+    //   localStorage.removeItem('GUEST_TOKEN');
+    // }
     this.submitted = true;
     if (this.loginform.invalid) {
       // this.loginform.markAllAsTouched();
@@ -330,14 +337,14 @@ setPassword(){
           // //console.log('Response:', res.error.message);
           if (res.success == true) {
             this.globalService.showMsgSnackBar(res);
-              //  let tempAddress: any = JSON.parse(localStorage.getItem('tempAddress') || 'null');
-              // if (tempAddress !=null) {
-              //   this.addAddress(tempAddress);
-              // }
+            //  let tempAddress: any = JSON.parse(localStorage.getItem('tempAddress') || 'null');
+            // if (tempAddress !=null) {
+            //   this.addAddress(tempAddress);
+            // }
             // localStorage.setItem('user', JSON.stringify(res.data));
             // let isNonUserToken: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
             // if (isNonUserToken) {
-              localStorage.removeItem('GUEST_TOKEN');
+            localStorage.removeItem('GUEST_TOKEN');
 
             // }
             //make a signal for emiting the user state
@@ -346,10 +353,9 @@ setPassword(){
             localStorage.setItem('isLoggedIn', JSON.stringify(true));
             this.globalFunctionService.getCount();
             this.signalService.userLoggedIn.set(true);
-           setTimeout(() => {
-            
-             this.closePopup();
-           }, 0);
+            setTimeout(() => {
+              this.closePopup();
+            }, 0);
           } else if (res.error && res.error.message) {
             //console.log('error  :', res.error.message);
             this.globalService.showMsgSnackBar(res.error);
@@ -404,95 +410,91 @@ setPassword(){
       this.showConfirmPassword = !this.showConfirmPassword;
     }
   }
-  forgotPaaword(){
+  forgotPaaword() {
     this.isForgotPwd = true;
-
   }
-  initForgotPasswordForm(){
-//     this.forgotPhoneForm = this.fb.group({
-//   phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]]
-// })
-this.otpForm = this.fb.group({
-  otp: ['', [Validators.required, Validators.minLength(4)]]
-});
+  initForgotPasswordForm() {
+    //     this.forgotPhoneForm = this.fb.group({
+    //   phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]]
+    // })
+    this.otpForm = this.fb.group({
+      otp: ['', [Validators.required, Validators.minLength(4)]],
+    });
 
-this.forgotEmailForm = this.fb.group({
-  email: ['', [Validators.required, Validators.email]]
-});
+    this.forgotEmailForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+    });
 
-this.resetPasswordForm = this.fb.group({
-  password: ['', [Validators.required, Validators.minLength(6)]],
-  confirmPassword: ['', Validators.required]
-}, { validators: this.passwordMatch });
+    this.resetPasswordForm = this.fb.group(
+      {
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', Validators.required],
+      },
+      { validators: this.passwordMatch }
+    );
   }
   verifyOtp() {
-  if (this.otpForm.invalid) return;
-  // API CALL: verify OTP
+    if (this.otpForm.invalid) return;
+    // API CALL: verify OTP
     let payload = {
-      email:this.forgotEmailForm.value.email,
-      otp:this.otpForm.value.otp
+      email: this.forgotEmailForm.value.email,
+      otp: this.otpForm.value.otp,
+    };
+    this.dataService
+      .post(payload, 'auth/verify-forgot-otp')
+      .pipe(
+        catchError((err) => {
+          console.error('Error:', err);
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        if (res.success == true) {
+          //console.log('Response:', res);
+          this.globalService.showMsgSnackBar(res);
+          this.forgotStep = 'reset-password';
+        } else if (res.success == false) {
+          this.globalService.showMsgSnackBar(res);
+        }
+      });
+  }
+  passwordMatch(group: FormGroup) {
+    return group.get('password')?.value === group.get('confirmPassword')?.value
+      ? null
+      : { mismatch: true };
+  }
+  sendResetEmail() {
+    if (this.forgotEmailForm.invalid) return;
+
+    // API CALL: send reset email
+  }
+
+  goBack() {
+    //console.log('this.forgotStep==>',this.forgotStep);
+
+    if (this.forgotStep == 'select') {
+      this.isForgotPwd = false;
     }
- this.dataService.post(payload,'auth/verify-forgot-otp').pipe(
-         catchError(err => {
-           console.error('Error:', err);
-           return of(err);
-         })
-       )
-       .subscribe((res: any) => {
-         if (res.success == true) {  
-           //console.log('Response:', res);
-           this.globalService.showMsgSnackBar(res);
-           this.forgotStep = 'reset-password';
-
-         }
-         else if (res.success == false){
-           this.globalService.showMsgSnackBar(res);
-
-         }
-       });
-
-
-
-}
-passwordMatch(group: FormGroup) {
-  return group.get('password')?.value === group.get('confirmPassword')?.value
-    ? null
-    : { mismatch: true };
-}
-sendResetEmail() {
-  if (this.forgotEmailForm.invalid) return;
-
-  // API CALL: send reset email
-}
-
-goBack(){
-  //console.log('this.forgotStep==>',this.forgotStep);
-
-  if (this.forgotStep == 'select') {
-    this.isForgotPwd = false;
-  }
-  if (this.forgotStep == 'phone') {
-    this.forgotStep = 'select';
-  }
-   if (this.forgotStep == 'otp') {
-    this.forgotStep = 'phone';
-  }
+    if (this.forgotStep == 'phone') {
+      this.forgotStep = 'select';
+    }
+    if (this.forgotStep == 'otp') {
+      this.forgotStep = 'phone';
+    }
     if (this.forgotStep == 'email') {
-    this.forgotStep = 'select';
+      this.forgotStep = 'select';
+    }
+    if (this.resetPasswordVia == 'otp' && this.forgotStep == 'reset-password') {
+      this.forgotStep = 'otp';
+    } else if (this.resetPasswordVia == 'email' && this.forgotStep == 'reset-password') {
+      this.forgotStep = 'email';
+    }
+    //   if (this.forgotStep == 'phone') {
+    //   this.forgotStep = 'select';
+    // }
   }
-  if (this.resetPasswordVia == 'otp' && this.forgotStep == 'reset-password') {
-    this.forgotStep = 'otp';
-  }
-  else if ( this.resetPasswordVia == 'email' && this.forgotStep == 'reset-password') {
+  resetVia(via: any) {
+    this.resetPasswordVia = via;
     this.forgotStep = 'email';
   }
-  //   if (this.forgotStep == 'phone') {
-  //   this.forgotStep = 'select';
-  // }
-  
-}
-resetVia(via:any){
-this.resetPasswordVia = via;
-  this.forgotStep='email';
-}
 }

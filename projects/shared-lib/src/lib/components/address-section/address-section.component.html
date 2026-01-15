@@ -1,8 +1,8 @@
-@if(isLoading){
+<!-- @if(isLoading){
 <div class="loader d-flex align-items-center justify-content-center">
   <div class="spinner-border spinner-border-lg text-primary" role="status"></div>
 </div>
-}
+} -->
 
 @if(!isLoading){
   <div class="top-section d-flex align-items-center border-bottom pb-1 mb-4 px-3 px-md-0">
@@ -36,19 +36,20 @@
             </button>
           </h5>
           <div class="info-list">
+           
             <ul class="d-flex flex-column gap-2">
               <li>
-                <span class="info-title d-inline-block fw-semibold">Name :</span> {{ item.name }}
+                <span class="info-title d-inline-block fw-semibold">Name :</span> {{item.name}}
               </li>
               <li>
                 <span class="info-title d-inline-block fw-semibold">Email :</span
                 >{{ currentUser.user.email }}
               </li>
               <li>
-                <span class="info-title d-inline-block fw-semibold">Phone :</span>{{ item.phone }}
+                <span class="info-title d-inline-block fw-semibold">Phone :</span>{{item.phone}}
               </li>
               <li>
-                <span class="info-title d-inline-block fw-semibold">City :</span>{{ item.city }}
+                <span class="info-title d-inline-block fw-semibold">City :</span>{{item.city}}
               </li>
               <li>
                 <span class="info-title d-inline-block fw-semibold">Zip :</span
