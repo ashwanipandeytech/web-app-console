@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, ElementRef, inject, ViewChild } from '@angular/core';
 import { DataService } from '../../../services/data-service';
 import { GlobaCommonlService } from '../../../services/global-common.service';
 import { catchError, of } from 'rxjs';
@@ -6,61 +6,81 @@ import { GlobalFunctionService } from '../../../services/global-function.service
 import { NoDataComponent } from '../../no-data/no-data.component';
 import { CommonModule } from '@angular/common';
 declare var bootstrap: any;
-
+import { SignalService } from '../../../services/signal-service';
 @Component({
   selector: 'web-wishlist',
-  imports: [NoDataComponent,CommonModule],
+  imports: [NoDataComponent, CommonModule],
   templateUrl: './wishlist.html',
   styleUrl: './wishlist.scss'
 })
 export class Wishlist {
   @ViewChild('removeProduct') removeProduct!: ElementRef;
-  public dataService:any = inject(DataService);
-  public globalFunctionService:any = inject(GlobalFunctionService);
-  public globalCommonService:any = inject(GlobaCommonlService)
+  public dataService: any = inject(DataService);
+  public signalService: any = inject(SignalService);
+  public globalFunctionService: any = inject(GlobalFunctionService);
+  public globalCommonService: any = inject(GlobaCommonlService)
   public cd = inject(ChangeDetectorRef);
-  wishListData: any=[];
+  wishListData: any = [];
   WishListId: any;
-  isLoading: boolean=true;
-ngOnInit(){
- this.getWishlistData();
-}
+  isLoading: boolean = true;
+  constructor() {
 
 
-getWishlistData(){
-  this.isLoading = true;
-  this.dataService.get('wishlist').subscribe((res:any)=>{
-  this.wishListData = res.data;
-  this.isLoading = false;
+    effect(() => {
+      if (this.signalService.userLoggedIn()) {
+        this.getWishlistData();
+        this.cd.detectChanges();
+      }
 
-  this.cd.markForCheck();
-  })
-}
-removeWishlist(id:any){
-this.WishListId = id;
-}
-remove(){
-  this.dataService.delete(`wishlist/${this.WishListId}`).subscribe((res:any)=>{
-    let response = {
-        message:'Item Removed from Wish List',
-        success:true
+    });
+  }
+  ngOnInit() {
+     let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+
+    if (!isLoggedIn) {
+
+      this.signalService.openLoginPopup.set(true)
+      return;
+
     }
-     const modal = bootstrap.Modal.getInstance(
+    this.getWishlistData();
+  }
+
+
+  getWishlistData() {
+    this.isLoading = true;
+    this.dataService.get('wishlist').subscribe((res: any) => {
+      this.wishListData = res.data;
+      this.isLoading = false;
+
+      this.cd.markForCheck();
+    })
+  }
+  removeWishlist(id: any) {
+    this.WishListId = id;
+  }
+  remove() {
+    this.dataService.delete(`wishlist/${this.WishListId}`).subscribe((res: any) => {
+      let response = {
+        message: 'Item Removed from Wish List',
+        success: true
+      }
+      const modal = bootstrap.Modal.getInstance(
         this.removeProduct.nativeElement
       );
       modal.hide();
-  this.globalCommonService.showMsgSnackBar(response);
-  this.getWishlistData();
-  this.cd.markForCheck();
-  })
-}
- addToCart(data: any) {
-      let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+      this.globalCommonService.showMsgSnackBar(response);
+      this.getWishlistData();
+      this.cd.markForCheck();
+    })
+  }
+  addToCart(data: any) {
+    let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
 
     let finalData = {
       product_id: data.id,
       quantity: '1',
-      guest_token:isGuest
+      guest_token: isGuest
     };
     // //console.log('finalData==.',finalData);
     // return;

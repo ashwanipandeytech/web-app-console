@@ -291,6 +291,10 @@ setPassword(){
     if (action == 'deny') {
     // this.activeModal.close({result:null});
     this.activeModal.dismiss();
+     this.router.navigate(['/']).then(() => {
+              window.location.reload(); // Reload the page after navigating
+            });
+    
       // return;
     }
     else{

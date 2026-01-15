@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
@@ -9,82 +9,101 @@ import { NoDataComponent } from '../no-data/no-data.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AddAddressModal } from '../../model/add-address-modal/add-address-modal';
 declare var bootstrap: any;
-
+import { SignalService } from '../../services/signal-service';
 @Component({
   selector: 'app-address-section',
   templateUrl: './address-section.component.html',
-  imports:[FormsModule,CommonModule,NoDataComponent],
+  imports: [FormsModule, CommonModule, NoDataComponent],
   styleUrls: ['./address-section.component.scss']
 })
 export class AddressSectionComponent implements OnInit {
   @ViewChild('removeAddressModal') removeAddressModal!: ElementRef;
-data:any;
-  addressListData: any=[];
-private dataService = inject(DataService);
-public globalFunctionService = inject(GlobalFunctionService);
-private globalService = inject(GlobaCommonlService);
-private cd = inject(ChangeDetectorRef);
+  data: any;
+  addressListData: any = [];
+  private dataService = inject(DataService);
+  public globalFunctionService = inject(GlobalFunctionService);
+  private globalService = inject(GlobaCommonlService);
+  private signalService = inject(SignalService);
+
+  private cd = inject(ChangeDetectorRef);
   readonly ngbModal = inject(NgbModal);
 
   currentUser: any;
   deleteAddressId: any;
-  isLoading: boolean=true;
+  isLoading: boolean = true;
   constructor() {
-    //console.log('data==>',this.data);
-    
-   }
-openAddressPopup(){
-  this.globalFunctionService.openAddressPopup().then((res:any)=>{
-    console.info('res',res)
-if (res.result == 'success') {
-    this.getAddressList();
-  this.cd.detectChanges();
-}
-     //console.log('==>',res);
-   })
 
-}
+
+    //console.log('data==>',this.data);
+    effect(() => {
+      if (this.signalService.userLoggedIn()) {
+        this.getAddressList();
+        this.cd.detectChanges();
+      }
+
+    });
+
+  }
+  openAddressPopup() {
+    this.globalFunctionService.openAddressPopup().then((res: any) => {
+      console.info('res', res)
+      if (res.result == 'success') {
+        this.getAddressList();
+        this.cd.detectChanges();
+      }
+      //console.log('==>',res);
+    })
+
+  }
   ngOnInit() {
+    let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+
+    if (!isLoggedIn) {
+
+      this.signalService.openLoginPopup.set(true)
+      return;
+
+    }
     this.getAddressList();
-     this.currentUser = JSON.parse(localStorage.getItem('user') || 'null');
+    this.currentUser = JSON.parse(localStorage.getItem('user') || 'null');
   }
 
-   getAddressList(isLoading:boolean=true){
+  getAddressList(isLoading: boolean = true) {
     this.isLoading = isLoading;
-         this.dataService.get('addresses').pipe(
-        catchError((error) => {
-          return of(null);
-        })
-      ).subscribe((response: any) => {
-        if (response.success == true) {
-          this.addressListData = response.data;
-          //console.log('this.addressListData==>',this.addressListData);
-          this.isLoading = false;
-          this.cd.detectChanges();
-        }
+    this.dataService.get('addresses').pipe(
+      catchError((error) => {
+        return of(null);
       })
-    }
-    setDeleteId(id: any) {
-  this.deleteAddressId = id;
-}
-deleteAddress() {
-  //console.log('Deleting ID:', this.deleteAddressId);
+    ).subscribe((response: any) => {
+      if (response.success == true) {
+        this.addressListData = response.data;
+        //console.log('this.addressListData==>',this.addressListData);
+        this.isLoading = false;
+        this.cd.detectChanges();
+      }
+    })
+  }
+  setDeleteId(id: any) {
+    this.deleteAddressId = id;
+  }
+  deleteAddress() {
+    //console.log('Deleting ID:', this.deleteAddressId);
 
-  this.dataService.delete(`addresses/${this.deleteAddressId}`).subscribe((res:any) => {
-    // uncomment below 
-    // if (res.success) {
+    this.dataService.delete(`addresses/${this.deleteAddressId}`).subscribe((res: any) => {
+      // uncomment below 
+      // if (res.success) {
       // this.globalService.showMsgSnackBar(res);
       this.getAddressList();
-    const modal = bootstrap.Modal.getInstance(
+      const modal = bootstrap.Modal.getInstance(
         this.removeAddressModal.nativeElement
       );
       modal.hide();
-    // }
- 
-  });
-}
+      // }
 
-editAddress(item:any){
+    });
+  }
+
+  editAddress(item: any) {
     const modalRef: NgbModalRef = this.ngbModal.open(AddAddressModal, {
       windowClass: 'mobile-modal',
       scrollable: true,
@@ -97,7 +116,7 @@ editAddress(item:any){
         this.getAddressList();
         this.cd.detectChanges();
       }
-      
+
       //console.log('Modal closed with result:', result);
       // return res;
     }).catch((reason) => {
@@ -106,5 +125,5 @@ editAddress(item:any){
 
     });
     // return modalRef.result;
-}
+  }
 }

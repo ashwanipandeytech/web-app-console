@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { catchError, of } from 'rxjs';
@@ -11,8 +11,11 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DynamicPopup } from '../confirmationPopup/confirmationPopup.component';
 import { GlobaCommonlService } from '../../services/global-common.service';
 import { GlobalFunctionService } from '../../services/global-function.service';
+
+
 import { Router, RouterModule } from '@angular/router';
 import { Login } from '../auth/login/login';
+import { SignalService } from '../../services/signal-service';
 declare const google: any;
 declare const bootstrap: any;
 
@@ -28,6 +31,9 @@ export class CartCommon {
   private dataService: any = inject(DataService);
   private globalService: any = inject(GlobaCommonlService);
   private globalFunctionService = inject(GlobalFunctionService);
+  private signalService = inject(SignalService);
+
+
   private route = inject(Router);
   readonly dialog = inject(MatDialog);
   readonly ngbModal = inject(NgbModal);
@@ -56,6 +62,18 @@ export class CartCommon {
     } else {
       this.isLoggedIn = true;
     }
+
+    effect(() => {
+    //  this.isLoggedIn = this.signalService.userLoggedIn();
+      if (this.signalService.userLoggedIn()) {
+        this.carList()
+        this.cd.detectChanges();
+      }
+
+
+
+    });
+
   }
   newAddress() {
     this.isNewAddress = true;
