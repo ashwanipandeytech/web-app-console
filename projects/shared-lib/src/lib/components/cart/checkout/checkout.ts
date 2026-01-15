@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, ElementRef, inject, ViewChild } from '@angular/core';
 import { DataService } from '../../../services/data-service';
 import { catchError, map, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { GlobaCommonlService } from '../../../services/global-common.service';
 import { Router, RouterLink } from '@angular/router';
 import { GlobalFunctionService } from '../../../services/global-function.service';
+import { SignalService } from '../../../services/signal-service';
 declare const bootstrap: any;
 
 @Component({
@@ -22,6 +23,7 @@ export class Checkout {
   private globalFunctionService = inject(GlobalFunctionService);
   private router = inject(Router);
   private globalService = inject(GlobaCommonlService);
+  private signalService = inject(SignalService);
   private http = inject(HttpClient);
   private cd = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
@@ -40,25 +42,50 @@ export class Checkout {
   addressListData: any;
   AllAddressList: any;
   changedSelectedAddress: any;
-  addressNotfound: boolean=false;
-  appliedCoupon: any='';
+  addressNotfound: boolean = false;
+    appliedCoupon: any='';
   gstSummary: any={};
   isLoading: boolean=true;
+  constructor() {
+
+    effect(() => {
+      if (this.signalService.userLoggedIn()) {
+
+        this.initializeData();
+
+        this.cd.detectChanges();
+      }
+
+    });
+  }
 
   ngOnInit() {
+
+    this.initializeData()
+    let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+
+    if (!isLoggedIn) {
+
+      this.signalService.openLoginPopup.set(true)
+      return;
+
+    }
+
+
+  }
+  initializeData() {
     let userString: any = localStorage.getItem('user'); // this is a string
     if (userString) {
       let userObj = JSON.parse(userString);            // convert to object
       this.email = userObj.user.email;                  // access email
       //console.log('Email:', this.email);
     }
+
+
     this.createCheckoutBillingForm();
     this.carList();
     this.loadCountries();
     this.getAddressList();
-
-    let user: any = JSON.stringify(localStorage.getItem('user'));
-
   }
 
   carList() {
@@ -301,17 +328,17 @@ export class Checkout {
   }
   placeOrder() {
     // if (this.selectedPaymentMethod == false) {
-      // this.isSelectPaymentMethodInput = false;
-      //console.log('this.addressListData==>',this.addressListData);
-      
-      if (!this.addressListData || this.addressListData == undefined) {
-        this.addressNotfound = true;
-         return;
-      }
-      //  if (this.checkoutForm.invalid) {
-      //   this.checkoutForm.markAllAsTouched();
-      // }
-      // return;
+    // this.isSelectPaymentMethodInput = false;
+    //console.log('this.addressListData==>',this.addressListData);
+
+    if (!this.addressListData || this.addressListData == undefined) {
+      this.addressNotfound = true;
+      return;
+    }
+    //  if (this.checkoutForm.invalid) {
+    //   this.checkoutForm.markAllAsTouched();
+    // }
+    // return;
     // }
 
     this.openCheckout(this.addressListData.id);
@@ -479,32 +506,32 @@ export class Checkout {
 
     })
   }
- async editAddress(address: any) {
+  async editAddress(address: any) {
     let addresss = address;
-     this.globalFunctionService.openAddressPopup(addresss).then((res:any)=>{
-        if (res.result ==='success') {
-          this.cd.detectChanges();
-          this.addressNotfound = false;
-        }
-        this.getAddressList();
+    this.globalFunctionService.openAddressPopup(addresss).then((res: any) => {
+      if (res.result === 'success') {
+        this.cd.detectChanges();
+        this.addressNotfound = false;
+      }
+      this.getAddressList();
       //console.log('addressResp==========>',res);
     })
-    
+
     this.cd.detectChanges();
   }
-  async addAddress(){
+  async addAddress() {
     let addresss = {
-      isNewAddress:true
+      isNewAddress: true
     };
-      this.globalFunctionService.openAddressPopup(addresss).then((res:any)=>{
-        if (res.result ==='success') {
-          this.cd.detectChanges();
-          this.addressNotfound = false;
-        }
-        this.getAddressList();
+    this.globalFunctionService.openAddressPopup(addresss).then((res: any) => {
+      if (res.result === 'success') {
+        this.cd.detectChanges();
+        this.addressNotfound = false;
+      }
+      this.getAddressList();
       //console.log('addressResp==========>',res);
     })
-    
+
     this.cd.detectChanges();
 
   }

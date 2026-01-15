@@ -166,14 +166,23 @@ export class ProductDetails {
             this.globalFunctionService.getCount();
           this.globalService.showMsgSnackBar(res);
           this.cd.detectChanges();
-          if (action == 'buy') {
-            if (this.isLogin) {
-              this.router.navigate(['/checkout'])
-            }
-            else{
-              this.openLogin();
-            }
-          }
+
+      //       effect(() => {
+      // this.isLoggedIn = this.signalService.userLoggedIn();
+      // if (this.signalService.allCounts() != null) {
+      //   this.countsList = this.signalService.allCounts();
+      //   this.cd.detectChanges();
+      // }
+          // if (action == 'buy') {
+          //   if (this.isLogin) {
+          //     this.router.navigate(['/checkout'])
+          //   }
+          //   else{
+          //     this.openLogin();
+          //   }
+          // }
+
+          this.router.navigate(['/checkout'])
           // this.globalFunctionService.getCount();
         }
         // if (res.success ==true) {
