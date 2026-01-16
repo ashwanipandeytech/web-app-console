@@ -137,6 +137,12 @@
               "projects/frontend/src/styles.scss"
             ]
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFile": "projects/frontend/tsconfig.app.json"
+          }
         }
       }
     },
@@ -233,6 +239,12 @@
               "projects/console-panel/src/styles.scss"
             ]
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFile": "projects/console-panel/tsconfig.app.json"
+          }
         }
       }
     },
@@ -258,6 +270,12 @@
           "builder": "@angular/build:karma",
           "options": {
             "tsConfig": "projects/shared-lib/tsconfig.spec.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFile": "projects/shared-lib/tsconfig.lib.json"
           }
         }
       }
@@ -285,6 +303,12 @@
           "options": {
             "tsConfig": "projects/login-shared-lib/tsconfig.spec.json"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFile": "projects/login-shared-lib/tsconfig.lib.json"
+          }
         }
       }
     },
@@ -310,6 +334,12 @@
           "builder": "@angular/build:karma",
           "options": {
             "tsConfig": "projects/setting-component-shared-lib/tsconfig.spec.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFile": "projects/setting-component-shared-lib/tsconfig.lib.json"
           }
         }
       }
