@@ -6,8 +6,8 @@
 }  -->
 
 @if(!isLoading){
-<div class="top-section d-flex align-items-center border-bottom pb-1 mb-4 px-3 px-md-0">
-  <h3>My Order</h3>
+<div class="top-section d-flex align-items-center border-bottom pb-2 mb-4 px-3 px-md-0">
+  <h3 class="fs-20">My Order</h3>
 </div>
 
 <div class="order-container px-3 px-md-0">
@@ -112,7 +112,7 @@
         <div class="order-container d-flex flex-column gap-3">
           @for (item of orderDetailList.items; track $index) { @if (item.product !=null) {
 
-          <div class="border rounded p-3 wrapper">
+          <div class="rounded p-3 wrapper shadow-sm">
             <div class="row">
               <div class="col-4">
                 <div class="wrapper-img bg-light p-2 rounded-2 h-100">
@@ -138,13 +138,30 @@
                       <span class="fw-semibold d-inline-block config-title">Status</span>
                       <span>Shipped</span>
                     </li>
+                    <!-- <li class="mt-md-2 mt-0">
+                      <span class="fw-semibold d-inline-block config-title">Rating</span>
+                      <span>4/5</span>
+                    </li> -->
                   </ul>
                 </div>
+              </div>
+
+              <div class="rounded-3 py-2 p-3 mt-2" style="background-color: #f1f2f7;">
+                <span class="fw-semibold">Your rating : <span class="text-success">4 star</span></span>
+                <span class="fs-12 d-block">Lorem ipsum dolor sit amet consectetur</span>
               </div>
 
               <hr class="my-3">
 
               <div class="d-flex align-items-center gap-2 justify-content-center flex-wrap">
+                
+                 <button
+                  class="fs-14 btn btn-outline-secondary"
+                  data-bs-toggle="collapse" data-bs-target="#collapseProduct" aria-expanded="false" aria-controls="collapseProduct"
+                >
+                  Rate Product
+                </button>
+
                 <button
                   type="button"
                   class="btn btn-outline-secondary fs-14"
@@ -165,15 +182,7 @@
                 </button>
 
                 <button
-                  class="fs-14 btn btn-outline-secondary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#rateusModal"
-                >
-                  Rate Product
-                </button>
-
-                <button
-                  class="fs-14 btn btn-outline-secondary"
+                  class="fs-14 btn btn-outline-danger"
                   (click)="cancelOrder()"
                   data-bs-toggle="modal"
                   data-bs-target="#confirmCancelOrder"
@@ -181,32 +190,69 @@
                   Cancel Order
                 </button>
               </div>
+
+              <div class="collapse" id="collapseProduct">
+                <div class="card card-body border-primary p-2 mt-2">
+                  <form [formGroup]="rateUsForm" (ngSubmit)="submitRating()">
+                      <p class="mb-0">
+                        How was your product?
+                        <button type="submit" class="shop-btn ms-3 fs-12 sm-btn" [disabled]="rateUsForm.invalid">
+                        Submit
+                      </button>
+                      </p>
+
+                      <!-- ⭐ Star Rating -->
+                      <div class="rating-stars mb-2">
+                        <i
+                          *ngFor="let star of stars; let i = index"
+                          class="fa-star fs-14"
+                          [ngClass]="{
+                            'fa-solid active': i < rateUsForm.value.rating,
+                            'fa-regular': i >= rateUsForm.value.rating
+                          }"
+                          (click)="setRating(i + 1)"
+                        ></i>
+                      </div>
+
+                      <div  class="text-danger small"
+                        *ngIf="rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid">
+                        Please select a rating
+                      </div>
+
+                      <!-- Feedback -->
+                      <textarea
+                        class="form-control"
+                        rows="2"
+                        placeholder="Write your feedback (optional)"
+                        formControlName="comment"
+                      ></textarea>
+
+                    <!-- Footer -->
+                    <!-- <div class="modal-footer border-0">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                      <button type="submit" class="shop-btn ms-2" [disabled]="rateUsForm.invalid">
+                        Submit
+                      </button>
+                    </div> -->
+                  </form>
+                </div>
+              </div>
+
             </div>
           </div>
-
-          <!-- <div class="card border-0 shadow-sm p-3"> -->
-            <!-- <h6 class="fw-semibold mb-3 d-flex align-items-center">
-              Rate your experience
-            </h6> -->
-
-            <!-- <div class="rounded-3 p-3" style="background-color: #f1f2f7">
-              <div class="d-flex align-items-start">
-                <i class="fa-solid fa-truck me-3"></i>
-                <span class="fw-medium text-dark small"> How was your experience </span>
-              </div>
-            </div> -->
-          <!-- </div> -->
 
           } }
 
           <div class="card border-0 shadow-sm p-3">
-            <h6 class="fw-semibold mb-3 d-flex align-items-center">
-              Delivery details
+            <h6 class="fw-semibold mb-2 d-flex align-items-center">
+              Delivery Detail
+              <button type="button" class="shop-btn ms-3 fs-12 sm-btn help-btn">Help</button>
             </h6>
 
             <div class="rounded-3 p-3" style="background-color: #f1f2f7">
               <!-- Address -->
-              <div class="d-flex align-items-start mb-2">
+              <div class="d-flex align-items-center mb-2">
                 <i class="fa-solid fa-location-dot me-2"></i>
                 <span class="fw-medium text-dark small text-capitalize fs-14">
                   {{ orderDetailList?.address?.address_line}},
@@ -225,6 +271,59 @@
               </div>
             </div>
             
+          </div>
+
+           <div class="card border-0 shadow-sm p-3">
+            <h6 class="fw-semibold mb-2 d-flex align-items-center">
+              Rate your experience
+              <button type="button" class="shop-btn ms-3 fs-12 sm-btn help-btn" data-bs-toggle="collapse" data-bs-target="#collapseRateUs" aria-expanded="false" aria-controls="collapseRate">Rate Us</button>           
+            </h6>
+
+            <div class="collapse" id="collapseRateUs">
+                <div class="card card-body border-primary p-2 mb-2">
+                  <form [formGroup]="rateUsForm" (ngSubmit)="submitRating()">
+                      <p class="mb-0">
+                        How was your experience?
+                        <button type="submit" class="shop-btn ms-3 fs-12 sm-btn" [disabled]="rateUsForm.invalid">
+                        Submit
+                      </button>
+                      </p>
+
+                      <!-- ⭐ Star Rating -->
+                      <div class="rating-stars mb-2">
+                        <i
+                          *ngFor="let star of stars; let i = index"
+                          class="fa-star fs-14"
+                          [ngClass]="{
+                            'fa-solid active': i < rateUsForm.value.rating,
+                            'fa-regular': i >= rateUsForm.value.rating
+                          }"
+                          (click)="setRating(i + 1)"
+                        ></i>
+                      </div>
+
+                      <div  class="text-danger small"
+                        *ngIf="rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid">
+                        Please select a rating
+                      </div>
+
+                      <!-- Feedback -->
+                      <textarea
+                        class="form-control"
+                        rows="2"
+                        placeholder="Write your feedback (optional)"
+                        formControlName="comment"
+                      ></textarea>
+                  </form>
+                </div>
+              </div>
+
+            <div class="rounded-3 p-3" style="background-color: #f1f2f7">
+              <div class="d-flex align-items-start">
+                <i class="fa-solid fa-truck me-3"></i>
+                <span class="fw-medium text-dark small"> How was your experience </span>
+              </div>
+            </div>
           </div>
           
         </div>
@@ -260,6 +359,7 @@
     </div>
   </div>
 </div>
+
 <div
   #rateusModal
   class="modal fade"

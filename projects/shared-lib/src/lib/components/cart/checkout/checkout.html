@@ -28,6 +28,33 @@
       <div class="row gy-5 gy-lg-0">
         <div class="col-md-8 col-12">
 
+           <div class="d-flex align-items-center justify-content-between">
+              <h5 class="fs-14 fw-semibold">PRODUCT</h5>
+              <h5 class="fs-14 fw-semibold">TOTAL</h5>
+            </div>
+            <hr class="my-2" />
+            <div class="subtotal product-total px-3">
+              <ul class="product-list gap-2 mb-3">
+                @for(item of cartListData.data; track $index){
+                  <li class="align-items-center d-flex">
+                  <div class="product-info d-flex flex-row align-items-center">
+                      <img
+                      [src]="item?.product?.media?.uploadedImages[0]?.url"
+                      alt="" width="50" height="40px"
+                      class="object-fit-cover rounded-2"
+                    />
+                    <small class="ms-2 fs-14">{{ item.product.title }}</small>
+                    <!-- <p class="paragraph" [innerHtml]="item.product.description"></p> -->
+                  </div>
+                  <div class="price ms-auto">
+                    <small class="fs-14">₹{{ item.product.price_data.finalPrice }}</small>
+                  </div>
+                </li>
+                <hr class="my-1" />
+                }
+              </ul>
+            </div>
+
           <!-- ALL ADDRESSES -->
           @if (AllAddressList?.length>1) {
             <div class="card mb-3">
@@ -92,58 +119,32 @@
             <div class="account-section billing-section p-0">
               <h3 class="wrapper-heading mb-3 ps-3 shadow-sm py-2 fs-18 text-center" style="background-color: #f1f2f7;">Order Summary</h3>
               <div class="order-summery">
-                <div class="subtotal product-total px-3">
-                  <h5 class="wrapper-heading fw-semibold">PRODUCT</h5>
-                  <h5 class="wrapper-heading fw-semibold">TOTAL</h5>
-                </div>
-                <hr />
-                <div class="subtotal product-total px-3">
-                  <ul class="product-list gap-2">
-                    @for(item of cartListData.data; track $index){
-                      <li class="align-items-center">
-                      <div class="product-info d-flex flex-row align-items-center">
-                         <img
-                          [src]="item?.product?.media?.uploadedImages[0]?.url"
-                          alt="" width="50"
-                          class="object-fit-cover rounded-2"
-                        />
-                        <h5 class="wrapper-heading">{{ item.product.title }}</h5>
-                        <!-- <p class="paragraph" [innerHtml]="item.product.description"></p> -->
-                      </div>
-                      <div class="price">
-                        <h5 class="wrapper-heading">₹{{ item.product.price_data.finalPrice }}</h5>
-                      </div>
-                    </li>
-                    }
-                  </ul>
-                </div>
-                <hr />
                <div class="subtotal product-total px-3">
-  <h5 class="wrapper-heading fw-semibold">Subtotal</h5>
-  <h5 class="wrapper-heading">₹{{ gstSummary?.base_total | number:'1.2-2' }}</h5>
-</div>
+                  <h5 class="wrapper-heading fw-semibold">Subtotal</h5>
+                  <h5 class="wrapper-heading">₹{{ gstSummary?.base_total | number:'1.2-2' }}</h5>
+                </div>
 
-<div class="subtotal product-total px-3">
-  <h5 class="wrapper-heading fw-semibold">CGST</h5>
-  <h5 class="wrapper-heading">₹{{ gstSummary?.total_cgst | number:'1.2-2' }}</h5>
-</div>
+                <div class="subtotal product-total px-3">
+                  <h5 class="wrapper-heading fw-semibold">CGST</h5>
+                  <h5 class="wrapper-heading">₹{{ gstSummary?.total_cgst | number:'1.2-2' }}</h5>
+                </div>
 
-<div class="subtotal product-total px-3">
-  <h5 class="wrapper-heading fw-semibold">SGST</h5>
-  <h5 class="wrapper-heading">₹{{ gstSummary?.total_sgst | number:'1.2-2' }}</h5>
-</div>
+                <div class="subtotal product-total px-3">
+                  <h5 class="wrapper-heading fw-semibold">SGST</h5>
+                  <h5 class="wrapper-heading">₹{{ gstSummary?.total_sgst | number:'1.2-2' }}</h5>
+                </div>
 
-<div class="subtotal product-total px-3">
-  <h5 class="wrapper-heading fw-semibold">Total Tax</h5>
-  <h5 class="wrapper-heading">₹{{ gstSummary?.total_tax | number:'1.2-2' }}</h5>
-</div>
+                <div class="subtotal product-total px-3">
+                  <h5 class="wrapper-heading fw-semibold">Total Tax</h5>
+                  <h5 class="wrapper-heading">₹{{ gstSummary?.total_tax | number:'1.2-2' }}</h5>
+                </div>
 
-<div class="subtotal product-total px-3">
-  <h5 class="wrapper-heading fw-semibold">Grand Total</h5>
-  <h5 class="wrapper-heading fw-bold text-success">
-    ₹{{gstSummary?.final_total | number:'1.2-2' }}
-  </h5>
-</div>
+                <div class="subtotal product-total px-3">
+                  <h5 class="wrapper-heading fw-semibold">Grand Total</h5>
+                  <h5 class="wrapper-heading fw-bold text-success">
+                    ₹{{gstSummary?.final_total | number:'1.2-2' }}
+                  </h5>
+                </div>
 
                 <!-- <div class="subtotal product-total px-3">
                   <ul class="product-list">

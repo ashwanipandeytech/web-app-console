@@ -217,6 +217,7 @@
 
     <!-- Right Icons -->
     <div class="d-flex align-items-center gap-md-4 gap-2">
+      <li class="text-nowrap px-3 py-2 fw-semibold bg-light fs-14 rounded d-md-inline-block d-none text-truncate" style="max-width: 250px;">Hello, {{ userName==undefined?'Guest': userName}}</li>
       <div class="text-center small cursor-pointer">
        <ng-container *ngTemplateOutlet="userProfile"></ng-container>
       </div>
@@ -248,13 +249,13 @@
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-icon lucide-user-round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
      <span class="fs-14 d-block">Login</span>
   </a> -->
-  } @if(true) {
+  } 
+  @if(true) {
   <div class="dropdown user-account icon-menu">
     <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
        <span [hidden]="isLoggedIn">
          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-icon lucide-user-round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
           <span class="fs-14 d-block">Login</span>
-          <span class="spinner-grow" role="status"></span>
        </span>
         
      
@@ -268,7 +269,13 @@
       class="dropdown-menu dropdown-menu-end bg-white border-0 shadow rounded-3 pt-0"
       style="z-index: 9999"
     >
-      <li class="text-nowrap px-3 py-2 fw-semibold bg-light fs-14 mb-2">Hello, {{ userName==undefined?'Guest': userName}}</li>
+      <li class="text-nowrap px-3 py-2 fw-semibold bg-light fs-14 mb-2 d-md-none">Hello, {{ userName==undefined?'Guest': userName}}</li>
+      <li [hidden]="isLoggedIn">
+        <a class="dropdown-item px-3 py-2 fs-14 cursor-pointer bg-primary text-white text-center" (click)="openLogin()"
+          ><span><i class="fa-solid fa-arrow-right-to-bracket fa-lg me-1"></i></span
+          >Login</a
+        >
+      </li>
       <!-- Active class would be  bg-primary text-white -->
       <li class="mb-1">
         <a 
@@ -304,12 +311,6 @@
           [routerLink]="['/user-profile']"
           [queryParams]="{ key: 'address' }"
           ><span><i class="fa-solid fa-lg opacity-75 fa-house"></i></span> Address</a
-        >
-      </li>
-      <li [hidden]="isLoggedIn">
-        <a class="dropdown-item px-3 py-2 fs-14 cursor-pointer" (click)="openLogin()"
-          ><span><i class="fa-solid fa-arrow-right-to-bracket fa-lg opacity-75"></i></span
-          >Login</a
         >
       </li>
       

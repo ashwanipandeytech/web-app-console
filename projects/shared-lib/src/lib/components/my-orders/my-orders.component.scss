@@ -1,3 +1,4 @@
+@use '../../../../../frontend/src/scss/variable' as *;
 .order-container {
     // min-height: 400px;
 
@@ -25,7 +26,7 @@
     }
     .wrapper{
         &:hover{
-            box-shadow: 0 1px 12px 2px #dbdbdb;
+            box-shadow: 0 1px 12px 2px #dbdbdb!important;
         }
     }
 }
@@ -34,19 +35,25 @@
 
 // rate us modal css
 .rating-stars {
-  font-size: 28px;
+//   font-size: 28px;
   cursor: pointer;
   i{
-    margin: 0 5px;
+    margin: 0 2px;
     transition: 0.2s ease;
     opacity: 75%;
-    &:hover{transform: scale(1.1);  }
-    &.active{color: #ffc107;}
+    &:hover{transform: scale(1.1);color: $theme-color;  }
+    &.active{color: $theme-color;}
   }
   &.poor{i{color: red;}}
   &.good{i{color: yellow;}}
   &.best{i{color: green;}}
 }
 
+.help-btn{
+    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .1);
+    &:hover{
+        box-shadow: 0 1px 15px 0 rgba(0, 0, 0, .1);
+    }
+}
 
 

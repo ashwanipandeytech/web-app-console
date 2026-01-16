@@ -50,7 +50,7 @@ export const  promoBannerSlideConfig = {
       {
         breakpoint: 540,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1.8,
           centerPadding: '16px',
           arrows: true,
           // dots:true

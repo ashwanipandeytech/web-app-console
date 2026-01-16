@@ -126,7 +126,6 @@ export class UserProfile {
     } else {
       this.signalService.openLoginPopup.set(false)
     }
-    console.info('herererer')
     this.cd.detectChanges();
   }
 }
