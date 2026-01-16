@@ -5,9 +5,9 @@
 } -->
 
 @if(!isLoading){
-  <div class="top-section d-flex align-items-center border-bottom pb-1 mb-4 px-3 px-md-0">
-    <h3>Personal Detail</h3>
-    <button type="button" class="hover-underline text-primary ms-auto fs-16" (click)="toggleEdit()">{{ isEditMode ? 'Cancel' : 'Edit' }}
+  <div class="top-section d-flex align-items-center border-bottom pb-2 mb-4 px-3 px-md-0">
+    <h3 class="fs-20">Personal Detail</h3>
+    <button type="button" class="shop-btn ms-3 fs-12 sm-btn" (click)="toggleEdit()">{{ isEditMode ? 'Cancel' : 'Edit' }}
 </button>
   </div>
   <form [formGroup]="profileForm" (ngSubmit)="submitForm()">
