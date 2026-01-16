@@ -51,7 +51,7 @@
                     class="fa fa-angle-up"></i></button>
               </div>
             </div>
-            <quill-editor formControlName="shortDescription" rows="5"></quill-editor>
+            <quill-editor formControlName="shortDescription" rows="5" [modules]="modulesNoImage"></quill-editor>
           </div>
           <div class="panel mb-30">
             <div class="panel-header">
@@ -62,7 +62,7 @@
                     class="fa fa-angle-up"></i></button>
               </div>
             </div>
-            <quill-editor formControlName="productDescription"></quill-editor>
+            <quill-editor formControlName="productDescription" [modules]="modulesNoImage"></quill-editor>
           </div>
 
           <div class="panel mb-30">
@@ -74,7 +74,7 @@
                     class="fa fa-angle-up"></i></button>
               </div> -->
             </div>
-            <quill-editor formControlName="features"></quill-editor>
+            <quill-editor formControlName="features" [modules]="modulesNoImage"></quill-editor>
           </div>
 
           <div class="panel mb-30">
@@ -224,7 +224,7 @@
                       </div>
                       <form [formGroup]="productDetails">
 
-                        <quill-editor formControlName="productDescriptionImageGallery"></quill-editor>
+                        <quill-editor formControlName="productDescriptionImageGallery" [modules]="modulesWithImage"></quill-editor>
                       </form>
                     </div>
                     <!-- <div class="col-12 mt-4">
