@@ -125,16 +125,11 @@ export class ProductComponent implements OnInit {
   }
 
   addToCart(data: any) {
-<<<<<<< HEAD
       let isGuest: any = null;
       if (this.isBrowser) {
         isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
       }
       // const guestToken = isGuest;
-=======
-    let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
-    // const guestToken = isGuest;
->>>>>>> 4569d67ba82e562b93a14d1c965a9f0bdece142a
     let finalData = {
       product_id: data.id,
       quantity: '1',
