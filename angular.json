@@ -90,6 +90,22 @@
               "extractLicenses": false,
               "sourceMap": true
             },
+            "web-development-ssr": {
+               "server": "projects/frontend/src/main.server.ts",
+              "outputMode": "server",
+              "ssr": {
+                "entry": "projects/frontend/src/server.ts"
+              },
+              "fileReplacements": [
+                {
+                  "replace": "environments/environment.ts",
+                  "with": "projects/frontend/environments/development.environment.ts"
+                }
+              ],
+              "optimization": true,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
             "web-development": {
               "fileReplacements": [
                 {
@@ -107,17 +123,20 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
-             "web-production-ssr": {
+            "web-production-ssr": {
               "buildTarget": "frontend:build:web-production-ssr"
             },
             "web-production": {
               "buildTarget": "frontend:build:web-production"
             },
+            "web-development-ssr": {
+              "buildTarget": "frontend:build:web-development-ssr"
+            },
             "web-development": {
               "buildTarget": "frontend:build:web-development"
             }
           },
-          "defaultConfiguration": "web-development"
+          "defaultConfiguration": "web-development-ssr"
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"
@@ -276,70 +295,6 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFile": "projects/shared-lib/tsconfig.lib.json"
-          }
-        }
-      }
-    },
-    "login-shared-lib": {
-      "projectType": "library",
-      "root": "projects/login-shared-lib",
-      "sourceRoot": "projects/login-shared-lib/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular/build:ng-packagr",
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/login-shared-lib/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/login-shared-lib/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "tsConfig": "projects/login-shared-lib/tsconfig.spec.json"
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFile": "projects/login-shared-lib/tsconfig.lib.json"
-          }
-        }
-      }
-    },
-    "setting-component-shared-lib": {
-      "projectType": "library",
-      "root": "projects/setting-component-shared-lib",
-      "sourceRoot": "projects/setting-component-shared-lib/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular/build:ng-packagr",
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/setting-component-shared-lib/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/setting-component-shared-lib/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "tsConfig": "projects/setting-component-shared-lib/tsconfig.spec.json"
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFile": "projects/setting-component-shared-lib/tsconfig.lib.json"
           }
         }
       }

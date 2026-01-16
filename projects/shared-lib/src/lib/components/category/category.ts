@@ -1,9 +1,10 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Inject, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { PlatformDetectionService } from '../../services/platform-detection';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'web-category',
@@ -17,8 +18,10 @@ export class CategoryCommon {
   public dataService:any= inject(DataService);
   public platformDetectionService:any= inject(PlatformDetectionService);
   private route = inject(Router);
-
-  constructor(private cd:ChangeDetectorRef, private router: Router) {
+  isBrowser: boolean;
+private platformId = inject(PLATFORM_ID);
+  constructor(private cd:ChangeDetectorRef, private router: Router, ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.platFormType= this.platformDetectionService.getActivePlatform()
     console.info('this.platFormType',this.platFormType)
   }
@@ -57,7 +60,9 @@ export class CategoryCommon {
       });
   }
   back(){
-    window.history.back();
+    if (this.isBrowser) {
+      window.history.back();
+    }
   }
 
   gotoCategory(id: any) {

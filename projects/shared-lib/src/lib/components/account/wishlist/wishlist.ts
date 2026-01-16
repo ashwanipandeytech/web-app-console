@@ -1,10 +1,10 @@
-import { ChangeDetectorRef, Component, effect, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, ElementRef, inject, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { DataService } from '../../../services/data-service';
 import { GlobaCommonlService } from '../../../services/global-common.service';
 import { catchError, of } from 'rxjs';
 import { GlobalFunctionService } from '../../../services/global-function.service';
 import { NoDataComponent } from '../../no-data/no-data.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 declare var bootstrap: any;
 import { SignalService } from '../../../services/signal-service';
 @Component({
@@ -23,8 +23,10 @@ export class Wishlist {
   wishListData: any = [];
   WishListId: any;
   isLoading: boolean = true;
+  isBrowser: boolean;
+  private platformId = inject(PLATFORM_ID);
   constructor() {
-
+    this.isBrowser = isPlatformBrowser(this.platformId);
 
     effect(() => {
       if (this.signalService.userLoggedIn()) {
@@ -35,13 +37,15 @@ export class Wishlist {
     });
   }
   ngOnInit() {
-     let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+    if (this.isBrowser) {
+      let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
 
-    if (!isLoggedIn) {
+      if (!isLoggedIn) {
 
-      this.signalService.openLoginPopup.set(true)
-      return;
+        this.signalService.openLoginPopup.set(true)
+        return;
 
+      }
     }
     this.getWishlistData();
   }
@@ -65,17 +69,22 @@ export class Wishlist {
         message: 'Item Removed from Wish List',
         success: true
       }
-      const modal = bootstrap.Modal.getInstance(
-        this.removeProduct.nativeElement
-      );
-      modal.hide();
+      if (this.isBrowser) {
+        const modal = bootstrap.Modal.getInstance(
+          this.removeProduct.nativeElement
+        );
+        modal.hide();
+      }
       this.globalCommonService.showMsgSnackBar(response);
       this.getWishlistData();
       this.cd.markForCheck();
     })
   }
   addToCart(data: any) {
-    let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+    let isGuest: any = null;
+    if (this.isBrowser) {
+      isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+    }
 
     let finalData = {
       product_id: data.id,
@@ -98,7 +107,9 @@ export class Wishlist {
           let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
           //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
           if (nonLoggedInUserToken) {
-            localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+            if (this.isBrowser) {
+              localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+            }
           }
           this.globalCommonService.showMsgSnackBar(res.body);
         }

@@ -1,10 +1,10 @@
-import { ChangeDetectorRef, Component, effect, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PersonalDetailsComponent } from 'shared-lib/components/personal-details/personal-details.component';
 import { AddressSectionComponent } from 'shared-lib/components/address-section/address-section.component';
 import { MyOrdersComponent } from 'shared-lib/components/my-orders/my-orders.component';
 import { ChangePasswordComponent } from 'shared-lib/components/change-password/change-password.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Wishlist } from '../wishlist/wishlist';
 import { SignalService } from '../../../services/signal-service';
 
@@ -33,16 +33,19 @@ export class UserProfile {
   changePassword: boolean = false;
   isAddress: boolean = false;
   activePage: any;
-
+  isBrowser: boolean;
+  private platformId = inject(PLATFORM_ID);
   constructor() {
-
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
   ngOnInit() {
-    let userData = localStorage.getItem('user');
-    if (userData == null) {
-      this.isLoggedIn = false;
-    } else {
-      this.isLoggedIn = true;
+    if (this.isBrowser) {
+      let userData = localStorage.getItem('user');
+      if (userData == null) {
+        this.isLoggedIn = false;
+      } else {
+        this.isLoggedIn = true;
+      }
     }
     this.activatedRoute.queryParams.subscribe(params => {
       //console.log(params['key']);
@@ -56,12 +59,14 @@ export class UserProfile {
 
   }
   logout() {
-    localStorage.clear();
+    if (this.isBrowser) {
+      localStorage.clear();
 
-    this.route.navigate(['/']).then(() => {
-      window.location.reload();
-    });
-    // window.location.reload();
+      this.route.navigate(['/']).then(() => {
+        window.location.reload();
+      });
+      // window.location.reload();
+    }
   }
   openComponent(component: any) {
     //console.log('component==>',component);
@@ -106,11 +111,14 @@ export class UserProfile {
       this.changePassword = false;
       this.isAddress = true;
     }
-    let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+    let isLoggedIn: any = null;
+    if (this.isBrowser) {
+      isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+    }
 
     if (!isLoggedIn) {
 
-     
+
       this.signalService.openLoginPopup.set(true);
       this.signalService.openLoginTrigger.update((v: number) => v + 1);
       return;

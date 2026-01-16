@@ -1,10 +1,10 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { catchError, of, switchMap } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { GlobaCommonlService } from '../../services/global-common.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { GlobalFunctionService } from '../../services/global-function.service';
 import { NoDataComponent } from '../no-data/no-data.component';
 
@@ -26,8 +26,10 @@ export class ProductSidebarCommon {
   defaultProductListData: any;
   isWishlisted: boolean=false;
   isLoading: boolean=false;
-
-  constructor(private cd:ChangeDetectorRef, private router: Router) {
+  isBrowser: boolean;
+private platformId = inject(PLATFORM_ID);
+  constructor(private cd:ChangeDetectorRef, private router: Router, ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.callAllProductList();
     this.getCategoryList();
   }
@@ -53,7 +55,9 @@ ngOnInit() {
 
       }
     }
-    window.scrollTo(0,0);
+    if (this.isBrowser) {
+      window.scrollTo(0,0);
+    }
   });
 
   // this.productId = this.route.snapshot.paramMap.get('id');
@@ -129,11 +133,16 @@ this.isLoading = false;
   }
 
   back(){
-    window.history.back();
+    if (this.isBrowser) {
+      window.history.back();
+    }
   }
 
   addToCart(data: any) {
-    let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+    let isGuest: any = null;
+    if (this.isBrowser) {
+      isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+    }
     let finalData = {
       product_id: data.id,
       quantity: '1',
@@ -155,7 +164,9 @@ this.isLoading = false;
           let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
           //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
           if (nonLoggedInUserToken) {
-            localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+            if (this.isBrowser) {
+              localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+            }
           }
             this.globalService.showMsgSnackBar(res.body);
         }

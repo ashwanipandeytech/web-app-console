@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component, effect, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, ElementRef, inject, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { DataService } from '../../../services/data-service';
 import { catchError, map, of } from 'rxjs';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RazorpayService } from '../../../services/payment-razor';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -46,8 +46,10 @@ export class Checkout {
     appliedCoupon: any='';
   gstSummary: any={};
   isLoading: boolean=true;
+  isBrowser: boolean;
+  private platformId = inject(PLATFORM_ID);
   constructor() {
-
+    this.isBrowser = isPlatformBrowser(this.platformId);
     effect(() => {
       if (this.signalService.userLoggedIn()) {
 
@@ -62,7 +64,10 @@ export class Checkout {
   ngOnInit() {
 
     this.initializeData()
-    let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+    let isLoggedIn: any = null;
+    if (this.isBrowser) {
+      isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+    }
 
     if (!isLoggedIn) {
 
@@ -74,11 +79,13 @@ export class Checkout {
 
   }
   initializeData() {
-    let userString: any = localStorage.getItem('user'); // this is a string
-    if (userString) {
-      let userObj = JSON.parse(userString);            // convert to object
-      this.email = userObj.user.email;                  // access email
-      //console.log('Email:', this.email);
+    if (this.isBrowser) {
+      let userString: any = localStorage.getItem('user'); // this is a string
+      if (userString) {
+        let userObj = JSON.parse(userString);            // convert to object
+        this.email = userObj.user.email;                  // access email
+        //console.log('Email:', this.email);
+      }
     }
 
 
@@ -552,9 +559,11 @@ export class Checkout {
     this.cd.detectChanges();
   }
   closeModal() {
-    const modal = bootstrap.Modal.getInstance(
-      this.changedModal.nativeElement
-    );
-    modal.hide();
+    if (this.isBrowser) {
+      const modal = bootstrap.Modal.getInstance(
+        this.changedModal.nativeElement
+      );
+      modal.hide();
+    }
   }
 }

@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, effect, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, ElementRef, inject, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { catchError, of } from 'rxjs';
@@ -53,15 +53,20 @@ export class CartCommon {
   isLoggedIn: boolean = false;
   cartItemId: any;
   appliedCoupon: any='';
-  constructor(private http: HttpClient, private fb: FormBuilder, private cd: ChangeDetectorRef) {
+  isBrowser: boolean;
+  private platformId = inject(PLATFORM_ID);
+  constructor(private http: HttpClient, private fb: FormBuilder, private cd: ChangeDetectorRef, ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.addAddressForm();
     // this.getAddressList();
     this.carList();
-    let userData: any = localStorage.getItem('user');
-    if (userData == null) {
-      this.isLoggedIn = false;
-    } else {
-      this.isLoggedIn = true;
+    if (this.isBrowser) {
+      let userData: any = localStorage.getItem('user');
+      if (userData == null) {
+        this.isLoggedIn = false;
+      } else {
+        this.isLoggedIn = true;
+      }
     }
 
     effect(() => {
@@ -80,7 +85,9 @@ export class CartCommon {
     this.isNewAddress = true;
   }
   back() {
-    window.history.back();
+    if (this.isBrowser) {
+      window.history.back();
+    }
   }
   //  ngAfterViewInit() {
   //     const autocomplete = new google.maps.places.Autocomplete(
@@ -135,18 +142,20 @@ export class CartCommon {
   }
 
   getCurrentLocation() {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      this.lat = pos.coords.latitude;
-      this.lng = pos.coords.longitude;
-      this.http
-        .get(
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${this.lat}&lon=${this.lng}`
-        )
-        .subscribe((res: any) => {
-          this.selectedAddress = res.display_name;
-          //console.log('this.selectedAddress===>', this.selectedAddress);
-        });
-    });
+    if (this.isBrowser) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        this.lat = pos.coords.latitude;
+        this.lng = pos.coords.longitude;
+        this.http
+          .get(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${this.lat}&lon=${this.lng}`
+          )
+          .subscribe((res: any) => {
+            this.selectedAddress = res.display_name;
+            //console.log('this.selectedAddress===>', this.selectedAddress);
+          });
+      });
+    }
   }
 
   addAddressForm() {
@@ -436,8 +445,10 @@ this.calculateGstPrice(response.data.data);
 
           if (res.success == true) {
             this.globalService.showMsgSnackBar(res);
-            const modal = bootstrap.Modal.getInstance(this.deleteCart.nativeElement);
-            modal.hide();
+            if (this.isBrowser) {
+              const modal = bootstrap.Modal.getInstance(this.deleteCart.nativeElement);
+              modal.hide();
+            }
             this.carList();
             this.globalFunctionService.getCount();
             this.cd.detectChanges();

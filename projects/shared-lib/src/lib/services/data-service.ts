@@ -1,4 +1,5 @@
-import { inject, Injectable } from '@angular/core';
+import { Inject, inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Commonresponseobject } from '../model/responsemodel';
 import { environment } from '../../../../../environments/environment';
@@ -11,14 +12,22 @@ import { firstValueFrom, of } from 'rxjs';
 export class DataService {
   private http = inject(HttpClient);
   private snackBar = inject(MatSnackBar);
+  private platformId = inject(PLATFORM_ID);
   private authToken: any;
   generalSetting: any;
-
-  constructor() {}
+  private isBrowser: boolean;
+  constructor() {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
   request(method: string, endpoint: string, postdata?: any, options: any = {}) {
     let data: any = postdata;
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
-    let guestToken = JSON.parse(localStorage.getItem('GUEST_TOKEN') || '{}');
+    let user: any = {};
+    let guestToken: any = {};
+
+    if (this.isBrowser) {
+      user = JSON.parse(localStorage.getItem('user') || '{}');
+      guestToken = JSON.parse(localStorage.getItem('GUEST_TOKEN') || '{}');
+    }
     let headers: any;
     let httpOptions = {};
     if (user?.token) {

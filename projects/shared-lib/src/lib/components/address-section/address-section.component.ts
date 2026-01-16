@@ -1,10 +1,10 @@
-import { ChangeDetectorRef, Component, effect, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, ElementRef, inject, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { GlobalFunctionService } from '../../services/global-function.service';
 import { GlobaCommonlService } from '../../services/global-common.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NoDataComponent } from '../no-data/no-data.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AddAddressModal } from '../../model/add-address-modal/add-address-modal';
@@ -31,13 +31,17 @@ export class AddressSectionComponent implements OnInit {
   currentUser: any;
   deleteAddressId: any;
   isLoading: boolean = true;
+  isBrowser: boolean;
+  private platformId = inject(PLATFORM_ID);
   constructor() {
-
+    this.isBrowser = isPlatformBrowser(this.platformId);
 
     //console.log('data==>',this.data);
     effect(() => {
       if (this.signalService.userLoggedIn()) {
-        this.currentUser = JSON.parse(localStorage.getItem('user') || 'null');
+        if (this.isBrowser) {
+          this.currentUser = JSON.parse(localStorage.getItem('user') || 'null');
+        }
         this.getAddressList();
         
         this.cd.detectChanges();
@@ -58,16 +62,18 @@ export class AddressSectionComponent implements OnInit {
 
   }
   ngOnInit() {
-    let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+    if (this.isBrowser) {
+      let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
 
-    if (!isLoggedIn) {
-      this.addressListData = []
-      this.signalService.openLoginPopup.set(true)
-      return;
+      if (!isLoggedIn) {
+        this.addressListData = []
+        this.signalService.openLoginPopup.set(true)
+        return;
 
+      }
+      this.getAddressList();
+      this.currentUser = JSON.parse(localStorage.getItem('user') || 'null');
     }
-    this.getAddressList();
-    this.currentUser = JSON.parse(localStorage.getItem('user') || 'null');
   }
 
   getAddressList(isLoading: boolean = true) {
@@ -96,10 +102,12 @@ export class AddressSectionComponent implements OnInit {
       // if (res.success) {
       // this.globalService.showMsgSnackBar(res);
       this.getAddressList();
-      const modal = bootstrap.Modal.getInstance(
-        this.removeAddressModal.nativeElement
-      );
-      modal.hide();
+      if (this.isBrowser) {
+        const modal = bootstrap.Modal.getInstance(
+          this.removeAddressModal.nativeElement
+        );
+        modal.hide();
+      }
       // }
 
     });

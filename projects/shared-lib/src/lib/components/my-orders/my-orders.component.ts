@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,6 +8,8 @@ import {
   inject,
   OnInit,
   ViewChild,
+  Inject, // Add Inject
+  PLATFORM_ID // Add PLATFORM_ID
 } from '@angular/core';
 import { catchError, of } from 'rxjs';
 import { GlobaCommonlService } from '../../services/global-common.service';
@@ -41,20 +43,26 @@ export class MyOrdersComponent implements OnInit {
   isLoading: boolean = true;
   rateUsForm!: FormGroup;
   stars = [1, 2, 3, 4, 5];
+  private platformId = inject(PLATFORM_ID);
+  isBrowser: boolean;
+  
   constructor() {
-   
-  effect(() => {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+
+    effect(() => {
       if (this.signalService.userLoggedIn()) {
-          this.addRateUsForm();
-       this.orderList();
+        this.addRateUsForm();
+        this.orderList();
         this.cd.detectChanges();
       }
-
     });
   }
 
   ngOnInit() {
-    let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+    let isLoggedIn: any = null;
+    if (this.isBrowser) {
+      isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+    }
 
     if (!isLoggedIn) {
 
@@ -147,10 +155,12 @@ export class MyOrdersComponent implements OnInit {
 
 
   closeRatingPopup() {
-    const modal = bootstrap.Modal.getInstance(
-      this.rateusModal.nativeElement
-    );
-    modal.hide();
+    if (this.isBrowser) {
+      const modal = bootstrap.Modal.getInstance(
+        this.rateusModal.nativeElement
+      );
+      modal.hide();
+    }
   }
   cancelOrder() {
 
@@ -179,7 +189,10 @@ export class MyOrdersComponent implements OnInit {
   // }
   addToCart(item: any) {
     //console.log('item==>', item);
-    let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+    let isGuest: any = null;
+    if (this.isBrowser) {
+      isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+    }
     let cartPayload = {
       product_id: item.product.id,
       quantity: item.quantity,

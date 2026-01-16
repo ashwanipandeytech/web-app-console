@@ -1,15 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { Observable } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 declare var Razorpay: any;
 
 @Injectable({
   providedIn: 'root'
 })
 export class RazorpayService {
+  isBrowser: boolean; // Add this
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { // Inject PLATFORM_ID
+    this.isBrowser = isPlatformBrowser(this.platformId); // Initialize isBrowser
+  }
 
  
   // openCheckout(payload: any) {
@@ -78,48 +82,51 @@ export class RazorpayService {
 // });
 openCheckout(payload: any): Observable<any> {
   return new Observable(observer => {
+    if (this.isBrowser) {
+      const options: any = {
+        key: environment.RAZORPAY_KEY_ID,
+        amount: payload.amount * 100,
+        currency: 'INR',
+        name: 'Safure',
+        description: 'Test Payment',
+        image: '/images/logos/logo.webp',
 
-    const options: any = {
-      key: environment.RAZORPAY_KEY_ID,
-      amount: payload.amount * 100,
-      currency: 'INR',
-      name: 'Safure',
-      description: 'Test Payment',
-      image: '/images/logos/logo.webp',
+        handler: (response: any) => {
+          // ✅ PAYMENT SUCCESS
+          observer.next({
+            success: true,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_signature: response.razorpay_signature
+          });
+          observer.complete();
+        },
 
-      handler: (response: any) => {
-        // ✅ PAYMENT SUCCESS
-        observer.next({
-          success: true,
-          razorpay_payment_id: response.razorpay_payment_id,
-          razorpay_order_id: response.razorpay_order_id,
-          razorpay_signature: response.razorpay_signature
+        prefill: {
+          name: payload.name,
+          email: payload.email,
+          contact: payload.phone
+        },
+
+        theme: {
+          color: '#3399cc'
+        }
+      };
+
+      const rzp = new Razorpay(options);
+
+      // ❌ remove onpaymenterror (not reliable)
+      rzp.on('payment.failed', (error: any) => {
+        observer.error({
+          success: false,
+          error
         });
-        observer.complete();
-      },
-
-      prefill: {
-        name: payload.name,
-        email: payload.email,
-        contact: payload.phone
-      },
-
-      theme: {
-        color: '#3399cc'
-      }
-    };
-
-    const rzp = new Razorpay(options);
-
-    // ❌ remove onpaymenterror (not reliable)
-    rzp.on('payment.failed', (error: any) => {
-      observer.error({
-        success: false,
-        error
       });
-    });
 
-    rzp.open();
+      rzp.open();
+    } else {
+      observer.error('Razorpay not available on server side');
+    }
   });
 }
 

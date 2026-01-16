@@ -1,0 +1,5 @@
+# Create the ignore file to exclude heavy directories
+touch .geminiignore
+echo "node_modules/" >> .geminiignore
+echo "dist/" >> .geminiignore
+echo ".git/" >> .geminiignore

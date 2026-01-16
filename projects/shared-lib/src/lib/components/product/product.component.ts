@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, effect, inject, Input, input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, Inject, Input, input, OnInit, PLATFORM_ID } from '@angular/core';
 import { productSectionSlideConfig } from '../../constants/app-constant';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { catchError, of } from 'rxjs';
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { GlobaCommonlService } from '../../services/global-common.service';
 import { GlobalFunctionService } from '../../services/global-function.service';
 
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { SignalService } from '../../services/signal-service';
 
 @Component({
@@ -29,10 +29,16 @@ export class ProductComponent implements OnInit {
   productData: any;
   isWishlisted: boolean = false;
   isLogin: boolean=false;
+  isBrowser: boolean;
+  private platformId = inject(PLATFORM_ID);
   constructor() {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     effect(()=>{
 
-      let isLoggedIn: any = localStorage.getItem('isLoggedIn');
+      let isLoggedIn: any = null;
+      if (this.isBrowser) {
+        isLoggedIn = localStorage.getItem('isLoggedIn');
+      }
       //console.log('isLoggedIn==>',isLoggedIn,this.signalService.userLoggedIn());
       
      if (isLoggedIn  == 'true' || this.signalService.userLoggedIn()) {
@@ -122,7 +128,10 @@ export class ProductComponent implements OnInit {
   }
 
   addToCart(data: any) {
-      let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+      let isGuest: any = null;
+      if (this.isBrowser) {
+        isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+      }
       // const guestToken = isGuest;
     let finalData = {
       product_id: data.id,

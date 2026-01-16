@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-
-
+import { isPlatformBrowser } from '@angular/common'; // Add this
 import { Header } from 'shared-lib/components/layout/header/header';
 import { Footer } from 'shared-lib/components/layout/footer/footer';
 import { RazorpayService } from 'shared-lib';
@@ -29,11 +28,20 @@ export class App {
   public razorpayService:any= inject(RazorpayService);
   public signalService:any=inject(SignalService)
   public platformDetectionService:any= inject(PlatformDetectionService);
+  isBrowser: boolean; // Add this
+   private platformId = inject(PLATFORM_ID);
   constructor(    private router: Router,
-    private activatedRoute: ActivatedRoute){
+    private activatedRoute: ActivatedRoute,
+    
+    ){
+   this.isBrowser = isPlatformBrowser(this.platformId); // Initialize isBrowser
    this.platFormType= this.platformDetectionService.getActivePlatform()
-      let user = localStorage.getItem('user');
-      let guestToken = localStorage.getItem('GUEST_TOKEN');
+      let user = null;
+      let guestToken = null;
+      if (this.isBrowser) {
+        user = localStorage.getItem('user');
+        guestToken = localStorage.getItem('GUEST_TOKEN');
+      }
       if (user == null && !guestToken) {
          this.dataService
                .post('','guest/init')
@@ -46,7 +54,9 @@ export class App {
                .subscribe((res: any) => {
                  //console.log('Response:', res);
                  if (res.success == true) {
-                  localStorage.setItem('GUEST_TOKEN', JSON.stringify(res.data.guest_token));
+                  if (this.isBrowser) { // Guard this localStorage.setItem
+                    localStorage.setItem('GUEST_TOKEN', JSON.stringify(res.data.guest_token));
+                  }
                  }
                });
       }
