@@ -145,6 +145,7 @@ export class Checkout {
       .subscribe((res: any) => {
         console.log('payload===>',res.data.summary);
         this.gstSummary = res.data.summary;
+        this.gstSummary.items = res.data.items;
         this.isLoading = false;
         console.log('this.cartListData==>',this.gstSummary);
         
@@ -226,19 +227,21 @@ export class Checkout {
     //console.log('res ----////==>', paymentResponse);
 
 
-    const payload = this.cartListData.data.map((cartItem: any) => ({
+    const payload = this.cartListData.data.map((cartItem: any,index:any) => (
+      {
       product_id: cartItem.product.id,
       quantity: cartItem.quantity,
       price: cartItem.product.price_data.salePrice,
-    }));
+    }
+    ));
     let OrderSubmitPayload = {
       items: payload,
       total_amount: this.grandTotal,
       address_id: addressId,
       payment_method: this.selectedPaymentMethod,
       shipping_address: addressId,
-      tax_invoice:this.gstSummary
     }
+    OrderSubmitPayload.items['tax_details']=this.gstSummary.items;
     this.dataService.post(OrderSubmitPayload, 'orders')
       .pipe(
         catchError(err => {
