@@ -38,9 +38,19 @@ export class DataService {
       httpOptions = { headers };
     } else {
       this.authToken = guestToken;
-      endpoint = `${endpoint}?guest_token=${guestToken}`;
+      console.info('endpoint')
+      if (endpoint == 'social/consume') {
+
+        headers = new HttpHeaders({
+          'X-Social-Login-Key': data['X-Social-Login-Key']
+        });
+        httpOptions = { headers };
+      } else {
+        endpoint = `${endpoint}?guest_token=${guestToken}`;
+        httpOptions = {};
+      }
       // data.guest_token = guestToken;
-      httpOptions = {};
+
     }
     //console.log('httpOptions===>',httpOptions);
     let commonurl = 'https://api.demohandler.in/api/v1/';
