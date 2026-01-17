@@ -32,16 +32,18 @@ export class DataService {
     let httpOptions = {};
     if (user?.token) {
       this.authToken = user?.token;
+       console.info('endpoint')
       headers = new HttpHeaders({
         Authorization: `Bearer ${this.authToken}`,
       });
       httpOptions = { headers };
     } else {
       this.authToken = guestToken;
-      console.info('endpoint')
+     
       if (endpoint == 'social/consume') {
 
         headers = new HttpHeaders({
+           Authorization: `Bearer ${this.authToken}`,
           'X-Social-Login-Key': data['X-Social-Login-Key']
         });
         httpOptions = { headers };
