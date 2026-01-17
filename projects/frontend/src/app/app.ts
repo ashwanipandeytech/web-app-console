@@ -109,15 +109,14 @@ export class App {
 
               // }
               //make a signal for emiting the user state
-               let data={
+              if (this.isBrowser) {
+                let data={
                   token:res.token,
                   user:res.user
                 }
-              if (this.isBrowser) {
-               
-                localStorage.setItem("user", JSON.stringify(data));
+                localStorage.setItem("user", JSON.stringify(res.data));
               }
-              this.signalService.user.set(data);
+              this.signalService.user.set(res.data);
               if (this.isBrowser) {
                 localStorage.setItem("isLoggedIn", JSON.stringify(true));
               }
