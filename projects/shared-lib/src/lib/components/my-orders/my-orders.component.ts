@@ -89,7 +89,7 @@ export class MyOrdersComponent implements OnInit {
   // //console.log('item===>',item);
   // this.orderId = item.id;
   // }
-  submitRating(productId:any='',index:any=''): void {
+  submitRating(item:any='',productId:any='',index:any=''): void {
         let apiUrl = 'rate-product';
     if (this.rateUsForm.invalid) {
       this.rateUsForm.markAllAsTouched();
@@ -118,8 +118,12 @@ console.log('this.productid==>',productId);
         if (res?.success == true) {
           this.globalService.showMsgSnackBar(res);
           this.closeRatingPopup(index);
-          this.updateratingInorderList(productId);
+          item.product_review = {
+            comment: payload.comment,
+            rating:payload.rating
+          }
           this.cd.detectChanges();
+          // this.updateratingInorderList(productId);
 
           // this.router.navigate(['/cart']);
         }
@@ -154,26 +158,26 @@ updateratingInorderList(productId:any){
           // this.orderListData = [...res.data.data];
 
 
-           this.orderListData = this.orderListData.map((order:any) => {
-    if (order.id !== this.orderId) return order;
-console.log('order-------------------------',order);
+//            this.orderListData = this.orderListData.map((order:any) => {
+//     if (order.id !== this.orderId) return order;
+// console.log('order-------------------------',order);
 
-    return {
-      ...order,
-      items: order.items.map((line: any) =>
-      line.product_id === productId
-            ? {
-                ...line,
-                product_review: {
-                  ...line.product_review,
-                  rating: line.product_review.rating,
-                  comment: line.product_review.comment
-                }
-              }
-            : line
-      )
-    };
-  });
+//     return {
+//       ...order,
+//       items: order.items.map((line: any) =>
+//       line.product_id === productId
+//             ? {
+//                 ...line,
+//                 product_review: {
+//                   ...line.product_review,
+//                   rating: line.product_review.rating,
+//                   comment: line.product_review.comment
+//                 }
+//               }
+//             : line
+//       )
+//     };
+//   });
           this.cd.detectChanges();
 
         }

@@ -196,7 +196,7 @@
  @if (!item?.product_review) {
               <div class="collapse" [id]="'collapseProduct' + $index" #collapseRef>
                 <div class="card card-body border-primary p-2 mt-2">
-                  <form [formGroup]="rateUsForm" (ngSubmit)="submitRating(item.product.id,$index)">
+                  <form [formGroup]="rateUsForm" (ngSubmit)="submitRating(item,item.product.id,$index)">
                       <p class="mb-0">
                         How was your product?
                         <button type="submit" class="shop-btn ms-3 fs-12 sm-btn" [disabled]="rateUsForm.invalid">
