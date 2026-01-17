@@ -86,10 +86,10 @@ export class App {
           this.openForgotPopup(resetToken, resetEmail, forgotStep);
         }, 0);
       }
-      console.info('this.router.url', this.router?.url.split('?')[0] === '/', params['key'])
+      //console.info('this.router.url', this.router?.url.split('?')[0] === '/', params['key'])
       if (this.router?.url.split('?')[0] === '/' && params['key']) {
         let payLoad = {
-          "X-Social-Login-Key": params['key']
+
         }
         this.dataService.post(payLoad, 'social/consume')
           .pipe(
@@ -118,6 +118,12 @@ export class App {
               }
               this.globalFunctionService.getCount();
               this.signalService.userLoggedIn.set(true);
+
+              this.router.navigate([], {
+                queryParams: { key: null },
+                queryParamsHandling: 'merge',
+                replaceUrl: true
+              });
 
               this.cd.detectChanges();
 
