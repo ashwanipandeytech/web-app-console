@@ -26,6 +26,7 @@ import { GlobaCommonlService } from '../../../services/global-common.service';
 import { GlobalFunctionService } from '../../../services/global-function.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common'; // Add isPlatformBrowser
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'environments/environment';
 @Component({
   selector: 'web-login',
   imports: [FormsModule, ReactiveFormsModule, CommonModule],
@@ -419,10 +420,12 @@ private platformId = inject(PLATFORM_ID);
   }
 
   loginWithGoogle() {
-    let endpoint = 'auth/google/redirect?redirect=/landing';
-    this.dataService.get(endpoint).subscribe((res: any) => {
-      //console.log('res===>', res);
-    });
+     const redirectUrl = `${environment.API_URL}auth/google/redirect?redirect=/landing`;
+  window.location.href = redirectUrl;
+    // let endpoint = 'auth/google/redirect?redirect=/landing';
+    // this.dataService.get(endpoint).subscribe((res: any) => {
+    //   //console.log('res===>', res);
+    // });
   }
 
   passwordToggle(type: any) {
