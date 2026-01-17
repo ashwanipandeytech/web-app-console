@@ -111,7 +111,6 @@
       <div class="modal-body px-lg-4">
         <div class="order-container d-flex flex-column gap-3">
           @for (item of orderDetailList.items; track $index) { @if (item.product !=null) {
-
           <div class="rounded p-3 wrapper shadow-sm">
             <div class="row">
               <div class="col-4">
@@ -145,22 +144,26 @@
                   </ul>
                 </div>
               </div>
-
-              <div class="rounded-3 py-2 p-3 mt-2" style="background-color: #f1f2f7;">
-                <span class="fw-semibold">Your rating : <span class="text-success">4 star</span></span>
-                <span class="fs-12 d-block">Lorem ipsum dolor sit amet consectetur</span>
-              </div>
+                @if (item?.product_review !=null) {
+                  <div class="rounded-3 py-2 p-3 mt-2" style="background-color: #f1f2f7;">
+                    <span class="fw-semibold">Your rating : <span class="text-success">{{item?.product_review?.rating}} star</span></span>
+                    <span class="fs-12 d-block">{{item?.product_review?.comment}} </span>
+                  </div>
+                }
 
               <hr class="my-3">
 
               <div class="d-flex align-items-center gap-2 justify-content-center flex-wrap">
-                
-                 <button
-                  class="fs-14 btn btn-outline-secondary"
-                  data-bs-toggle="collapse" data-bs-target="#collapseProduct" aria-expanded="false" aria-controls="collapseProduct"
-                >
-                  Rate Product
-                </button>
+                @if (!item?.product_review) {
+
+                  <button
+                   class="fs-14 btn btn-outline-secondary"
+                   data-bs-toggle="collapse"  [attr.data-bs-target]="'#collapseProduct' + $index" aria-expanded="false" [attr.aria-controls]="'collapseProduct' + $index"
+
+                 >
+                   Rate Product
+                 </button>
+                }
 
                 <button
                   type="button"
@@ -190,10 +193,10 @@
                   Cancel Order
                 </button>
               </div>
-
-              <div class="collapse" id="collapseProduct">
+ @if (!item?.product_review) {
+              <div class="collapse" [id]="'collapseProduct' + $index" #collapseRef>
                 <div class="card card-body border-primary p-2 mt-2">
-                  <form [formGroup]="rateUsForm" (ngSubmit)="submitRating()">
+                  <form [formGroup]="rateUsForm" (ngSubmit)="submitRating(item.product.id,$index)">
                       <p class="mb-0">
                         How was your product?
                         <button type="submit" class="shop-btn ms-3 fs-12 sm-btn" [disabled]="rateUsForm.invalid">
@@ -238,7 +241,7 @@
                   </form>
                 </div>
               </div>
-
+            }
             </div>
           </div>
 
