@@ -35,15 +35,27 @@ export class DataService {
     let httpOptions = {};
     if (user?.token) {
       this.authToken = user?.token;
+       console.info('endpoint')
       headers = new HttpHeaders({
         Authorization: `Bearer ${this.authToken}`,
       });
       httpOptions = { headers };
     } else {
       this.authToken = guestToken;
-      endpoint = `${endpoint}?guest_token=${guestToken}`;
+     
+      if (endpoint == 'social/consume') {
+
+        headers = new HttpHeaders({
+           Authorization: `Bearer ${this.authToken}`,
+          'X-Social-Login-Key': data['X-Social-Login-Key']
+        });
+        httpOptions = { headers };
+      } else {
+        endpoint = `${endpoint}?guest_token=${guestToken}`;
+        httpOptions = {};
+      }
       // data.guest_token = guestToken;
-      httpOptions = {};
+
     }
     //console.log('httpOptions===>',httpOptions);
     let commonurl = 'https://api.demohandler.in/api/v1/';
