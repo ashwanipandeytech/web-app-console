@@ -1,8 +1,8 @@
 <!-- main content start -->
 <div class="main-content modal-body">
   <form [formGroup]="productMultipleOptionForm" (ngSubmit)="submitProductMultipleOptionForm()">
-    <div class="breadcrumb mb-30">
-      {{isUpdateproduct}}
+    <div class="breadcrumb mb-30 pt-3 px-3">
+      <!-- {{isUpdateproduct}} -->
       <h2>{{isUpdateproduct?'Update Product':'Add New Product'}}</h2>
       <div class="btn-box">
         @if (activeModal) {
@@ -11,7 +11,7 @@
         <!-- <a href="all-product.html" class="btn btn-sm btn-primary">View All</a> -->
       </div>
     </div>
-    <div class="row g-4">
+    <div class="row mx-0">
       <div class="col-xxl-9 col-lg-8">
         <form [formGroup]="productDetails" (ngSubmit)="addProductDetails()">
           <div class="panel mb-30">
@@ -47,11 +47,10 @@
               <h5>Short Description</h5>
               <div class="btn-box d-flex gap-2">
                 <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
-                <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
-                    class="fa fa-angle-up"></i></button>
+                <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa fa-angle-up"></i></button>
               </div>
             </div>
-            <quill-editor formControlName="shortDescription" rows="5" [modules]="modulesNoImage"></quill-editor>
+            <quill-editor class="w-100 p-2" formControlName="shortDescription" rows="5" [modules]="modulesNoImage"></quill-editor>
           </div>
           <div class="panel mb-30">
             <div class="panel-header">
@@ -62,7 +61,7 @@
                     class="fa fa-angle-up"></i></button>
               </div>
             </div>
-            <quill-editor formControlName="productDescription" [modules]="modulesNoImage"></quill-editor>
+            <quill-editor class="w-100 p-2" formControlName="productDescription" [modules]="modulesNoImage"></quill-editor>
           </div>
 
           <div class="panel mb-30">
@@ -74,7 +73,7 @@
                     class="fa fa-angle-up"></i></button>
               </div> -->
             </div>
-            <quill-editor formControlName="features" [modules]="modulesNoImage"></quill-editor>
+            <quill-editor class="w-100 p-2" formControlName="features" [modules]="modulesNoImage"></quill-editor>
           </div>
 
           <div class="panel mb-30">
@@ -224,7 +223,8 @@
                       </div>
                       <form [formGroup]="productDetails">
 
-                        <quill-editor formControlName="productDescriptionImageGallery" [modules]="modulesWithImage"></quill-editor>
+                        <quill-editor class="w-100 p-2" formControlName="productDescriptionImageGallery"
+                          [modules]="modulesWithImage"></quill-editor>
                       </form>
                     </div>
                     <!-- <div class="col-12 mt-4">
