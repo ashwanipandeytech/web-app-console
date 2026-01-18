@@ -6,7 +6,7 @@ import { RazorpayService } from '../../../services/payment-razor';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { GlobaCommonlService } from '../../../services/global-common.service';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GlobalFunctionService } from '../../../services/global-function.service';
 import { SignalService } from '../../../services/signal-service';
 declare const bootstrap: any;
@@ -19,6 +19,8 @@ declare const bootstrap: any;
 })
 export class Checkout {
   @ViewChild('changedModal') changedModal!: ElementRef;
+  @ViewChild('deleteCart') deleteCart!: ElementRef;
+  @ViewChild('couponModal') couponModal!: ElementRef;
   private dataService = inject(DataService);
   private globalFunctionService = inject(GlobalFunctionService);
   private router = inject(Router);
@@ -48,8 +50,14 @@ export class Checkout {
   isLoading: boolean=true;
   isBrowser: boolean;
   private platformId = inject(PLATFORM_ID);
+  private activateRoute = inject(ActivatedRoute);
+  cartItemId: any;
   constructor() {
     this.isBrowser = isPlatformBrowser(this.platformId);
+     this.activateRoute.queryParams.subscribe(params => {
+    console.log(params['coupon']);
+    this.appliedCoupon = params['coupon'];
+  });
     effect(() => {
       if (this.signalService.userLoggedIn()) {
 
@@ -104,19 +112,22 @@ export class Checkout {
       this.isLoading = true;
       //console.log('response==>', response);
       if (response.success == true) {
-        this.cartListData = response.data;
-        this.calculateGstPrice(response.data);
-        for (let i = 0; i < this.cartListData.data.length; i++) {
-          const element = this.cartListData.data[i];
+        this.cartListData = response.data.data;
+        
+
+        
+        this.calculateGstPrice(response.data.data);
+        for (let i = 0; i < this.cartListData.length; i++) {
+          const element = this.cartListData[i];
           // if (element.) {
-          this.globalService.calculatePrice(element.quantity, i, element.product.price_data.salePrice, this.cartListData.data);
+          this.globalService.calculatePrice(element.quantity, i, element.product.price_data.salePrice, this.cartListData);
           // }
           //  element.product.price_data['finalPrice'] = element?.product.price_data?.salePrice;
           //    this.calculatePrice(element.quantity,i,element.product.price_data.regularPrice);
 
         }
         this.calculateSubTotal();
-        this.grandTotal = this.globalService.calculateGrandTotal(this.cartListData.data);
+        this.grandTotal = this.globalService.calculateGrandTotal(this.cartListData);
         this.cd.detectChanges();
       }
 
@@ -124,11 +135,13 @@ export class Checkout {
   }
 
     calculateGstPrice(dataObj:any){
-      let data = dataObj.data;
+      let data = dataObj;
     let payload:any={
       items:[]
     };
     console.log('data=====>',data);
+    console.log('isCouponValue===>',this.appliedCoupon);
+    
     payload.coupon_code = this.appliedCoupon;
     for (let i = 0; i < data.length; i++) {
       const element = data[i];
@@ -155,7 +168,6 @@ export class Checkout {
         this.gstSummary.items = res.data.items;
         this.isLoading = false;
         console.log('this.cartListData==>',this.gstSummary);
-        
         this.cd.detectChanges();
       })
 
@@ -163,8 +175,8 @@ export class Checkout {
   calculateSubTotal() {
     // this.grandTotal = 0;
     this.subTotal = 0;
-    for (let i = 0; i < this.cartListData.data.length; i++) {
-      const element = this.cartListData.data[i];
+    for (let i = 0; i < this.cartListData.length; i++) {
+      const element = this.cartListData[i];
       this.subTotal += element.product.price_data.finalPrice;
     }
     this.calculateGrandTotal();
@@ -234,7 +246,7 @@ export class Checkout {
     //console.log('res ----////==>', paymentResponse);
 
 
-    const payload = this.cartListData.data.map((cartItem: any,index:any) => (
+    const payload = this.cartListData.map((cartItem: any,index:any) => (
       {
       product_id: cartItem.product.id,
       quantity: cartItem.quantity,
@@ -568,23 +580,144 @@ export class Checkout {
       modal.hide();
     }
   }
-  checkCoupon(couponValue:any){
-     console.log('Input value:', couponValue);
-     let payload ={
-      coupon_code:couponValue
-     }
-      this.dataService.post(payload, 'orders/apply-coupon')
+      checkCoupon(couponValue:any){
+       console.log('Input value:', couponValue);
+       this.appliedCoupon = couponValue;
+       let payload ={
+        coupon_code:couponValue
+       }
+        this.dataService.post(payload, 'orders/apply-coupon')
+        .pipe(
+          catchError(err => {
+            console.error('Error:', err);
+            return of(err);
+          })
+        )
+        .subscribe((res: any) => {
+          if (res.success == true) {
+            console.log('enter , re',res);
+          this.globalService.showMsgSnackBar(res);
+            const modal = bootstrap.Modal.getInstance(this.couponModal.nativeElement);
+             modal.hide();
+             this.router.navigate(
+                [],
+                {
+                  queryParams: { coupon: this.appliedCoupon },
+                  queryParamsHandling: 'merge'
+                }
+              );
+            this.calculateGstPrice(this.cartListData);
+          }
+          else if (res && res.error && res.error.message) {
+          //console.log('error  :', res.error.message);
+          this.globalService.showMsgSnackBar(res.error);
+        }
+        })
+    }
+  deleteCartItem(id: any) {
+    if (id) {
+      this.cartItemId = id;
+    }
+  }
+   increase(quantity: any, index: any) {
+    this.cartListData[index].quantity++;
+    let id = this.cartListData[index].id;
+    let productQuantity = this.cartListData[index].quantity;
+    this.globalService.calculatePrice(
+      productQuantity,
+      index,
+      this.cartListData[index].product.price_data.salePrice,
+      this.cartListData
+    );
+    this.updateCartList(productQuantity, id);
+  }
+    deleteItem() {
+      if (this.cartItemId) {
+        this.dataService
+          .delete(`cart/${this.cartItemId}`)
+          .pipe(
+            catchError((err) => {
+              console.error('Error:', err);
+              setTimeout(() => {
+                // this.globalService.showMsgSnackBar(err);
+              }, 100);
+              return of(err);
+            })
+          )
+          .subscribe((res: any) => {
+            //console.log('Response:', res);
+  
+            if (res.success == true) {
+              this.globalService.showMsgSnackBar(res);
+              if (this.isBrowser) {
+                const modal = bootstrap.Modal.getInstance(this.deleteCart.nativeElement);
+                modal.hide();
+              }
+              this.carList();
+              this.globalFunctionService.getCount();
+              this.cd.detectChanges();
+            } else if (res.error && res.error.message) {
+              //console.log('error  :', res.error.message);
+              this.globalService.showMsgSnackBar(res.error);
+            }
+            // this.getCategoryList();
+            // this.categoryListData = res.data;
+          });
+      }
+    }
+   decrease(quantity: any, index: any) {
+    if (quantity > 1) {
+      this.cartListData[index].quantity--;
+      let id = this.cartListData[index].id;
+      let productQuantity = this.cartListData[index].quantity;
+      this.globalService.calculatePrice(
+        productQuantity,
+        index,
+        this.cartListData[index].product.price_data.salePrice,
+        this.cartListData
+      );
+      this.updateCartList(productQuantity, id);
+    }
+  }
+  updateCartList(quantity: any, id: any) {
+    let data = {
+      quantity: quantity,
+    };
+    this.dataService
+      .patch('cart', data, id)
       .pipe(
-        catchError(err => {
+        catchError((err) => {
           console.error('Error:', err);
+          setTimeout(() => {
+            this.globalService.showMsgSnackBar(err);
+          }, 100);
           return of(err);
         })
       )
       .subscribe((res: any) => {
-        if (res.success == true) {
-          console.log('enter , re',res);
-          
+        // //console.log('Response:', res);
+        if (res.success) {
+          this.calculateGstPrice(this.cartListData);
+          this.grandTotal = this.globalService.calculateGrandTotal(this.cartListData);
+        } else if (res && res.error && res.error.message) {
+          //console.log('error  :', res.error.message);
+          this.globalService.showMsgSnackBar(res.error);
         }
-      })
+        this.cd.detectChanges();
+        // this.categoryListData = res.data;
+      });
   }
+  removeCoupon() {
+  this.appliedCoupon = '';
+  this.cd.detectChanges();
+
+  this.router.navigate(
+    [],
+    {
+      queryParams: { coupon: null },
+      queryParamsHandling: 'merge'
+    }
+  );
+  this.calculateGstPrice(this.cartListData);
+}
 }

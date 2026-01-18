@@ -27,6 +27,7 @@ declare const bootstrap: any;
 })
 export class CartCommon {
   @ViewChild('deleteCart') deleteCart!: ElementRef;
+  @ViewChild('couponModal') couponModal!: ElementRef;
   @ViewChild('addressInput') addressInput!: ElementRef<HTMLInputElement>;
   private dataService: any = inject(DataService);
   private globalService: any = inject(GlobaCommonlService);
@@ -55,6 +56,7 @@ export class CartCommon {
   appliedCoupon: any='';
   isBrowser: boolean;
   private platformId = inject(PLATFORM_ID);
+  gstSummary: any={};
   constructor(private http: HttpClient, private fb: FormBuilder, private cd: ChangeDetectorRef, ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.addAddressForm();
@@ -72,8 +74,11 @@ export class CartCommon {
     effect(() => {
     //  this.isLoggedIn = this.signalService.userLoggedIn();
       if (this.signalService.userLoggedIn()) {
+         this.isLoggedIn = true;
         this.carList()
         this.cd.detectChanges();
+      }else{
+         this.isLoggedIn = false
       }
 
 
@@ -272,7 +277,7 @@ export class CartCommon {
         //console.log('response==>', response);
         if (response.success == true) {
           this.cartListData = response.data.data;
-this.calculateGstPrice(response.data.data);
+          this.calculateGstPrice(this.cartListData);
           for (let i = 0; i < this.cartListData.length; i++) {
             const element = this.cartListData[i];
             // if (element.) {
@@ -293,36 +298,36 @@ this.calculateGstPrice(response.data.data);
       });
   }
 
-  calculateGstPrice(data:any){
-    let payload:any={
-      items:[]
-    };
-    console.log('data=====>',data);
-    payload.coupon_code = this.appliedCoupon;
-    for (let i = 0; i < data.length; i++) {
-      const element = data[i];
-      payload.items.push({
-        quantity : element?.quantity,
-        product_id:element?.product.id,
-        salePrice:element?.product?.price_data?.salePrice,
-        gstPercent:element?.product?.price_data?.caclulatedObj?.gstPercent
-      })   
-    }
-    this.dataService.postCommonApi(payload,'calculate-prices')
-      .pipe(
-        catchError((err) => {
-          console.error('Error:', err);
-          setTimeout(() => {
-            this.globalService.showMsgSnackBar(err);
-          }, 100);
-          return of(err);
-        })
-      )
-      .subscribe((res: any) => {
-        console.log('payload===>',res);
-      })
+  // calculateGstPrice(data:any){
+  //   let payload:any={
+  //     items:[]
+  //   };
+  //   console.log('data=====>',data);
+  //   payload.coupon_code = this.appliedCoupon;
+  //   for (let i = 0; i < data.length; i++) {
+  //     const element = data[i];
+  //     payload.items.push({
+  //       quantity : element?.quantity,
+  //       product_id:element?.product.id,
+  //       salePrice:element?.product?.price_data?.salePrice,
+  //       gstPercent:element?.product?.price_data?.caclulatedObj?.gstPercent
+  //     })   
+  //   }
+  //   this.dataService.postCommonApi(payload,'calculate-prices')
+  //     .pipe(
+  //       catchError((err) => {
+  //         console.error('Error:', err);
+  //         setTimeout(() => {
+  //           this.globalService.showMsgSnackBar(err);
+  //         }, 100);
+  //         return of(err);
+  //       })
+  //     )
+  //     .subscribe((res: any) => {
+  //       console.log('payload===>',res);
+  //     })
 
-  }
+  // }
   increase(quantity: any, index: any) {
     this.cartListData[index].quantity++;
     let id = this.cartListData[index].id;
@@ -368,7 +373,10 @@ this.calculateGstPrice(response.data.data);
       .subscribe((res: any) => {
         // //console.log('Response:', res);
         if (res.success) {
+          this.calculateGstPrice(this.cartListData);
           this.grandTotal = this.globalService.calculateGrandTotal(this.cartListData);
+        this.cd.detectChanges();
+
         } else if (res && res.error && res.error.message) {
           //console.log('error  :', res.error.message);
           this.globalService.showMsgSnackBar(res.error);
@@ -474,7 +482,7 @@ this.calculateGstPrice(response.data.data);
   // 'location' => ['lat' => 12.34, 'lng' => 56.78],
   proccedToCheckout() {
     if (this.isLoggedIn) {
-      this.route.navigate(['/checkout']);
+     this.route.navigate(['/checkout'],{ queryParams: { coupon: this.appliedCoupon } });
     } else {
       this.openLogin('checkout');
     }
@@ -495,7 +503,7 @@ this.calculateGstPrice(response.data.data);
 
         if (result.result == 'success' && from == 'checkout') {
           this.carList();
-          this.route.navigate(['/checkout']);
+         this.route.navigate(['/checkout'],{ queryParams: { coupon: this.appliedCoupon } });
         } else {
           //console.log('result.result=================>');
 
@@ -507,5 +515,74 @@ this.calculateGstPrice(response.data.data);
       .catch((reason) => {
         //console.log('Modal dismissed:', reason);
       });
+  }
+
+    calculateGstPrice(dataObj:any){
+      let data = dataObj;
+    let payload:any={
+      items:[]
+    };
+    console.log('data=====>',data);
+    payload.coupon_code = this.appliedCoupon;
+    for (let i = 0; i < data.length; i++) {
+      const element = data[i];
+      payload.items.push({
+        quantity : element?.quantity,
+        product_id:element?.product.id,
+        salePrice:element?.product?.price_data?.salePrice,
+        gstPercent:element?.product?.price_data?.caclulatedObj?.gstPercent
+      })   
+    }
+    this.dataService.postCommonApi(payload,'calculate-prices')
+      .pipe(
+        catchError((err) => {
+          console.error('Error:', err);
+          setTimeout(() => {
+            this.globalService.showMsgSnackBar(err);
+          }, 100);
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        console.log('payload===>',res.data.summary);
+        this.gstSummary = res.data.summary;
+        this.gstSummary.items = res.data.items;
+        // this.isLoading = false;
+        console.log('this.cartListData==>',this.gstSummary);
+        
+        this.cd.detectChanges();
+      })
+
+  }
+    checkCoupon(couponValue:any){
+     console.log('Input value:', couponValue);
+     this.appliedCoupon = couponValue;
+     let payload ={
+      coupon_code:couponValue
+     }
+      this.dataService.post(payload, 'orders/apply-coupon')
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        if (res.success == true) {
+          console.log('enter , re',res);
+        this.globalService.showMsgSnackBar(res);
+          const modal = bootstrap.Modal.getInstance(this.couponModal.nativeElement);
+           modal.hide();
+          this.calculateGstPrice(this.cartListData);
+        }
+        else if (res && res.error && res.error.message) {
+          //console.log('error  :', res.error.message);
+          this.globalService.showMsgSnackBar(res.error);
+        }
+      })
+  }
+  removeCoupon(){
+    this.appliedCoupon == '';
+    this.calculateGstPrice(this.cartListData);
   }
 }

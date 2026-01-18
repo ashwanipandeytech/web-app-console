@@ -232,6 +232,78 @@
       <div class="col-md-4 col-12">
         <div class="mt-3 rounded px-md-2 px-0 shadow-sm bg-white">
           <h3 class="wrapper-heading mb-3 ps-3 shadow-sm py-2 fs-18 text-center" style="background-color: #f1f2f7;">Order Summary</h3>
+
+
+             <!-- Coupon -->
+              @if (this.appliedCoupon == '') {
+                <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2">
+                  <span class="fw-semibold">Have a coupon?</span>
+                  <button
+                    type="button"
+                    class="btn text-primary fw-semibold p-0"
+                    data-bs-toggle="modal"
+                    data-bs-target="#couponModal"
+                  >
+                    Apply
+                  </button>
+                </div>
+              }
+                 @if (this.appliedCoupon !='') {
+                <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2">
+                  <span class="fw-semibold">{{appliedCoupon}}</span>
+                  <button
+                    type="button"
+                    class="btn text-primary fw-semibold p-0"
+                    (click)="removeCoupon()"
+                  >
+                    remove
+                  </button>
+                </div>
+              }
+              
+               <div class="subtotal product-total px-3">
+                  <h5 class="wrapper-heading fw-semibold">Subtotal</h5>
+                  <h5 class="wrapper-heading">₹{{ gstSummary?.base_total | number:'1.2-2' }}</h5>
+                </div>
+ <div class="subtotal product-total px-3">
+                  <h5 class="wrapper-heading fw-semibold">Discount</h5>
+                  <h5 class="wrapper-heading">₹{{ gstSummary?.discount_total | number:'1.2-2' }}</h5>
+                </div>
+                <div class="subtotal product-total px-3">
+                  <h5 class="wrapper-heading fw-semibold">CGST</h5>
+                  <h5 class="wrapper-heading">₹{{ gstSummary?.total_cgst | number:'1.2-2' }}</h5>
+                </div>
+
+                <div class="subtotal product-total px-3">
+                  <h5 class="wrapper-heading fw-semibold">SGST</h5>
+                  <h5 class="wrapper-heading">₹{{ gstSummary?.total_sgst | number:'1.2-2' }}</h5>
+                </div>
+
+                <div class="subtotal product-total px-3">
+                  <h5 class="wrapper-heading fw-semibold">Total Tax</h5>
+                  <h5 class="wrapper-heading">₹{{ gstSummary?.total_tax | number:'1.2-2' }}</h5>
+                </div>
+
+                <div class="subtotal product-total px-3">
+                  <h5 class="wrapper-heading fw-semibold">Grand Total</h5>
+                  <h5 class="wrapper-heading fw-bold text-success">
+                    ₹{{gstSummary?.final_total | number:'1.2-2' }}
+                  </h5>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           <!-- Coupon -->
           <!-- <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2">
             <span class="fw-semibold fs-14">Have a coupon?</span>
@@ -294,6 +366,7 @@
 
 <!-- Modal -->
 <div
+#couponModal
   class="modal fade"
   id="couponModal"
   data-bs-backdrop="static"
@@ -313,24 +386,28 @@
         ></button>
       </div>
       <div class="modal-body text-center">
+              <input type="text" formControlName="productTitle" class="form-control" id="productTitle"
+                placeholder="Have a coupon ?" #couponInput>
         <!-- <p class="position-relative bg-white rounded-circle mx-auto">
                     <img src="assets/images/svg/coupon.svg" alt="" style="filter: drop-shadow(0 11px 15px);">
                 </p> -->
-        <h4 class="text-primary">Coupon applied!</h4>
-        <p class="fs-12 text-muted">KDVND6565FDVDSDF</p>
-        <div class="alert alert-success mb-0" role="alert">
-          <p class="fw-semibold text-success mb-0">Saved ₹652</p>
-          <span class="fs-12">You have saved total ₹652 on this order!</span>
-        </div>
+       <span>
+
+         <!-- <h4 class="text-primary">Coupon applied!</h4>
+ <p class="fs-12 text-muted">KDVND6565FDVDSDF</p>
+ <div class="alert alert-success mb-0" role="alert">
+   <p class="fw-semibold text-success mb-0">Saved ₹652</p>
+   <span class="fs-12">You have saved total ₹652 on this order!</span>
+ </div> -->
+       </span>
       </div>
       <div class="modal-footer border-0">
         <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-        <button type="button" class="shop-btn w-100">Okay!</button>
+        <button type="button" class="shop-btn w-100" (click)="checkCoupon(couponInput.value)" >Okay!</button>
       </div>
     </div>
   </div>
 </div>
-
 <!-- Delete product Modal -->
 <div
   #deleteCart

@@ -117,14 +117,7 @@ export const routes: Routes = [
 
 
 
-    {
-        path: '**',
-        pathMatch: 'full',
-        loadComponent: () => import('../../../shared-lib/src/lib/components/backend-pages/backend-pages').then(m => m.BackendPagesComponent),
-        resolve: {
-            pageData: PageContentResolver
-        }
-    },
+   
     // {
     //     path: 'fotobuch',  
     //     pathMatch: 'full',     
