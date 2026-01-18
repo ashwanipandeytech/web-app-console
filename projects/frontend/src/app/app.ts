@@ -11,6 +11,7 @@ import { DataService } from 'shared-lib';
 import { catchError, of } from 'rxjs';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Login } from 'shared-lib/components/auth/login/login';
+import { Meta } from '@angular/platform-browser';
 declare var Razorpay: any;
 @Component({
   selector: 'safure-root',

@@ -8,7 +8,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -17,7 +17,7 @@ declare var bootstrap: any;
 @Component({
   selector: 'layout-settings',
   templateUrl: './layout-settings.component.html',
-  imports: [FormsModule, CommonModule, CdkDrag, CdkDropList],
+  imports: [FormsModule, CommonModule, CdkDrag, CdkDropList,ReactiveFormsModule],
   styleUrls: ['./layout-settings.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -98,9 +98,12 @@ export class LayoutSettingsComponent implements OnInit {
       address: '',
     },
   };
+  seoForm!:FormGroup;
   loading = true;
   public dataService: any = inject(DataService);
   private globalService: any = inject(GlobalService);
+  private fb: any = inject(FormBuilder);
+
   pageList: any;
   uploadedFile: any;
   @ViewChild('uploadPhoto') uploadPhoto!: ElementRef;
@@ -124,7 +127,7 @@ export class LayoutSettingsComponent implements OnInit {
 
     //   this.loading=false
     // });
-
+this.seoFormGroup();
     this.getGeneralSetting();
   }
   getGeneralSetting() {
@@ -165,6 +168,14 @@ export class LayoutSettingsComponent implements OnInit {
   //       }
   //     })
   // }
+
+  seoFormGroup(){
+     this.seoForm = this.fb.group({
+      keywords: [''],          // Focus Keyphrase
+      metaTitle: ['', Validators.maxLength(60)],
+      metaDescription: ['', Validators.maxLength(160)]
+    });
+  }
   getSelectedImage(image: any, index:any) {
     this.selectedImageIndex=index;
     console.log('image==>', image);
@@ -322,11 +333,11 @@ export class LayoutSettingsComponent implements OnInit {
       delete settingData.footer[i].pageList;
     }
 
-    let payload = {
+    let payload:any = {
       settings_name: 'general',
       settings: settingData,
     };
-
+    payload.settings.seoData = this.seoForm.value
     // console.info('this.settingsModel',this.settingsModel)
     // return
     this.dataService

@@ -277,11 +277,16 @@
           </div>
 
            <div class="card border-0 shadow-sm p-3">
+            @if (orderDetailList?.order_rating!=null) {
+              {{orderDetailList?.order_rating.rating}}
+              {{orderDetailList?.order_rating.comment}}
+            }
+             @if (orderDetailList?.order_rating==null) {
             <h6 class="fw-semibold mb-2 d-flex align-items-center">
               Rate your experience
               <button type="button" class="shop-btn ms-3 fs-12 sm-btn help-btn" data-bs-toggle="collapse" data-bs-target="#collapseRateUs" aria-expanded="false" aria-controls="collapseRate">Rate Us</button>           
             </h6>
-
+          }
             <div class="collapse" id="collapseRateUs">
                 <div class="card card-body border-primary p-2 mb-2">
                   <form [formGroup]="rateUsForm" (ngSubmit)="submitRating()">

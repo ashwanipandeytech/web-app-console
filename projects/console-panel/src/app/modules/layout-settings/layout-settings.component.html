@@ -13,37 +13,48 @@
             <i class="fa fa-image me-2"></i> SEO Settings
           </button>
         </h2>
-        <div id="collapseSeo" class="accordion-collapse collapse show" aria-labelledby="headingLogo">
-           <div class="accordion-body">
-        
-         <!-- Focus Keyphrase -->
-         <div class="mb-3">
-           <label class="form-label">Focus Keyphrase</label>
-           <input type="text"
-                  class="form-control"
-                  name="keywords"
-                  >
-         </div>
-        
-         <!-- SEO Meta Title -->
-         <div class="mb-3">
-           <label class="form-label">SEO Meta Title</label>
-           <input type="text"
-                  class="form-control"
-                  name="metaTitle"
-                >
-         </div>
-        
-         <!-- SEO Meta Description -->
-         <div class="mb-3">
-           <label class="form-label">SEO Meta Description</label>
-           <textarea class="form-control"
-                     rows="3"
-                     name="metaDescription"
-                    ></textarea>
-         </div>
-        </div>
-        </div>
+     <form [formGroup]="seoForm">
+
+  <div id="collapseSeo"
+       class="accordion-collapse collapse show"
+       aria-labelledby="headingLogo">
+    <div class="accordion-body">
+
+      <!-- Focus Keyphrase -->
+      <div class="mb-3">
+        <label class="form-label">Focus Keyphrase</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="keywords"
+        />
+      </div>
+
+      <!-- SEO Meta Title -->
+      <div class="mb-3">
+        <label class="form-label">SEO Meta Title</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="metaTitle"
+        />
+      </div>
+
+      <!-- SEO Meta Description -->
+      <div class="mb-3">
+        <label class="form-label">SEO Meta Description</label>
+        <textarea
+          class="form-control"
+          rows="3"
+          formControlName="metaDescription">
+        </textarea>
+      </div>
+
+    </div>
+  </div>
+
+</form>
+
 </div>
       <!-- 1. General - Logo -->
       <div class="accordion-item">

@@ -119,6 +119,18 @@
             <div class="account-section billing-section p-0">
               <h3 class="wrapper-heading mb-3 ps-3 shadow-sm py-2 fs-18 text-center" style="background-color: #f1f2f7;">Order Summary</h3>
               <div class="order-summery">
+                 <!-- Coupon -->
+    <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2">
+      <span class="fw-semibold">Have a coupon?</span>
+      <button
+        type="button"
+        class="btn text-primary fw-semibold p-0"
+        data-bs-toggle="modal"
+        data-bs-target="#couponModal"
+      >
+        Apply
+      </button>
+    </div>
                <div class="subtotal product-total px-3">
                   <h5 class="wrapper-heading fw-semibold">Subtotal</h5>
                   <h5 class="wrapper-heading">₹{{ gstSummary?.base_total | number:'1.2-2' }}</h5>
@@ -238,6 +250,49 @@
       <div class="modal-footer border-0">
         <button type="button" class="btn btn-secondary fs-14" data-bs-dismiss="modal">Cancel</button>
         <button type="button" class="shop-btn fs-14 py-2 px-3 my-0 ms-2" (click)="savedFinalAddress()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="couponModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="couponModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header py-4">
+        <button
+          type="button"
+          class="btn-close text-primary"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body text-center">
+              <input type="text" formControlName="productTitle" class="form-control" id="productTitle"
+                placeholder="Have a coupon ?" #couponInput>
+        <!-- <p class="position-relative bg-white rounded-circle mx-auto">
+                    <img src="assets/images/svg/coupon.svg" alt="" style="filter: drop-shadow(0 11px 15px);">
+                </p> -->
+       <span>
+
+         <!-- <h4 class="text-primary">Coupon applied!</h4>
+ <p class="fs-12 text-muted">KDVND6565FDVDSDF</p>
+ <div class="alert alert-success mb-0" role="alert">
+   <p class="fw-semibold text-success mb-0">Saved ₹652</p>
+   <span class="fs-12">You have saved total ₹652 on this order!</span>
+ </div> -->
+       </span>
+      </div>
+      <div class="modal-footer border-0">
+        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+        <button type="button" class="shop-btn w-100" (click)="checkCoupon(couponInput.value)" >Okay!</button>
       </div>
     </div>
   </div>

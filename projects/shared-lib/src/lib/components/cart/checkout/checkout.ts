@@ -242,13 +242,15 @@ export class Checkout {
     }
     ));
     let OrderSubmitPayload = {
-      items: payload,
-      total_amount: this.grandTotal,
-      address_id: addressId,
-      payment_method: this.selectedPaymentMethod,
-      shipping_address: addressId,
-    }
-    OrderSubmitPayload.items['tax_details']=this.gstSummary.items;
+  items: payload.map((item:any, index:any) => ({
+    ...item,
+    tax_details: this.gstSummary.items[index] || null
+  })),
+  total_amount: this.grandTotal,
+  address_id: addressId,
+  payment_method: this.selectedPaymentMethod,
+  shipping_address: addressId
+};
     this.dataService.post(OrderSubmitPayload, 'orders')
       .pipe(
         catchError(err => {
@@ -565,5 +567,24 @@ export class Checkout {
       );
       modal.hide();
     }
+  }
+  checkCoupon(couponValue:any){
+     console.log('Input value:', couponValue);
+     let payload ={
+      coupon_code:couponValue
+     }
+      this.dataService.post(payload, 'orders/apply-coupon')
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        if (res.success == true) {
+          console.log('enter , re',res);
+          
+        }
+      })
   }
 }

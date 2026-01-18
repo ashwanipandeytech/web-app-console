@@ -1,0 +1,65 @@
+<form [formGroup]="discountForm" class="discount-form" (ngSubmit)="submit()">
+
+  <div class="form-row">
+    <label>Coupon Code</label>
+    <input type="text" formControlName="code" />
+  </div>
+
+  <div class="form-row">
+    <label>Type</label>
+    <select formControlName="type">
+      <option value="single">Single</option>
+      <option value="multiple">Multiple</option>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label>Discount Amount</label>
+    <input type="number" formControlName="discount_amount" />
+  </div>
+
+  <div class="form-row">
+    <label>Discount Type</label>
+    <select formControlName="discount_type">
+      <option value="percentage">Percentage</option>
+      <option value="flat">Flat</option>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label>Minimum Cart Value</label>
+    <input type="number" formControlName="min_cart_value" />
+  </div>
+
+  <div class="form-row">
+    <label>Maximum Usage</label>
+    <input type="number" formControlName="max_usage" />
+  </div>
+
+  <div class="form-row">
+    <label>Usage Per User</label>
+    <input type="number" formControlName="usage_per_user" />
+  </div>
+
+  <div class="form-row">
+    <label>Valid From</label>
+    <input type="datetime-local" formControlName="valid_from" />
+  </div>
+
+  <div class="form-row">
+    <label>Valid To</label>
+    <input type="datetime-local" formControlName="valid_to" />
+  </div>
+
+  <div class="form-row checkbox-row">
+    <label>
+      <input type="checkbox" formControlName="is_active" />
+      Active
+    </label>
+  </div>
+
+  <button type="submit" class="btn-primary">
+    Save Discount
+  </button>
+
+</form>
