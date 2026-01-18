@@ -5,10 +5,11 @@ import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { PlatformDetectionService } from '../../services/platform-detection';
 import { isPlatformBrowser } from '@angular/common';
+import { MobileBottomNavComponent } from '../mobile-bottom-nav/mobile-bottom-nav.component';
 
 @Component({
   selector: 'web-category',
-  imports: [],
+  imports: [MobileBottomNavComponent],
   templateUrl: './category.html',
   styleUrl: './category.scss'
 })
@@ -20,10 +21,12 @@ export class CategoryCommon {
   private route = inject(Router);
   isBrowser: boolean;
 private platformId = inject(PLATFORM_ID);
+  imgUrl: string='';
   constructor(private cd:ChangeDetectorRef, private router: Router, ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.platFormType= this.platformDetectionService.getActivePlatform()
     console.info('this.platFormType',this.platFormType)
+    this.imgUrl = environment.DOMAIN;
   }
 
   ngOnInit(){
@@ -40,23 +43,28 @@ private platformId = inject(PLATFORM_ID);
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
-        if (res.data) {
-
-          for (let i = 0; i < res.data.length; i++) {
-            const element = res.data[i];
-            //console.log('element==>', element.thumbnail);
-            if (element?.thumbnail != null) {
-              //console.log('environment.API_URL==>', environment.API_URL);
-              element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
-            }
-            this.categoryListData.push(element);
-          }
+        if (res.success == true) {
+          console.log('Response:', res);
+          this.categoryListData = res.data;
+        // this.categoryListData = res.data.map((item:any)=>{
+        //            item.thumbnail = environment.DOMAIN + '/' + item.thumbnail;
+        //            return item;
+        // })
+        console.log('this.categoryListData==>',this.categoryListData);
+        
+          // for (let i = 0; i < res.data.length; i++) {
+          //   const element = res.data[i];
+          //   //console.log('element==>', element.thumbnail);
+          //   // if (element?.thumbnail != null) {
+          //   //   //console.log('environment.API_URL==>', environment.API_URL);
+          //   //   element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
+          //   // }
+          //   this.categoryListData.push(element);
+          // }
+          this.cd.detectChanges();
         }
         //console.log('categoryListData==>', this.categoryListData);
 
-        this.cd.detectChanges();
-        // this.categoryListData = res.data;
       });
   }
   back(){
