@@ -72,8 +72,11 @@ export class CartCommon {
     effect(() => {
     //  this.isLoggedIn = this.signalService.userLoggedIn();
       if (this.signalService.userLoggedIn()) {
+         this.isLoggedIn = true;
         this.carList()
         this.cd.detectChanges();
+      }else{
+         this.isLoggedIn = false
       }
 
 
