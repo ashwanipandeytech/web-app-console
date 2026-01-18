@@ -734,6 +734,13 @@
 //   }
 // }
 
+.location-dropdown {
+  @media screen and (min-width: 768px) {
+    .btn {
+      max-width: 275px;
+    }
+  }
+}
 
 .icon-badge {
   width: 20px;
@@ -743,11 +750,6 @@
   right: -12px;
 }
 
-// .icon-menu{
-//   span:hover{
-//     color: $theme-color;
-//   }
-// }
 .user-account{
   li {
     .dropdown-item{
