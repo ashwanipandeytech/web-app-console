@@ -12,19 +12,12 @@
 
 <div class="order-container px-3 px-md-0">
   @for (item of orderListData; track $index) {
-  <div
-    class="border rounded mb-3 p-3 row wrapper cursor-pointer"
-    data-bs-toggle="modal"
-    data-bs-target="#orderDetail"
-    (click)="getOrderDetailData(item)"
-  >
+  <div class="border rounded mb-3 p-3 row wrapper cursor-pointer" data-bs-toggle="modal" data-bs-target="#orderDetail"
+    (click)="getOrderDetailData(item)">
     <div class="col-2">
       <div class="wrapper-img bg-light p-2 rounded-2">
-        <img
-          [src]="item?.items[0]?.product?.media?.uploadedImages[0]?.url"
-          alt=""
-          class="object-fit-contain rounded-2 w-100"
-        />
+        <img [src]="item?.items[0]?.product?.media?.uploadedImages[0]?.url" alt=""
+          class="object-fit-contain rounded-2 w-100" />
       </div>
     </div>
 
@@ -43,27 +36,22 @@
           </li>
         </ul>
 
-        <p class="text-muted fs-14 fw-bold">Delivery expected by Jan 05 / Shipped / Delivered / Refund completed / Cancelled</p>
+        <p class="text-muted fs-14 fw-bold">Delivery expected by Jan 05 / Shipped / Delivered / Refund completed /
+          Cancelled</p>
 
         <button type="button" class="icon-link icon-link-hover text-primary mt-3">
           Order detail
           <svg xmlns="http://www.w3.org/2000/svg" class="bi" viewBox="0 0 16 16" aria-hidden="true">
             <path
-              d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
-            />
+              d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
           </svg>
         </button>
       </div>
     </div>
   </div>
   }
-  <app-no-data
-    *ngIf="!orderListData || orderListData.length === 0"
-    title="No Orders Found"
-    message="There are no data available right now."
-    [showAction]="false"
-    actionText="Reload"
-  >
+  <app-no-data *ngIf="!orderListData || orderListData.length === 0" title="No Orders Found"
+    message="There are no data available right now." [showAction]="false" actionText="Reload">
   </app-no-data>
 </div>
 
@@ -92,14 +80,8 @@
  deliver date -->
 
 <!-- Order detail Modal -->
-<div
-  #orderDetail
-  class="modal fade"
-  id="orderDetail"
-  tabindex="-1"
-  aria-labelledby="orderDetailLabel"
-  aria-hidden="true"
->
+<div #orderDetail class="modal fade" id="orderDetail" tabindex="-1" aria-labelledby="orderDetailLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header py-2">
@@ -115,11 +97,8 @@
             <div class="row">
               <div class="col-4">
                 <div class="wrapper-img bg-light p-2 rounded-2 h-100">
-                  <img
-                    [src]="item.product.media?.uploadedImages[0]?.url"
-                    alt=""
-                    class="object-fit-contain rounded-2 w-100 h-100"
-                  />
+                  <img [src]="item.product.media?.uploadedImages[0]?.url" alt=""
+                    class="object-fit-contain rounded-2 w-100 h-100" />
                 </div>
               </div>
 
@@ -144,31 +123,34 @@
                   </ul>
                 </div>
               </div>
-                @if (item?.product_review !=null) {
-                  <div class="rounded-3 py-2 p-3 mt-2" style="background-color: #f1f2f7;">
-                    <span class="fw-semibold">Your rating : <span class="text-success">{{item?.product_review?.rating}} star</span></span>
-                    <span class="fs-12 d-block">{{item?.product_review?.comment}} </span>
-                  </div>
-                }
+              @if (item?.product_review !=null) {
+              <div class="bg-light rounded-3 py-2 p-3 mt-2">
+                <div class="rating-stars mb-2">
+                  <i *ngFor="let star of stars; let i = index" class="fa-star fs-14"
+                  [ngClass]="{ 'fa-solid active': i < item?.product_review?.rating,
+                  'fa-regular': i >= item?.product_review?.rating }"></i>
+                  <strong class="h-5 ps-2">{{ item?.product_review?.rating }}</strong> <small class="ms-2">out of 5 (125 Reviews)</small>
+                </div>
+                <hr class="my-2" *ngIf="item?.product_review?.comment">
+                <!-- <span class="fw-semibold">Your rating : <span class="text-success">{{item?.product_review?.rating}}
+                    star</span></span> -->
+                <span class="fs-12 d-block">{{item?.product_review?.comment}} </span>
+              </div>
+              }
 
               <hr class="my-3">
 
               <div class="d-flex align-items-center gap-2 justify-content-center flex-wrap">
                 @if (!item?.product_review) {
 
-                  <button
-                   class="fs-14 btn btn-outline-secondary"
-                   data-bs-toggle="collapse"  [attr.data-bs-target]="'#collapseProduct' + $index" aria-expanded="false" [attr.aria-controls]="'collapseProduct' + $index"
-
-                 >
-                   Rate Product
-                 </button>
+                <button class="fs-14 btn btn-outline-secondary" data-bs-toggle="collapse"
+                  [attr.data-bs-target]="'#collapseProduct' + $index" aria-expanded="false"
+                  [attr.aria-controls]="'collapseProduct' + $index">
+                  Rate Product
+                </button>
                 }
 
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary fs-14"
-                  (click)="addToCart(item)">
+                <button type="button" class="btn btn-outline-secondary fs-14" (click)="addToCart(item)">
                   Add to Cart
                   <!-- <svg
                     _ngcontent-ng-c3478470960=""
@@ -184,51 +166,38 @@
                   </svg> -->
                 </button>
 
-                <button
-                  class="fs-14 btn btn-outline-danger"
-                  (click)="cancelOrder()"
-                  data-bs-toggle="modal"
-                  data-bs-target="#confirmCancelOrder"
-                >
+                <button class="fs-14 btn btn-outline-danger" (click)="cancelOrder()" data-bs-toggle="modal"
+                  data-bs-target="#confirmCancelOrder">
                   Cancel Order
                 </button>
               </div>
- @if (!item?.product_review) {
+              @if (!item?.product_review) {
               <div class="collapse" [id]="'collapseProduct' + $index" #collapseRef>
                 <div class="card card-body border-primary p-2 mt-2">
                   <form [formGroup]="rateUsForm" (ngSubmit)="submitRating(item,item.product.id,$index)">
-                      <p class="mb-0">
-                        How was your product?
-                        <button type="submit" class="shop-btn ms-3 fs-12 sm-btn" [disabled]="rateUsForm.invalid">
+                    <p class="mb-0">
+                      How was your product?
+                      <button type="submit" class="shop-btn ms-3 fs-12 sm-btn" [disabled]="rateUsForm.invalid">
                         Submit
                       </button>
-                      </p>
+                    </p>
 
-                      <!-- ⭐ Star Rating -->
-                      <div class="rating-stars mb-2">
-                        <i
-                          *ngFor="let star of stars; let i = index"
-                          class="fa-star fs-14"
-                          [ngClass]="{
+                    <!-- ⭐ Star Rating -->
+                    <div class="rating-stars mb-2">
+                      <i *ngFor="let star of stars; let i = index" class="fa-star fs-14" [ngClass]="{
                             'fa-solid active': i < rateUsForm.value.rating,
                             'fa-regular': i >= rateUsForm.value.rating
-                          }"
-                          (click)="setRating(i + 1)"
-                        ></i>
-                      </div>
+                          }" (click)="setRating(i + 1)"></i>
+                    </div>
 
-                      <div  class="text-danger small"
-                        *ngIf="rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid">
-                        Please select a rating
-                      </div>
+                    <div class="text-danger small"
+                      *ngIf="rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid">
+                      Please select a rating
+                    </div>
 
-                      <!-- Feedback -->
-                      <textarea
-                        class="form-control"
-                        rows="2"
-                        placeholder="Write your feedback (optional)"
-                        formControlName="comment"
-                      ></textarea>
+                    <!-- Feedback -->
+                    <textarea class="form-control" rows="2" placeholder="Write your feedback (optional)"
+                      formControlName="comment"></textarea>
 
                     <!-- Footer -->
                     <!-- <div class="modal-footer border-0">
@@ -241,7 +210,7 @@
                   </form>
                 </div>
               </div>
-            }
+              }
             </div>
           </div>
 
@@ -268,72 +237,76 @@
               <div class="d-flex align-items-center">
                 <i class="fa-regular fa-user me-2"></i>
                 @if(orderDetailList?.addres?.name){
-                  <span class="fw-medium text-dark small text-capitalize fs-14">{{ orderDetailList?.addres?.name }},</span>
+                <span class="fw-medium text-dark small text-capitalize fs-14">{{ orderDetailList?.addres?.name
+                  }},</span>
                 }
                 <span class="text-muted ms-1 fs-14">{{ orderDetailList?.address?.phone }}</span>
               </div>
             </div>
-            
+
           </div>
 
-           <div class="card border-0 shadow-sm p-3">
+          <div class="card border-0 shadow-sm p-3">
             @if (orderDetailList?.order_rating!=null) {
-              {{orderDetailList?.order_rating.rating}}
-              {{orderDetailList?.order_rating.comment}}
+            <div class="d-flex flex-row align-items-start gap-3">
+              <div class="rating-stars" style="min-width: max-content;">
+                <i *ngFor="let star of stars; let i = index" class="fa-star fs-14" [ngClass]="{
+                  'fa-solid active': i < orderDetailList?.order_rating.rating,
+                  'fa-regular': i >= orderDetailList?.order_rating.rating }"></i>
+              </div>
+              <!-- {{orderDetailList?.order_rating.rating}} -->
+  
+              <h6 class="flex-grow-1">
+                {{orderDetailList?.order_rating.comment}}
+              </h6>
+            </div>
             }
-             @if (orderDetailList?.order_rating==null) {
-            <h6 class="fw-semibold mb-2 d-flex align-items-center">
-              Rate your experience
-              <button type="button" class="shop-btn ms-3 fs-12 sm-btn help-btn" data-bs-toggle="collapse" data-bs-target="#collapseRateUs" aria-expanded="false" aria-controls="collapseRate">Rate Us</button>           
-            </h6>
-          }
-            <div class="collapse" id="collapseRateUs">
-                <div class="card card-body border-primary p-2 mb-2">
-                  <form [formGroup]="rateUsForm" (ngSubmit)="submitRating()">
-                      <p class="mb-0">
-                        How was your experience?
-                        <button type="submit" class="shop-btn ms-3 fs-12 sm-btn" [disabled]="rateUsForm.invalid">
-                        Submit
-                      </button>
-                      </p>
 
-                      <!-- ⭐ Star Rating -->
-                      <div class="rating-stars mb-2">
-                        <i
-                          *ngFor="let star of stars; let i = index"
-                          class="fa-star fs-14"
-                          [ngClass]="{
+            @if (orderDetailList?.order_rating==null) {
+            <h6 class="fw-semibold mb-0 d-flex align-items-center">
+              Rate your experience
+              <button type="button" class="shop-btn ms-3 fs-12 sm-btn help-btn" data-bs-toggle="collapse"
+                data-bs-target="#collapseRateUs" aria-expanded="false" aria-controls="collapseRate">Rate Us</button>
+            </h6>
+            }
+            <div class="collapse" id="collapseRateUs">
+              <div class="card card-body border-primary p-2 my-2">
+                <form [formGroup]="rateUsForm" (ngSubmit)="submitRating()">
+                  <p class="mb-0">
+                    How was your experience?
+                    <button type="submit" class="shop-btn ms-3 fs-12 sm-btn" [disabled]="rateUsForm.invalid">
+                      Submit
+                    </button>
+                  </p>
+
+                  <!-- ⭐ Star Rating -->
+                  <div class="rating-stars mb-2">
+                    <i *ngFor="let star of stars; let i = index" class="fa-star fs-14" [ngClass]="{
                             'fa-solid active': i < rateUsForm.value.rating,
                             'fa-regular': i >= rateUsForm.value.rating
-                          }"
-                          (click)="setRating(i + 1)"
-                        ></i>
-                      </div>
+                          }" (click)="setRating(i + 1)"></i>
+                  </div>
 
-                      <div  class="text-danger small"
-                        *ngIf="rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid">
-                        Please select a rating
-                      </div>
+                  <div class="text-danger small"
+                    *ngIf="rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid">
+                    Please select a rating
+                  </div>
 
-                      <!-- Feedback -->
-                      <textarea
-                        class="form-control"
-                        rows="2"
-                        placeholder="Write your feedback (optional)"
-                        formControlName="comment"
-                      ></textarea>
-                  </form>
-                </div>
+                  <!-- Feedback -->
+                  <textarea class="form-control" rows="2" placeholder="Write your feedback (optional)"
+                    formControlName="comment"></textarea>
+                </form>
               </div>
+            </div>
 
-            <div class="rounded-3 p-3" style="background-color: #f1f2f7">
+            <!-- <div class="rounded-3 p-3" style="background-color: #f1f2f7">
               <div class="d-flex align-items-start">
                 <i class="fa-solid fa-truck me-3"></i>
                 <span class="fw-medium text-dark small"> How was your experience </span>
               </div>
-            </div>
+            </div> -->
           </div>
-          
+
         </div>
       </div>
       <!-- <div class="modal-footer border-0">
@@ -343,14 +316,8 @@
   </div>
 </div>
 
-<div
-  #confirmCancelOrder
-  class="modal fade"
-  id="confirmCancelOrder"
-  tabindex="-1"
-  aria-labelledby="removeAddressLabel"
-  aria-hidden="true"
->
+<div #confirmCancelOrder class="modal fade" id="confirmCancelOrder" tabindex="-1" aria-labelledby="removeAddressLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header py-2">
@@ -368,14 +335,8 @@
   </div>
 </div>
 
-<div
-  #rateusModal
-  class="modal fade"
-  id="rateusModal"
-  tabindex="-1"
-  aria-labelledby="rateusModalLabel"
-  aria-hidden="true"
->
+<div #rateusModal class="modal fade" id="rateusModal" tabindex="-1" aria-labelledby="rateusModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <!-- Header -->
@@ -393,31 +354,19 @@
 
           <!-- ⭐ Star Rating -->
           <div class="rating-stars mb-3">
-            <i
-              *ngFor="let star of stars; let i = index"
-              class="fa-star"
-              [ngClass]="{
+            <i *ngFor="let star of stars; let i = index" class="fa-star" [ngClass]="{
                 'fa-solid active': i < rateUsForm.value.rating,
                 'fa-regular': i >= rateUsForm.value.rating
-              }"
-              (click)="setRating(i + 1)"
-            ></i>
+              }" (click)="setRating(i + 1)"></i>
           </div>
 
-          <div
-            class="text-danger small"
-            *ngIf="rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid"
-          >
+          <div class="text-danger small" *ngIf="rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid">
             Please select a rating
           </div>
 
           <!-- Feedback -->
-          <textarea
-            class="form-control mt-3"
-            rows="3"
-            placeholder="Write your feedback (optional)"
-            formControlName="comment"
-          ></textarea>
+          <textarea class="form-control mt-3" rows="3" placeholder="Write your feedback (optional)"
+            formControlName="comment"></textarea>
         </div>
 
         <!-- Footer -->
@@ -434,5 +383,5 @@
 </div>
 
 
- <app-mobile-bottom-nav></app-mobile-bottom-nav>
+<app-mobile-bottom-nav></app-mobile-bottom-nav>
 }
