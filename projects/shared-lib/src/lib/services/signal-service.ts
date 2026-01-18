@@ -15,13 +15,21 @@ user = signal<any>(null);
 
   isLoading = signal<boolean>(false);
 
-  show() {
-    this.isLoading.set(true);
-  }
+// Inside LoadingService
+private activeRequests = 0;
 
-  hide() {
+show() {
+  this.activeRequests++;
+  this.isLoading.set(true);
+}
+
+hide() {
+  this.activeRequests--;
+  if (this.activeRequests <= 0) {
+    this.activeRequests = 0;
     this.isLoading.set(false);
   }
+}
 
   setCounts(data: any) {
     //console.log('signal service ==',data);

@@ -5,6 +5,8 @@ import {
   Input,
   Output,
   ViewEncapsulation,
+  Inject, // Add Inject
+  PLATFORM_ID // Add PLATFORM_ID
 } from '@angular/core';
 import {
   FormArray,
@@ -22,8 +24,9 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GlobaCommonlService } from '../../../services/global-common.service';
 import { GlobalFunctionService } from '../../../services/global-function.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common'; // Add isPlatformBrowser
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'environments/environment';
 @Component({
   selector: 'web-login',
   imports: [FormsModule, ReactiveFormsModule, CommonModule],
@@ -59,17 +62,20 @@ export class Login {
   enableDisableSignUp() {
     this.isSignUp = !this.isSignUp;
   }
-
+  isBrowser: boolean; // Add this
+private platformId = inject(PLATFORM_ID);
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+     // Add this
   ) {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.isCheckoutPage = params['checkout'] === 'true' ? true : false;
 
       //console.log(this.isCheckoutPage);
     });
+    this.isBrowser = isPlatformBrowser(this.platformId); // Add this
     console.info(this.router);
     this.signUpForm();
     this.loginForm();
@@ -235,7 +241,10 @@ export class Login {
       // this.signupForm.markAllAsTouched();
       return;
     } else {
-      let isNonUserToken: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+      let isNonUserToken: any = null;
+      if (this.isBrowser) {
+        isNonUserToken = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+      }
       let formData = this.signupForm.value;
       formData.guest_token = isNonUserToken;
       this.dataService
@@ -251,7 +260,9 @@ export class Login {
           // //console.log('Response:', res);
           if (res.success == true) {
             this.globalService.showMsgSnackBar(res);
-            localStorage.setItem('user', JSON.stringify(res.data));
+            if (this.isBrowser) {
+              localStorage.setItem('user', JSON.stringify(res.data));
+            }
             this.signalService.user.set(res.data);
 
             // let tempAddress: any = JSON.parse(localStorage.getItem('tempAddress') || 'null');
@@ -260,10 +271,15 @@ export class Login {
             // }
             // let isNonUserToken: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
             if (isNonUserToken) {
+              if (this.isBrowser) {
+            if (this.isBrowser) {
               localStorage.removeItem('GUEST_TOKEN');
             }
-            //make a signal for emiting the user state
-            localStorage.setItem('isLoggedIn', JSON.stringify(true));
+              }
+            }
+            if (this.isBrowser) {
+              localStorage.setItem('isLoggedIn', JSON.stringify(true));
+            }
             this.globalFunctionService.getCount();
             this.signalService.userLoggedIn.set(true);
 
@@ -301,7 +317,9 @@ export class Login {
       // this.activeModal.close({result:null});
       this.activeModal.dismiss();
       this.router.navigate(['/']).then(() => {
-        window.location.reload(); // Reload the page after navigating
+        if (this.isBrowser) {
+          window.location.reload(); // Reload the page after navigating
+        }
       });
 
       // return;
@@ -313,7 +331,10 @@ export class Login {
     this.cd.detectChanges();
   }
   loginUser() {
-    let isNonUserToken: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+    let isNonUserToken: any = null;
+    if (this.isBrowser) {
+      isNonUserToken = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+    }
     // if (isNonUserToken) {
     //   localStorage.removeItem('GUEST_TOKEN');
     // }
@@ -348,9 +369,13 @@ export class Login {
 
             // }
             //make a signal for emiting the user state
-            localStorage.setItem('user', JSON.stringify(res.data));
+            if (this.isBrowser) {
+              localStorage.setItem('user', JSON.stringify(res.data));
+            }
             this.signalService.user.set(res.data);
-            localStorage.setItem('isLoggedIn', JSON.stringify(true));
+            if (this.isBrowser) {
+              localStorage.setItem('isLoggedIn', JSON.stringify(true));
+            }
             this.globalFunctionService.getCount();
             this.signalService.userLoggedIn.set(true);
             setTimeout(() => {
@@ -395,10 +420,12 @@ export class Login {
   }
 
   loginWithGoogle() {
-    let endpoint = 'auth/google/redirect?redirect=/landing';
-    this.dataService.get(endpoint).subscribe((res: any) => {
-      //console.log('res===>', res);
-    });
+     const redirectUrl = `${environment.API_URL}auth/google/redirect?redirect=/landing`;
+  window.location.href = redirectUrl;
+    // let endpoint = 'auth/google/redirect?redirect=/landing';
+    // this.dataService.get(endpoint).subscribe((res: any) => {
+    //   //console.log('res===>', res);
+    // });
   }
 
   passwordToggle(type: any) {

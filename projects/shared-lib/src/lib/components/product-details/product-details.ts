@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, inject, Renderer2, ViewChild } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ChangeDetectorRef, Component, ElementRef, inject, Renderer2, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
@@ -37,7 +37,7 @@ export class ProductDetails {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
-    dots: true,
+    dots: false,
     arrows: true,
   };
 
@@ -76,13 +76,17 @@ export class ProductDetails {
   loading: boolean=true;
   isLogin: boolean=false;
   isPreview: any;
-
+  isBrowser: boolean;
+  private platformId = inject(PLATFORM_ID);
   constructor(private cd:ChangeDetectorRef,private route:ActivatedRoute, private sanitizer: DomSanitizer, private renderer: Renderer2,private router: Router){
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.callAllProductList();
   }
 
   ngOnInit() {
-    window.scrollTo(0,0);
+    if (this.isBrowser) {
+      window.scrollTo(0,0);
+    }
     this.productId = this.route.snapshot.paramMap.get('id');
     this.route.queryParams.subscribe((param:any)=>{
      console.log('paramsss=>',param.preview);
@@ -92,7 +96,10 @@ export class ProductDetails {
      this.dataService.get(`products/${this.productId}`).subscribe((res:any) => {
        console.log('productId==>',res.data);
        this.productDetails = res.data.data;
-       let user = JSON.parse(localStorage.getItem('user') || '{}');
+       let user;
+     if (this.isBrowser) {
+        user = JSON.parse(localStorage.getItem('user') || '{}');
+     }
      //console.log('user==>',user);
  
      if ( typeof user === 'object' && Object.keys(user).length <= 0) {
@@ -133,7 +140,10 @@ export class ProductDetails {
   // }
 
   addToCart(action:any='') {
-      let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+      let isGuest: any = null;
+      if (this.isBrowser) {
+        isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+      }
     //console.log('localStorage.getItem -====',localStorage.getItem('user'));
     // if (localStorage.getItem('user') == null) {
     //   this.router.navigate(['/login']);
@@ -311,6 +321,8 @@ export class ProductDetails {
   // }
 
   back(){
-    window.history.back();
+    if (this.isBrowser) {
+      window.history.back();
+    }
   }
 }

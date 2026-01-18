@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { Capacitor } from '@capacitor/core';
+import { isPlatformBrowser } from '@angular/common';
 
 interface PlatformInfo {
   App: boolean;
@@ -21,8 +22,11 @@ interface PlatformInfo {
 })
 
 export class PlatformDetectionService {
+  isBrowser: boolean;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   
   checkPlatformType(): PlatformInfo{
@@ -39,14 +43,22 @@ export class PlatformDetectionService {
     }
     // Capacitor Platform & NativePlatform detection , 
 
-      const platformName = Capacitor.getPlatform(); // 'ios' | 'android' | 'web'
-      platformValue.App = Capacitor.isNativePlatform();
-    const userAgent = navigator.userAgent.toLowerCase();
-    const screenMin = Math.min(window.screen.width, window.screen.height);
-    const screenMax = Math.max(window.screen.width, window.screen.height);
-    const screenWidth = typeof window !== 'undefined' ? window.innerWidth : 0;
+    let platformName: string = 'web';
+    let userAgent: string = '';
+    let screenMin: number = 0;
+    let screenMax: number = 0;
+    let screenWidth: number = 0;
 
-    platformValue.Desktop = !!(window as any)['isOffline'];
+    if (this.isBrowser) {
+      platformName = Capacitor.getPlatform(); // 'ios' | 'android' | 'web'
+      platformValue.App = Capacitor.isNativePlatform();
+      userAgent = navigator.userAgent.toLowerCase();
+      screenMin = Math.min(window.screen.width, window.screen.height);
+      screenMax = Math.max(window.screen.width, window.screen.height);
+      screenWidth = typeof window !== 'undefined' ? window.innerWidth : 0;
+
+      platformValue.Desktop = !!(window as any)['isOffline'];
+    }
 
     // If Desktop is true, then return all values as false except Desktop
     if (platformValue.Desktop) {
@@ -54,7 +66,7 @@ export class PlatformDetectionService {
     }
 
     // Modern iPad detection (iOS 13+ reports as Mac sometimes)
-    const isIPad = platformName === 'ios' && platformValue.App && screenMin >= 768 && (/ipad/.test(userAgent) || ('maxTouchPoints' in navigator && navigator.maxTouchPoints > 1 && /macintosh|mac os/i.test(userAgent)));
+    const isIPad = this.isBrowser && platformName === 'ios' && platformValue.App && screenMin >= 768 && (/ipad/.test(userAgent) || ('maxTouchPoints' in navigator && navigator.maxTouchPoints > 1 && /macintosh|mac os/i.test(userAgent)));
     if(isIPad){
       platformValue.ipad = true;
       return platformValue;
@@ -67,26 +79,26 @@ export class PlatformDetectionService {
     }
 
     // Check for Tab Browser
-    const isTabletBrowser = platformName == 'web' && !platformValue.App && screenMin >= 768 && screenMax <= 1366 && (/ipad|tablet|kindle|playbook|silk/.test(userAgent) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 1 && /android/.test(userAgent)));
+    const isTabletBrowser = this.isBrowser && platformName == 'web' && !platformValue.App && screenMin >= 768 && screenMax <= 1366 && (/ipad|tablet|kindle|playbook|silk/.test(userAgent) || (this.isBrowser && navigator.maxTouchPoints && navigator.maxTouchPoints > 1 && /android/.test(userAgent)));
     if(isTabletBrowser){
       platformValue.tabWeb = true;
       return platformValue;
     }
 
     // Check for Mobile Browser
-    if(platformName === 'web' && !platformValue.App && screenWidth <= 767){
+    if(this.isBrowser && platformName === 'web' && !platformValue.App && screenWidth <= 767){
       platformValue.mobileWeb = true;
       return platformValue;
     }
     
     // General Desktop Web
-    if(platformName === 'web' && !platformValue.App){
+    if(this.isBrowser && platformName === 'web' && !platformValue.App){
       platformValue.Web = true;
       return platformValue;
     }
 
     // Detect Native Android/iOS
-    if(platformValue.App){
+    if(this.isBrowser && platformValue.App){
       if(platformName === 'android'){
         platformValue.andriod = true;
       }else if(platformName === 'ios'){

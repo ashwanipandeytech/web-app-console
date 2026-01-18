@@ -4,7 +4,9 @@ import {
   Component,
   effect,
   inject,
+  Inject,
   OnInit,
+  PLATFORM_ID,
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DataService } from '../../services/data-service';
@@ -12,7 +14,7 @@ import { catchError, of } from 'rxjs';
 import { GlobalFunctionService } from '../../services/global-function.service';
 import { GlobaCommonlService } from '../../services/global-common.service';
 import { SignalService } from '../../services/signal-service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-personal-details',
@@ -35,7 +37,10 @@ export class PersonalDetailsComponent implements OnInit {
   states: any;
   cities: any = [];
   isLoading: boolean = true;
+  isBrowser: boolean;
+  private platformId = inject(PLATFORM_ID);
   constructor() {
+    this.isBrowser = isPlatformBrowser(this.platformId);
 
     effect(() => {
       if (this.signalService.userLoggedIn()) {
@@ -49,25 +54,29 @@ export class PersonalDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+    if (this.isBrowser) {
+      let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
 
-    if (!isLoggedIn) {
+      if (!isLoggedIn) {
 
-      this.signalService.openLoginPopup.set(true)
-      return;
+        this.signalService.openLoginPopup.set(true)
+        return;
 
+      }
+
+      this.profileDetailsForm();
+
+      this.currentUser = JSON.parse(localStorage.getItem('user') || 'null');
+      //console.log('currentUser===>',this.currentUser);
     }
-
-    this.profileDetailsForm();
-
-    this.currentUser = JSON.parse(localStorage.getItem('user') || 'null');
-    //console.log('currentUser===>',this.currentUser);
   }
 
   profileDetailsForm() {
-    let userLoginData = JSON.parse(localStorage.getItem('user') || 'null');
-    // let firstName = userLoginData.user.firstName.split(' ');
-    // //console.log('firstName==>',firstName);
+    if (this.isBrowser) {
+      let userLoginData = JSON.parse(localStorage.getItem('user') || 'null');
+      // let firstName = userLoginData.user.firstName.split(' ');
+      // //console.log('firstName==>',firstName);
+    }
 
     this.profileForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -127,19 +136,20 @@ export class PersonalDetailsComponent implements OnInit {
         // this.globalService.showMsgSnackBar(res);
         if (res.success == true) {
           this.globalService.showMsgSnackBar(res);
+          if (this.isBrowser) {
+            let userData: any = localStorage.getItem('user');
 
-          let userData: any = localStorage.getItem('user');
+            let userObj = JSON.parse(userData);
 
-          let userObj = JSON.parse(userData);
+            userObj.user.name = fullAddrress.name;
+            userObj.user.phone = fullAddrress.phone;
+            userObj.user.email = fullAddrress.email;
 
-          userObj.user.name = fullAddrress.name;
-          userObj.user.phone = fullAddrress.phone;
-          userObj.user.email = fullAddrress.email;
+            // 4. Save updated object back to localStorage
 
-          // 4. Save updated object back to localStorage
-
-          localStorage.setItem('user', JSON.stringify(userObj));
-          console.log('Updated User:', JSON.parse(localStorage.getItem('user')!));
+            localStorage.setItem('user', JSON.stringify(userObj));
+            console.log('Updated User:', JSON.parse(localStorage.getItem('user')!));
+          }
 
           this.signalService.profileChanged.set(fullAddrress.name);
 

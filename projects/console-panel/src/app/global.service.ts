@@ -10,7 +10,7 @@ export class GlobalService {
 
   showMsgSnackBar(response: any) {
     this.snackBar.open(response.message, 'OK', {
-      duration: 1000,
+      duration: 2000,
       horizontalPosition: 'end',
       verticalPosition: 'bottom',
       panelClass: [response.success ? 'snackbar-success' : 'snackbar-error'],

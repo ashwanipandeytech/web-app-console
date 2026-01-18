@@ -1,11 +1,11 @@
-import { ChangeDetectorRef, Component, effect, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { DataService } from '../../../services/data-service';
 import { catchError, of } from 'rxjs';
 import { GlobalFunctionService } from '../../../services/global-function.service';
 import { AddAddressModal } from '../../../model/add-address-modal/add-address-modal';
 import { SignalService } from '../../../services/signal-service';
-import { JsonPipe, NgTemplateOutlet, CommonModule } from '@angular/common';
+import { JsonPipe, NgTemplateOutlet, CommonModule, isPlatformBrowser } from '@angular/common';
 import { NgbModal, NgbModalRef, NgbSlide } from '@ng-bootstrap/ng-bootstrap';
 import { Login } from '../../auth/login/login';
 import { FormsModule } from '@angular/forms';
@@ -31,6 +31,8 @@ export class Header {
   private globalFunctionService = inject(GlobalFunctionService);
   private signalService = inject(SignalService);
   readonly ngbModal = inject(NgbModal);
+  private cd = inject(ChangeDetectorRef);
+  
   isLoggedIn: any = false;
   cartItemCount: any = 0;
   userName: any;
@@ -40,7 +42,17 @@ export class Header {
   categories: any[] = [];
   baseUrl = environment.DOMAIN;
   currentAddress: any;
-  constructor(private cd: ChangeDetectorRef) {
+
+
+
+  isBrowser: boolean;  
+  private platformId = inject(PLATFORM_ID);
+  constructor() {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+
+
+
+
     this.globalFunctionService.getCount();
 
     effect(() => {
@@ -77,7 +89,7 @@ export class Header {
         this.cd.detectChanges();
       }
       else {
-        if (localStorage.getItem('currentLocation')) {
+        if (this.isBrowser && localStorage.getItem('currentLocation')) {
           this.currentAddress = localStorage.getItem('currentLocation');
           this.cd.detectChanges();
         }
@@ -131,15 +143,17 @@ export class Header {
   }
 
   ngOnInit() {
-    let userData: any = localStorage.getItem('user');
-    let isLoggedIn: any = localStorage.getItem('isLoggedIn');
-    if (userData == null) {
-      this.isLoggedIn = false;
-    } else {
-      this.isLoggedIn = isLoggedIn;
-      this.signalService.userLoggedIn.set(true);
-      this.userName = JSON.parse(userData).user.name;
-      this.cd.detectChanges();
+    if (this.isBrowser) {
+      let userData: any = localStorage.getItem('user');
+      let isLoggedIn: any = localStorage.getItem('isLoggedIn');
+      if (userData == null) {
+        this.isLoggedIn = false;
+      } else {
+        this.isLoggedIn = isLoggedIn;
+        this.signalService.userLoggedIn.set(true);
+        this.userName = JSON.parse(userData).user.name;
+        this.cd.detectChanges();
+      }
     }
     //       if (localStorage.getItem('currentLocation')) {
     //   this.currentAddress = localStorage.getItem('currentLocation');
@@ -169,12 +183,14 @@ export class Header {
     }
   }
   logout() {
-    localStorage.clear();
+    if (this.isBrowser) {
+      localStorage.clear();
 
-    this.route.navigate(['/']).then(() => {
-      window.location.reload();
-    });
-    // window.location.reload();
+      this.route.navigate(['/']).then(() => {
+        window.location.reload();
+      });
+      // window.location.reload();
+    }
   }
 
   searchCategory() {
@@ -265,8 +281,12 @@ export class Header {
 
 
     setTimeout(() => {
-      let isLogginOpened = document.getElementById('loginOpened')
-      let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+      let isLogginOpened: any = null;
+      let isLoggedIn: any = null;
+      if (this.isBrowser) {
+        isLogginOpened = document.getElementById('loginOpened');
+        isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+      }
 
       if (!isLogginOpened && !isLoggedIn) {
         const modalRef: NgbModalRef = this.ngbModal.open(Login, {

@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { AddAddressModal } from '../model/add-address-modal/add-address-modal';
 import { DataService } from './data-service';
 import { SignalService } from './signal-service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,11 @@ export class GlobalFunctionService {
   readonly ngbModal = inject(NgbModal);
   private dataService = inject(DataService);
   countsList: any;
-  constructor() {}
+  isBrowser: boolean; // Add this
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) { // Inject PLATFORM_ID
+    this.isBrowser = isPlatformBrowser(this.platformId); // Initialize isBrowser
+  }
 
   getCountries() {
     return this.http
@@ -52,7 +57,10 @@ export class GlobalFunctionService {
     // });
   }
   getCount() {
-    let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+    let isGuest: any = null;
+    if (this.isBrowser) {
+      isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+    }
     const guestToken = isGuest;
     this.dataService.get(`user/overview-counts`).subscribe((res: any) => {
       this.countsList = res.data;

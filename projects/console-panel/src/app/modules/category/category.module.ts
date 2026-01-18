@@ -12,5 +12,5 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 })
 export class CategoryModule {
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor() {}
  }

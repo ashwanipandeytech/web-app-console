@@ -12,5 +12,5 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class SharedModule {
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor() {}
  }

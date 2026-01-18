@@ -1,9 +1,11 @@
-import { inject, Injectable } from '@angular/core';
+import { Inject, inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Commonresponseobject } from '../model/responsemodel';
 import { environment } from '../../../../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { firstValueFrom, of } from 'rxjs';
+import { Meta } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root',
@@ -11,27 +13,49 @@ import { firstValueFrom, of } from 'rxjs';
 export class DataService {
   private http = inject(HttpClient);
   private snackBar = inject(MatSnackBar);
+  private platformId = inject(PLATFORM_ID);
+  private meta = inject(Meta);
+
   private authToken: any;
   generalSetting: any;
-
-  constructor() {}
+  private isBrowser: boolean;
+  constructor() {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
   request(method: string, endpoint: string, postdata?: any, options: any = {}) {
     let data: any = postdata;
-    let user = JSON.parse(localStorage.getItem('user') || '{}');
-    let guestToken = JSON.parse(localStorage.getItem('GUEST_TOKEN') || '{}');
+    let user: any = {};
+    let guestToken: any = {};
+
+    if (this.isBrowser) {
+      user = JSON.parse(localStorage.getItem('user') || '{}');
+      guestToken = JSON.parse(localStorage.getItem('GUEST_TOKEN') || '{}');
+    }
     let headers: any;
     let httpOptions = {};
     if (user?.token) {
       this.authToken = user?.token;
+       console.info('endpoint')
       headers = new HttpHeaders({
         Authorization: `Bearer ${this.authToken}`,
       });
       httpOptions = { headers };
     } else {
       this.authToken = guestToken;
-      endpoint = `${endpoint}?guest_token=${guestToken}`;
+     
+      if (endpoint == 'social/consume') {
+
+        headers = new HttpHeaders({
+           Authorization: `Bearer ${this.authToken}`,
+          'X-Social-Login-Key': data['X-Social-Login-Key']
+        });
+        httpOptions = { headers };
+      } else {
+        endpoint = `${endpoint}?guest_token=${guestToken}`;
+        httpOptions = {};
+      }
       // data.guest_token = guestToken;
-      httpOptions = {};
+
     }
     //console.log('httpOptions===>',httpOptions);
     let commonurl = 'https://api.demohandler.in/api/v1/';
@@ -125,6 +149,10 @@ export class DataService {
         // directly use the JSON from assets as the runtime env
         this.generalSetting = data.data.settings || {};
         console.info('GeneralSettings loaded', this.generalSetting);
+           this.meta.addTags([
+    { keyword: this.generalSetting.seoData.keywords, content: this.generalSetting.seoData.metaDescription,title:this.generalSetting.seoData.metaTitle },
+    // ...
+  ]);
         //console.info('EnvService: environment loaded', this.generalSetting);
       })
       .catch((err) => {

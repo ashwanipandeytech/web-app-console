@@ -197,7 +197,7 @@ if (this.searchQuery == '') {
     '',
     [
       Validators.required,
-      Validators.pattern(/^[0-9]{4,10}$/)   // adjust for your country
+      Validators.pattern(/^[0-9]{6,6}$/)   // adjust for your country
     ]
   ],
 

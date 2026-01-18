@@ -9,7 +9,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { QuillModule } from 'ngx-quill';
+
 import { DataService } from 'shared-lib';
 import { catchError, of } from 'rxjs';
 import { GlobalService } from '../../../global.service';
@@ -20,6 +20,11 @@ import { SharedModule } from '../../../shared.module';
 import { CategoryTreeComponent } from './category-tree/category-tree.component';
 import { PRODUCT_TYPE } from 'shared-lib/constants/app-constant';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { QuillModule } from 'ngx-quill';
+import Quill from 'quill';
+import { ImageHandler, Options } from 'ngx-quill-upload';
+Quill.register('modules/imageHandler', ImageHandler);
 
 interface FoodNode {
   name: string;
@@ -35,13 +40,114 @@ export class AddProduct {
   childrenAccessor = (node: FoodNode) => node.children ?? [];
   @ViewChild('galleryInput') galleryInput!: ElementRef<HTMLInputElement>;
   @ViewChild('descriptionImageGallery') descriptionImageGallery!: ElementRef<HTMLInputElement>;
-@Output() data:any={
-  price_data:{},
-  shipping_info:{},
-  shipping_config:{},
-  offer:{},
+  @Output() data: any = {
+    price_data: {},
+    shipping_info: {},
+    shipping_config: {},
+    offer: {},
 
-};
+  };
+
+  modulesNoImage = {
+    toolbar: [
+      // --- TEXT STYLE ---
+      [{ 'font': [] }, { 'size': ['small', false, 'large', 'huge'] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
+
+      // --- HEADER & QUOTES ---
+      [{ 'header': 1 }, { 'header': 2 }, 'blockquote', 'code-block'],
+
+      // --- LISTS & INDENTS ---
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'indent': '-1' }, { 'indent': '+1' }],
+      [{ 'direction': 'rtl' }],
+
+      // --- ALIGNMENT ---
+      [{ 'align': [] }],
+
+      // --- LINKS & MEDIA ---
+      ['link', 'formula'],
+
+      // --- UTILS ---
+      ['clean']
+    ],
+   
+
+
+
+  };
+
+
+
+  modulesWithImage = {
+    toolbar: [
+      // --- TEXT STYLE ---
+      [{ 'font': [] }, { 'size': ['small', false, 'large', 'huge'] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
+
+      // --- HEADER & QUOTES ---
+      [{ 'header': 1 }, { 'header': 2 }, 'blockquote', 'code-block'],
+
+      // --- LISTS & INDENTS ---
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'indent': '-1' }, { 'indent': '+1' }],
+      [{ 'direction': 'rtl' }],
+
+      // --- ALIGNMENT ---
+      [{ 'align': [] }],
+
+      // --- LINKS & MEDIA ---
+      ['link', 'image', 'formula'],
+
+      // --- UTILS ---
+      ['clean']
+    ],
+    imageHandler: {
+      upload: (file: File) => {
+
+        return new Promise((resolve, reject) => {
+
+          // 1. Validation Logic
+          if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
+            console.info('Unsupported type');
+            return reject('Unsupported type');
+          }
+          if (file.size > 1000000) {
+            console.info('Size');
+            return reject('Size too large (Max 1MB)');
+          }
+
+          // 2. Call the Service
+          const formData = new FormData();
+          formData.append('files', file);
+          formData.append('type', 'product_image_description');
+
+          this.dataService
+            .postForm('gallery', formData)
+            .pipe(
+              catchError((err) => {
+                return of(null);
+              })
+            )
+            .subscribe((res: any) => {
+              console.log('Response:', res);
+              resolve(res.data[0].url);
+
+            });
+
+        });
+      },
+      accepts: ['png', 'jpg', 'jpeg', 'jfif']
+    } as Options,
+
+
+
+
+  };
 
 
   dataSource = [];
@@ -101,8 +207,8 @@ export class AddProduct {
   productAttributesForm!: FormGroup;
   public dataService: any = inject(DataService);
   categoryListData: any = {
-    isSelectedCategory:{},
-    categories:[]
+    isSelectedCategory: {},
+    categories: []
   };
   parentId!: Number;
   selectedThumbImg: any;
@@ -110,90 +216,90 @@ export class AddProduct {
   permaLink: any;
   isInputShow: boolean = false;
   domain: string = '';
-  productStatus:any = [];
+  productStatus: any = [];
   wrongDiscount: boolean = false;
-  selectProductDesciptionImageGallery:  File[] = [];
-  prodDescriptionImageGallery: any=[];
-   selectedFile: File[] = [];
-  statusMap: any=[];
-  isUpdateproduct: boolean=false;
+  selectProductDesciptionImageGallery: File[] = [];
+  prodDescriptionImageGallery: any = [];
+  selectedFile: File[] = [];
+  statusMap: any = [];
+  isUpdateproduct: boolean = false;
   finalpriceObj: any;
   constructor(
     private fb: FormBuilder,
     private globalService: GlobalService,
     private cd: ChangeDetectorRef,
-    @Optional() public activeModal:NgbActiveModal
+    @Optional() public activeModal: NgbActiveModal
   ) {
     this.productStatus = PRODUCT_TYPE;
-   
+
   }
 
   onGetId(id: number) {
     this.parentId = id;
   }
   ngOnInit() {
-    
+
     this.domain = window.location.origin;
     this.getCategoryList();
     this.initializeForms();
     // this.initializeCategoryControls();
-    
+
   }
   isNotEmpty(obj: any): boolean {
-  return obj && Object.keys(obj).length > 0;
-}
+    return obj && Object.keys(obj).length > 0;
+  }
   initializeForms() {
     // console.log('data',this.data);
     // console.log('this.data.category.length ===>',this.data.images );
-    console.log('log==>',this.data);
-  //    Object.keys(this.data.flags || {}).length ||
-  // Object.keys(this.data.images || {}).length ||
+    console.log('log==>', this.data);
+    //    Object.keys(this.data.flags || {}).length ||
+    // Object.keys(this.data.images || {}).length ||
     const hasValidData =
-  Object.keys(this.data?.product_details || {}).length;
+      Object.keys(this.data?.product_details || {}).length;
     if (this.data && hasValidData) {
-    console.log('log==> enrer',this.data);
-        this.isUpdateproduct = true;
+      console.log('log==> enrer', this.data);
+      this.isUpdateproduct = true;
       if (this.data?.flags) {
-        console.log('this.data.category.length ===>',this.data.flags );
-    
+        console.log('this.data.category.length ===>', this.data.flags);
+
         this.productStatus = this.data.flags;
       }
-        if (this.data?.images) {
-         this.thumbGallery = this.data?.images
-      ?.filter((img: any) => img.type === 'gallery')
-      .map((img: any) => img.url);
-    
-         this.thumbPreview = this.data?.images
-      ?.filter((img: any) => img.type === "thumbnail")
-      .map((img: any) => img.url);
-          console.log('thumbPreview===>',this.thumbGallery);
-          
-          // this.thumbPreview =  environment.DOMAIN + '/' + this.data?.thumbnail;
-          // console.log('thumbPreview==>',this.thumbPreview);
-          
-          // this.cd.detectChanges();
-        }
-        if (this.data?.category) {
-          console.log(' this.data?.category==>',Array.isArray(this.data?.category));
-              
-      // category exists and is NOT blank
-      // this.getCategoryList();
-          this.addProductDetails();
-          this.productOptionType();
-          this.submitProductMultipleOptionForm();
-          // this.addCategoriesForm();
-          this.addTagsForm();
-          this.mediaForm();
-          this.inventryForm();
-          this.priceForm();
-          this.shippingForm();
-          this.productAttributeForm();
-          this.shippingConfigForms();
-          this.offerFormGroup();
-          this.seoFormGroup();  
-        }
+      if (this.data?.images) {
+        this.thumbGallery = this.data?.images
+          ?.filter((img: any) => img.type === 'gallery')
+          .map((img: any) => img.url);
+
+        this.thumbPreview = this.data?.images
+          ?.filter((img: any) => img.type === "thumbnail")
+          .map((img: any) => img.url);
+        console.log('thumbPreview===>', this.thumbGallery);
+
+        // this.thumbPreview =  environment.DOMAIN + '/' + this.data?.thumbnail;
+        // console.log('thumbPreview==>',this.thumbPreview);
+
+        // this.cd.detectChanges();
+      }
+      if (this.data?.category) {
+        console.log(' this.data?.category==>', Array.isArray(this.data?.category));
+
+        // category exists and is NOT blank
+        // this.getCategoryList();
+        this.addProductDetails();
+        this.productOptionType();
+        this.submitProductMultipleOptionForm();
+        // this.addCategoriesForm();
+        this.addTagsForm();
+        this.mediaForm();
+        this.inventryForm();
+        this.priceForm();
+        this.shippingForm();
+        this.productAttributeForm();
+        this.shippingConfigForms();
+        this.offerFormGroup();
+        this.seoFormGroup();
+      }
     }
-    else{
+    else {
       this.addProductDetails();
       this.productOptionType();
       this.submitProductMultipleOptionForm();
@@ -210,34 +316,34 @@ export class AddProduct {
     }
     // this.addInverntoryForm();
   }
-closeModal(){
-  this.activeModal.close();
-  this.isUpdateproduct = true;
+  closeModal() {
+    this.activeModal.close();
+    this.isUpdateproduct = true;
 
-}
+  }
   addProductDetails() {
     this.productDetails = this.fb.group({
       productTitle: [this.data?.title, Validators.required], //product_title
-      shortDescription:[this.data?.product_details?.shortDescription], //short_description
+      shortDescription: [this.data?.product_details?.shortDescription], //short_description
       productDescription: [this.data?.product_details?.productDescription], //description
-      features:[this.data?.product_details?.features], //features
+      features: [this.data?.product_details?.features], //features
       // productStatus: [this.data.attributes?.productDetailsObj?.productStatus],
-      productDescriptionImageGallery:[this.data?.product_details?.productDescriptionImageGallery]
+      productDescriptionImageGallery: [this.data?.product_details?.productDescriptionImageGallery]
     });
   }
   get addProductDetailsValidation() {
     return this.productDetails?.controls;
   }
 
-//   getStatusKeys(): string[] {
-//   return Object.keys(this.productStatus);
-// }
+  //   getStatusKeys(): string[] {
+  //   return Object.keys(this.productStatus);
+  // }
 
-onStatusChange(index: any, event: any) {
-  this.productStatus[index].isActive = event.target.checked;
+  onStatusChange(index: any, event: any) {
+    this.productStatus[index].isActive = event.target.checked;
 
-  console.log('Updated productStatus =>', this.productStatus);
-}
+    console.log('Updated productStatus =>', this.productStatus);
+  }
 
 
   // if (event.target.checked) {
@@ -286,11 +392,11 @@ onStatusChange(index: any, event: any) {
     });
   }
 
-  priceForm(){
+  priceForm() {
     this.priceSection = this.fb.group({
       regularPrice: [this.data?.price_data?.regularPrice, [Validators.required, Validators.min(1)]],
       salePrice: [this.data?.price_data?.salePrice, [Validators.min(0)]],
-      gstPercent:[this.data?.price_data?.gstPercent],
+      gstPercent: [this.data?.price_data?.gstPercent],
       discountType: ['Flat'],
       priceDateStart: [''],
       priceDateEnd: [''],
@@ -301,23 +407,23 @@ onStatusChange(index: any, event: any) {
       this.updateDiscountValidators(type);
     });
   }
-  getGstDiscount(){
+  getGstDiscount() {
     this.finalpriceObj = this.priceSection.value;
     this.finalpriceObj.lastUpdatedDate = new Date().getTime();
-    let finalPayload:any={};
+    let finalPayload: any = {};
     // console.log('priceObj==>',finalpriceObj);
-    
-    if (this.finalpriceObj.regularPrice >=this.finalpriceObj.salePrice) {
+
+    if (this.finalpriceObj.regularPrice >= this.finalpriceObj.salePrice) {
       finalPayload.salePrice = this.finalpriceObj.salePrice;
     }
-    else{
+    else {
       finalPayload.salePrice = this.finalpriceObj.regularPrice;
     }
     finalPayload.quantity = 1;
     finalPayload.gstPercent = this.priceSection.value.gstPercent;
-    
+
     // let payLoad = 
-     this.dataService
+    this.dataService
       .postCommonApi(finalPayload, 'calculate-prices')
       .pipe(
         catchError((err) => {
@@ -329,10 +435,10 @@ onStatusChange(index: any, event: any) {
         })
       )
       .subscribe((res: any) => {
-        console.log('res==>',res);
+        console.log('res==>', res);
         if (res.success) {
           this.finalpriceObj.caclulatedObj = res.data;
-          this.cd.detectChanges(); 
+          this.cd.detectChanges();
         }
       })
   }
@@ -589,7 +695,7 @@ onStatusChange(index: any, event: any) {
     // this.uploadImage();
     //console.log(' this.thumbGallery===>', this.thumbGallery);
   }
- onFileProductDescriptionGallery(event: any) {
+  onFileProductDescriptionGallery(event: any) {
     // const file = event.target.files[0];
     for (let i = 0; i < event.target.files.length; i++) {
       const file = event.target.files[i];
@@ -607,7 +713,7 @@ onStatusChange(index: any, event: any) {
 
       const element = this.selectProductDesciptionImageGallery[i];
       reader.readAsDataURL(element);
-        this.cd.detectChanges();
+      this.cd.detectChanges();
 
     }
     // Call upload immediately
@@ -648,15 +754,15 @@ onStatusChange(index: any, event: any) {
   onGallerySelect(event: any) {
     this.galleryFiles = event.target.files;
   }
-  updateProduct(){
-    console.log('this.data?.id===>',this.data?.id);
-    
-        this.finalpriceObj = this.priceSection.value;
+  updateProduct() {
+    console.log('this.data?.id===>', this.data?.id);
+
+    this.finalpriceObj = this.priceSection.value;
     this.finalpriceObj.lastUpdatedDate = new Date().getTime();
 
-        // priceSection.priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
-        // priceSection.priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
-        let mediaSectionPayload = {
+    // priceSection.priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
+    // priceSection.priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
+    let mediaSectionPayload = {
       thumbFile: this.thumbFile,
       galleryFiles: this.galleryFiles,
     };
@@ -674,18 +780,18 @@ onStatusChange(index: any, event: any) {
       offer: this.offerForm.value,
       seo: this.seoForm.value,
       tags: this.tagsForm.value,
-      flags:this.productStatus,
-      product_details:this.productDetails.value,
+      flags: this.productStatus,
+      product_details: this.productDetails.value,
       visibility: {
         status: this.productMultipleOptionForm.value.status,
         publishDate: this.productMultipleOptionForm.value.publishDate,
         visibility: this.productMultipleOptionForm.value.visibility,
       },
-      attributes:{
+      attributes: {
       }
     };
     let url = `products/${this.data?.id}`
-   this.dataService
+    this.dataService
       .put(finalData, url)
       .pipe(
         catchError((err) => {
@@ -715,27 +821,27 @@ onStatusChange(index: any, event: any) {
             formDataThumb.append('type', 'thumbnail');
             this.callUploadnediaSection(formDataThumb);
           }
-          if(this.selectProductDesciptionImageGallery?.length){
-              for (const file of this.selectProductDesciptionImageGallery) {
-                const formData = new FormData();
-                formData.append('files', file);
-                formData.append('module', 'product');
-                formData.append('module_id', id);
-                formData.append('type', 'photoDescriptionImageGallery');
-                this.callUploadnediaSection(formData);
+          if (this.selectProductDesciptionImageGallery?.length) {
+            for (const file of this.selectProductDesciptionImageGallery) {
+              const formData = new FormData();
+              formData.append('files', file);
+              formData.append('module', 'product');
+              formData.append('module_id', id);
+              formData.append('type', 'photoDescriptionImageGallery');
+              this.callUploadnediaSection(formData);
+            }
           }
-        }
-            if (this.selectedFile?.length) {
-              for (const file of this.selectedFile) {
-                const formData = new FormData();
-                formData.append('files', file);
-                formData.append('module', 'product');
-                formData.append('module_id', id);
-                formData.append('type', 'gallery');
+          if (this.selectedFile?.length) {
+            for (const file of this.selectedFile) {
+              const formData = new FormData();
+              formData.append('files', file);
+              formData.append('module', 'product');
+              formData.append('module_id', id);
+              formData.append('type', 'gallery');
 
-                this.callUploadnediaSection(formData);
-              }
-            
+              this.callUploadnediaSection(formData);
+            }
+
 
             //   for (let i = 0; i < this.selectedFile.length; i++) {
             //   const element = this.selectedFile[i];
@@ -789,24 +895,24 @@ onStatusChange(index: any, event: any) {
       offer: this.offerForm.value,
       seo: this.seoForm.value,
       tags: this.tagsForm.value,
-      flags:this.productStatus,
-      product_details:this.productDetails.value,
+      flags: this.productStatus,
+      product_details: this.productDetails.value,
       // visibility:this.productMultipleOptionForm.value,
       visibility: {
         status: this.productMultipleOptionForm.value.status,
         publishDate: this.productMultipleOptionForm.value.publishDate,
         visibility: this.productMultipleOptionForm.value.visibility,
       },
-      attributes:{
+      attributes: {
         // product_details: this.productDetails.value
-        
-    //      productDetailsObj : {
-    //   productDetails :this.productDetails.value.productTitle,
-    //   shortDescription:this.productDetails.value.shortDescription,
-    //   productDescription: this.productDetails.value.description,
-    //   features:this.productDetails.value.features,
-    //   productStatus: [[]],
-    // }
+
+        //      productDetailsObj : {
+        //   productDetails :this.productDetails.value.productTitle,
+        //   shortDescription:this.productDetails.value.shortDescription,
+        //   productDescription: this.productDetails.value.description,
+        //   features:this.productDetails.value.features,
+        //   productStatus: [[]],
+        // }
       }
     };
     console.log('finalData==>', finalData);
@@ -841,27 +947,27 @@ onStatusChange(index: any, event: any) {
             formDataThumb.append('type', 'thumbnail');
             this.callUploadnediaSection(formDataThumb);
           }
-          if(this.selectProductDesciptionImageGallery?.length){
-              for (const file of this.selectProductDesciptionImageGallery) {
-                const formData = new FormData();
-                formData.append('files', file);
-                formData.append('module', 'product');
-                formData.append('module_id', id);
-                formData.append('type', 'photoDescriptionImageGallery');
-                this.callUploadnediaSection(formData);
+          if (this.selectProductDesciptionImageGallery?.length) {
+            for (const file of this.selectProductDesciptionImageGallery) {
+              const formData = new FormData();
+              formData.append('files', file);
+              formData.append('module', 'product');
+              formData.append('module_id', id);
+              formData.append('type', 'photoDescriptionImageGallery');
+              this.callUploadnediaSection(formData);
+            }
           }
-        }
-            if (this.selectedFile?.length) {
-              for (const file of this.selectedFile) {
-                const formData = new FormData();
-                formData.append('files', file);
-                formData.append('module', 'product');
-                formData.append('module_id', id);
-                formData.append('type', 'gallery');
+          if (this.selectedFile?.length) {
+            for (const file of this.selectedFile) {
+              const formData = new FormData();
+              formData.append('files', file);
+              formData.append('module', 'product');
+              formData.append('module_id', id);
+              formData.append('type', 'gallery');
 
-                this.callUploadnediaSection(formData);
-              }
-            
+              this.callUploadnediaSection(formData);
+            }
+
 
             //   for (let i = 0; i < this.selectedFile.length; i++) {
             //   const element = this.selectedFile[i];
@@ -959,23 +1065,23 @@ onStatusChange(index: any, event: any) {
               //console.log('environment.API_URL==>', environment.API_URL);
               element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
             }
-            if (this.data ) {
+            if (this.data) {
 
               if (element.id == this.data?.category?.id) {
                 element.checked = true;
               }
-              else{
+              else {
                 element.checked = false;
-  
+
               }
             }
             filteredData.push(element);
           }
           this.categoryListData.categories = filteredData;
           // Assign categories
-            // this.categoryListData.categories.forEach((cat: any) => {
-            //   cat.checked = this.data.category.id == cat.id;
-            // });
+          // this.categoryListData.categories.forEach((cat: any) => {
+          //   cat.checked = this.data.category.id == cat.id;
+          // });
 
         }
         //console.log('categoryListData==>', this.categoryListData);
@@ -1001,7 +1107,7 @@ onStatusChange(index: any, event: any) {
     let value = event.target.value.replace(/\s+/g, '-').toLowerCase();
     this.permaLink = value;
   }
-  onPermalinkBlur(event: any){
+  onPermalinkBlur(event: any) {
     const value = event.target.textContent.trim().replace(/\s+/g, '-').toLowerCase();
     this.permaLink = value;
     this.cd.detectChanges();
@@ -1012,11 +1118,11 @@ onStatusChange(index: any, event: any) {
       this.permaLink = '';
     }
   }
-  discountPriceChange(){
+  discountPriceChange() {
     const regularPrice = this.priceSection.value.regularPrice;
     const salePrice = this.priceSection.value.salePrice;
     const discountType = this.priceSection.value.discountType;
-    
+
     // Check if discount is greater than or equal to regular price (only for Flat discount)
     if (discountType === 'Flat' && regularPrice && salePrice && salePrice >= regularPrice) {
       this.wrongDiscount = true;
@@ -1027,15 +1133,15 @@ onStatusChange(index: any, event: any) {
       this.getGstDiscount();
     }, 1000);
   }
-  onDiscountTypeChange(){
+  onDiscountTypeChange() {
     const discountType = this.priceSection.value.discountType;
     this.updateDiscountValidators(discountType);
     this.discountPriceChange();
   }
 
-  updateDiscountValidators(type: string){
+  updateDiscountValidators(type: string) {
     const salePriceControl = this.priceSection.get('salePrice');
-    
+
     if (type === 'Discount') {
       // For percentage, min 0 and max 100
       salePriceControl?.setValidators([Validators.min(0), Validators.max(100)]);
@@ -1043,9 +1149,9 @@ onStatusChange(index: any, event: any) {
       // For flat amount, just min 0
       salePriceControl?.setValidators([Validators.min(0)]);
     }
-    
+
     salePriceControl?.updateValueAndValidity();
-    
+
     this.cd.detectChanges();
   }
 
@@ -1077,7 +1183,7 @@ onStatusChange(index: any, event: any) {
     // Trigger change detection
     this.cd.detectChanges();
   }
-   removeProductDescriptionGalleryImage(index: number) {
+  removeProductDescriptionGalleryImage(index: number) {
     // Remove from the preview array
     this.prodDescriptionImageGallery.splice(index, 1);
 
@@ -1104,17 +1210,17 @@ onStatusChange(index: any, event: any) {
     // Trigger change detection
     this.cd.detectChanges();
   }
-//    uploadPrdouctDescriptionImageGallery(){
-//  if (this.selectedFile?.length) {
-//               for (const file of this.selectedFile) {
-//                 const formData = new FormData();
-//                 formData.append('files', file);
-//                 formData.append('module', 'product');
-//                 formData.append('module_id', id);
-//                 formData.append('type', 'gallery');
+  //    uploadPrdouctDescriptionImageGallery(){
+  //  if (this.selectedFile?.length) {
+  //               for (const file of this.selectedFile) {
+  //                 const formData = new FormData();
+  //                 formData.append('files', file);
+  //                 formData.append('module', 'product');
+  //                 formData.append('module_id', id);
+  //                 formData.append('type', 'gallery');
 
-//                 this.callUploadnediaSection(formData);
-//               }
-//             }
-//    }
+  //                 this.callUploadnediaSection(formData);
+  //               }
+  //             }
+  //    }
 }

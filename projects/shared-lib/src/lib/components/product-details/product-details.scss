@@ -412,19 +412,6 @@ hr {
 
           .wrapper-info {
             @include flexItem($gap: 2rem);
-
-            h5 {
-              font-size: 2rem;
-              font-weight: 500;
-            }
-          }
-        }
-
-        .wrapper-description {
-          margin-top: 2rem;
-
-          .wrapper-details {
-            line-height: 3rem;
           }
         }
       }

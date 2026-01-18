@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, effect, inject, Input, input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, Inject, Input, input, OnInit, PLATFORM_ID } from '@angular/core';
 import { productSectionSlideConfig } from '../../constants/app-constant';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { catchError, of } from 'rxjs';
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { GlobaCommonlService } from '../../services/global-common.service';
 import { GlobalFunctionService } from '../../services/global-function.service';
 
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { SignalService } from '../../services/signal-service';
 
 @Component({
@@ -29,21 +29,26 @@ export class ProductComponent implements OnInit {
   productData: any;
   isWishlisted: boolean = false;
   isLogin: boolean=false;
+  isBrowser: boolean;
+  private platformId = inject(PLATFORM_ID);
   constructor() {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     effect(()=>{
 
-      let isLoggedIn: any = localStorage.getItem('isLoggedIn');
+      let isLoggedIn: any = null;
+      if (this.isBrowser) {
+        isLoggedIn = localStorage.getItem('isLoggedIn');
+      }
       //console.log('isLoggedIn==>',isLoggedIn,this.signalService.userLoggedIn());
-      
-     if (isLoggedIn  == 'true' || this.signalService.userLoggedIn()) {
-       this.isLogin = true;
-        }
-        else{
-       this.isLogin = false;
-        }
-       this.cd.detectChanges();
-    //  }
-    })
+
+      if (isLoggedIn == 'true' || this.signalService.userLoggedIn()) {
+        this.isLogin = true;
+      } else {
+        this.isLogin = false;
+      }
+      this.cd.detectChanges();
+      //  }
+    });
   }
 
   ngOnInit() {
@@ -59,10 +64,9 @@ export class ProductComponent implements OnInit {
     // }
     // else{
     //   //console.log('enter isLogin');
-      
+
     //   this.isLogin = true;
     // this.cd.detectChanges();
-
 
     // }
     //console.log('this.data==>',this.data);
@@ -76,29 +80,28 @@ export class ProductComponent implements OnInit {
     this.router.navigate(['/product-details', id]);
   }
   toggleHeart(item: any) {
-    console.info('item',item)
+    console.info('item', item);
     this.isWishlisted = !this.isWishlisted;
     let data = {
       product_id: item.id,
     };
     if (item.is_wishlisted) {
-     item.is_wishlisted = !item.is_wishlisted;
+      item.is_wishlisted = !item.is_wishlisted;
       this.dataService.delete(`wishlist/product/${data.product_id}`).subscribe((res: any) => {
         //console.log('wishlist==>', res);
-          this.globalFunctionService.getCount();
-    this.cd.detectChanges();
+        this.globalFunctionService.getCount();
+        this.cd.detectChanges();
       });
     } else {
-     item.is_wishlisted = !item.is_wishlisted;
+      item.is_wishlisted = !item.is_wishlisted;
       this.dataService.post(data, 'wishlist').subscribe((res: any) => {
         //console.log('wishlist==>', res);
-         this.globalFunctionService.getCount();
-    this.cd.detectChanges();
+        this.globalFunctionService.getCount();
+        this.cd.detectChanges();
       });
     }
     this.globalFunctionService.getCount();
     this.cd.detectChanges();
-
   }
   callAllProductList() {
     this.dataService
@@ -112,7 +115,7 @@ export class ProductComponent implements OnInit {
         // //console.log('Response:', response);
         this.productListData = response.data.data;
         //console.log('productData==>',this.productListData);
-        
+
         this.cd.detectChanges();
         if (response && response.success) {
         } else if (response) {
@@ -122,12 +125,15 @@ export class ProductComponent implements OnInit {
   }
 
   addToCart(data: any) {
-      let isGuest: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+      let isGuest: any = null;
+      if (this.isBrowser) {
+        isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+      }
       // const guestToken = isGuest;
     let finalData = {
       product_id: data.id,
       quantity: '1',
-      guest_token:isGuest
+      guest_token: isGuest,
     };
     // //console.log('finalData==.',finalData);
     // return;
@@ -150,8 +156,8 @@ export class ProductComponent implements OnInit {
         //   this.globalService.showMsgSnackBar(res.body);
         // }
         if (res.success == true) {
-         // console.info('herer add to cart')
-            // this.globalFunctionService.getCount();
+          // console.info('herer add to cart')
+          // this.globalFunctionService.getCount();
           this.globalService.showMsgSnackBar(res);
           this.globalFunctionService.getCount();
           this.cd.detectChanges();
