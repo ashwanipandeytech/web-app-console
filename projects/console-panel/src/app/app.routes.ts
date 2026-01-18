@@ -12,6 +12,7 @@ import { LayoutSettingsComponent } from './modules/layout-settings/layout-settin
 import { PageList } from './modules/settings/pages.component';
 import { AddPage } from './modules/settings/add';
 import { EditPage } from './modules/settings/edit';
+import { CouponsComponent } from './modules/coupons/coupons.component';
 
 export const routes: Routes = [
     // {
@@ -46,6 +47,11 @@ export const routes: Routes = [
     {
         path: 'dashboard',
         component: Dashboard,
+        canActivate: [authGuard]
+    },
+     {
+        path: 'coupons',
+        component: CouponsComponent,
         canActivate: [authGuard]
     },
     {

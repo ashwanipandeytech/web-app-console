@@ -11,12 +11,13 @@ import { AddAddressModal } from 'shared-lib/model/add-address-modal/add-address-
 import { SlickCarouselModule  } from 'ngx-slick-carousel';
 import { GlobaCommonlService } from '../../services/global-common.service';
 import { HostOutletComponent } from '../host-outlet/host.component';
+import {MobileBottomNavComponent} from '../mobile-bottom-nav/mobile-bottom-nav.component'
 
 declare var $:any;
 @Component({
   selector: 'web-landing-page',
   templateUrl: './landing-page.html',
-  imports:[SlickCarouselModule,HostOutletComponent],
+  imports:[SlickCarouselModule,HostOutletComponent,MobileBottomNavComponent],
   styleUrl: './landing-page.scss',
   standalone:true,
 })

@@ -88,7 +88,7 @@
               "outputHashing": "all",
               "optimization": true,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": false
             },
             "web-development-ssr": {
                "server": "projects/frontend/src/main.server.ts",
