@@ -27,9 +27,9 @@
               }
             ],
             "styles": [
-              "projects/frontend/src/styles.scss",
               "node_modules/slick-carousel/slick/slick.css",
-              "node_modules/slick-carousel/slick/slick-theme.css"
+              "node_modules/slick-carousel/slick/slick-theme.css",
+              "projects/frontend/src/styles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
@@ -164,6 +164,10 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/quill/dist/quill.snow.css",
+              "node_modules/quill/dist/quill.bubble.css",
+              "node_modules/quill/dist/quill.core.css",
               "projects/console-panel/src/styles.scss"
             ]
           },

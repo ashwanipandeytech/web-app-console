@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [NgbDropdownModule],
   templateUrl: './header.html',
   styleUrl: './header.scss'
 })

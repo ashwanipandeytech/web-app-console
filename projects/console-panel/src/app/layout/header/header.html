@@ -1,4 +1,4 @@
-<div class="header">
+<div class="header bg-light p-2">
     <div class="row g-0 align-items-center">
         <div class="col-xxl-6 col-xl-5 col-4 d-flex align-items-center gap-20">
             <div class="main-logo d-lg-block d-none">
@@ -18,7 +18,7 @@
         </div>
         <div class="col-xxl-6 col-xl-7 col-lg-8 col-4">
             <div class="header-right-btns d-flex justify-content-end align-items-center">
-                <div class="header-collapse-group d-none">
+                <!-- <div class="header-collapse-group d-none">
                     <div class="header-right-btns d-flex justify-content-end align-items-center p-0">
                         <form class="header-form">
                             <input type="search" name="search" placeholder="Search..." required>
@@ -151,26 +151,22 @@
                                     </li>
                                 </ul>
                             </div>
-                            <!-- <button class="header-btn fullscreen-btn" id="btnFullscreen"><i class="fa fa-expand"></i></button> -->
+                            <button class="header-btn fullscreen-btn" id="btnFullscreen"><i class="fa fa-expand"></i></button>
                         </div>
                     </div>
                 </div>
-                <button class="header-btn header-collapse-group-btn d-lg-none"><i class="fa fa-ellipsis-vertical"></i></button>
-                <div class="header-btn-box">
-                    <button class="profile-btn" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="../images/admin.png" alt="image">
+                <button class="header-btn header-collapse-group-btn d-lg-none"><i class="fa fa-ellipsis-vertical"></i></button> -->
+                
+                <div ngbDropdown>
+                    <button class="btn no-dropdown-toggle text-primary bg-white border rounded-pill lh-1 p-2" ngbDropdownToggle>
+                        <i class="fa fa-circle-user"></i>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                        <li>
-                            <div class="dropdown-txt text-center">
-                                <p class="mb-0">ADMIN</p>
-                                <span class="d-block">Admin</span>
-                            </div>
-                        </li>
+                    <ul ngbDropdownMenu>
+                        <li><div class="dropdown-txt text-center">ADMIN</div></li>
                         <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa fa-circle-user"></i></span> Profile</a></li>
-                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa fa-circle-question"></i></span> Help</a></li>
+                        <!-- <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa fa-circle-question"></i></span> Help</a></li> -->
                         <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa fa-gear"></i></span> Settings</a></li>
-                        <li><a class="dropdown-item" (click)="logout()"><span class="dropdown-icon"><i class="fa fa-arrow-right-from-bracket"></i></span> Logout</a></li>
+                        <li><button type="button" ngbDropdownItem (click)="logout()"><span class="dropdown-icon"><i class="fa fa-arrow-right-from-bracket"></i></span> Logout</button></li>
                     </ul>
                 </div>
             </div>

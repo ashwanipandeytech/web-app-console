@@ -1,3 +1,11 @@
+.no-dropdown-toggle {
+  &::after {
+    display: none;
+  }
+}
+
+
+
 /* You can add global styles to this file, and also import other style files */
 .snackbar-success {
   background: #0093dd  !important; /* green */
