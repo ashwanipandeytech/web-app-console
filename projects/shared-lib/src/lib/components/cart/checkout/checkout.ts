@@ -586,11 +586,15 @@ export class Checkout {
 
        });
        this.appliedCoupon = couponValue;
-       let payload ={
-        coupon_code:couponValue,
-        cart_ids:ids
-
-       }
+       let payload:any ={
+         coupon_code:couponValue,
+         cart_ids:ids,
+         
+        }
+        let isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+        if (isGuest !=null) {
+          payload.guest_token = isGuest
+        }
         this.dataService.post(payload, 'orders/apply-coupon')
         .pipe(
           catchError(err => {
