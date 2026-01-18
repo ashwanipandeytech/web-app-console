@@ -62,6 +62,8 @@ export class CartCommon {
     this.addAddressForm();
     // this.getAddressList();
     this.carList();
+    this.appliedCoupon = localStorage.getItem('appliedCoupon') || '';
+    // this.checkCoupon(this.appliedCoupon);
     if (this.isBrowser) {
       let userData: any = localStorage.getItem('user');
       if (userData == null) {
@@ -482,7 +484,7 @@ export class CartCommon {
   // 'location' => ['lat' => 12.34, 'lng' => 56.78],
   proccedToCheckout() {
     if (this.isLoggedIn) {
-     this.route.navigate(['/checkout'],{ queryParams: { coupon: this.appliedCoupon } });
+     this.route.navigate(['/checkout']);
     } else {
       this.openLogin('checkout');
     }
@@ -503,7 +505,9 @@ export class CartCommon {
 
         if (result.result == 'success' && from == 'checkout') {
           this.carList();
-         this.route.navigate(['/checkout'],{ queryParams: { coupon: this.appliedCoupon } });
+          console.log('this.appliedCoupon==>',this.appliedCoupon);
+          
+         this.route.navigate(['/checkout']);
         } else {
           //console.log('result.result=================>');
 
@@ -523,6 +527,7 @@ export class CartCommon {
       items:[]
     };
     console.log('data=====>',data);
+    this.appliedCoupon = localStorage.getItem('appliedCoupon') || '';
     payload.coupon_code = this.appliedCoupon;
     for (let i = 0; i < data.length; i++) {
       const element = data[i];
@@ -556,10 +561,18 @@ export class CartCommon {
   }
     checkCoupon(couponValue:any){
      console.log('Input value:', couponValue);
+     const ids = this.cartListData.map((item:any) =>{ 
+        return item.id
+       });
      this.appliedCoupon = couponValue;
-     let payload ={
-      coupon_code:couponValue
+     let payload:any ={
+      coupon_code:couponValue,
+      cart_ids:ids,
      }
+       let isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+        if (isGuest !=null) {
+          payload.guest_token = isGuest
+        }
       this.dataService.post(payload, 'orders/apply-coupon')
       .pipe(
         catchError(err => {
@@ -573,6 +586,14 @@ export class CartCommon {
         this.globalService.showMsgSnackBar(res);
           const modal = bootstrap.Modal.getInstance(this.couponModal.nativeElement);
            modal.hide();
+             localStorage.setItem('appliedCoupon', this.appliedCoupon);
+            // this.route.navigate(
+            //     [],
+            //     {
+            //       queryParams: { coupon: this.appliedCoupon },
+            //       queryParamsHandling: 'merge'
+            //     }
+            //   );
           this.calculateGstPrice(this.cartListData);
         }
         else if (res && res.error && res.error.message) {
@@ -583,6 +604,14 @@ export class CartCommon {
   }
   removeCoupon(){
     this.appliedCoupon == '';
+     localStorage.removeItem('appliedCoupon');
+  //     this.route.navigate(
+  //   [],
+  //   {
+  //     queryParams: { coupon: null },
+  //     queryParamsHandling: 'merge'
+  //   }
+  // );
     this.calculateGstPrice(this.cartListData);
   }
 }
