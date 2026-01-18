@@ -54,10 +54,8 @@ export class Checkout {
   cartItemId: any;
   constructor() {
     this.isBrowser = isPlatformBrowser(this.platformId);
-     this.activateRoute.queryParams.subscribe(params => {
-    console.log(params['coupon']);
-    this.appliedCoupon = params['coupon'];
-  });
+    this.appliedCoupon = localStorage.getItem('appliedCoupon') || '';
+    // this.checkCoupon(this.appliedCoupon);
     effect(() => {
       if (this.signalService.userLoggedIn()) {
 
@@ -581,10 +579,17 @@ export class Checkout {
     }
   }
       checkCoupon(couponValue:any){
-       console.log('Input value:', couponValue);
+      //  console.log('Input value:', couponValue);
+      //  console.log('this.casrtListData====>',this.cartListData);
+       const ids = this.cartListData.map((item:any) =>{ 
+        return item.id
+
+       });
        this.appliedCoupon = couponValue;
        let payload ={
-        coupon_code:couponValue
+        coupon_code:couponValue,
+        cart_ids:ids
+
        }
         this.dataService.post(payload, 'orders/apply-coupon')
         .pipe(
@@ -599,13 +604,14 @@ export class Checkout {
           this.globalService.showMsgSnackBar(res);
             const modal = bootstrap.Modal.getInstance(this.couponModal.nativeElement);
              modal.hide();
-             this.router.navigate(
-                [],
-                {
-                  queryParams: { coupon: this.appliedCoupon },
-                  queryParamsHandling: 'merge'
-                }
-              );
+             localStorage.setItem('appliedCoupon', this.appliedCoupon);
+            //  this.router.navigate(
+            //     [],
+            //     {
+            //       queryParams: { coupon: this.appliedCoupon },
+            //       queryParamsHandling: 'merge'
+            //     }
+            //   );
             this.calculateGstPrice(this.cartListData);
           }
           else if (res && res.error && res.error.message) {
@@ -710,14 +716,14 @@ export class Checkout {
   removeCoupon() {
   this.appliedCoupon = '';
   this.cd.detectChanges();
-
-  this.router.navigate(
-    [],
-    {
-      queryParams: { coupon: null },
-      queryParamsHandling: 'merge'
-    }
-  );
+localStorage.removeItem('appliedCoupon');
+  // this.router.navigate(
+  //   [],
+  //   {
+  //     queryParams: { coupon: null },
+  //     queryParamsHandling: 'merge'
+  //   }
+  // );
   this.calculateGstPrice(this.cartListData);
 }
 }
