@@ -87,7 +87,7 @@
 </div>
 }
 
-<div class="d-flex d-sm-none align-items-center p-1 py-3 ms-3">
+<div class="d-flex d-sm-none align-items-center p-1 py-sm-3 py-1 ms-sm-3 ms-1">
   <button class="btn btn-light d-flex align-items-center" (click)="back()">
     <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"
       style="height: 1.5rem; width: 1.5rem; color: black">
@@ -115,7 +115,7 @@
 <!--------------- blog-tittle-section-end---------------->
 
 <!--------------- cart-section---------------->
-<section class="product-cart w-1100 mx-auto box-shadows rounded-4 py-md-3 px-4 mb-5">
+<section class="product-cart w-1100 mx-auto box-shadows rounded-4 py-md-3 px-sm-4 px-2 mb-5">
   <div class="container">
     <!-- Blank cart start -->
     @if(cartListData.length==0 && !loading ) {
@@ -138,9 +138,9 @@
         @for (item of cartListData; track $index; let i=$index) {
         <div class="cart-section mt-3 py-2 px-0 row">
           <div class="col-12 col-md-3">
-            <div class="wrapper-img bg-light p-2 rounded-2">
+            <div class="wrapper-img bg-light p-2 rounded-2 text-center">
               <img [src]="item?.product?.media?.uploadedImages[0]?.url" alt=""
-                class="object-fit-cover rounded-2 w-100" />
+                class="object-contain rounded-2 w-100" />
             </div>
           </div>
           <div class="col-12 col-md-9">
@@ -203,7 +203,7 @@
       <!-- order summary section start -->
       <div class="col-md-4 col-12">
         <div class="mt-3 rounded px-md-2 px-0 pt-2 shadow-sm bg-white">
-          <h3 class="wrapper-heading mb-3 ps-3 shadow-sm py-2 fs-18 text-center" style="background-color: #f1f2f7;">
+          <h3 class="wrapper-heading  fs-12 mb-3 ps-3 shadow-sm py-2 fs-18 text-center" style="background-color: #f1f2f7;">
             Order Summary</h3>
 
 
@@ -227,31 +227,31 @@
           }
           <div class="order-summery">
             <div class="subtotal product-total px-3">
-              <div class="wrapper-heading fw-semibold">Subtotal</div>
-              <div class="wrapper-heading">₹{{ gstSummary?.base_total | number:'1.2-2' }}</div>
+              <div class="wrapper-heading  fs-12 fw-semibold">Subtotal</div>
+              <div class="wrapper-heading  fs-12">₹{{ gstSummary?.base_total | number:'1.2-2' }}</div>
             </div>
             <div class="subtotal product-total px-3">
-              <div class="wrapper-heading fw-semibold">Discount</div>
-              <div class="wrapper-heading">₹{{ gstSummary?.discount_total | number:'1.2-2' }}</div>
+              <div class="wrapper-heading  fs-12 fw-semibold">Discount</div>
+              <div class="wrapper-heading  fs-12">₹{{ gstSummary?.discount_total | number:'1.2-2' }}</div>
             </div>
             <div class="subtotal product-total px-3">
-              <div class="wrapper-heading fw-semibold">CGST</div>
-              <div class="wrapper-heading">₹{{ gstSummary?.total_cgst | number:'1.2-2' }}</div>
-            </div>
-
-            <div class="subtotal product-total px-3">
-              <div class="wrapper-heading fw-semibold">SGST</div>
-              <div class="wrapper-heading">₹{{ gstSummary?.total_sgst | number:'1.2-2' }}</div>
+              <div class="wrapper-heading  fs-12 fw-semibold">CGST</div>
+              <div class="wrapper-heading  fs-12">₹{{ gstSummary?.total_cgst | number:'1.2-2' }}</div>
             </div>
 
             <div class="subtotal product-total px-3">
-              <div class="wrapper-heading fw-semibold">Total Tax</div>
-              <div class="wrapper-heading">₹{{ gstSummary?.total_tax | number:'1.2-2' }}</div>
+              <div class="wrapper-heading  fs-12 fw-semibold">SGST</div>
+              <div class="wrapper-heading  fs-12">₹{{ gstSummary?.total_sgst | number:'1.2-2' }}</div>
             </div>
 
             <div class="subtotal product-total px-3">
-              <div class="wrapper-heading fw-semibold">Grand Total</div>
-              <div class="wrapper-heading fw-bold text-success">
+              <div class="wrapper-heading  fs-12 fw-semibold">Total Tax</div>
+              <div class="wrapper-heading  fs-12">₹{{ gstSummary?.total_tax | number:'1.2-2' }}</div>
+            </div>
+
+            <div class="subtotal product-total px-3">
+              <div class="wrapper-heading  fs-12 fw-semibold">Grand Total</div>
+              <div class="wrapper-heading  fs-12 fw-bold text-success">
                 ₹{{gstSummary?.final_total | number:'1.2-2' }}
               </div>
             </div>
@@ -317,7 +317,7 @@
           <!-- <a [routerLink]="isLoggedIn ? '/checkout' : 'openLogin()'" class="shop-btn w-100 mb-2"
               >Proceed to Checkout</a
             > -->
-          <a (click)="proccedToCheckout()" class="shop-btn w-100 mb-2">Proceed to Checkout</a>
+          <a (click)="proccedToCheckout()" class="shop-btn w-100 oder-btn">Proceed to Checkout</a>
           <!-- </div> -->
         </div>
         <!-- order summary section end -->
@@ -329,7 +329,7 @@
 <!--------------- cart-section-end---------------->
 
 <!-- Modal -->
-<div #couponModal class="modal fade" id="couponModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div #couponModal class="modal mobile-modal fade" id="couponModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
   aria-labelledby="couponModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -340,7 +340,7 @@
         </button>
       </div>
       <div class="modal-body text-center">
-        <p class="fw-bold">Enter you coupon code here</p>
+        <p class="fw-bold">Enter your coupon code here</p>
         <input type="text" formControlName="productTitle" class="form-control" id="productTitle" placeholder="Enter coupon code" #couponInput>
         <!-- <p class="position-relative bg-white rounded-circle mx-auto">
             <img src="assets/images/svg/coupon.svg" alt="" style="filter: drop-shadow(0 11px 15px);">
@@ -364,7 +364,7 @@
 </div>
 
 <!-- Delete product Modal -->
-<div #deleteCart class="modal fade" id="removeProject" tabindex="-1" aria-labelledby="removeProjectLabel"
+<div #deleteCart class="modal mobile-modal fade" id="removeProject" tabindex="-1" aria-labelledby="removeProjectLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">

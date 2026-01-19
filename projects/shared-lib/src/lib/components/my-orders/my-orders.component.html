@@ -14,15 +14,15 @@
   @for (item of orderListData; track $index) {
   <div class="border rounded mb-3 p-3 row wrapper cursor-pointer" data-bs-toggle="modal" data-bs-target="#orderDetail"
     (click)="getOrderDetailData(item)">
-    <div class="col-2">
+    <div class="col-12 col-sm-2">
       <div class="wrapper-img bg-light p-2 rounded-2">
         <img [src]="item?.items[0]?.product?.media?.uploadedImages[0]?.url" alt=""
           class="object-fit-contain rounded-2 w-100" />
       </div>
     </div>
 
-    <div class="col-10">
-      <div class="wrapper-content">
+    <div class="col-12 col-sm-10">
+      <div class="wrapper-content mt-2 mt-md-0">
         <div class="d-flex align-items-center">
           <h5 class="heading text-truncate text-capitalize">{{ item?.items[0]?.product.title }}</h5>
           <!-- <button class="lh-0 btn cancel-btn" data-bs-toggle="modal" data-bs-target="#removeProject">
@@ -30,7 +30,7 @@
                               </button> -->
         </div>
         <ul>
-          <li class="my-md-2 mt-0">
+          <li class="my-2">
             <span class="fw-semibold d-inline-block config-title">price</span>
             <span>₹{{ item.total_amount }}</span>
           </li>
@@ -39,7 +39,7 @@
         <p class="text-muted fs-14 fw-bold">Delivery expected by Jan 05 / Shipped / Delivered / Refund completed /
           Cancelled</p>
 
-        <button type="button" class="icon-link icon-link-hover text-primary mt-3">
+        <button type="button" class="icon-link icon-link-hover text-primary mt-sm-3">
           Order detail
           <svg xmlns="http://www.w3.org/2000/svg" class="bi" viewBox="0 0 16 16" aria-hidden="true">
             <path
@@ -56,7 +56,7 @@
 </div>
 
 <!-- Delete product Modal -->
-<!-- <div #deleteorder class="modal fade" id="removeProject" tabindex="-1" aria-labelledby="removeProjectLabel" aria-hidden="true">
+<!-- <div #deleteorder class="modal mobile-modal fade" id="removeProject" tabindex="-1" aria-labelledby="removeProjectLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header py-2">
@@ -80,7 +80,7 @@
  deliver date -->
 
 <!-- Order detail Modal -->
-<div #orderDetail class="modal fade" id="orderDetail" tabindex="-1" aria-labelledby="orderDetailLabel"
+<div #orderDetail class="modal fade mobile-modal" id="orderDetail" tabindex="-1" aria-labelledby="orderDetailLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
@@ -108,11 +108,11 @@
                     <h5 class="heading text-truncate text-capitalize">{{ item?.product.title }}</h5>
                   </div>
                   <ul>
-                    <li class="mt-md-2 mt-0">
+                    <li class="my-sm-2 my-1">
                       <span class="fw-semibold d-inline-block config-title">price</span>
                       <span>₹{{ item.price }}</span>
                     </li>
-                    <li class="mt-md-2 mt-0">
+                    <li class="">
                       <span class="fw-semibold d-inline-block config-title">Status</span>
                       <span>Shipped</span>
                     </li>
@@ -184,7 +184,7 @@
 
                     <!-- ⭐ Star Rating -->
                     <div class="rating-stars">
-                      <i *ngFor="let star of stars; let i = index" class="fa-star fs-14" [ngClass]="{
+                      <i *ngFor="let star of stars; let i = index" class="fa-star fs-14 cursor-pointer" [ngClass]="{
                             'fa-solid active': i < rateUsForm.value.rating,
                             'fa-regular': i >= rateUsForm.value.rating
                           }" (click)="setRating(i + 1)"></i>
@@ -247,28 +247,32 @@
           </div>
 
           <div class="card border-0 shadow-sm p-3">
+
+             
+            <h6 class="fw-semibold mb-0 d-flex align-items-center">
+              Rate your experience
+              @if (orderDetailList?.order_rating==null) {
+              <button type="button" class="shop-btn ms-3 fs-12 sm-btn help-btn" data-bs-toggle="collapse"
+                data-bs-target="#collapseRateUs" aria-expanded="false" aria-controls="collapseRate">Rate Us</button>
+              }
+            </h6>
+
             @if (orderDetailList?.order_rating!=null) {
-            <div class="d-flex flex-row align-items-start gap-3">
-              <div class="rating-stars" style="min-width: max-content;">
+            <div class="bg-light rounded-3 py-2 p-3 mt-2">
+              <div class="rating-stars rated" style="min-width: max-content;">
                 <i *ngFor="let star of stars; let i = index" class="fa-star fs-14" [ngClass]="{
                   'fa-solid active': i < orderDetailList?.order_rating.rating,
                   'fa-regular': i >= orderDetailList?.order_rating.rating }"></i>
               </div>
               <!-- {{orderDetailList?.order_rating.rating}} -->
   
-              <h6 class="flex-grow-1">
+              <h6 class="flex-grow-1 fs-14 text-capitalize mt-1">
                 {{orderDetailList?.order_rating.comment}}
               </h6>
             </div>
             }
 
-            @if (orderDetailList?.order_rating==null) {
-            <h6 class="fw-semibold mb-0 d-flex align-items-center">
-              Rate your experience
-              <button type="button" class="shop-btn ms-3 fs-12 sm-btn help-btn" data-bs-toggle="collapse"
-                data-bs-target="#collapseRateUs" aria-expanded="false" aria-controls="collapseRate">Rate Us</button>
-            </h6>
-            }
+           
             <div class="collapse" id="collapseRateUs">
               <div class="card card-body border-primary p-2 my-2">
                 <form [formGroup]="rateUsForm" (ngSubmit)="submitRating()">
@@ -281,7 +285,7 @@
 
                   <!-- ⭐ Star Rating -->
                   <div class="rating-stars">
-                    <i *ngFor="let star of stars; let i = index" class="fa-star fs-14" [ngClass]="{
+                    <i *ngFor="let star of stars; let i = index" class="fa-star fs-14 cursor-pointer" [ngClass]="{
                             'fa-solid active': i < rateUsForm.value.rating,
                             'fa-regular': i >= rateUsForm.value.rating
                           }" (click)="setRating(i + 1)"></i>
@@ -316,7 +320,7 @@
   </div>
 </div>
 
-<div #confirmCancelOrder class="modal fade" id="confirmCancelOrder" tabindex="-1" aria-labelledby="removeAddressLabel"
+<div #confirmCancelOrder class="modal mobile-modal fade" id="confirmCancelOrder" tabindex="-1" aria-labelledby="removeAddressLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -335,7 +339,7 @@
   </div>
 </div>
 
-<div #rateusModal class="modal fade" id="rateusModal" tabindex="-1" aria-labelledby="rateusModalLabel"
+<div #rateusModal class="modal mobile-modal fade" id="rateusModal" tabindex="-1" aria-labelledby="rateusModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -354,7 +358,7 @@
 
           <!-- ⭐ Star Rating -->
           <div class="rating-stars mb-3">
-            <i *ngFor="let star of stars; let i = index" class="fa-star" [ngClass]="{
+            <i *ngFor="let star of stars; let i = index" class="fa-star cursor-pointer" [ngClass]="{
                 'fa-solid active': i < rateUsForm.value.rating,
                 'fa-regular': i >= rateUsForm.value.rating
               }" (click)="setRating(i + 1)"></i>

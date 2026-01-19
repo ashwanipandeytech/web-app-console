@@ -6,7 +6,7 @@
   --bs-body-font-size: 14px;
   --bs-primary-rgb: 0, 147, 221;
 }
-
+.cdk-overlay-container{z-index: 1060;}
 .container-fluid {
   max-width: 1400px;
 }
@@ -1064,49 +1064,6 @@ table {
     }
   }
 
-  @media #{$sm} {
-    .checkout-wrapper {
-      .wrapper-heading {
-        font-size: 2.5rem;
-      }
-
-      .account-inner-form {
-        flex-direction: column;
-      }
-    }
-
-    .order-summery {
-      .wrapper-heading {
-        font-size: 16px;
-      }
-
-      .subtotal {
-        .product-list {
-          li {
-            align-items: flex-start;
-          }
-        }
-      }
-
-      .payment-type {
-        .wrapper-heading {
-          margin-bottom: 1rem;
-        }
-
-        .checkbox-item {
-          padding: 2rem 0;
-        }
-      }
-    }
-
-    .billing-section {
-      padding: 3rem 2rem;
-
-      .review-form {
-        padding: 0;
-      }
-    }
-  }
 }
 
 .checkout-wrapper {
@@ -1141,7 +1098,7 @@ table {
   }
 
   .subtotal {
-    margin: 1rem 0;
+    margin: 8px 0;
     @include flexBetween();
 
     .product-list {
@@ -1876,6 +1833,9 @@ safure-root {
 
 .w-1100 {
   max-width: 1100px;
+  @media screen and (max-width:576px) {
+    box-shadow: none!important;
+  }
 }
 
 .modal-open {
@@ -2001,8 +1961,16 @@ input[type=radio] {
   }
 
   .slick-next {
-    transform: rotate(180deg);
+    transform: translateY(-50%) rotate(180deg);
   }
+}
+
+.grocery-section.container{
+    padding-inline: 0;
+    .slick-track{
+      display: flex;
+      gap: 12px;
+    }
 }
 
 .hero-section {
