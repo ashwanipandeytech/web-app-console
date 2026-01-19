@@ -5,10 +5,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build frontend --configuration web-production-ssr && npm run serve:ssr:website",
+    "build": "ng build frontend --configuration web-production-ssr && npm run serve:ssr:frontend",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:website": "node dist/website/server/server.mjs",
+    "serve:ssr:frontend": "node dist/frontend/server/server.mjs",
     "serve:ssr:console-panel": "node dist/console-panel/server/server.mjs"
   },
   "prettier": {
