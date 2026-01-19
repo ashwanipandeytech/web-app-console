@@ -125,7 +125,7 @@
               </div>
               @if (item?.product_review !=null) {
               <div class="bg-light rounded-3 py-2 p-3 mt-2">
-                <div class="rating-stars mb-2">
+                <div class="rating-stars">
                   <i *ngFor="let star of stars; let i = index" class="fa-star fs-14"
                   [ngClass]="{ 'fa-solid active': i < item?.product_review?.rating,
                   'fa-regular': i >= item?.product_review?.rating }"></i>
@@ -183,7 +183,7 @@
                     </p>
 
                     <!-- ⭐ Star Rating -->
-                    <div class="rating-stars mb-2">
+                    <div class="rating-stars">
                       <i *ngFor="let star of stars; let i = index" class="fa-star fs-14" [ngClass]="{
                             'fa-solid active': i < rateUsForm.value.rating,
                             'fa-regular': i >= rateUsForm.value.rating
@@ -219,7 +219,7 @@
           <div class="card border-0 shadow-sm p-3">
             <h6 class="fw-semibold mb-2 d-flex align-items-center">
               Delivery Detail
-              <button type="button" class="shop-btn ms-3 fs-12 sm-btn help-btn">Help</button>
+              <a type="button" href="../pages/contact-us" class="shop-btn ms-3 fs-12 sm-btn help-btn">Help</a>
             </h6>
 
             <div class="rounded-3 p-3" style="background-color: #f1f2f7">
@@ -280,7 +280,7 @@
                   </p>
 
                   <!-- ⭐ Star Rating -->
-                  <div class="rating-stars mb-2">
+                  <div class="rating-stars">
                     <i *ngFor="let star of stars; let i = index" class="fa-star fs-14" [ngClass]="{
                             'fa-solid active': i < rateUsForm.value.rating,
                             'fa-regular': i >= rateUsForm.value.rating
