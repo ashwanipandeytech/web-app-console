@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { DataService } from '../../services/data-service';
 import { catchError, of } from 'rxjs';
 import { GlobaCommonlService } from '../../services/global-common.service';
+import { response } from 'express';
 
 @Component({
   selector: 'app-change-password',
@@ -18,6 +19,7 @@ export class ChangePasswordComponent implements OnInit {
   showCurrentPassword: boolean = false;
   showNewPassword: boolean = false;
   showConfirmPassword: boolean = false;
+  wrongPaasword: any;
 
   constructor(private fb: FormBuilder) {
     this.passwordForm = this.fb.group({
@@ -28,6 +30,8 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   ngOnInit() {}
+    get currentPassword() { return this.passwordForm.get('currentPassword'); }
+
   onSubmit() {
     // if user logged in by facebook or gmail
     //  let payload = {
@@ -102,10 +106,30 @@ export class ChangePasswordComponent implements OnInit {
   }
 
 
-  checkPassword(value : any){
-    // console.log(value)
+  checkOldPaasword(value : any){
+    console.log(value)
+    let payload = {current_password: value}
+    this.dataService
+      .post(payload, 'auth/verify-current-password')
+      .pipe(
+        catchError((err) => {
+          console.error('Error:', err);
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        if(res.error && res.error.message){
+          this.wrongPaasword =  res.error.message;
+          console.log("this.wrongPaasword", this.wrongPaasword)
+        }
+        if(res.success){
+          this.wrongPaasword = '';
+          console.log("this.wrongPaasword", this.wrongPaasword)
+        }
+      })
   }
 
 
-  
-}
+  }
+
+

@@ -70,27 +70,27 @@
 
         <!-- Sign In Button -->
         <button class="shop-btn w-100 mb-3" (click)="loginUser()">Log in</button>
-
-        <div class="d-flex gap-3">
+        <small class="fs-12 mb-3 d-block text-center fw-semibold">Or, Login With</small>
+        <div class="d-flex gap-3 justify-content-center">
           <!-- Google Button -->
-          <button class="btn btn-outline-secondary rounded-2 py-2 w-100 d-flex align-items-center justify-content-center gap-2 mb-2" (click)="loginWithGoogle()">
+          <button class="btn border border-light rounded-2 mb-2 icons" (click)="loginWithGoogle()">
               <img
               src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
               width="20"
               alt="Google"
               />
-              Sign in with Google
+              <!-- Sign in with Google -->
           </button>
   
           <!-- Google Button -->
-          <button class="btn btn-outline-secondary rounded-2 py-2 w-100 d-flex align-items-center justify-content-center gap-2 mb-2" (click)="loginWithFacebook()">
+          <button class="btn border border-light rounded-2 mb-2 icons align-items-center d-flex" (click)="loginWithFacebook()">
               <img
               src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/facebook.svg"
               width="20"
               alt="Facebook"
               class="bg-primary"
               />
-              Sign in with Facebook
+              <!-- Sign in with Facebook -->
           </button>
         </div>
 
@@ -197,27 +197,29 @@
            Register
         </button>
 
+        <small class="fs-12 mb-3 d-block text-center fw-semibold">Or, SignUp With</small>
+
         <!-- Google Button -->
-        <div class="d-flex gap-3">
+        <div class="d-flex gap-3 justify-content-center">
           <!-- Google Button -->
-          <button class="btn btn-outline-secondary rounded-2 py-2 w-100 d-flex align-items-center justify-content-center gap-2 mb-2">
+          <button class="btn border border-light rounded-2 mb-2 icons">
               <img
               src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
               width="20"
               alt="Google"
               />
-              Sign up with Google
+              <!-- Sign up with Google -->
           </button>
   
           <!-- Google Button -->
-          <button class="btn btn-outline-secondary rounded-2 py-2 w-100 d-flex align-items-center justify-content-center gap-2 mb-2">
+          <button class="btn border border-light rounded-2 mb-2 icons align-items-center d-flex">
               <img
               src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/facebook.svg"
               width="20"
               alt="Facebook"
               class="bg-primary"
               />
-              Sign up with Facebook
+              <!-- Sign up with Facebook -->
           </button>
         </div>
 

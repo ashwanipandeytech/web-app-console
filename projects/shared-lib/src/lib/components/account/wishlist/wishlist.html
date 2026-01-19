@@ -8,10 +8,10 @@
   <div class="top-section d-flex align-items-center border-bottom pb-2 mb-4 px-3 px-md-0">
     <h3 class="fs-20">Wishlist Items</h3>
   </div>
-  <section class="wishlist-container w-1100 mx-auto">
+  <section class="wishlist-container w-1100 mx-auto px-3 px-sm-0">
     @for (item of wishListData; track $index) {
     <div class="border rounded mt-3 p-3 row wrapper">
-      <div class="col-2">
+      <div class="col-sm-2 col-12">
         <div class="wrapper-img bg-light p-2 rounded-2">
           <img
             [src]="item?.product?.media?.uploadedImages[0]?.url"
@@ -20,7 +20,7 @@
           />
         </div>
       </div>
-      <div class="col-10">
+      <div class="col-sm-10 col-12">
         <div class="wrapper-content">
           <div class="d-flex align-items-center">
             <h5 class="heading text-truncate text-capitalize">{{ item?.product.title }}</h5>
@@ -43,7 +43,7 @@
   
           <button
             type="button"
-            class="icon-link icon-link-hover text-primary mt-3"
+            class="icon-link icon-link-hover text-primary mt-sm-3 mt-1"
             (click)="addToCart(item.product)"
           >
             Add to cart
@@ -60,7 +60,7 @@
     <!-- Delete product Modal -->
     <div
       #removeProduct
-      class="modal fade"
+      class="modal mobile-modal fade"
       id="removeProject"
       tabindex="-1"
       aria-labelledby="removeProjectLabel"

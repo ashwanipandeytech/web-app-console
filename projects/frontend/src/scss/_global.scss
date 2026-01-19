@@ -142,7 +142,7 @@ button {
   padding: 2rem 0;
 
   @media #{$md} {
-    padding: 1.6rem 0;
+    padding: 0.6rem 0;
   }
 }
 
@@ -316,7 +316,10 @@ button {
 }
 
 .section-title {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+  @media screen and (max-width:576px) {
+     margin-bottom: 10px;
+  }
   @include flexBetween();
 
   .view {
