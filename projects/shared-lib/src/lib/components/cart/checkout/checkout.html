@@ -34,24 +34,53 @@
             </div>
             <hr class="my-2" /> -->
             <div class="subtotal product-total">
-              <ul class="product-list gap-2 mb-3 border rounded-2 p-3">
-                <!-- @for(item of cartListData; track $index; let i=$index){
-                    <li class="align-items-center d-flex">
-                    <div class="product-info d-flex flex-row align-items-center">
-                        <img
-                        [src]="item?.product?.media?.uploadedImages[0]?.url"
-                        alt="" width="50" height="40px"
-                        class="object-fit-cover rounded-2"
-                      />
-                      <small class="ms-2 fs-12 fw-semibold">{{ item.product.title }}</small>
-                    </div>
-                    <div class="price ms-auto">
-                      <small class="fs-12">₹{{ item.product.price_data.finalPrice }}</small>
-                    </div>
-                  </li>
-                  <hr class="my-1" />
-                  } -->
-                @for (item of cartListData; track $index; let i=$index) {
+              <ul class="product-list gap-2 d-flex flex-column mb-3">
+                @for(item of cartListData; track $index; let i=$index){
+                    <li class="align-items-center d-flex border rounded-2 p-2">
+                      <div class="product-info d-flex flex-row align-items-center text-truncate" style="max-width: calc(100% - 150px);">
+                          <img
+                          [src]="item?.product?.media?.uploadedImages[0]?.url"
+                          alt="" width="60" height="40px" style="min-width: 60px;"
+                          class="object-fit-cover rounded-2"
+                        />
+                        <small class="ms-2 fs-14 fw-semibold w-100 text-truncate">{{ item.product.title }}</small>
+                      </div>
+
+                      <ul class="ms-auto">
+                        <li class="counter d-flex align-items-center">
+                          <!-- <span class="fw-semibold config-title pe-2">Quantity</span> -->
+                          <div class="rounded-2 counter d-flex align-items-center border">
+                            @if(item.quantity > 1){
+                            <button class="minus btn px-2 py-1 rounded-start rounded-end-0 opacity-75"
+                              (click)="decrease(item.quantity, i)">
+                              <i class="fa-solid fa-minus fa-sm"></i>
+                            </button>
+                            }
+                            @if(item.quantity == 1){
+                            <button class="btn px-2 py-1 rounded-start rounded-end-0 opacity-75" data-bs-toggle="modal"
+                              data-bs-target="#removeProject" (click)="deleteCartItem(item.id)">
+                              <i class="fa-solid fa-trash text-danger fa-sm"></i>
+                            </button>
+                            }
+
+                            <span class="number fw-500 px-2">{{ item.quantity }}</span>
+
+                            <button class="plus btn px-2 py-1 rounded-end rounded-start-0 opacity-75"
+                              (click)="increase(item.quantity, i)">
+                              <i class="fa-solid fa-plus fa-sm"></i>
+                            </button>
+                          </div>
+                        </li>
+                       
+                      </ul>
+
+                      <div class="price ms-3">
+                        <small class="fs-14">₹{{ item.product.price_data.finalPrice }}</small>
+                      </div>
+                    </li>
+                  <!-- <hr class="my-1" /> -->
+                  }
+                <!-- @for (item of cartListData; track $index; let i=$index) {
                 <div class="cart-section mt-3 py-2 px-0 row">
                   <div class="col-12 col-md-3">
                     <div class="wrapper-img bg-light p-2 rounded-2">
@@ -114,7 +143,7 @@
                     </div>
                   </div>
                 </div>
-                }
+                } -->
               </ul>
             </div>
 
@@ -122,9 +151,9 @@
             @if (AllAddressList?.length>1) {
             <div class="card mb-3">
               <div class="card-body d-flex justify-content-between align-items-center">
-                <strong class="text-uppercase text-secondary">Billings Addresses</strong>
+                <strong class="text-uppercase text-secondary">Your Address</strong>
                 <a data-bs-toggle="modal" data-bs-target="#changeAddress"
-                  class="icon-link icon-link-hover cursor-pointer text-primary ms-auto fs-14 fw-normal"> Change Address
+                  class="icon-link icon-link-hover cursor-pointer text-primary ms-auto fs-14 fw-normal"> Change Delivery Address
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true" class="bi">
                     <path
                       d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z">
@@ -199,20 +228,22 @@
                   @if (this.appliedCoupon == '' || this.appliedCoupon == undefined) {
                   <div class="d-flex justify-content-between align-items-center bg-white px-3 pb-2">
                     <span class="fw-semibold">Have a coupon?</span>
-                    <button type="button" class="shop-btn sm-btn fs-12" data-bs-toggle="modal" data-bs-target="#couponModal">
+                    <button type="button" class="shop-btn sm-btn fs-12 w-auto" data-bs-toggle="modal" data-bs-target="#couponModal">
                       Apply
                     </button>
                   </div>
+                  <hr class="mt-0">
                   }
-                  
-                  @if (this.appliedCoupon !='' && this.appliedCoupon !=undefined) {
-                  <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2">
-                    <span class="fw-semibold">{{appliedCoupon}}</span>
-                    <button type="button" class="btn text-primary fw-semibold p-0" (click)="removeCoupon()">
-                      remove
-                    </button>
+
+                  @if (this.appliedCoupon !='') {
+                  <!-- <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2"> -->
+                  <div class="alert alert-success d-flex align-items-center gap-2 shadow-sm p-2" role="alert">
+                    <span class="bg-primary text-white fw-semibold opacity-75 p-1">{{appliedCoupon}}</span><span class="text-success">20% Off Applied</span>
+                    <button type="button" class="btn btn-sm text-danger ms-auto" (click)="removeCoupon()">
+                      <i class="fa-solid fa-times"></i> </button>
                   </div>
                   }
+                  
                   <div class="subtotal product-total px-3">
                     <h5 class="wrapper-heading fw-semibold">Subtotal</h5>
                     <h5 class="wrapper-heading">₹{{ gstSummary?.base_total | number:'1.2-2' }}</h5>
@@ -244,9 +275,9 @@
                     </h5>
                   </div> -->
 
-                   <div class="subtotal total px-3">
-                    <h5 class="wrapper-heading  fw-bold fs-16">Item Total</h5>
-                    <h5 class="wrapper-heading fw-bold fs-16">₹{{grandTotal}}</h5>
+                   <div class="subtotal product-total px-3">
+                    <h5 class="wrapper-heading fw-semibold">Item Total</h5>
+                    <h5 class="wrapper-heading">₹{{grandTotal}}</h5>
                   </div>
 
                   <!-- <div class="subtotal product-total px-3">
