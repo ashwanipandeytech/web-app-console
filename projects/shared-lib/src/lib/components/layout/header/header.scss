@@ -734,6 +734,13 @@
 //   }
 // }
 
+.location-dropdown {
+  @media screen and (min-width: 768px) {
+    .btn {
+      max-width: 275px;
+    }
+  }
+}
 
 .icon-badge {
   width: 20px;
@@ -743,11 +750,6 @@
   right: -12px;
 }
 
-// .icon-menu{
-//   span:hover{
-//     color: $theme-color;
-//   }
-// }
 .user-account{
   li {
     .dropdown-item{
@@ -772,7 +774,7 @@
 .category-wrapper {
   .category-nav {
     .nav-link {
-      color: #555;
+      color: #1d1d1d;
       transition: color 0.2s ease;
       text-transform: uppercase;
       &:hover {color: $theme-color;}

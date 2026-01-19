@@ -186,11 +186,12 @@
     </a>
 
     <!-- Location -->
-    <div class="dropdown">
-      <button class="btn text-nowrap text-dark fs-14 fw-bold" data-bs-toggle="dropdown" 
+    <div class="location-dropdown dropdown">
+      <button class="btn text-truncate text-dark fs-14 fw-bold" data-bs-toggle="dropdown" 
       (click)="openAddressPopup('header')"
       [ngClass]="{'bg-light': !currentAddress}" 
-      style="padding: 10px;">
+      style="padding: 10px;"
+      title="{{currentAddress}}">
         {{currentAddress}}
         @if(!currentAddress){
           <span> Select Location</span>
