@@ -427,6 +427,14 @@ private platformId = inject(PLATFORM_ID);
     //   //console.log('res===>', res);
     // });
   }
+   loginWithFacebook() {
+     const redirectUrl = `${environment.API_URL}auth/facebook/redirect?redirect=/landing`;
+  window.location.href = redirectUrl;
+    // let endpoint = 'auth/google/redirect?redirect=/landing';
+    // this.dataService.get(endpoint).subscribe((res: any) => {
+    //   //console.log('res===>', res);
+    // });
+  }
 
   passwordToggle(type: any) {
     if (type == 'current') {
