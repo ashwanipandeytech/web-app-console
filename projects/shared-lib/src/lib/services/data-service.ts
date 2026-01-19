@@ -148,7 +148,7 @@ export class DataService {
       .then((data: any) => {
         // directly use the JSON from assets as the runtime env
         this.generalSetting = data.data.settings || {};
-        console.info('GeneralSettings loaded', this.generalSetting);
+        console.info('testing ssr', this.generalSetting);
            this.meta.addTags([
     { keyword: this.generalSetting.seoData.keywords, content: this.generalSetting.seoData.metaDescription,title:this.generalSetting.seoData.metaTitle },
     // ...
