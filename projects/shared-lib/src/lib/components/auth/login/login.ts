@@ -428,6 +428,7 @@ private platformId = inject(PLATFORM_ID);
     // });
   }
    loginWithFacebook() {
+    
      const redirectUrl = `${environment.API_URL}auth/facebook/redirect?redirect=/landing`;
   window.location.href = redirectUrl;
     // let endpoint = 'auth/google/redirect?redirect=/landing';
