@@ -1,5 +1,3 @@
-
-
 <!-- main content start -->
 <div class="main-content">
     <div class="breadcrumb mb-30">
@@ -14,89 +12,88 @@
                         <i class="fa fa-arrows-rotate"></i>
                     </button>
                 </div>
-             <form [formGroup]="addCategory">
+                <form [formGroup]="addCategory">
 
-  <div class="panel-body">
-    <div class="row gx-3 gy-5">
+                    <div class="panel-body">
+                        <div class="row gx-3 gy-5">
 
-      <!-- Category Name -->
-      <div class="col-12">
-        <label class="form-label">Category Name</label>
-        <input type="text" class="form-control form-control-sm"
-               formControlName="name"
-               [class.is-invalid]="f['name'].touched && f['name'].invalid">
+                            <!-- Category Name -->
+                            <div class="col-12">
+                                <label class="form-label">Category Name</label>
+                                <input type="text" class="form-control form-control-sm" formControlName="name"
+                                    [class.is-invalid]="f['name'].touched && f['name'].invalid">
 
-        <div class="text-danger mt-1" *ngIf="f['name'].touched && f['name'].errors?.['required']">
-          Category Name is required.
-        </div>
-        <div class="text-danger mt-1" *ngIf="f['name'].touched && f['name'].errors?.['minlength']">
-          Minimum 3 characters required.
-        </div>
-      </div>
+                                <div class="text-danger mt-1"
+                                    *ngIf="f['name'].touched && f['name'].errors?.['required']">
+                                    Category Name is required.
+                                </div>
+                                <div class="text-danger mt-1"
+                                    *ngIf="f['name'].touched && f['name'].errors?.['minlength']">
+                                    Minimum 3 characters required.
+                                </div>
+                            </div>
 
-      <!-- Parent Category -->
-      <div class="col-sm-6" *ngIf="false">
-        <label class="form-label">Main Category</label>
-        <select class="form-select"
-                formControlName="parent_id"
-                [class.is-invalid]="f['parent_id'].touched && f['parent_id'].invalid">
-          <option value="">Select</option>
-          <option *ngFor="let item of categoryListData" [value]="item.id">{{item.name}}</option>
-        </select>
+                            <!-- Parent Category -->
+                            <div class="col-sm-6" *ngIf="false">
+                                <label class="form-label">Main Category</label>
+                                <select class="form-select" formControlName="parent_id"
+                                    [class.is-invalid]="f['parent_id'].touched && f['parent_id'].invalid">
+                                    <option value="">Select</option>
+                                    <option *ngFor="let item of categoryListData" [value]="item.id">{{item.name}}
+                                    </option>
+                                </select>
 
-        <div class="text-danger mt-1" *ngIf="f['parent_id'].touched && f['parent_id'].errors?.['required']">
-          Please select a parent category.
-        </div>
-      </div>
+                                <div class="text-danger mt-1"
+                                    *ngIf="f['parent_id'].touched && f['parent_id'].errors?.['required']">
+                                    Please select a parent category.
+                                </div>
+                            </div>
 
-      <!-- Show in menu -->
-      <div class="col-6">
-        <label class="form-label">Show in menu</label>
-        <input class="form-check-input"
-               type="checkbox"
-               formControlName="is_menu"
-               [class.is-invalid]="f['is_menu'].touched && f['is_menu'].invalid">
+                            <!-- Show in menu -->
+                            <div class="col-6">
+                                <label class="form-label">Show in menu</label>
+                                <input class="form-check-input" type="checkbox" formControlName="is_menu"
+                                    [class.is-invalid]="f['is_menu'].touched && f['is_menu'].invalid">
 
-        <div class="text-danger mt-1" *ngIf="f['is_menu'].touched && f['is_menu'].errors?.['required']">
-          Must be checked to show in menu.
-        </div>
-      </div>
+                                <div class="text-danger mt-1"
+                                    *ngIf="f['is_menu'].touched && f['is_menu'].errors?.['required']">
+                                    Must be checked to show in menu.
+                                </div>
+                            </div>
 
-      <!-- Allow On -->
-      <div class="col-6">
-        <label class="form-label">Allow On</label>
-        <select class="form-select"
-                formControlName="allow_on"
-                [class.is-invalid]="f['allow_on'].touched && f['allow_on'].invalid">
-          <option value="">Default</option>
-          <option value="web">Web</option>
-          <option value="mobile">Mobile</option>
-          <option value="both">Both</option>
-        </select>
+                            <!-- Allow On -->
+                            <div class="col-6">
+                                <label class="form-label">Allow On</label>
+                                <select class="form-select" formControlName="allow_on"
+                                    [class.is-invalid]="f['allow_on'].touched && f['allow_on'].invalid">
+                                    <option value="">Default</option>
+                                    <option value="web">Web</option>
+                                    <option value="mobile">Mobile</option>
+                                    <option value="both">Both</option>
+                                </select>
 
-        <div class="text-danger mt-1" *ngIf="f['allow_on'].touched && f['allow_on'].errors?.['required']">
-          Please choose an option.
-        </div>
-      </div>
+                                <div class="text-danger mt-1"
+                                    *ngIf="f['allow_on'].touched && f['allow_on'].errors?.['required']">
+                                    Please choose an option.
+                                </div>
+                            </div>
 
-      <!-- Description -->
-      <div class="col-12">
-        <label class="form-label">Description</label>
-        <textarea rows="5"
-                  class="form-control form-control-sm"
-                  formControlName="description"
-                  ></textarea>
+                            <!-- Description -->
+                            <div class="col-12">
+                                <label class="form-label">Description</label>
+                                <textarea rows="5" class="form-control form-control-sm"
+                                    formControlName="description"></textarea>
 
-        <!-- <div class="text-danger mt-1" *ngIf="f['description'].touched && f['description'].errors?.['required']">
+                                <!-- <div class="text-danger mt-1" *ngIf="f['description'].touched && f['description'].errors?.['required']">
           Description is required.
         </div>
         <div class="text-danger mt-1" *ngIf="f['description'].touched && f['description'].errors?.['minlength']">
           Minimum 30 characters required.
         </div> -->
-      </div>
+                            </div>
 
-      <!-- Display Type -->
-      <!-- <div class="col-12">
+                            <!-- Display Type -->
+                            <!-- <div class="col-12">
         <label class="form-label">Select parent category</label>
         <select class="form-select"
                 formControlName="display_type"
@@ -111,51 +108,44 @@
         </div>
       </div> -->
 
-      <!-- Category Image -->
-      <div class="col-12">
-        <div class="upload-category-thumbnail">
-          <label class="form-label" for="thumbUpload">Add Category Image</label>
-          <input class="form-control"
-                 #fileInput
-                 type="file"
-                 accept="image/*"
-                 (change)="onImageChange($event)"
-                 [class.is-invalid]="f['categoryThumbnail'].touched && f['categoryThumbnail'].invalid">
+                            <!-- Category Image -->
+                            <div class="col-12">
+                                <div class="upload-category-thumbnail">
+                                    <label class="form-label" for="thumbUpload">Add Category Image</label>
+                                    <input class="form-control" #fileInput type="file" accept="image/*"
+                                        (change)="onImageChange($event)"
+                                        [class.is-invalid]="f['categoryThumbnail'].touched && f['categoryThumbnail'].invalid">
 
-          <div class="text-danger mt-1" *ngIf="f['categoryThumbnail'].touched && f['categoryThumbnail'].errors?.['required']">
-            Category image is required.
-          </div>
+                                    <div class="text-danger mt-1"
+                                        *ngIf="f['categoryThumbnail'].touched && f['categoryThumbnail'].errors?.['required']">
+                                        Category image is required.
+                                    </div>
 
-          <div class="mt-2" *ngIf="imagePreview">
-            <img [src]="imagePreview" width="120" height="120" alt="Preview" />
-          </div>
-        </div>
-      </div>
+                                    <div class="mt-2" *ngIf="imagePreview">
+                                        <img [src]="imagePreview" width="120" height="120" alt="Preview" />
+                                    </div>
+                                </div>
+                            </div>
 
-      <!-- Buttons -->
-      <div class="col-12 d-flex justify-content-end">
-        <div class="btn-box">
+                            <!-- Buttons -->
+                            <div class="col-12 d-flex justify-content-end">
+                                <div class="btn-box">
 
-          <button class="btn btn-sm btn-primary"
-                  *ngIf="isEdit"
-                  (click)="updatecategory()"
-                  >
-            Update Category
-          </button>
+                                    <button class="btn btn-sm btn-primary" *ngIf="isEdit" (click)="updatecategory()">
+                                        Update Category
+                                    </button>
 
-          <button class="btn btn-sm btn-primary"
-                  *ngIf="!isEdit"
-                  (click)="saveCategoryData()"
-                  [disabled]="addCategory.invalid">
-            Add Category
-          </button>
+                                    <button class="btn btn-sm btn-primary" *ngIf="!isEdit" (click)="saveCategoryData()"
+                                        [disabled]="addCategory.invalid">
+                                        Add Category
+                                    </button>
 
-        </div>
-      </div>
-    </div>
-  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-</form>
+                </form>
 
             </div>
         </div>
@@ -165,7 +155,8 @@
                     <h5>All Categories</h5>
                     <div class="btn-box d-flex gap-2">
                         <div id="tableSearch"></div>
-                        <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
+                        <button class="btn btn-sm btn-icon btn-outline-primary"><i
+                                class="fa fa-arrows-rotate"></i></button>
                         <!-- <div class="digi-dropdown dropdown">
                             <button class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="fa fa-ellipsis-vertical"></i></button>
                             <ul class="digi-dropdown-menu dropdown-menu">
@@ -243,7 +234,8 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped" id="allProductTable">
+                    <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped"
+                        id="allProductTable">
                         <thead>
                             <tr>
                                 <th class="no-sort">
@@ -259,36 +251,37 @@
                             </tr>
                         </thead>
                         <tbody>
-                           @for (control of categoryListData; track $index) {
+                            @for (control of categoryListData; track $index) {
 
-                               <tr>
-                                   <td>
-                                       <div class="form-check">
-                                           <input class="form-check-input" type="checkbox">
-                                       </div>
-                                   </td>
-                                   <td>
-                                       <div class="table-category-card">
-                                           <div class="part-icon">
-                                               <span><img src="{{control.thumbnail}}"/></span>
-                                           </div>
-                                           <div class="part-txt">
-                                               <span class="category-name">{{control.name}}</span>
-                                           </div>
-                                       </div>
-                                   </td>
-                                   <td><span class="table-dscr">{{control.description}}</span></td>
-                                   <td>{{control.slug}}</td>
-                                   <td><a href="all-product.html">10</a></td>
-                                   <td>
-                                       <div class="btn-box">
-                                           <button><i class="fa fa-eye"></i></button>
-                                           <button><i class="fa fa-pen-to-square" (click)="editCategory(control)"></i></button>
-                                           <button (click)="openDialog(control.id)"><i class="fa fa-trash"></i></button>
-                                       </div>
-                                   </td>
-                               </tr>
-                           }
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="table-category-card">
+                                        <div class="part-icon">
+                                            <span><img src="{{control.thumbnail}}" /></span>
+                                        </div>
+                                        <div class="part-txt">
+                                            <span class="category-name">{{control.name}}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="table-dscr">{{control.description}}</span></td>
+                                <td>{{control.slug}}</td>
+                                <td><a href="all-product.html">10</a></td>
+                                <td>
+                                    <div class="btn-box">
+                                        <button><i class="fa fa-eye"></i></button>
+                                        <button><i class="fa fa-pen-to-square"
+                                                (click)="editCategory(control)"></i></button>
+                                        <button (click)="openDialog(control.id)"><i class="fa fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            }
                             <!-- <tr>
                                 <td>
                                     <div class="form-check">
@@ -434,7 +427,10 @@
 
     <!-- footer start -->
     <div class="footer">
-        <p>Copyright© <script>document.write(new Date().getFullYear())</script> All Rights Reserved By <span class="text-primary">Safure</span></p>
+        <p>Copyright©
+            <script>document.write(new Date().getFullYear())</script> All Rights Reserved By <span
+                class="text-primary">Safure</span>
+        </p>
     </div>
     <!-- footer end -->
 </div>
