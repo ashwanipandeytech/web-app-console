@@ -1,0 +1,127 @@
+1. Point domain to VPS (DNS A record)
+At your domain DNS (where demohandler.in is managed), add:
+
+Type: A
+Name/Host: sfn
+Value: YOUR_VPS_IP
+TTL: default (e.g. 300 or 600)
+Resulting domain: sfn.demohandler.in → YOUR_VPS_IP.
+
+You can later verify from your local machine with:
+
+ping sfn.demohandler.in
+(it should resolve to your VPS IP).
+
+2. Prepare project on the VPS
+SSH into VPS:
+
+ssh root@YOUR_VPS_IP
+Create project directory and get your code (example path we used):
+
+mkdir -p /var/www/sfn-ssr
+cd /var/www/sfn-ssr
+# (here you would git clone or upload your Angular SSR project)
+# e.g.:
+# git clone <your-repo-url> web-app-console
+cd /var/www/sfn-ssr/web-app-console
+Install dependencies:
+
+npm install
+3. Configure Angular SSR scripts (package.json)
+
+
+4. Build the Angular app (SSR)
+From project directory:
+
+cd /var/www/sfn-ssr/web-app-console
+npm run build
+This produces the SSR build under dist/....
+
+5. Test the SSR server manually
+Still in the project directory:
+
+npm run serve:ssr:frontend
+You should see something like:
+
+Node Express server listening on http://localhost:4000
+
+In another SSH session or after you know the port, test:
+
+curl -i http://127.0.0.1:4000/
+You should get HTTP/1.1 200 OK and your HTML.
+
+Stop the manual server with Ctrl + C when done (unless you proceed straight to PM2 in another session).
+
+6. Run SSR with PM2 (persistent process)
+Install PM2 globally if not already:
+
+npm install -g pm2
+Then:
+
+cd /var/www/sfn-ssr/web-app-console
+pm2 delete sfn-ssr # ignore errors if not existing
+pm2 start "npm run serve:ssr:frontend" --name sfn-ssr
+pm2 save
+pm2 list
+Confirm it’s online and listening on port 4000:
+
+curl -i http://127.0.0.1:4000/
+Again, expect HTTP/1.1 200 OK.
+
+Optionally enable PM2 startup on reboot:
+
+pm2 startup systemd
+# Follow the printed instruction (usually a single `sudo` command), then:
+pm2 save
+7. Configure Nginx as reverse proxy for the domain
+Create Nginx site config:
+
+nano /etc/nginx/sites-available/sfn.conf
+Add:
+
+server {
+ listen 80;
+ server_name sfn.demohandler.in www.sfn.demohandler.in;
+
+ location / {
+ proxy_pass http://127.0.0.1:4000;
+ proxy_http_version 1.1;
+ proxy_set_header Upgrade $http_upgrade;
+ proxy_set_header Connection 'upgrade';
+ proxy_set_header Host $host;
+ proxy_set_header X-Real-IP $remote_addr;
+ proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+ proxy_set_header X-Forwarded-Proto $scheme;
+ proxy_cache_bypass $http_upgrade;
+ }
+}
+Enable the site:
+
+ln -sf /etc/nginx/sites-available/sfn.conf /etc/nginx/sites-enabled/sfn.conf
+Test and reload Nginx:
+
+nginx -t
+systemctl reload nginx
+Verify Nginx can see your app through the domain:
+
+curl -i http://sfn.demohandler.in
+You should now get HTTP/1.1 200 OK with your app HTML.
+
+8. (Optional, but recommended) Enable HTTPS with Let’s Encrypt
+Install Certbot for Nginx (Ubuntu):
+
+apt update
+apt install -y certbot python3-certbot-nginx
+Get and install the SSL certificate:
+
+certbot --nginx -d sfn.demohandler.in -d www.sfn.demohandler.in
+Follow prompts (email, agree, redirect HTTP→HTTPS).
+Then test:
+
+curl -i https://sfn.demohandler.in
+And visit in a browser: https://sfn.demohandler.in.
+
+If you want, I can now provide a quick “cheat sheet” version (only the essential commands, no comments) to save as a deployment script for your future Angular SSR projects.
+
+
+
