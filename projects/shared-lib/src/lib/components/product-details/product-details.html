@@ -83,13 +83,13 @@
         <div class="col-md-6 mt-0">
           <div class="product-info-content bg-white rounded-4 h-100" data-aos="fade-left">
             <div class="product-info-content-price rounded-3 mb-3">
-              <span class="wrapper-subtitle">{{ productDetails.category.name }}</span>
-              <h3 class="wrapper-heading fs-20 mt-2">{{ productDetails.title }}</h3>
+              <span class="wrapper-subtitle">{{ productDetails?.category?.name }}</span>
+              <h3 class="wrapper-heading fs-20 mt-2">{{ productDetails?.title }}</h3>
 
               <div class="d-flex justify-content-between mt-2">
                 <div class="price my-0 gap-2">
-                  <span class="price-cut">₹{{ productDetails.price_data.regularPrice }}</span>
-                  <span class="new-price">₹{{ productDetails.price_data.salePrice }}</span>
+                  <span class="price-cut">₹{{ productDetails?.price_data?.regularPrice }}</span>
+                  <span class="new-price">₹{{ productDetails?.price_data?.salePrice }}</span>
                 </div>
               </div>
 
@@ -357,7 +357,7 @@
                   <div class="review-wrapper py-0">
                     <div class="wrapper">
                       <div class="wrapper-aurthor">
-                        <div class="wrapper-info">
+                        <div class="wrapper-info gap-2">
                           <div class="aurthor-img">
                             <img
                               src="../images/homepage-one/aurthor-img-1.webp"
@@ -366,7 +366,7 @@
                           </div>
                           <div class="author-details">
                             <h5>Sajjad Hossain</h5>
-                            <p>London, UK</p>
+                            <p class="mb-0">London, UK</p>
                           </div>
                         </div>
                         <div class="ratings">

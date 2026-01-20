@@ -1,16 +1,19 @@
 <section class="product px-2">
-    <div class="grocery-section container">
-        <ngx-slick-carousel #slickModal="slick-carousel" id="slick-carousel" class="slick-carousel" [config]="promoBannerSlideConfig">
-            <!-- Slide 1 -->
-             @for (slide of dataService.getSpecificGeneralSettings(data.data.title); track slide.img) {
-
-                 <div class="" ngxSlickItem>
-                     <a href="/category-details" >
-                         <img [src]="slide.imgSrc" alt="" height="250px" class="rounded-4">
-                     </a>
-                 </div>
-             }
-
-        </ngx-slick-carousel>
-    </div>
+  <div class="grocery-section container">
+    <ngx-slick-carousel
+      #slickModal="slick-carousel"
+      id="slick-carousel"
+      class="slick-carousel"
+      [config]="promoBannerSlideConfig"
+    >
+      <!-- Slide 1 -->
+      @for (slide of dataService.getSpecificGeneralSettings(data.data.title); track slide.img) {
+      <div class="" ngxSlickItem>
+        <a href="/category-details">
+          <img [src]="slide.imgSrc" alt="" height="250px" class="rounded-4" />
+        </a>
+      </div>
+      }
+    </ngx-slick-carousel>
+  </div>
 </section>

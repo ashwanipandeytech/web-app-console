@@ -58,8 +58,18 @@ if (isMainModule(import.meta.url)) {
       throw error;
     }
 
-    //console.log(`Node Express server listening on http://localhost:${port}`);
+    console.log(`Node Express server listening on http://localhost:${port}`);
   });
+//   const port = Number(process.env['PORT']); // mandatory, do not fallback
+
+// if (!port) {
+//   throw new Error('PORT is not defined by Hostinger Node.js manager');
+// }
+
+// app.listen(port, '0.0.0.0', () => {
+//   console.log(`Node Express server listening on port ${port}`);
+// });
+  
 }
 
 /**

@@ -11,6 +11,11 @@
         .title{
             font-size: clamp(1rem, 0.1667rem + 2.6667vw, 2.5rem);
         }
+        .icons{
+            &:hover{
+                border: 1px solid $theme-color!important;
+            }
+        }
     }
 }
 

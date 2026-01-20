@@ -20,12 +20,13 @@ import { NoDataComponent } from '../no-data/no-data.component';
 import { GlobalFunctionService } from '../../services/global-function.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SignalService } from '../../services/signal-service';
+import { MobileBottomNavComponent } from '../mobile-bottom-nav/mobile-bottom-nav.component';
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-my-orders',
   templateUrl: './my-orders.component.html',
-  imports: [CommonModule, NoDataComponent, ReactiveFormsModule],
+  imports: [CommonModule, NoDataComponent, ReactiveFormsModule,MobileBottomNavComponent],
   styleUrls: ['./my-orders.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
