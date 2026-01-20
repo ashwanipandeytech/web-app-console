@@ -48,7 +48,7 @@ export class Header {
   isBrowser: boolean;  
   private platformId = inject(PLATFORM_ID);
   constructor() {
-    console.info('deploy test ssr')
+    console.info('deploy test ssr 1')
     this.isBrowser = isPlatformBrowser(this.platformId);
 
 
