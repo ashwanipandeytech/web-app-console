@@ -27,17 +27,17 @@
                 Product title is required.
               </div>
               }
-              <p class="perma-txt">
+              <p class="perma-txt mt-1">
                 Permalink: {{domain}}/<span [attr.contenteditable]="isInputShow" [class.border]="isInputShow"
                   [class.border-primary]="isInputShow" [class.px-1]="isInputShow" class="site-link text-primary"
                   id="productPermalink" (blur)="onPermalinkBlur($event)">{{permaLink}}</span>
                 <span class="float-end">
-                  <button type="button" class="btn-flush bg-primary" (click)="enableInput()"
+                  <button type="button" class="btn btn-primary btn-sm" (click)="enableInput()"
                     [hidden]="isInputShow">Edit</button>
-                  <button type="button" class="btn-flush bg-success me-2" id="createPerma"
+                  <button type="button" class="btn btn-success btn-sm me-2" id="createPerma"
                     (click)="permalinkAction('done')" [hidden]="!isInputShow">OK</button>
-                  <button type="button" class="btn-flush bg-danger" id="cancelPerma" (click)="permalinkAction('cancel')"
-                    [hidden]="!isInputShow">Cancel</button>
+                  <button type="button" class="btn btn-danger btn-sm" id="cancelPerma"
+                    (click)="permalinkAction('cancel')" [hidden]="!isInputShow">Cancel</button>
                 </span>
               </p>
             </div>
@@ -47,10 +47,12 @@
               <h5>Short Description</h5>
               <div class="btn-box d-flex gap-2">
                 <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
-                <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i class="fa fa-angle-up"></i></button>
+                <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
+                    class="fa fa-angle-up"></i></button>
               </div>
             </div>
-            <quill-editor class="w-100 p-2" formControlName="shortDescription" rows="5" [modules]="modulesNoImage"></quill-editor>
+            <quill-editor class="w-100 p-2" formControlName="shortDescription" rows="5"
+              [modules]="modulesNoImage"></quill-editor>
           </div>
           <div class="panel mb-30">
             <div class="panel-header">
@@ -61,7 +63,8 @@
                     class="fa fa-angle-up"></i></button>
               </div>
             </div>
-            <quill-editor class="w-100 p-2" formControlName="productDescription" [modules]="modulesNoImage"></quill-editor>
+            <quill-editor class="w-100 p-2" formControlName="productDescription"
+              [modules]="modulesNoImage"></quill-editor>
           </div>
 
           <div class="panel mb-30">
@@ -212,21 +215,21 @@
                     </div>
                     <hr>
 
-                    <div class="panel mb-30">
-                      <div class="panel-header">
-                        <h5>Product Description Images <span>(jpeg/png)</span></h5>
-                        <!-- <div class="btn-box d-flex gap-2">
-                <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
-                <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
-                    class="fa fa-angle-up"></i></button>
-              </div> -->
-                      </div>
-                      <form [formGroup]="productDetails">
-
-                        <quill-editor class="w-100 p-2" formControlName="productDescriptionImageGallery"
-                          [modules]="modulesWithImage"></quill-editor>
-                      </form>
+                    <div class="panel-header">
+                      <h5>Product Description Images <span>(jpeg/png)</span></h5>
+                      <!-- <div class="btn-box d-flex gap-2">
+                        <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
+                        <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
+                            class="fa fa-angle-up"></i></button>
+                      </div> -->
                     </div>
+                    <form [formGroup]="productDetails">
+
+                      <quill-editor class="w-100 py-2" formControlName="productDescriptionImageGallery"
+                        [modules]="modulesWithImage"></quill-editor>
+                    </form>
+                    <!-- <div class="panel mb-30">
+                    </div> -->
                     <!-- <div class="col-12 mt-4">
                       <div class="add-gallery-img product-image-upload">
                         <div class="part-txt">

@@ -45,3 +45,14 @@
   height: auto !important;
   overflow-y: hidden; /* prevent scroll */
 }
+
+h5 {
+    font-size: 16px;
+    line-height: 50px;
+}
+.part-txt h5 span {
+  font-size: 14px;
+  line-height: 100%;
+  font-weight: 500;
+  color: #a1a1a1;
+}
