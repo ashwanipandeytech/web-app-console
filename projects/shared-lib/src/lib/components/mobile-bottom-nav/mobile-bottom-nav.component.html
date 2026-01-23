@@ -46,4 +46,98 @@
     />
     <span class="d-block">Profile</span>
   </a>
+
 </div>
+
+
+
+<!-- <ng-template #cart>
+  <a routerLink="/cart" class="cart-item position-relative icon-menu d-inline-block">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart-icon lucide-shopping-cart"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+    <span class="fs-14 d-block">Cart</span>
+
+    @if(countsList?.cart_count > 0) {
+      <i class="icon-badge position-absolute fs-12 d-inline-block text-center text-white bg-primary rounded-circle">{{
+        countsList?.cart_count
+      }}</i>
+    }
+  </a>
+</ng-template> -->
+
+<!-- <ng-template #userProfile>
+  @if(true) {
+  <div class="dropdown user-account icon-menu">
+    <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+       <span [hidden]="isLoggedIn">
+         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-icon lucide-user-round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+          <span class="fs-14 d-block">Login</span>
+       </span>
+        
+     
+     <span [hidden]="!isLoggedIn" class="position-relative">
+       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-check-icon lucide-user-round-check"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path class="text-primary" d="m16 19 2 2 4-4"/></svg>
+      <span class="fs-14 d-block">Profile</span>
+     </span>
+    
+    </button>
+    <ul
+      class="dropdown-menu dropdown-menu-end bg-white border-0 shadow rounded-3 pt-0"
+      style="z-index: 9999"
+    >
+      <li class="text-nowrap px-3 py-2 fw-semibold bg-light fs-14 mb-2 d-md-none">Hello, {{ userName==undefined?'Guest': userName}}</li>
+      <li [hidden]="isLoggedIn">
+        <a class="dropdown-item px-3 py-2 fs-14 cursor-pointer bg-primary text-white text-center" (click)="openLogin()"
+          ><span><i class="fa-solid fa-arrow-right-to-bracket fa-lg me-1"></i></span
+          >Login</a
+        >
+      </li>
+      <li class="mb-1">
+        <a 
+          class="dropdown-item px-3 py-2 fs-14"
+          [routerLink]="['/user-profile']"
+          [queryParams]="{ key: 'account' }"
+          >
+          <span><i class="fa-solid fa-lg opacity-75 fa-user-tie"></i></span>My Account</a
+        >
+      </li>
+      <li class="mb-1">
+        <a
+          class="dropdown-item px-3 py-2 fs-14"
+          [routerLink]="['/user-profile']"
+          [queryParams]="{ key: 'Orders' }"
+          ><span><i class="fa-solid fa-lg opacity-75 fa-bag-shopping"></i></span>My Order</a
+        >
+      </li>
+      <li class="mb-1">
+        <a
+          class="dropdown-item px-3 py-2 fs-14"
+          [routerLink]="['/user-profile']"
+          [queryParams]="{ key: 'wishlist' }"
+          ><span><i class="fa-solid fa-lg opacity-75 fa-heart"></i></span>Wishlist
+          @if(countsList?.wishlist_count > 0) {
+          <span class="badge text-bg-primary ms-2">{{ countsList?.wishlist_count }}</span>
+          }</a
+        >
+      </li>
+      <li class="mb-1">
+        <a
+          class="dropdown-item px-3 py-2 fs-14"
+          [routerLink]="['/user-profile']"
+          [queryParams]="{ key: 'address' }"
+          ><span><i class="fa-solid fa-lg opacity-75 fa-house"></i></span> Address</a
+        >
+      </li>
+      <li [hidden]="!isLoggedIn">
+        <a class="dropdown-item px-3 py-2 fs-14 cursor-pointer" (click)="logout()"
+          ><span><i class="fa-solid fa-lg opacity-75 fa-arrow-right-from-bracket"></i></span
+          >Logout</a
+        >
+      </li>
+    </ul>
+  </div>
+  }
+</ng-template> -->
+
+
+
+
