@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { PageContentResolver } from 'shared-lib';
 import { LandingPage } from 'shared-lib/components/landing-page/landing-page';
-import { ContactUs } from 'shared-lib';
+import { ContactUs } from 'shared-lib/pages/contact-us/contact-us.component';
 import { AboutUs } from 'shared-lib';
 import { Checkout } from 'shared-lib/components/cart/checkout/checkout';
 import { Login } from 'shared-lib/components/auth/login/login';
@@ -109,11 +109,11 @@ export const routes: Routes = [
 //         component: Privacy,
          
 //     },
-//     {
-//         path: 'contact-us',
-//         component: ContactUs,
+    {
+        path: 'contact-us',
+        component: ContactUs,
          
-//     },
+    },
 
 
 

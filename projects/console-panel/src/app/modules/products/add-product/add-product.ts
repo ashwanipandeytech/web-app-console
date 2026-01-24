@@ -489,10 +489,10 @@ export class AddProduct {
   }
   seoFormGroup() {
     this.seoForm = this.fb.group({
-      focusKeyphrase: [this.data?.focus_keyword, Validators.required],
-      metaTitle: [this.data?.meta_title, [Validators.required, Validators.maxLength(60)]],
-      slugText: [this.data?.slug, [Validators.required, Validators.pattern('^[a-z0-9-]+$')]],
-      metaDscr: [this.data?.meta_description, [Validators.required, Validators.maxLength(160)]],
+      focusKeyphrase: [this.data?.seo?.focusKeyphrase, Validators.required],
+      metaTitle: [this.data?.seo?.metaTitle, [Validators.required, Validators.maxLength(60)]],
+      slugText: [this.data?.seo?.slugText, [Validators.required, Validators.pattern('^[a-z0-9-]+$')]],
+      metaDscr: [this.data?.seo?.metaDscr, [Validators.required, Validators.maxLength(160)]],
     });
   }
 

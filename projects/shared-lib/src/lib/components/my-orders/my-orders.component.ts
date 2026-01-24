@@ -21,6 +21,7 @@ import { GlobalFunctionService } from '../../services/global-function.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SignalService } from '../../services/signal-service';
 import { MobileBottomNavComponent } from '../mobile-bottom-nav/mobile-bottom-nav.component';
+import { Router } from '@angular/router';
 declare var bootstrap: any;
 
 @Component({
@@ -33,7 +34,7 @@ declare var bootstrap: any;
 export class MyOrdersComponent implements OnInit {
   @ViewChild('orderDetail') orderDetail!: ElementRef;
   @ViewChild('rateusModal') rateusModal!: ElementRef;
-//  @ViewChild('collapseProduct') collapseProduct!: ElementRef;
+ @ViewChild('confirmCancelOrder') confirmCancelOrder!: ElementRef;
 @ViewChildren('collapseRef') collapseRefs!: QueryList<ElementRef>;
   dataService = inject(DataService);
   private cd = inject(ChangeDetectorRef);
@@ -41,6 +42,7 @@ export class MyOrdersComponent implements OnInit {
   private globalFunctionService = inject(GlobalFunctionService);
   private signalService = inject(SignalService);
   private fb = inject(FormBuilder);
+   private route = inject(Router);
   orderListData: any = [];
   orderId: any;
   orderDetailList: any = {};
@@ -218,6 +220,13 @@ updateratingInorderList(productId:any){
   }
   }
   cancelOrder() {
+   if (this.isBrowser) {
+        const modal = bootstrap.Modal.getInstance(
+          this.confirmCancelOrder.nativeElement
+        );
+        modal.hide();
+      }
+          this.route.navigate(['/contact-us']);
 
   }
 
