@@ -421,7 +421,9 @@ private platformId = inject(PLATFORM_ID);
 
   loginWithGoogle() {
      const redirectUrl = `${environment.API_URL}auth/google/redirect?redirect=/landing`;
-  window.location.href = redirectUrl;
+      window.location.href = redirectUrl;
+      console.log('redirectUrl===>',redirectUrl);
+  
     // let endpoint = 'auth/google/redirect?redirect=/landing';
     // this.dataService.get(endpoint).subscribe((res: any) => {
     //   //console.log('res===>', res);
