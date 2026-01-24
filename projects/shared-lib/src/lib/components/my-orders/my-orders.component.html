@@ -228,8 +228,10 @@
                 <i class="fa-solid fa-location-dot me-2"></i>
                 <span class="fw-medium text-dark small text-capitalize fs-14">
                   {{ orderDetailList?.address?.address_line}},
+                  name:{{ orderDetailList?.address?.name }},
                   {{ orderDetailList?.address?.city }},
-                  {{ orderDetailList?.address?.state }}
+                  state:{{ orderDetailList?.address?.state }},
+                  <!-- street:{{ orderDetailList?.address?.street }}, -->
                 </span>
               </div>
 
