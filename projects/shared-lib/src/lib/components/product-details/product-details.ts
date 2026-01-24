@@ -1,10 +1,19 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, inject, Renderer2, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  inject,
+  Renderer2,
+  ViewChild,
+  Inject,
+  PLATFORM_ID,
+} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
-import { SlickCarouselModule  } from 'ngx-slick-carousel';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { GlobaCommonlService } from '../../services/global-common.service';
 import { GlobalFunctionService } from '../../services/global-function.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -13,153 +22,166 @@ import { NoDataComponent } from '../no-data/no-data.component';
 
 @Component({
   selector: 'app-product-details',
-  imports: [CommonModule, SlickCarouselModule,NoDataComponent],
+  imports: [CommonModule, SlickCarouselModule, NoDataComponent],
   templateUrl: './product-details.html',
-  styleUrl: './product-details.scss'
+  styleUrl: './product-details.scss',
 })
 export class ProductDetails {
   @ViewChild('descBox') descBox!: ElementRef;
-  public dataService:any= inject(DataService);
-  public globalService:any= inject(GlobaCommonlService);
+  @ViewChild('mainSlick') mainSlick!: any;
+
+  public dataService: any = inject(DataService);
+  public globalService: any = inject(GlobaCommonlService);
   private globalFunctionService = inject(GlobalFunctionService);
   readonly ngbModal = inject(NgbModal);
 
   isWishlisted = false;
-  productListData: any=[];
-  productDetails: any={};
+  productListData: any = [];
+  productDetails: any = {};
   productId: any;
-  quantity: any=1;
+  quantity: any = 1;
   selectedProduct: any;
   productPrice: any;
 
-  slideConfig = {
+  mainConfig = {
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    dots: false,
     arrows: true,
+    dots: false,
+    infinite: false,
   };
 
-  productSectionSlideConfig = {
-    slidesToShow: 5,
-    // slidesToScroll: 1,
-    autoplaySpeed: 2000,
-    dots: true,
-    // centerMode: true,
-    lazyLoad: 'ondemand',
-    centerPadding: '12px',
-    responsive: [
-      {
-        breakpoint: 1320,
-        settings: {
-          centerPadding: '40px',
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 5
-        }
-      },
-      {
-        breakpoint: 540,
-        settings: {
-          slidesToShow: 3,
-          centerPadding: '16px',
-          arrows: false,
-        }
-      }
-    ]
+  thumbConfig = {
+    slidesToShow: 7,
+    slidesToScroll: 1,
+    vertical: true,
+    verticalSwiping: true,
+    arrows: false,
+    infinite: false,
+    focusOnSelect: true,
   };
-  
-  loading: boolean=true;
-  isLogin: boolean=false;
+
+  activeIndex = 0;
+
+goToSlide(index: number) {
+  this.activeIndex = index;
+  this.mainSlick.slickGoTo(index);
+}
+
+onMainAfterChange(event: any) {
+  this.activeIndex = event.currentSlide;
+}
+
+  // slideConfig = {
+  //   slidesToShow: 1,
+  //   slidesToScroll: 1,
+  //   autoplay: true,
+  //   autoplaySpeed: 2000,
+  //   dots: false,
+  //   arrows: true,
+  // };
+
+  // productSectionSlideConfig = {
+  //   slidesToShow: 5,
+  //   autoplaySpeed: 2000,
+  //   dots: true,
+  //   lazyLoad: 'ondemand',
+  //   centerPadding: '12px',
+  //   responsive: [
+  //     {
+  //       breakpoint: 1320,
+  //       settings: {
+  //         centerPadding: '40px',
+  //       },
+  //     },
+  //     {
+  //       breakpoint: 768,
+  //       settings: {
+  //         slidesToShow: 5,
+  //       },
+  //     },
+  //     {
+  //       breakpoint: 540,
+  //       settings: {
+  //         slidesToShow: 3,
+  //         centerPadding: '16px',
+  //         arrows: false,
+  //       },
+  //     },
+  //   ],
+  // };
+
+  loading: boolean = true;
+  isLogin: boolean = false;
   isPreview: any;
   isBrowser: boolean;
   private platformId = inject(PLATFORM_ID);
-  constructor(private cd:ChangeDetectorRef,private route:ActivatedRoute, private sanitizer: DomSanitizer, private renderer: Renderer2,private router: Router){
+  constructor(
+    private cd: ChangeDetectorRef,
+    private route: ActivatedRoute,
+    private sanitizer: DomSanitizer,
+    private renderer: Renderer2,
+    private router: Router,
+  ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.callAllProductList();
   }
 
   ngOnInit() {
     if (this.isBrowser) {
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
     }
     this.productId = this.route.snapshot.paramMap.get('id');
-    this.route.queryParams.subscribe((param:any)=>{
-     console.log('paramsss=>',param.preview);
-     this.isPreview = param.preview;
-     console.log('this.preview==>',this.productId);
-     let apiId;
-     this.dataService.get(`products/${this.productId}`).subscribe((res:any) => {
-       console.log('productId==>',res.data);
-       this.productDetails = res.data.data;
-       let user;
-     if (this.isBrowser) {
-        user = JSON.parse(localStorage.getItem('user') || '{}');
-     }
-     //console.log('user==>',user);
- 
-     if ( typeof user === 'object' && Object.keys(user).length <= 0) {
-       this.isLogin = false;
-     }
-     else{
-       this.isLogin = true;
- 
-     }
-       this.cd.detectChanges();
-     });
-    })
+    this.route.queryParams.subscribe((param: any) => {
+      console.log('paramsss=>', param.preview);
+      this.isPreview = param.preview;
+      console.log('this.preview==>', this.productId);
+      let apiId;
+      this.dataService.get(`products/${this.productId}`).subscribe((res: any) => {
+        console.log('productId==>', res.data);
+        this.productDetails = res.data.data;
+        let user;
+        if (this.isBrowser) {
+          user = JSON.parse(localStorage.getItem('user') || '{}');
+        }
+        //console.log('user==>',user);
 
+        if (typeof user === 'object' && Object.keys(user).length <= 0) {
+          this.isLogin = false;
+        } else {
+          this.isLogin = true;
+        }
+        this.cd.detectChanges();
+      });
+    });
   }
-
-  // renderDescription(html: string) {
-  //   const safeHtml = this.sanitizer.bypassSecurityTrustHtml(html);
-  //   const div = this.renderer.createElement('div');
-  //   div.innerHTML = safeHtml as string;
-  //   this.renderer.appendChild(this.descBox.nativeElement, div);
-  // }
 
   ngAfterViewInit() {
-    // if (this.productDetails) {  
-    //   for (let index = 0; index < this.productDetails.length; index++) {
-    //     const element = this.productDetails[index];
-    //     if (element.id == this.productId) {
-    //       this.renderDescription(element.description);
-    //       this.cd.detectChanges();
-  
-    //     }
-    //   }
-    // }
   }
 
-  // openProduct(id: number) {
-  //   this.router.navigate(['/product-details', id]);
-  // }
 
-  addToCart(action:any='') {
-      let isGuest: any = null;
-      if (this.isBrowser) {
-        isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
-      }
+  addToCart(action: any = '') {
+    let isGuest: any = null;
+    if (this.isBrowser) {
+      isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+    }
     //console.log('localStorage.getItem -====',localStorage.getItem('user'));
     // if (localStorage.getItem('user') == null) {
     //   this.router.navigate(['/login']);
     // }
     let cartPayload = {
-      product_id:this.selectedProduct.id,
-      quantity:1,
-      guest_token:isGuest
-    }
-    this.dataService.post(cartPayload, 'cart')
+      product_id: this.selectedProduct.id,
+      quantity: 1,
+      guest_token: isGuest,
+    };
+    this.dataService
+      .post(cartPayload, 'cart')
       .pipe(
-        catchError(err => {
+        catchError((err) => {
           console.error('Error:', err);
 
           return of(err);
-        })
+        }),
       )
       .subscribe((res: any) => {
         //console.log('Response:', res);
@@ -171,18 +193,18 @@ export class ProductDetails {
         //   }
         //   this.globalService.showMsgSnackBar(res.body);
         // }
-         if (res.success == true) {
-         // console.info('herer add to cart')
-            this.globalFunctionService.getCount();
+        if (res.success == true) {
+          // console.info('herer add to cart')
+          this.globalFunctionService.getCount();
           this.globalService.showMsgSnackBar(res);
           this.cd.detectChanges();
 
-      //       effect(() => {
-      // this.isLoggedIn = this.signalService.userLoggedIn();
-      // if (this.signalService.allCounts() != null) {
-      //   this.countsList = this.signalService.allCounts();
-      //   this.cd.detectChanges();
-      // }
+          //       effect(() => {
+          // this.isLoggedIn = this.signalService.userLoggedIn();
+          // if (this.signalService.allCounts() != null) {
+          //   this.countsList = this.signalService.allCounts();
+          //   this.cd.detectChanges();
+          // }
           // if (action == 'buy') {
           //   if (this.isLogin) {
           //     this.router.navigate(['/checkout'])
@@ -192,7 +214,7 @@ export class ProductDetails {
           //   }
           // }
 
-          this.router.navigate(['/checkout'])
+          this.router.navigate(['/checkout']);
           // this.globalFunctionService.getCount();
         }
         // if (res.success ==true) {
@@ -204,25 +226,19 @@ export class ProductDetails {
         //   // this.router.navigate(['/cart']);
         // // window.location.reload();
         // }
-       else if (res.error && res.error.message) {
+        else if (res.error && res.error.message) {
           this.globalService.showMsgSnackBar(res.error);
         }
 
-
-
-
-
-        if (res.success == true) {   
-        
+        if (res.success == true) {
         }
       });
-
   }
   openLogin() {
     const modalRef: NgbModalRef = this.ngbModal.open(Login, {
       windowClass: 'mobile-modal login-popup',
       scrollable: true,
-      centered:true
+      centered: true,
     });
     modalRef.result
       .then((result) => {
@@ -233,34 +249,34 @@ export class ProductDetails {
       });
   }
   callAllProductList() {
-      this.loading = true;  // show loader
-    this.dataService.get('products/search','web').pipe(
-      catchError((error) => {
-        return of(null); // or you can return a default value if needed
-      })
-    ).subscribe((response: any) => {
-      // //console.log('Response:', response);
-    this.productListData = response.data.data;
-    for (let i = 0; i <  this.productListData.length; i++) {
-      const element =  this.productListData[i];
-      if(element.id == this.productId){
-        this.selectedProduct = element;
-        this.productPrice = element.price_data.regularPrice;
-      }
-      
-    }
-    //console.log('productListData==>',this.productListData);
-    this.loading = false;
-    this.cd.detectChanges();
-      if (response && response.success) {
-      
-      } else if (response) {
-       //add toaserfnc alert('Login failed: ' + response.message);
-      }
-    });
-    
+    this.loading = true; // show loader
+    this.dataService
+      .get('products/search', 'web')
+      .pipe(
+        catchError((error) => {
+          return of(null); // or you can return a default value if needed
+        }),
+      )
+      .subscribe((response: any) => {
+        // //console.log('Response:', response);
+        this.productListData = response.data.data;
+        for (let i = 0; i < this.productListData.length; i++) {
+          const element = this.productListData[i];
+          if (element.id == this.productId) {
+            this.selectedProduct = element;
+            this.productPrice = element.price_data.regularPrice;
+          }
+        }
+        //console.log('productListData==>',this.productListData);
+        this.loading = false;
+        this.cd.detectChanges();
+        if (response && response.success) {
+        } else if (response) {
+          //add toaserfnc alert('Login failed: ' + response.message);
+        }
+      });
   }
-  
+
   // increase() {
   //   this.quantity++;
   //   this.calculatePrice();
@@ -273,35 +289,31 @@ export class ProductDetails {
   //   }
   // }
 
-  toggleHeart(item:any) {
+  toggleHeart(item: any) {
     this.isWishlisted = !this.isWishlisted;
     let data = {
-      product_id:item.id
-    }
+      product_id: item.id,
+    };
     //console.log('item==>',item.is_wishlisted);
-    
-  if (item.is_wishlisted) {
-     item.is_wishlisted = !item.is_wishlisted;
-     this.dataService.delete(`wishlist/product/${data.product_id}`).subscribe((res:any)=>{
+
+    if (item.is_wishlisted) {
+      item.is_wishlisted = !item.is_wishlisted;
+      this.dataService.delete(`wishlist/product/${data.product_id}`).subscribe((res: any) => {
         //console.log('wishlist==>',res);
-          this.globalFunctionService.getCount();
-    this.cd.detectChanges();
-      })
-    }
-    else{
-       item.is_wishlisted = !item.is_wishlisted;
-      this.dataService.post(data,'wishlist').subscribe((res:any)=>{
+        this.globalFunctionService.getCount();
+        this.cd.detectChanges();
+      });
+    } else {
+      item.is_wishlisted = !item.is_wishlisted;
+      this.dataService.post(data, 'wishlist').subscribe((res: any) => {
         //console.log('wishlist==>',res);
-          this.globalFunctionService.getCount();
-    this.cd.detectChanges();
-      })
+        this.globalFunctionService.getCount();
+        this.cd.detectChanges();
+      });
     }
     //  this.callAllProductList();
     this.globalFunctionService.getCount();
     this.cd.detectChanges();
-
-
-
 
     // if (this.isWishlisted) {
     //   this.dataService.post(data,'wishlist').subscribe((res:any)=>{
@@ -320,7 +332,7 @@ export class ProductDetails {
   //   this.cd.detectChanges();
   // }
 
-  back(){
+  back() {
     if (this.isBrowser) {
       window.history.back();
     }

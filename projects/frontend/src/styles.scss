@@ -58,10 +58,7 @@
   }
 }
 
-.bottom-nav {
-  justify-content: space-around;
-  z-index: 1042;
-
+.bottom-nav { 
   a {
     text-align: center;
     font-size: 12px;
@@ -1777,6 +1774,7 @@ safure-root {
 }
 
 .innerHtml {
+  strong{font-weight: 600;}
   ul {
     padding-left: 20px;
 
@@ -1945,6 +1943,9 @@ input[type=radio] {
     &:hover {
       background: #fff;
     }
+    &.slick-disabled{
+      cursor: not-allowed;
+    }
   }
 
   .slick-prev,
@@ -2043,4 +2044,12 @@ input[type="number"] {
   /* Blue */
   border-radius: 50%;
   animation: spin 1s linear infinite;
+}
+
+.product-info-section{
+  .main-slider{
+    .slick-main, .slick-list, .slick-track, .main-img, .main-img img{
+      height: 100%;
+    }
+  }
 }

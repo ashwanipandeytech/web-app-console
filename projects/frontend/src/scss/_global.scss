@@ -130,7 +130,7 @@ button {
   border: 1px solid transparent;
   z-index: 1;
   &-warning {
-    background: #ffbb38;
+    background: #ffbb38!important;
   }
   cursor: pointer;
   @media #{$sm} {

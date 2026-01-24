@@ -472,3 +472,30 @@ hr {
 .slick-dotted.slick-slider {
   margin-bottom: 0;
 }
+
+
+
+/* Thumbnails */
+.thumb-slider {
+  width: 80px;
+  .thumb-item {
+    border: 2px solid transparent;
+    padding: 6px;
+  }
+}
+
+/* Main Image */
+.main-slider {
+  @media screen and (min-width:768px) {
+    width: calc(100% - 80px);
+  }
+  width: 100%;
+  border: 1px solid #eee;
+  max-height: 500px;
+  .cta-actions{
+    button{
+      font-size: 14px;
+    }
+  }
+}
+
