@@ -1115,7 +1115,7 @@ export class AddProduct {
   permalinkAction(action: String) {
     this.isInputShow = false;
     if (action == 'cancel') {
-      this.permaLink = '';
+      // this.permaLink = '';
     }
   }
   discountPriceChange() {
