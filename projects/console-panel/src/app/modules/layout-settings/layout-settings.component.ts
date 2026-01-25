@@ -169,6 +169,7 @@ export class LayoutSettingsComponent implements OnInit {
         //console.log('Response:', res);
         if (res.success) {
           this.settingsModel = res.data.settings;
+          console.info('this.settingsModel',this.settingsModel)
           //  this.uploadedFile = this.settingsModel.general.logo.desktop.imgSrc
 
           this.getPageList();
