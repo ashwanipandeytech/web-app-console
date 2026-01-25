@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, ElementRef, inject, Input, ViewChild } fr
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { catchError, of } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../../../environments/environment';
@@ -24,7 +24,7 @@ export class AddAddressModal {
   private checkPlatform:any = inject(CheckPlatformService);
   private globalService = inject(GlobaCommonlService);
   private signalService = inject(SignalService);
-
+private apiUrl = 'https://raw.githubusercontent.com/sab99r/Indian-States-And-Districts/master/states-and-districts.json';
   // selectedAddress: string = '';
   searchText = '';
   suggestions: any[] = [];
@@ -40,6 +40,7 @@ export class AddAddressModal {
   @Input () isfrom:any;
   isLogin: boolean=false;
   isNewAddressCartPage: any;
+  states: any;
   constructor(private http: HttpClient,private fb: FormBuilder,private cd:ChangeDetectorRef,private activeModal:NgbActiveModal){
     this.addAddressForm();
     // this.getAddressList();
@@ -121,6 +122,11 @@ if (this.searchQuery == '') {
     // location:[{ lat:item.properties.lat,lng:item.properties.lon}]
   });
     }
+     this.getStates().subscribe(res => {
+      this.states = res.states;
+      console.log('states==>',this.states);
+      this.cd.detectChanges();
+    });
   }
   selectSuggestion(item: any) {
     // //console.log('searchText==>',item);
@@ -201,7 +207,7 @@ if (this.searchQuery == '') {
     ]
   ],
 
-  country: ['', Validators.required],
+  country: ['IN', Validators.required],
 
   type: ['', Validators.required]
 });
@@ -354,4 +360,7 @@ get type() { return this.addressForm.get('type'); }
 closePopup(action:any){
   this.activeModal.close({result:action});
 }
+ getStates(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
+  }
 }

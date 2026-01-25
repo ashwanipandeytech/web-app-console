@@ -168,20 +168,31 @@
           <div class="text-danger position-absolute fs-12">City is required.</div>
           }
         </div>
-        <div class="col-12 col-sm-6">
-          <!-- STATE -->
-          <label class="form-label fw-semibold mb-1">State</label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="state"
-            placeholder="State"
-            [class.is-invalid]="state?.invalid && state?.touched"
-          />
-          @if(state?.invalid && state?.touched){
-          <div class="text-danger position-absolute fs-12">State is required.</div>
-          }
-        </div>
+       <div class="col-12 col-sm-6 position-relative">
+  <!-- STATE -->
+  <label class="form-label fw-semibold mb-1">State</label>
+
+  <select
+    class="form-select"
+    formControlName="state"
+    [class.is-invalid]="state?.invalid && state?.touched"
+  >
+    <option value="">Select State</option>
+
+    @for (state of states; track state; let i = $index ) {
+      <option [value]="state.state">
+        {{ state.state }}
+      </option>
+    }
+  </select>
+
+  @if (state?.invalid && state?.touched) {
+    <div class="text-danger position-absolute fs-12">
+      State is required.
+    </div>
+  }
+</div>
+
         <div class="col-12 col-sm-6">
           <!-- POSTAL CODE -->
           <label class="form-label fw-semibold mb-1">Postal Code</label>
@@ -208,6 +219,7 @@
             formControlName="country"
             placeholder="Country"
             [class.is-invalid]="country?.invalid && country?.touched"
+            readonly
           />
           @if(country?.invalid && country?.touched){
           <div class="text-danger position-absolute fs-12">Country is required.</div>

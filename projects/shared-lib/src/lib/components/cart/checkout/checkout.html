@@ -325,7 +325,7 @@
                     }
                   </div>
 
-                  <a (click)="placeOrder()" class="shop-btn w-100 oder-btn">Place Order Now</a>
+                  <a (click)="cartListData.length>0?placeOrder():addItemAlert()" class="shop-btn w-100 oder-btn">Place Order Now</a>
                 </div>
               </div>
             </div>
