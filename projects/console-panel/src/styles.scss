@@ -122,3 +122,14 @@
 	font-weight: 600 !important;
 	white-space: pre;
 }
+.product-edit-popup {
+	.add-product-sidebar {
+		.publish-btn {
+			top: -16px !important;
+		}
+	}
+	.main-content {
+		left: unset;
+        width: 100%;
+	}
+}
