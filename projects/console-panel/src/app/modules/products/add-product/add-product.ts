@@ -24,6 +24,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { QuillModule } from 'ngx-quill';
 import Quill from 'quill';
 import { ImageHandler, Options } from 'ngx-quill-upload';
+import htmlEditButton from 'quill-html-edit-button';
+Quill.register('modules/htmlEditButton', htmlEditButton);
+Quill.register('modules/imageHandler', ImageHandler);
 Quill.register('modules/imageHandler', ImageHandler);
 
 interface FoodNode {
@@ -49,6 +52,11 @@ export class AddProduct {
   };
 
   modulesNoImage = {
+    htmlEditButton: {
+      debug: true, // Developers love logs
+      msg: "Edit HTML", // Tooltip
+      okText: "Save",
+    },
     toolbar: [
       // --- TEXT STYLE ---
       [{ 'font': [] }, { 'size': ['small', false, 'large', 'huge'] }],
@@ -57,7 +65,7 @@ export class AddProduct {
       [{ 'script': 'sub' }, { 'script': 'super' }],
 
       // --- HEADER & QUOTES ---
-      [{ 'header': 1 }, { 'header': 2 }, 'blockquote', 'code-block'],
+      [{ 'header': 1 }, { 'header': 2 }, 'blockquote',],
 
       // --- LISTS & INDENTS ---
       [{ 'list': 'ordered' }, { 'list': 'bullet' }],
@@ -69,11 +77,11 @@ export class AddProduct {
 
       // --- LINKS & MEDIA ---
       ['link', 'formula'],
-
+      ['htmlEditButton'],
       // --- UTILS ---
       ['clean']
     ],
-   
+
 
 
 
@@ -82,6 +90,11 @@ export class AddProduct {
 
 
   modulesWithImage = {
+    htmlEditButton: {
+      debug: true, // Developers love logs
+      msg: "Edit HTML", // Tooltip
+      okText: "Save",
+    },
     toolbar: [
       // --- TEXT STYLE ---
       [{ 'font': [] }, { 'size': ['small', false, 'large', 'huge'] }],
@@ -90,7 +103,7 @@ export class AddProduct {
       [{ 'script': 'sub' }, { 'script': 'super' }],
 
       // --- HEADER & QUOTES ---
-      [{ 'header': 1 }, { 'header': 2 }, 'blockquote', 'code-block'],
+      [{ 'header': 1 }, { 'header': 2 }, 'blockquote',],
 
       // --- LISTS & INDENTS ---
       [{ 'list': 'ordered' }, { 'list': 'bullet' }],
@@ -102,7 +115,7 @@ export class AddProduct {
 
       // --- LINKS & MEDIA ---
       ['link', 'image', 'formula'],
-
+      ['htmlEditButton'],
       // --- UTILS ---
       ['clean']
     ],
