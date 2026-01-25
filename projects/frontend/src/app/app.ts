@@ -155,11 +155,12 @@ export class App {
   }
 
   openForgotPopup(token:any='', email: any, step: any) {
-    console.log('enter===>');
+    let user:any = localStorage.getItem('user');
+    console.log('enter===>',user);
     
     let data = {
       token: token,
-      email: email,
+      email: user.email,
       step: step
     }
     const modalRef: NgbModalRef = this.ngbModal.open(Login, {
