@@ -1,361 +1,449 @@
 <!-- main content start -->
 <div class="main-content">
-    <div class="row g-4">
-        <div class="col-12">
-            <div class="panel">
-                <div class="panel-header">
-                    <h5>All Products</h5>
-                    <div class="btn-box d-flex flex-wrap gap-2">
-                        <div id="tableSearch"></div>
-                        <button class="btn btn-sm btn-icon btn-outline-primary"><i
-                                class="fa fa-arrows-rotate"></i></button>
-                        <!-- <div class="digi-dropdown dropdown">
-                            <button class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="fa fa-ellipsis-vertical"></i></button>
-                            <ul class="digi-dropdown-menu dropdown-menu">
-                                <li class="dropdown-title">Show Table Title</li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showProduct" checked>
-                                        <label class="form-check-label" for="showProduct">
-                                            Products
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showPublished" checked>
-                                        <label class="form-check-label" for="showPublished">
-                                            Published
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showStock" checked>
-                                        <label class="form-check-label" for="showStock">
-                                            Stock
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showPrice" checked>
-                                        <label class="form-check-label" for="showPrice">
-                                            Price
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showSales" checked>
-                                        <label class="form-check-label" for="showSales">
-                                            Sales
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showRating" checked>
-                                        <label class="form-check-label" for="showRating">
-                                            Rating
-                                        </label>
-                                    </div>
-                                </li>
-                                <li class="dropdown-title pb-1">Showing</li>
-                                <li>
-                                    <div class="input-group">
-                                        <input type="number" class="form-control form-control-sm w-50" value="10">
-                                        <button class="btn btn-sm btn-primary w-50">Apply</button>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div> -->
-                        <div class="btn-box">
-                            <a class="btn btn-sm btn-primary" (click)="openAddProductModal('isNew')"><i
-                                    class="fa fa-plus"></i> Add New</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <div class="table-wrapper mat-elevation-z8">
-                    
-                        <div class="table-scroll">
-                    
-                            <table mat-table [dataSource]="dataSource" matSort class="w-100">
-                    
-                                <!-- Checkbox Column -->
-                                <ng-container matColumnDef="select">
-                                    <th mat-header-cell *matHeaderCellDef>
-                                        <mat-checkbox></mat-checkbox>
-                                    </th>
-                                    <td mat-cell *matCellDef="let item">
-                                        <mat-checkbox></mat-checkbox>
-                                    </td>
-                                </ng-container>
-                    
-                                <!-- Product Column -->
-                                <ng-container matColumnDef="product">
-                                    <th mat-header-cell *matHeaderCellDef>Product</th>
-                                    <td mat-cell *matCellDef="let item">
-                                        <div class="d-flex align-items-center gap-3">
-                                            @if(item && item.images.length>0){
-                                            <div class="part-img">
-                                                <img [src]="item?.images[0]?.url" width="48px" height="48px" alt="Image">
-                                            </div>
-                                            }
-                                            <!-- <div class="part-img" *ngIf="item.images?.length">
-                                                <img [src]="item.images[0].url" alt="img">
-                                            </div> -->
-                                            <div class="part-txt">
-                                                <span class="product-name">{{item.title}}</span>
-                                                <span class="product-category">{{item.category?.name}}</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </ng-container>
-                    
-                                <!-- SKU -->
-                                <ng-container matColumnDef="sku">
-                                    <th mat-header-cell *matHeaderCellDef>SKU</th>
-                                    <td mat-cell *matCellDef="let item">{{item.sku}}</td>
-                                </ng-container>
-                    
-                                <!-- Stock -->
-                                <ng-container matColumnDef="stock">
-                                    <th mat-header-cell *matHeaderCellDef>Stock</th>
-                                    <td mat-cell *matCellDef="let item">{{item.inventory?.manageStock}}</td>
-                                </ng-container>
-                    
-                                <!-- Price -->
-                                <ng-container matColumnDef="price">
-                                    <th mat-header-cell *matHeaderCellDef>Price</th>
-                                    <td mat-cell *matCellDef="let item">₹{{item.price_data?.regularPrice}}</td>
-                                </ng-container>
-                    
-                                <!-- Sales -->
-                                <ng-container matColumnDef="sales">
-                                    <th mat-header-cell *matHeaderCellDef>Sales</th>
-                                    <td mat-cell *matCellDef="let item">₹{{item.price_data?.salePrice}}</td>
-                                </ng-container>
-                    
-                                <!-- Published -->
-                                <ng-container matColumnDef="published">
-                                    <th mat-header-cell *matHeaderCellDef>Published</th>
-                                    <td mat-cell *matCellDef="let item">
-                                        {{ item.created_at | date:'dd/MM/yyyy hh:mm a' }}
-                                    </td>
-                                </ng-container>
-                    
-                                <!-- Action -->
-                                <ng-container matColumnDef="action">
-                                    <th mat-header-cell *matHeaderCellDef>Action</th>
-                                    <td mat-cell class="text-nowrap" *matCellDef="let item">
-                                        <button class="btn btn-info small lh-1 p-1" (click)="previewProduct(item.id)">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-primary small lh-1 p-1 mx-1" (click)="editoProduct(item)">
-                                            <i class="fa fa-pen"></i>
-                                        </button>
-                                        <button class="btn btn-danger small lh-1 p-1" color="warn" (click)="openDialog(item.id)">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </ng-container>
-                    
-                                <!-- Rows -->
-                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    
-                            </table>
-                    
-                        </div>
-                    
-                        <!-- Pagination -->
-                        <!-- <mat-paginator [pageSize]="10"></mat-paginator> -->
-                    
-                    </div>
-
-                    <!-- <div class="product-table-quantity">
-                        <ul>
-                            <li class="text-white">All (23)</li>
-                            <li>Published (19)</li>
-                            <li>Draft (05)</li>
-                            <li>Trush (05)</li>
-                        </ul>
-                    </div> -->
-                    <!-- <div class="table-filter-option">
-                        <div class="row g-3">
-                            <div class="col-xl-10 col-9 col-xs-12">
-                                <div class="row g-3">
-                                    <div class="col">
-                                        <form class="row g-2">
-                                            <div class="col">
-                       ``                         <select class="form-control form-control-sm"
-                                                    data-placeholder="Bulk action">
-                                                    <option value="">Bulk action</option>
-                                                    <option value="0">Edit</option>
-                                                    <option value="1">Move To Trash</option>
-                                                </select>
-                                            </div>
-                                            <div class="col">
-                                                <button class="btn btn-sm btn-primary w-100">Apply</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="col">
-                                        <select class="form-control form-control-sm">
-                                            <option value="0">All Category</option>
-                                            <option value="1">Cloth</option>
-                                            <option value="2">Fashion</option>
-                                            <option value="3">Bag</option>
-                                            <option value="4">Food</option>
-                                            <option value="5">Medicine</option>
-                                            <option value="6">Watch</option>
-                                            <option value="7">Smart Phone</option>
-                                        </select>
-                                    </div>
-                                    <. <select class="form-control form-control-sm">
-                                            <option value="0">All Product Type</option>
-                                            <option value="1">Downloadable</option>
-                                            <option value="2">Virtual</option>
-                                        </select>
-                                    </div> --.>
-                               !-- <div class="col">
-                                            <div class="col">
-                                        <select class="form-control form-control-sm">
-                                            <option value="0">All Product Stock</option>
-                                            <option value="1">In stock</option>
-                                            <option value="2">Out of stock</option>
-                                            <option value="3">On backorder</option>
-                                        </select>
-                                    </div>
-                                    <.!-- <div class="col">
-                                        <button class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter</button>
-                                    </div>
-                                    <div class="col">
-                                        <div class="digi-dropdown dropdown">
-                                            <button class="btn btn-sm btn-icon btn-primary" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="fa fa-plus"></i></button>
-                                            <ul class="digi-dropdown-menu dropdown-menu">
-                                                <li class="dropdown-title">Filter Options</li>
-                                                <li>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="filterCategory" checked>
-                                                        <label class="form-check-label" for="filterCategory">
-                                                            Category
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="filterProductType" checked>
-                                                        <label class="form-check-label" for="filterProductType">
-                                                            Product Type
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="filterStock" checked>
-                                                        <label class="form-check-label" for="filterStock">
-                                                            Stock
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div> --.>
-                                </div>
+    <div class="panel">
+        <div class="panel-header">
+            <h5>All Products</h5>
+            <div class="btn-box d-flex flex-wrap gap-2">
+                <div id="tableSearch"></div>
+                <!-- <button class="btn btn-sm btn-icon btn-outline-primary"><i
+                        class="fa fa-arrows-rotate"></i></button> -->
+                <!-- <div class="digi-dropdown dropdown">
+                    <button class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="fa fa-ellipsis-vertical"></i></button>
+                    <ul class="digi-dropdown-menu dropdown-menu">
+                        <li class="dropdown-title">Show Table Title</li>
+                        <li>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="showProduct" checked>
+                                <label class="form-check-label" for="showProduct">
+                                    Products
+                                </label>
                             </div>
-                            <div class="col-xl-2 col-3 col-xs-12 d-flex justify-content-end">
-                                <div id="productTableLength"></div>
+                        </li>
+                        <li>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="showPublished" checked>
+                                <label class="form-check-label" for="showPublished">
+                                    Published
+                                </label>
                             </div>
-                        </div>
-                    </div>
-                    <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped"
-                        id="allProductTable">
-                        <thead>
-                            <tr>
-                                <th class="no-sort">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="markAllProduct">
-                                    </div>
-                                </th>
-                                <th>Product</th>
-                                <th>SKU</th>
-                                <th>Stock</th>
-                                <th>Price</th>
-                                <th>Sales</th>
-                                <th class="d-none">Rating</th>
-                                <th>Published</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for(item of productListData?.data; track $index){
-
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="table-product-card">
-                                        @if(item && item.images.length>0){
-
-                                        <div class="part-img">
-                                            <img [src]="item?.images[0]?.url" alt="Image">
-                                        </div>
-                                        }
-                                        <div class="part-txt">
-                                            <span class="product-name">{{item.title}}</span>
-                                            <span class="product-category">{{item.category.name}}</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>{{item.sku}}</td>
-                                <td>{{item.inventory.manageStock}}</td>
-                                <td>{{item.price_data.regularPrice}}</td>
-                                <td>{{item.price_data.salePrice}}</td>
-                                <td class="d-none">
-                                    <div class="rating">
-                                        <div class="star">
-                                            <i class="fa-sharp fa-solid fa-star starred"></i>
-                                            <i class="fa-sharp fa-solid fa-star starred"></i>
-                                            <i class="fa-sharp fa-solid fa-star starred"></i>
-                                            <i class="fa-sharp fa-solid fa-star starred"></i>
-                                            <i class="fa-sharp fa-solid fa-star"></i>
-                                        </div>
-                                        <div class="rating-amount">(42)</div>
-                                    </div>
-                                </td>
-                                <td>12/24/2023 01:05 PM</td>
-                                <td>
-                                    <div class="btn-box">
-                                        <button><i class="fa fa-eye" (click)="previewProduct(item.id)"></i></button>
-                                        <button><i class="fa fa-pen" (click)="editoProduct(item)"></i></button>
-                                        <button><i class="fa fa-trash" (click)="openDialog(item.id)"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            }
-
-                        </tbody>
-                    </table>
-
-                    <div class="d-flex align-items-center justify-content-end gap-1 py-2">
-                        @for (page of productListData?.meta?.links; track $index) {
-                        <button type="button" class="btn" (click)="nextPage(page.page)">
-                            {{page.label}}
-                        </button>
-                        }
-                    </div> -->
-                    <!-- <div class="table-bottom-control">
-                        <div>{{productListData.meta.current_page}}-{{productListData.meta.last_page}}</div>
-                        <span (click)="nextPage(productListData.meta.current_page)">Next</span>
-                    </div> -->
+                        </li>
+                        <li>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="showStock" checked>
+                                <label class="form-check-label" for="showStock">
+                                    Stock
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="showPrice" checked>
+                                <label class="form-check-label" for="showPrice">
+                                    Price
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="showSales" checked>
+                                <label class="form-check-label" for="showSales">
+                                    Sales
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="showRating" checked>
+                                <label class="form-check-label" for="showRating">
+                                    Rating
+                                </label>
+                            </div>
+                        </li>
+                        <li class="dropdown-title pb-1">Showing</li>
+                        <li>
+                            <div class="input-group">
+                                <input type="number" class="form-control form-control-sm w-50" value="10">
+                                <button class="btn btn-sm btn-primary w-50">Apply</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div> -->
+                <div class="btn-box">
+                    <a class="btn btn-sm btn-primary" (click)="openAddProductModal('isNew')">
+                        <i class="fa fa-plus"></i> Add New</a>
                 </div>
             </div>
+        </div>
+        <div class="panel-body">
+            <!-- <mat-form-field>
+                <mat-label>Filter</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+                </mat-form-field> -->
+
+            <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource" matSort>
+
+                    <ng-container matColumnDef="product">
+                        <th mat-header-cell *matHeaderCellDef>Product</th>
+                        <td mat-cell *matCellDef="let item">
+                            <div class="d-flex align-items-center gap-3">
+                                @if(item && item.images.length>0){
+                                <div class="part-img">
+                                    <img [src]="item?.images[0]?.url" width="48px" height="48px" alt="Image">
+                                </div>
+                                }
+                                <!-- <div class="part-img" *ngIf="item.images?.length">
+                                    <img [src]="item.images[0].url" alt="img">
+                                </div> -->
+                                <div class="part-txt">
+                                    <span class="product-name">{{item.title}}</span>
+                                    <span class="product-category">{{item.category?.name}}</span>
+                                </div>
+                            </div>
+                        </td>
+                    </ng-container>
+        
+                    <!-- SKU -->
+                    <ng-container matColumnDef="sku">
+                        <th mat-header-cell *matHeaderCellDef>SKU</th>
+                        <td mat-cell *matCellDef="let item">{{item.sku}}</td>
+                    </ng-container>
+        
+                    <!-- Stock -->
+                    <ng-container matColumnDef="stock">
+                        <th mat-header-cell *matHeaderCellDef>Stock</th>
+                        <td mat-cell *matCellDef="let item">{{item.inventory?.manageStock}}</td>
+                    </ng-container>
+        
+                    <!-- Price -->
+                    <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef>Price</th>
+                        <td mat-cell *matCellDef="let item">₹{{item.price_data?.regularPrice}}</td>
+                    </ng-container>
+        
+                    <!-- Sales -->
+                    <ng-container matColumnDef="sales">
+                        <th mat-header-cell *matHeaderCellDef>Sales</th>
+                        <td mat-cell *matCellDef="let item">₹{{item.price_data?.salePrice}}</td>
+                    </ng-container>
+        
+                    <!-- Published -->
+                    <ng-container matColumnDef="published">
+                        <th mat-header-cell *matHeaderCellDef>Published</th>
+                        <td mat-cell *matCellDef="let item">
+                            {{ item.created_at | date:'dd/MM/yyyy hh:mm a' }}
+                        </td>
+                    </ng-container>
+        
+                    <!-- Action -->
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef>Action</th>
+                        <td mat-cell class="text-nowrap" *matCellDef="let item">
+                            <button class="btn btn-info text-white small lh-1 p-1" (click)="previewProduct(item.id)">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                            <button class="btn btn-primary small lh-1 p-1 mx-1" (click)="editoProduct(item)">
+                                <i class="fa fa-pen"></i>
+                            </button>
+                            <button class="btn btn-danger small lh-1 p-1" color="warn" (click)="openDialog(item.id)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                    <!-- Row shown when there is no matching data. -->
+                    <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="4">No data matching the filter</td>
+                    <!-- "{{input.value}}" -->
+                    </tr>
+                </table>
+
+                <mat-paginator [pageSize]="5" [length]="100" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+            </div>
+
+
+            @if(false) {
+                <div class="table-wrapper mat-elevation-z8">
+                
+                    <div class="table-scroll">
+                
+                        <table mat-table [dataSource]="dataSource" matSort class="w-100">
+                
+                            <!-- Checkbox Column -->
+                            <!-- <ng-container matColumnDef="select">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <mat-checkbox></mat-checkbox>
+                                </th>
+                                <td mat-cell *matCellDef="let item">
+                                    <mat-checkbox></mat-checkbox>
+                                </td>
+                            </ng-container> -->
+                
+                            <!-- Product Column -->
+                            <ng-container matColumnDef="product">
+                                <th mat-header-cell *matHeaderCellDef>Product</th>
+                                <td mat-cell *matCellDef="let item">
+                                    <div class="d-flex align-items-center gap-3">
+                                        @if(item && item.images.length>0){
+                                        <div class="part-img">
+                                            <img [src]="item?.images[0]?.url" width="48px" height="48px" alt="Image">
+                                        </div>
+                                        }
+                                        <!-- <div class="part-img" *ngIf="item.images?.length">
+                                            <img [src]="item.images[0].url" alt="img">
+                                        </div> -->
+                                        <div class="part-txt">
+                                            <span class="product-name">{{item.title}}</span>
+                                            <span class="product-category">{{item.category?.name}}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+                
+                            <!-- SKU -->
+                            <ng-container matColumnDef="sku">
+                                <th mat-header-cell *matHeaderCellDef>SKU</th>
+                                <td mat-cell *matCellDef="let item">{{item.sku}}</td>
+                            </ng-container>
+                
+                            <!-- Stock -->
+                            <ng-container matColumnDef="stock">
+                                <th mat-header-cell *matHeaderCellDef>Stock</th>
+                                <td mat-cell *matCellDef="let item">{{item.inventory?.manageStock}}</td>
+                            </ng-container>
+                
+                            <!-- Price -->
+                            <ng-container matColumnDef="price">
+                                <th mat-header-cell *matHeaderCellDef>Price</th>
+                                <td mat-cell *matCellDef="let item">₹{{item.price_data?.regularPrice}}</td>
+                            </ng-container>
+                
+                            <!-- Sales -->
+                            <ng-container matColumnDef="sales">
+                                <th mat-header-cell *matHeaderCellDef>Sales</th>
+                                <td mat-cell *matCellDef="let item">₹{{item.price_data?.salePrice}}</td>
+                            </ng-container>
+                
+                            <!-- Published -->
+                            <ng-container matColumnDef="published">
+                                <th mat-header-cell *matHeaderCellDef>Published</th>
+                                <td mat-cell *matCellDef="let item">
+                                    {{ item.created_at | date:'dd/MM/yyyy hh:mm a' }}
+                                </td>
+                            </ng-container>
+                
+                            <!-- Action -->
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef>Action</th>
+                                <td mat-cell class="text-nowrap" *matCellDef="let item">
+                                    <button class="btn btn-info text-white small lh-1 p-1" (click)="previewProduct(item.id)">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-primary small lh-1 p-1 mx-1" (click)="editoProduct(item)">
+                                        <i class="fa fa-pen"></i>
+                                    </button>
+                                    <button class="btn btn-danger small lh-1 p-1" color="warn" (click)="openDialog(item.id)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </ng-container>
+                
+                            <!-- Rows -->
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                
+                        </table>
+                
+                    </div>
+                
+                    <!-- Pagination -->
+                    <mat-paginator [pageSize]="5" [length]="100" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page"></mat-paginator>
+                
+                </div>
+            }
+
+            <!-- <div class="product-table-quantity">
+                <ul>
+                    <li class="text-white">All (23)</li>
+                    <li>Published (19)</li>
+                    <li>Draft (05)</li>
+                    <li>Trush (05)</li>
+                </ul>
+            </div> -->
+            <!-- <div class="table-filter-option">
+                <div class="row g-3">
+                    <div class="col-xl-10 col-9 col-xs-12">
+                        <div class="row g-3">
+                            <div class="col">
+                                <form class="row g-2">
+                                    <div class="col">
+               ``                         <select class="form-control form-control-sm"
+                                            data-placeholder="Bulk action">
+                                            <option value="">Bulk action</option>
+                                            <option value="0">Edit</option>
+                                            <option value="1">Move To Trash</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <button class="btn btn-sm btn-primary w-100">Apply</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col">
+                                <select class="form-control form-control-sm">
+                                    <option value="0">All Category</option>
+                                    <option value="1">Cloth</option>
+                                    <option value="2">Fashion</option>
+                                    <option value="3">Bag</option>
+                                    <option value="4">Food</option>
+                                    <option value="5">Medicine</option>
+                                    <option value="6">Watch</option>
+                                    <option value="7">Smart Phone</option>
+                                </select>
+                            </div>
+                            <. <select class="form-control form-control-sm">
+                                    <option value="0">All Product Type</option>
+                                    <option value="1">Downloadable</option>
+                                    <option value="2">Virtual</option>
+                                </select>
+                            </div> --.>
+                       !-- <div class="col">
+                                    <div class="col">
+                                <select class="form-control form-control-sm">
+                                    <option value="0">All Product Stock</option>
+                                    <option value="1">In stock</option>
+                                    <option value="2">Out of stock</option>
+                                    <option value="3">On backorder</option>
+                                </select>
+                            </div>
+                            <.!-- <div class="col">
+                                <button class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter</button>
+                            </div>
+                            <div class="col">
+                                <div class="digi-dropdown dropdown">
+                                    <button class="btn btn-sm btn-icon btn-primary" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="fa fa-plus"></i></button>
+                                    <ul class="digi-dropdown-menu dropdown-menu">
+                                        <li class="dropdown-title">Filter Options</li>
+                                        <li>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="filterCategory" checked>
+                                                <label class="form-check-label" for="filterCategory">
+                                                    Category
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="filterProductType" checked>
+                                                <label class="form-check-label" for="filterProductType">
+                                                    Product Type
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="filterStock" checked>
+                                                <label class="form-check-label" for="filterStock">
+                                                    Stock
+                                                </label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div> --.>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-3 col-xs-12 d-flex justify-content-end">
+                        <div id="productTableLength"></div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped"
+                id="allProductTable">
+                <thead>
+                    <tr>
+                        <th class="no-sort">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="markAllProduct">
+                            </div>
+                        </th>
+                        <th>Product</th>
+                        <th>SKU</th>
+                        <th>Stock</th>
+                        <th>Price</th>
+                        <th>Sales</th>
+                        <th class="d-none">Rating</th>
+                        <th>Published</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(item of productListData?.data; track $index){
+
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="table-product-card">
+                                @if(item && item.images.length>0){
+
+                                <div class="part-img">
+                                    <img [src]="item?.images[0]?.url" alt="Image">
+                                </div>
+                                }
+                                <div class="part-txt">
+                                    <span class="product-name">{{item.title}}</span>
+                                    <span class="product-category">{{item.category.name}}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{item.sku}}</td>
+                        <td>{{item.inventory.manageStock}}</td>
+                        <td>{{item.price_data.regularPrice}}</td>
+                        <td>{{item.price_data.salePrice}}</td>
+                        <td class="d-none">
+                            <div class="rating">
+                                <div class="star">
+                                    <i class="fa-sharp fa-solid fa-star starred"></i>
+                                    <i class="fa-sharp fa-solid fa-star starred"></i>
+                                    <i class="fa-sharp fa-solid fa-star starred"></i>
+                                    <i class="fa-sharp fa-solid fa-star starred"></i>
+                                    <i class="fa-sharp fa-solid fa-star"></i>
+                                </div>
+                                <div class="rating-amount">(42)</div>
+                            </div>
+                        </td>
+                        <td>12/24/2023 01:05 PM</td>
+                        <td>
+                            <div class="btn-box">
+                                <button><i class="fa fa-eye" (click)="previewProduct(item.id)"></i></button>
+                                <button><i class="fa fa-pen" (click)="editoProduct(item)"></i></button>
+                                <button><i class="fa fa-trash" (click)="openDialog(item.id)"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+
+                </tbody>
+            </table>
+
+            <div class="d-flex align-items-center justify-content-end gap-1 py-2">
+                @for (page of productListData?.meta?.links; track $index) {
+                <button type="button" class="btn" (click)="nextPage(page.page)">
+                    {{page.label}}
+                </button>
+                }
+            </div> -->
+            <!-- <div class="table-bottom-control">
+                <div>{{productListData.meta.current_page}}-{{productListData.meta.last_page}}</div>
+                <span (click)="nextPage(productListData.meta.current_page)">Next</span>
+            </div> -->
         </div>
     </div>
 

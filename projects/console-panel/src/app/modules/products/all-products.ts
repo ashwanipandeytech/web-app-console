@@ -14,16 +14,15 @@ import { AddProduct } from './add-product/add-product';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'shared-lib/environments/environment';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
 
 // import { MatPaginator } from 'node_modules/@angular/material/paginator.d';
 // import { MatSort } from 'node_modules/@angular/material/sort.d';
 @Component({
   selector: 'app-all-products',
-  imports: [DatePipe, MatTableModule, MatPaginatorModule, MatSort, MatCheckboxModule],
+  imports: [DatePipe, MatTableModule, MatPaginatorModule, MatSort, NgIf],
   templateUrl: './all-products.html',
   styleUrl: './all-products.scss',
 })
@@ -40,7 +39,7 @@ export class AllProducts {
   defaultPage = 1;
 
   displayedColumns: string[] = [
-    'select',
+    // 'select',
     'product',
     'sku',
     'stock',
@@ -51,7 +50,7 @@ export class AllProducts {
   ];
 
   dataSource = new MatTableDataSource<any>();
-  @ViewChild(MatPaginatorModule) paginator!: MatPaginatorModule;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
@@ -62,7 +61,7 @@ export class AllProducts {
   }
 
   ngAfterViewInit() {
-    // this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
   callAllProductList() {
