@@ -73,9 +73,6 @@ export class App {
 
 
     this.activatedRoute.queryParams.subscribe(params => {
-
-
-
       if (this.router.url.includes('reset-password') && params['token']) {
         let resetToken = params['token'];
         let resetEmail = params['email'];
@@ -106,7 +103,6 @@ export class App {
               this.globalService.showMsgSnackBar(res);
 
               localStorage.removeItem("GUEST_TOKEN");
-
               // }
               //make a signal for emiting the user state
               if (this.isBrowser) {
@@ -124,11 +120,19 @@ export class App {
               this.signalService.userLoggedIn.set(true);
               
                this.router.navigate([], {
-          queryParams: { key: null },
-          queryParamsHandling: 'merge',
-          replaceUrl: true
-        });
+                  queryParams: { key: null },
+                  queryParamsHandling: 'merge',
+                  replaceUrl: true
+                });
 
+                 let user:any = null;
+              let forgotStep = 'reset-password';
+              if (this.isBrowser) {
+                user = localStorage.getItem('user');
+              }
+                  setTimeout(() => {
+                    this.openForgotPopup('',res.data.email, forgotStep);
+                  }, 0);
               this.cd.detectChanges();
 
 
@@ -150,7 +154,9 @@ export class App {
     });
   }
 
-  openForgotPopup(token: any, email: any, step: any) {
+  openForgotPopup(token:any='', email: any, step: any) {
+    console.log('enter===>');
+    
     let data = {
       token: token,
       email: email,
