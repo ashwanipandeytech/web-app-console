@@ -5,18 +5,17 @@
     <form #settingsForm="ngForm">
   
       <!-- Accordion Container -->
-      <div class="accordion" id="settingsAccordion">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingLogo">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeo"
-              aria-expanded="true" aria-controls="collapseSeo">
+      <div ngbAccordion id="settingsAccordion">
+        <div ngbAccordionItem [collapsed]="false">
+          <h2 ngbAccordionHeader id="headingLogo">
+            <button type="button" ngbAccordionButton>
               <i class="fa fa-image me-2"></i> SEO Settings
             </button>
           </h2>
           <form [formGroup]="seoForm">
   
-            <div id="collapseSeo" class="accordion-collapse collapse show" aria-labelledby="headingLogo">
-              <div class="accordion-body">
+            <div id="collapseSeo" ngbAccordionCollapse>
+              <div ngbAccordionBody>
   
                 <!-- Focus Keyphrase -->
                 <div class="mb-3">
@@ -33,26 +32,24 @@
                 <!-- SEO Meta Description -->
                 <div class="mb-3">
                   <label class="form-label">SEO Meta Description</label>
-                  <textarea class="form-control" rows="3" formControlName="metaDescription">
-          </textarea>
+                  <textarea class="form-control" rows="3" formControlName="metaDescription"></textarea>
                 </div>
   
               </div>
             </div>
   
           </form>
-  
         </div>
+
         <!-- 1. General - Logo -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingLogo">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLogo"
-              aria-expanded="true" aria-controls="collapseLogo">
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader id="headingLogo">
+            <button type="button" ngbAccordionButton>
               <i class="fa fa-image me-2"></i> Logo Settings
             </button>
           </h2>
-          <div id="collapseLogo" class="accordion-collapse collapse show" aria-labelledby="headingLogo">
-            <div class="accordion-body">
+          <div id="collapseLogo" ngbAccordionCollapse>
+            <div ngbAccordionBody>
               <div class="row g-4">
                 <!-- Desktop Logo -->
                 <div class="col-md-6">
@@ -117,15 +114,14 @@
         </div>
   
         <!-- 2. Favicon -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingFavicon">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#collapseFavicon" aria-expanded="false" aria-controls="collapseFavicon">
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader id="headingFavicon">
+            <button type="button" ngbAccordionButton>
               <i class="fa fa-bookmark me-2"></i> Favicon
             </button>
           </h2>
-          <div id="collapseFavicon" class="accordion-collapse collapse" aria-labelledby="headingFavicon">
-            <div class="accordion-body">
+          <div id="collapseFavicon" ngbAccordionCollapse>
+            <div ngbAccordionBody>
               <div class="row g-4">
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">Desktop Favicon</label>
@@ -165,15 +161,14 @@
         </div>
   
         <!-- 3. Home Banner Slider -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingSlider">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#collapseSlider" aria-expanded="false" aria-controls="collapseSlider">
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader id="headingSlider">
+            <button type="button" ngbAccordionButton>
               <i class="fa fa-images me-2"></i> Home Slider
             </button>
           </h2>
-          <div id="collapseSlider" class="accordion-collapse collapse" aria-labelledby="headingSlider">
-            <div class="accordion-body">
+          <div id="collapseSlider" ngbAccordionCollapse>
+            <div ngbAccordionBody>
               <!-- Add Button -->
               <div class="mb-4 text-end">
                 <button type="button" class="btn btn-success btn-sm" (click)="addSlide('home_Banner_Slider')">
@@ -231,15 +226,14 @@
         </div>
   
         <!-- 4. Home Promo Slider -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingSlider">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#collapseSlider" aria-expanded="false" aria-controls="collapseSlider">
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader id="headingSlider">
+            <button type="button" ngbAccordionButton>
               <i class="fa fa-images me-2"></i> Home Promo Slider
             </button>
           </h2>
-          <div id="collapseSlider" class="accordion-collapse collapse" aria-labelledby="headingSlider">
-            <div class="accordion-body">
+          <div id="collapseSlider" ngbAccordionCollapse>
+            <div ngbAccordionBody>
               <!-- Add Button -->
               <div class="mb-4 text-end">
                 <button type="button" class="btn btn-success btn-sm" (click)="addSlide('home_Promo_Slider')">
@@ -295,16 +289,15 @@
           </div>
         </div>
   
-        <!-- Home Promo testimonial Slider -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingSlider">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#collapseSlider" aria-expanded="false" aria-controls="collapseSlider">
+        <!-- 5. Home Promo testimonial Slider -->
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader id="headingSlider">
+            <button type="button" ngbAccordionButton>
               <i class="fa fa-images me-2"></i> Home Promo Testimonials
             </button>
           </h2>
-          <div id="collapseSlider" class="accordion-collapse collapse" aria-labelledby="headingSlider">
-            <div class="accordion-body">
+          <div id="collapseSlider" ngbAccordionCollapse>
+            <div ngbAccordionBody>
               <!-- Add Button -->
               <div class="mb-4 text-end">
                 <button type="button" class="btn btn-success btn-sm" (click)="addSlide('home_Promo_Slider_testimonials')">
@@ -361,16 +354,16 @@
             </div>
           </div>
         </div>
-        <!-- Home bottom banner -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingSlider">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#collapseSlider" aria-expanded="false" aria-controls="collapseSlider">
+
+        <!-- 6. Home bottom banner -->
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader id="headingSlider">
+            <button type="button" ngbAccordionButton>
               <i class="fa fa-images me-2"></i> Home Bottom Banner
             </button>
           </h2>
-          <div id="collapseSlider" class="accordion-collapse collapse" aria-labelledby="headingSlider">
-            <div class="accordion-body">
+          <div id="collapseSlider" ngbAccordionCollapse>
+            <div ngbAccordionBody>
               <!-- Add Button -->
               <div class="mb-4 text-end">
                 <button type="button" class="btn btn-success btn-sm" (click)="addSlide('home_Promo_Slider_bottom')">
@@ -425,16 +418,16 @@
             </div>
           </div>
         </div>
-        <!-- 4. Footer  -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="footerLinks">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#collapseFooter" aria-expanded="false" aria-controls="collapseFooter">
+
+        <!-- 7. Footer  -->
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader id="footerLinks">
+            <button type="button" ngbAccordionButton>
               <i class="fa fa-crop me-2"></i> Footer Links
             </button>
           </h2>
-          <div id="collapseFooter" class="accordion-collapse collapse" aria-labelledby="footerLinks">
-            <div class="accordion-body">
+          <div id="collapseFooter" ngbAccordionCollapse>
+            <div ngbAccordionBody>
               <div class="mb-4 text-end">
                 <button type="button" class="btn btn-success btn-sm" (click)="addFooterColumn()">
                   <i class="bi bi-plus-circle me-1"></i> Add Footer Column
@@ -485,16 +478,15 @@
           </div>
         </div>
   
-        <!-- 4. Social Media -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingSocial">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#collapseSocial" aria-expanded="false" aria-controls="collapseSocial">
+        <!-- 8. Social Media -->
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader id="headingSocial">
+            <button type="button" ngbAccordionButton>
               <i class="fa fa-share me-2"></i> Social Media Links
             </button>
           </h2>
-          <div id="collapseSocial" class="accordion-collapse collapse" aria-labelledby="headingSocial">
-            <div class="accordion-body">
+          <div id="collapseSocial" ngbAccordionCollapse>
+            <div ngbAccordionBody>
               <div class="row g-3">
                 @for (social of settingsModel.social; track $index) {
                 <div class="col-md-6">
@@ -513,16 +505,15 @@
           </div>
         </div>
   
-        <!-- 5. Contacts -->
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingContacts">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#collapseContacts" aria-expanded="false" aria-controls="collapseContacts">
+        <!-- 9. Contacts -->
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader id="headingContacts">
+            <button type="button" ngbAccordionButton>
               <i class="fa fa-phone-alt me-2"></i> Contact Information
             </button>
           </h2>
-          <div id="collapseContacts" class="accordion-collapse collapse" aria-labelledby="headingContacts">
-            <div class="accordion-body">
+          <div id="collapseContacts" ngbAccordionCollapse>
+            <div ngbAccordionBody>
               <div class="row g-4">
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">Mobile Number</label>

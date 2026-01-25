@@ -8,16 +8,42 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { GlobalService } from '../../global.service';
+import { NgbAccordionBody, 
+  NgbAccordionButton, 
+  NgbAccordionCollapse, 
+  NgbAccordionDirective, 
+  NgbAccordionHeader, 
+  NgbAccordionItem, 
+  NgbAccordionToggle } from '@ng-bootstrap/ng-bootstrap';
 declare var bootstrap: any;
 @Component({
   selector: 'layout-settings',
   templateUrl: './layout-settings.component.html',
-  imports: [FormsModule, CommonModule, CdkDrag, CdkDropList,ReactiveFormsModule],
+  imports: [FormsModule, 
+    CommonModule, 
+    CdkDrag, 
+    CdkDropList, 
+    ReactiveFormsModule,
+    NgbAccordionButton,
+		NgbAccordionDirective,
+		NgbAccordionItem,
+		NgbAccordionHeader,
+		NgbAccordionToggle,
+		NgbAccordionBody,
+		NgbAccordionCollapse,
+  ],
   styleUrls: ['./layout-settings.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -98,7 +124,7 @@ export class LayoutSettingsComponent implements OnInit {
       address: '',
     },
   };
-  seoForm!:FormGroup;
+  seoForm!: FormGroup;
   loading = true;
   public dataService: any = inject(DataService);
   private globalService: any = inject(GlobalService);
@@ -112,7 +138,7 @@ export class LayoutSettingsComponent implements OnInit {
   uploadIsFrom: any;
   isSelectedImage: boolean = false;
   selectedImageIndex: any;
-  homeSliderDataArr: any=[];
+  homeSliderDataArr: any = [];
   constructor(private cdr: ChangeDetectorRef) {
     this.getImageApi();
     // this.getDefaultImage();
@@ -127,7 +153,7 @@ export class LayoutSettingsComponent implements OnInit {
 
     //   this.loading=false
     // });
-this.seoFormGroup();
+    this.seoFormGroup();
     this.getGeneralSetting();
   }
   getGeneralSetting() {
@@ -137,7 +163,7 @@ this.seoFormGroup();
         catchError((err) => {
           console.error('Error:', err);
           return of(null);
-        })
+        }),
       )
       .subscribe((res: any) => {
         //console.log('Response:', res);
@@ -169,15 +195,15 @@ this.seoFormGroup();
   //     })
   // }
 
-  seoFormGroup(){
-     this.seoForm = this.fb.group({
-      keywords: [''],          // Focus Keyphrase
+  seoFormGroup() {
+    this.seoForm = this.fb.group({
+      keywords: [''], // Focus Keyphrase
       metaTitle: ['', Validators.maxLength(60)],
-      metaDescription: ['', Validators.maxLength(160)]
+      metaDescription: ['', Validators.maxLength(160)],
     });
   }
-  getSelectedImage(image: any, index:any) {
-    this.selectedImageIndex=index;
+  getSelectedImage(image: any, index: any) {
+    this.selectedImageIndex = index;
     console.log('image==>', image);
     this.isSelectedImage = true;
     console.log('this.uploadIsFrom', this.uploadIsFrom);
@@ -191,7 +217,7 @@ this.seoFormGroup();
         catchError((err) => {
           console.error('Error:', err);
           return of(null);
-        })
+        }),
       )
       .subscribe((res: any) => {
         //console.log('Response:', res);
@@ -210,7 +236,7 @@ this.seoFormGroup();
         catchError((err) => {
           console.error('Error:', err);
           return of(null);
-        })
+        }),
       )
       .subscribe((res: any) => {
         //console.log('Response:', res);
@@ -236,7 +262,7 @@ this.seoFormGroup();
 
             // Create a map for quick lookup of order
             const orderMap = new Map(
-              item.items.map((inner: any, index: number) => [inner.link, index])
+              item.items.map((inner: any, index: number) => [inner.link, index]),
             );
 
             item.pageList = pageList
@@ -315,7 +341,6 @@ this.seoFormGroup();
     data.splice(index, 1);
   }
   saveSettings() {
-    
     let settingData = JSON.parse(JSON.stringify(this.settingsModel));
     console.log('settingData==>', settingData);
     for (let i = 0; i < settingData.footer.length; i++) {
@@ -333,11 +358,11 @@ this.seoFormGroup();
       delete settingData.footer[i].pageList;
     }
 
-    let payload:any = {
+    let payload: any = {
       settings_name: 'general',
       settings: settingData,
     };
-    payload.settings.seoData = this.seoForm.value
+    payload.settings.seoData = this.seoForm.value;
     // console.info('this.settingsModel',this.settingsModel)
     // return
     this.dataService
@@ -347,7 +372,7 @@ this.seoFormGroup();
           console.error('Error:', err);
           this.globalService.showMsgSnackBar(err);
           return of(null);
-        })
+        }),
       )
       .subscribe((res: any) => {
         //console.log('Response:', res);
@@ -382,22 +407,22 @@ this.seoFormGroup();
     this.imagePreview = null;
   }
 
-    heroBannerSliderUrlValue(slide: any, index: number,containerName:any) {
-  let imageUrl = slide.imgSrc;
-  let linkUrl = slide.url;
-  let imageAlt = slide.alt;
-  if (containerName == 'slider'+index) {  
-    this.homeSliderDataArr.push({
-        "imgSrc": imageUrl,
-        "alt": imageAlt,
-        "url": linkUrl
-    })
-  }
-  console.log('Slide Index:', index);
-  console.log('Image URL:', imageUrl);
-  console.log('Link URL:', linkUrl);
+  heroBannerSliderUrlValue(slide: any, index: number, containerName: any) {
+    let imageUrl = slide.imgSrc;
+    let linkUrl = slide.url;
+    let imageAlt = slide.alt;
+    if (containerName == 'slider' + index) {
+      this.homeSliderDataArr.push({
+        imgSrc: imageUrl,
+        alt: imageAlt,
+        url: linkUrl,
+      });
+    }
+    console.log('Slide Index:', index);
+    console.log('Image URL:', imageUrl);
+    console.log('Link URL:', linkUrl);
 
-  // ✅ you now have BOTH values
+    // ✅ you now have BOTH values
   }
   uploadFrom(from: any) {
     this.uploadIsFrom = from;
@@ -539,7 +564,7 @@ this.seoFormGroup();
           }
           this.closePopup();
         }
- this.settingsModel.home_Banner_Slider = this.homeSliderDataArr;
+        this.settingsModel.home_Banner_Slider = this.homeSliderDataArr;
         // 🔹 Upload section (FIXED)
 
         // this.closePopup();
@@ -638,7 +663,7 @@ this.seoFormGroup();
       .pipe(
         catchError((err) => {
           return of(null);
-        })
+        }),
       )
       .subscribe((res: any) => {
         console.log('Response:', res);
@@ -649,7 +674,7 @@ this.seoFormGroup();
               this.settingsModel.general.logo.desktop.imgSrc = element.url;
               console.log(
                 'this.settingsModel==>',
-                this.settingsModel.general.logo.desktop.imgSrc.alt
+                this.settingsModel.general.logo.desktop.imgSrc.alt,
               );
               this.cdr.detectChanges();
               // this.settingsModel
@@ -658,7 +683,7 @@ this.seoFormGroup();
               this.settingsModel.general.logo.mobile.imgSrc = element.url;
               console.log(
                 'this.settingsModel==>',
-                this.settingsModel.general.logo.desktop.imgSrc.alt
+                this.settingsModel.general.logo.desktop.imgSrc.alt,
               );
               this.cdr.detectChanges();
               // this.settingsModel
@@ -697,7 +722,7 @@ this.seoFormGroup();
             console.log('element.type===>', element.type);
             console.log(
               'this.settingsModel.home_Promo_Slider==>',
-              this.settingsModel.home_Promo_Slider
+              this.settingsModel.home_Promo_Slider,
             );
 
             if (element.type?.startsWith('promoslider')) {
