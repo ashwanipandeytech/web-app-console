@@ -1,0 +1,23 @@
+/* Target the HTML button in the toolbar */
+.ql-htmlEditButton {
+  border: none !important;
+  background: transparent !important;
+  color: #444; /* Match Quill's icon color */
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 3px 5px;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    color: #06c; /* Quill's blue hover color */
+    background-color: #f0f0f0;
+  }
+
+  /* Make the text look like a small tag or icon */
+  &::before {
+    content: "</>"; /* Using text as an icon */
+    font-family: monospace;
+  }
+}
