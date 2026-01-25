@@ -131,7 +131,7 @@ export class App {
                 user = localStorage.getItem('user');
               }
                   setTimeout(() => {
-                    this.openForgotPopup('',res.data.email, forgotStep);
+                    this.openForgotPopup('',res.data.user.email, forgotStep);
                   }, 0);
               this.cd.detectChanges();
 
@@ -160,7 +160,7 @@ export class App {
     
     let data = {
       token: token,
-      email: user.email,
+      email: email,
       step: step
     }
     const modalRef: NgbModalRef = this.ngbModal.open(Login, {
