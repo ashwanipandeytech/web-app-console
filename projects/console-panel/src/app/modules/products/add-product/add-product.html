@@ -1,15 +1,20 @@
+@if (activeModal) {
+<div class="modal-header">
+  <h4 class="modal-title">Update Product</h4>
+  <button type="button" class="modal-close-btn btn btn-danger ms-auto" (click)="closeModal()">
+    <i class="fa fa-xmark"></i>
+  </button>
+  <!-- <a href="all-product.html" class="btn btn-sm btn-primary">View All</a> -->
+</div>
+}
 <!-- main content start -->
-<div class="main-content">
+<div class="main-content modal-body">
   <form [formGroup]="productMultipleOptionForm" (ngSubmit)="submitProductMultipleOptionForm()">
     <div class="breadcrumb">
       <!-- {{isUpdateproduct}} -->
-      <h2>{{isUpdateproduct?'Update Product':'Add New Product'}}</h2>
-      <div class="btn-box">
-        @if (activeModal) {
-        <button type="button" class="btn btn-secondary fs-14" (click)="closeModal()">Close</button>
-        }
-        <!-- <a href="all-product.html" class="btn btn-sm btn-primary">View All</a> -->
-      </div>
+       @if(!activeModal) {
+         <h2>Add New Product</h2>
+       }
     </div>
 
     <div class="row">
@@ -906,11 +911,11 @@
                 <span class="input-txt">Use commas to separate tags</span>
   
                 <!-- Added tags -->
-                <div class="all-tags mt-2">
+                <div class="d-flex flex-wrap gap-1 mt-2">
                   @for (tag of tagsForm.value.tags; track $index) {
-                  <div class="item d-inline-block">
+                  <div class="item position-relative small lh-1 bg-light rounded p-2">
                     {{ tag }}
-                    <span class="close-tag" (click)="removeTag($index)">
+                    <span class="close-tag btn text-danger position-absolute top-0 end-0 lh-1 p-0" (click)="removeTag($index)">
                       <i class="fa fa-xmark"></i>
                     </span>
                   </div>
@@ -920,13 +925,13 @@
                 <!-- Tag History -->
                 <div class="tag-history mt-3">
                   <span class="choose-used-tag input-txt">Choose from most used tags</span>
-                  <div class="all-tags used-tags active">
+                  <div class="d-flex flex-wrap gap-1">
                     @for (tag of commonTags; track $index) {
-                    <div class="item d-inline-block" (click)="selectTag(tag)">
+                    <div class="item small lh-1 bg-light rounded p-2" (click)="selectTag(tag)">
                       {{ tag }}
-                      <span class="close-tag">
+                      <!-- <span class="close-tag">
                         <i class="fa fa-xmark"></i>
-                      </span>
+                      </span> -->
                     </div>
                     }
                   </div>

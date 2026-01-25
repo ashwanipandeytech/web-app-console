@@ -1,5 +1,7 @@
-<div class="container mt-4">
-  <h4>Edit Page</h4>
+<div class="main-content">
+  <div class="breadcrumb mb-3">
+    <h2>Edit Page</h2>
+  </div>
 
   <form #pageForm="ngForm" (ngSubmit)="updatePage()">
 
@@ -10,65 +12,51 @@
       </div>
       <div class="card-body">
 
-<!-- Title -->
-<div class="mb-3">
-  <label class="form-label">Title*</label>
-  <input type="text"
-         class="form-control"
-         name="title"
-         [(ngModel)]="newPage.title"
-         #title="ngModel"
-         required>
-  
-  @if (title.invalid && title.touched) {
-    <div class="text-danger">
-      Title is mandatory.
-    </div>
-  }
-</div>
+        <!-- Title -->
+        <div class="mb-3">
+          <label class="form-label">Title*</label>
+          <input type="text" class="form-control" name="title" [(ngModel)]="newPage.title" #title="ngModel" required>
 
-<!-- Description -->
-<div class="mb-3">
-  <label class="form-label">Description*</label>
-  <textarea class="form-control"
-            name="description"
-            [(ngModel)]="newPage.description"
-            #description="ngModel"
+          @if (title.invalid && title.touched) {
+          <div class="text-danger">
+            Title is mandatory.
+          </div>
+          }
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+          <label class="form-label">Description*</label>
+          <textarea class="form-control" name="description" [(ngModel)]="newPage.description" #description="ngModel"
             required></textarea>
-  
-  @if (description.invalid && description.touched) {
-    <div class="text-danger">
-      Description is mandatory.
-    </div>
-  }
-</div>
 
-<!-- Slug -->
-<div class="mb-3">
-  <label class="form-label">Slug*</label>
-  <input type="text"
-         class="form-control"
-         name="slug"
-         [(ngModel)]="newPage.slug"
-         #slug="ngModel"
-         required>
-  
-  @if (slug.invalid && slug.touched) {
-    <div class="text-danger">
-      Slug is mandatory.
-    </div>
-  }
-</div>
+          @if (description.invalid && description.touched) {
+          <div class="text-danger">
+            Description is mandatory.
+          </div>
+          }
+        </div>
+
+        <!-- Slug -->
+        <div class="mb-3">
+          <label class="form-label">Slug*</label>
+          <input type="text" class="form-control" name="slug" [(ngModel)]="newPage.slug" #slug="ngModel" required>
+
+          @if (slug.invalid && slug.touched) {
+          <div class="text-danger">
+            Slug is mandatory.
+          </div>
+          }
+        </div>
 
         <!-- Page Content -->
         <div class="mb-3">
           <label class="form-label">Page Content</label>
-          
 
-                      <quill-editor name="pageContent" [modules]="modules"
-                    [(ngModel)]="newPage.pageContent"></quill-editor>
 
-                       <!-- <div [ngxSummernote]="options" [(ngModel)]="modules"
+          <quill-editor name="pageContent" [modules]="modules" [(ngModel)]="newPage.pageContent"></quill-editor>
+
+          <!-- <div [ngxSummernote]="options" [(ngModel)]="modules"
                                 [ngModelOptions]="{standalone: true} "></div> -->
         </div>
 
@@ -85,28 +73,20 @@
         <!-- Focus Keyphrase -->
         <div class="mb-3">
           <label class="form-label">Focus Keyphrase</label>
-          <input type="text"
-                 class="form-control"
-                 name="keywords"
-                 [(ngModel)]="newPage.seoData.keywords">
+          <input type="text" class="form-control" name="keywords" [(ngModel)]="newPage.seoData.keywords">
         </div>
 
         <!-- SEO Meta Title -->
         <div class="mb-3">
           <label class="form-label">SEO Meta Title</label>
-          <input type="text"
-                 class="form-control"
-                 name="metaTitle"
-                 [(ngModel)]="newPage.seoData.metaTitle">
+          <input type="text" class="form-control" name="metaTitle" [(ngModel)]="newPage.seoData.metaTitle">
         </div>
 
         <!-- SEO Meta Description -->
         <div class="mb-3">
           <label class="form-label">SEO Meta Description</label>
-          <textarea class="form-control"
-                    rows="3"
-                    name="metaDescription"
-                    [(ngModel)]="newPage.seoData.metaDescription"></textarea>
+          <textarea class="form-control" rows="3" name="metaDescription"
+            [(ngModel)]="newPage.seoData.metaDescription"></textarea>
         </div>
 
       </div>
@@ -114,9 +94,7 @@
 
     <!-- SUBMIT -->
     <div class="text-end">
-      <button class="btn btn-primary"
-              type="submit"
-              [disabled]="pageForm.invalid">
+      <button class="btn btn-primary" type="submit" [disabled]="pageForm.invalid">
         Update Page
       </button>
     </div>
