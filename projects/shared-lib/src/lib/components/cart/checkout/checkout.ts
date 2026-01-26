@@ -193,7 +193,7 @@ export class Checkout {
     //   return;
     // }
     // else{openCheckout
-    //console.log('this.selectedPaymentMethod==>', this.selectedPaymentMethod);
+    console.log('this.selectedPaymentMethod==>', this.selectedPaymentMethod);
 
     if (this.selectedPaymentMethod == 'cod') {
 
@@ -259,8 +259,8 @@ export class Checkout {
       )
       .subscribe((res: any) => {
         if (res.success == true) {
-          console.log('Response:', res);
-          this.globalService.showMsgSnackBar(res);
+        //  console.log('Response:', res);
+         // this.globalService.showMsgSnackBar(res);
           if (paymentMethod != 'cod') {
            // this.paymentUpdate(res, paymentResponse);
           }
@@ -268,35 +268,40 @@ export class Checkout {
             console.info('internalOrderId',res.data.data.id);
 
               this.razorpayService.openCheckout(res.data.data.id,checkoutPaymentData)
-        .subscribe({
-          next: (response: any) => {
-            if (response.success) {
-              //console.log("Payment Success:", response);
-             // this.orderSubmit(addressId, this.selectedPaymentMethod, response);
-              this.router.navigate(['/thank-you'])
-
-               this.globalFunctionService.getCount();
-              this.cd.detectChanges();
-            }
-          },
-          error: (error: any) => {
-            if (error.error) {
-              console.error("Payment Failed:", error);
-            }
-          }
-        });
+                  .subscribe({
+                    next: (response: any) => {
+                      if (response.success) {
+                        //console.log("Payment Success:", response);
+                      // this.orderSubmit(addressId, this.selectedPaymentMethod, response);
+                        this.router.navigate(['/thank-you'],   {
+                queryParams: {
+                orderId: res.orderId   // 👈 pass your order id here
+                    }
+                  })
+                        this.globalFunctionService.getCount();
+                        this.cd.detectChanges();
+                      }
+                    },
+                  error: (error: any) => {
+                    if (error.error) {
+                      console.error("Payment Failed:", error);
+                    }
+                  }
+                });
             
           }else{
              this.globalFunctionService.getCount();
               this.cd.detectChanges();
-          }
-          // this.razorpayService.openCheckout(this.grandTotal);
-          // this.router.navigate(['/cart']);
                this.router.navigate(['/thank-you'],   {
                 queryParams: {
                 orderId: res.orderId   // 👈 pass your order id here
                     }
                   })
+          }
+
+          // this.razorpayService.openCheckout(this.grandTotal);
+          // this.router.navigate(['/cart']);
+              
         }
         else {
           if (res.err) {
