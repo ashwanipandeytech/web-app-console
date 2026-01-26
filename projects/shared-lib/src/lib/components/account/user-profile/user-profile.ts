@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component, effect, inject, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PersonalDetailsComponent } from 'shared-lib/components/personal-details/personal-details.component';
-import { AddressSectionComponent } from 'shared-lib/components/address-section/address-section.component';
-import { MyOrdersComponent } from 'shared-lib/components/my-orders/my-orders.component';
-import { ChangePasswordComponent } from 'shared-lib/components/change-password/change-password.component';
+import { PersonalDetailsComponent } from '../../personal-details/personal-details.component';
+import { AddressSectionComponent } from '../../address-section/address-section.component';
+import { MyOrdersComponent } from '../../my-orders/my-orders.component';
+import { ChangePasswordComponent } from '../../change-password/change-password.component';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Wishlist } from '../wishlist/wishlist';
 import { SignalService } from '../../../services/signal-service';

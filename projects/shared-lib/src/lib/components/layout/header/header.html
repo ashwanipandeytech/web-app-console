@@ -113,7 +113,11 @@
           class="dropdown-item px-3 py-2 fs-14"
           [routerLink]="['/user-profile']"
           [queryParams]="{ section: 'Orders' }"
-          ><span><i class="fa-solid fa-lg opacity-75 fa-bag-shopping"></i></span>My Order</a
+          ><span><i class="fa-solid fa-lg opacity-75 fa-bag-shopping"></i></span>My Order
+            @if(countsList?.order_count > 0) {
+           <span class="badge text-bg-primary ms-2">{{ countsList?.order_count }}</span>
+            }
+            </a
         >
       </li>
       <li class="mb-1">

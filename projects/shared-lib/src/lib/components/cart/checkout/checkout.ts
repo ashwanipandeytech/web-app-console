@@ -45,9 +45,9 @@ export class Checkout {
   AllAddressList: any;
   changedSelectedAddress: any;
   addressNotfound: boolean = false;
-    appliedCoupon: any='';
-  gstSummary: any={};
-  isLoading: boolean=true;
+  appliedCoupon: any = '';
+  gstSummary: any = {};
+  isLoading: boolean = true;
   isBrowser: boolean;
   private platformId = inject(PLATFORM_ID);
   private activateRoute = inject(ActivatedRoute);
@@ -111,12 +111,12 @@ export class Checkout {
       //console.log('response==>', response);
       if (response.success == true) {
         this.cartListData = response.data.data;
-        if (this.cartListData.length<=0) {
+        if (this.cartListData.length <= 0) {
           localStorage.removeItem('appliedCoupon');
           this.cd.detectChanges();
         }
 
-        
+
         this.calculateGstPrice(response.data.data);
         for (let i = 0; i < this.cartListData.length; i++) {
           const element = this.cartListData[i];
@@ -135,25 +135,25 @@ export class Checkout {
     })
   }
 
-    calculateGstPrice(dataObj:any){
-      let data = dataObj;
-    let payload:any={
-      items:[]
+  calculateGstPrice(dataObj: any) {
+    let data = dataObj;
+    let payload: any = {
+      items: []
     };
-    console.log('data=====>',data);
-    console.log('isCouponValue===>',this.appliedCoupon);
-    
+    console.log('data=====>', data);
+    console.log('isCouponValue===>', this.appliedCoupon);
+
     payload.coupon_code = this.appliedCoupon;
     for (let i = 0; i < data.length; i++) {
       const element = data[i];
       payload.items.push({
-        quantity : element?.quantity,
-        product_id:element?.product.id,
-        salePrice:element?.product?.price_data?.salePrice,
-        gstPercent:element?.product?.price_data?.caclulatedObj?.gstPercent
-      })   
+        quantity: element?.quantity,
+        product_id: element?.product.id,
+        salePrice: element?.product?.price_data?.salePrice,
+        gstPercent: element?.product?.price_data?.caclulatedObj?.gstPercent
+      })
     }
-    this.dataService.postCommonApi(payload,'calculate-prices')
+    this.dataService.postCommonApi(payload, 'calculate-prices')
       .pipe(
         catchError((err) => {
           console.error('Error:', err);
@@ -164,11 +164,11 @@ export class Checkout {
         })
       )
       .subscribe((res: any) => {
-        console.log('payload===>',res.data.summary);
+        console.log('payload===>', res.data.summary);
         this.gstSummary = res.data.summary;
         this.gstSummary.items = res.data.items;
         this.isLoading = false;
-        console.log('this.cartListData==>',this.gstSummary);
+        console.log('this.cartListData==>', this.gstSummary);
         this.cd.detectChanges();
       })
 
@@ -207,49 +207,33 @@ export class Checkout {
         phone: this.checkoutForm.value.phone
       }
       // this.orderSubmit(addressId);
-    this.orderSubmit(addressId, this.selectedPaymentMethod, '',checkoutPaymentData);
-    
+      this.orderSubmit(addressId, this.selectedPaymentMethod, '', checkoutPaymentData);
+
 
     }
     // }
   }
 
-  orderSubmit(addressId: any, paymentMethod: any, paymentResponse: any = '',checkoutPaymentData:any=false) {
-    //       this.cartListData = this.cartListData.map((item: any) => {
-    //         if (item?.product?.id) {
-    //           item.product.product_id = item.product.id;
-    //           delete item.product.id;
-    //         }
-
-    //         delete item.product.description;
-    //         delete item.product.inventory;
-    //         delete item.product.media;
-    //         delete item.product.uploadedImages;
-    //         delete item.product.offer;
-    //         delete item.product.shipping_config;
-    //         delete item.product.shipping_info;
-    //   return item;
-    // });
-    //console.log('res ----////==>', paymentResponse);
+  orderSubmit(addressId: any, paymentMethod: any, paymentResponse: any = '', checkoutPaymentData: any = false) {
 
 
-    const payload = this.cartListData.map((cartItem: any,index:any) => (
+    const payload = this.cartListData.map((cartItem: any, index: any) => (
       {
-      product_id: cartItem.product.id,
-      quantity: cartItem.quantity,
-      price: cartItem.product.price_data.salePrice,
-    }
+        product_id: cartItem.product.id,
+        quantity: cartItem.quantity,
+        price: cartItem.product.price_data.salePrice,
+      }
     ));
     let OrderSubmitPayload = {
-  items: payload.map((item:any, index:any) => ({
-    ...item,
-    tax_details: this.gstSummary.items[index] || null
-  })),
-  total_amount: this.grandTotal,
-  address_id: addressId,
-  payment_method: this.selectedPaymentMethod,
-  shipping_address: addressId
-};
+      items: payload.map((item: any, index: any) => ({
+        ...item,
+        tax_details: this.gstSummary.items[index] || null
+      })),
+      total_amount: this.grandTotal,
+      address_id: addressId,
+      payment_method: this.selectedPaymentMethod,
+      shipping_address: addressId
+    };
     this.dataService.post(OrderSubmitPayload, 'orders')
       .pipe(
         catchError(err => {
@@ -259,49 +243,49 @@ export class Checkout {
       )
       .subscribe((res: any) => {
         if (res.success == true) {
-        //  console.log('Response:', res);
-         // this.globalService.showMsgSnackBar(res);
+           console.log('Response:', res);
+          // this.globalService.showMsgSnackBar(res);
           if (paymentMethod != 'cod') {
-           // this.paymentUpdate(res, paymentResponse);
+            // this.paymentUpdate(res, paymentResponse);
           }
-          if(checkoutPaymentData){
-            console.info('internalOrderId',res.data.data.id);
+          if (checkoutPaymentData) {
 
-              this.razorpayService.openCheckout(res.data.data.id,checkoutPaymentData)
-                  .subscribe({
-                    next: (response: any) => {
-                      if (response.success) {
-                        //console.log("Payment Success:", response);
-                      // this.orderSubmit(addressId, this.selectedPaymentMethod, response);
-                        this.router.navigate(['/thank-you'],   {
-                queryParams: {
-                orderId: res.orderId   // 👈 pass your order id here
-                    }
-                  })
-                        this.globalFunctionService.getCount();
-                        this.cd.detectChanges();
+
+            this.razorpayService.openCheckout(res.data.data.id, checkoutPaymentData)
+              .subscribe({
+                next: (response: any) => {
+                  if (response.success) {
+
+                   
+                    this.router.navigate(['/thank-you'], {
+                      queryParams: {
+                        orderId:  res.data.data.id  // res.orderId   // 👈 pass your order id here
                       }
-                    },
-                  error: (error: any) => {
-                    if (error.error) {
-                      console.error("Payment Failed:", error);
-                    }
+                    })
+                    this.globalFunctionService.getCount();
+                    this.cd.detectChanges();
                   }
-                });
-            
-          }else{
-             this.globalFunctionService.getCount();
-              this.cd.detectChanges();
-               this.router.navigate(['/thank-you'],   {
-                queryParams: {
-                orderId: res.orderId   // 👈 pass your order id here
-                    }
-                  })
+                },
+                error: (error: any) => {
+                  if (error.error) {
+                    console.error("Payment Failed:", error);
+                  }
+                }
+              });
+
+          } else {
+            this.globalFunctionService.getCount();
+            this.cd.detectChanges();
+            this.router.navigate(['/thank-you'], {
+              queryParams: {
+                orderId: res.data.data.id   // 👈 pass your order id here
+              }
+            })
           }
 
           // this.razorpayService.openCheckout(this.grandTotal);
           // this.router.navigate(['/cart']);
-              
+
         }
         else {
           if (res.err) {
@@ -603,58 +587,58 @@ export class Checkout {
       modal.hide();
     }
   }
-      checkCoupon(couponValue:any){
-      //  console.log('Input value:', couponValue);
-      //  console.log('this.casrtListData====>',this.cartListData);
-       const ids = this.cartListData.map((item:any) =>{ 
-        return item.id
+  checkCoupon(couponValue: any) {
+    //  console.log('Input value:', couponValue);
+    //  console.log('this.casrtListData====>',this.cartListData);
+    const ids = this.cartListData.map((item: any) => {
+      return item.id
 
-       });
-       this.appliedCoupon = couponValue;
-       let payload:any ={
-         coupon_code:couponValue,
-         cart_ids:ids,
-         
-        }
-        let isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
-        if (isGuest !=null) {
-          payload.guest_token = isGuest
-        }
-        this.dataService.post(payload, 'orders/apply-coupon')
-        .pipe(
-          catchError(err => {
-            console.error('Error:', err);
-            return of(err);
-          })
-        )
-        .subscribe((res: any) => {
-          if (res.success == true) {
-            console.log('enter , re',res);
+    });
+    this.appliedCoupon = couponValue;
+    let payload: any = {
+      coupon_code: couponValue,
+      cart_ids: ids,
+
+    }
+    let isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+    if (isGuest != null) {
+      payload.guest_token = isGuest
+    }
+    this.dataService.post(payload, 'orders/apply-coupon')
+      .pipe(
+        catchError(err => {
+          console.error('Error:', err);
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        if (res.success == true) {
+          console.log('enter , re', res);
           this.globalService.showMsgSnackBar(res);
-            const modal = bootstrap.Modal.getInstance(this.couponModal.nativeElement);
-             modal.hide();
-             localStorage.setItem('appliedCoupon', this.appliedCoupon);
-            //  this.router.navigate(
-            //     [],
-            //     {
-            //       queryParams: { coupon: this.appliedCoupon },
-            //       queryParamsHandling: 'merge'
-            //     }
-            //   );
-            this.calculateGstPrice(this.cartListData);
-          }
-          else if (res && res.error && res.error.message) {
+          const modal = bootstrap.Modal.getInstance(this.couponModal.nativeElement);
+          modal.hide();
+          localStorage.setItem('appliedCoupon', this.appliedCoupon);
+          //  this.router.navigate(
+          //     [],
+          //     {
+          //       queryParams: { coupon: this.appliedCoupon },
+          //       queryParamsHandling: 'merge'
+          //     }
+          //   );
+          this.calculateGstPrice(this.cartListData);
+        }
+        else if (res && res.error && res.error.message) {
           //console.log('error  :', res.error.message);
           this.globalService.showMsgSnackBar(res.error);
         }
-        })
-    }
+      })
+  }
   deleteCartItem(id: any) {
     if (id) {
       this.cartItemId = id;
     }
   }
-   increase(quantity: any, index: any) {
+  increase(quantity: any, index: any) {
     this.cartListData[index].quantity++;
     let id = this.cartListData[index].id;
     let productQuantity = this.cartListData[index].quantity;
@@ -666,41 +650,41 @@ export class Checkout {
     );
     this.updateCartList(productQuantity, id);
   }
-    deleteItem() {
-      if (this.cartItemId) {
-        this.dataService
-          .delete(`cart/${this.cartItemId}`)
-          .pipe(
-            catchError((err) => {
-              console.error('Error:', err);
-              setTimeout(() => {
-                // this.globalService.showMsgSnackBar(err);
-              }, 100);
-              return of(err);
-            })
-          )
-          .subscribe((res: any) => {
-            //console.log('Response:', res);
-  
-            if (res.success == true) {
-              this.globalService.showMsgSnackBar(res);
-              if (this.isBrowser) {
-                const modal = bootstrap.Modal.getInstance(this.deleteCart.nativeElement);
-                modal.hide();
-              }
-              this.carList();
-              this.globalFunctionService.getCount();
-              this.cd.detectChanges();
-            } else if (res.error && res.error.message) {
-              //console.log('error  :', res.error.message);
-              this.globalService.showMsgSnackBar(res.error);
+  deleteItem() {
+    if (this.cartItemId) {
+      this.dataService
+        .delete(`cart/${this.cartItemId}`)
+        .pipe(
+          catchError((err) => {
+            console.error('Error:', err);
+            setTimeout(() => {
+              // this.globalService.showMsgSnackBar(err);
+            }, 100);
+            return of(err);
+          })
+        )
+        .subscribe((res: any) => {
+          //console.log('Response:', res);
+
+          if (res.success == true) {
+            this.globalService.showMsgSnackBar(res);
+            if (this.isBrowser) {
+              const modal = bootstrap.Modal.getInstance(this.deleteCart.nativeElement);
+              modal.hide();
             }
-            // this.getCategoryList();
-            // this.categoryListData = res.data;
-          });
-      }
+            this.carList();
+            this.globalFunctionService.getCount();
+            this.cd.detectChanges();
+          } else if (res.error && res.error.message) {
+            //console.log('error  :', res.error.message);
+            this.globalService.showMsgSnackBar(res.error);
+          }
+          // this.getCategoryList();
+          // this.categoryListData = res.data;
+        });
     }
-   decrease(quantity: any, index: any) {
+  }
+  decrease(quantity: any, index: any) {
     if (quantity > 1) {
       this.cartListData[index].quantity--;
       let id = this.cartListData[index].id;
@@ -743,19 +727,19 @@ export class Checkout {
       });
   }
   removeCoupon() {
-  this.appliedCoupon = '';
-  this.cd.detectChanges();
-localStorage.removeItem('appliedCoupon');
-  // this.router.navigate(
-  //   [],
-  //   {
-  //     queryParams: { coupon: null },
-  //     queryParamsHandling: 'merge'
-  //   }
-  // );
-  this.calculateGstPrice(this.cartListData);
-}
-addItemAlert(){
-   this.globalService.showMsgSnackBar({message:'Your Cart Is Emply!'});
-}
+    this.appliedCoupon = '';
+    this.cd.detectChanges();
+    localStorage.removeItem('appliedCoupon');
+    // this.router.navigate(
+    //   [],
+    //   {
+    //     queryParams: { coupon: null },
+    //     queryParamsHandling: 'merge'
+    //   }
+    // );
+    this.calculateGstPrice(this.cartListData);
+  }
+  addItemAlert() {
+    this.globalService.showMsgSnackBar({ message: 'Your Cart Is Emply!' });
+  }
 }
