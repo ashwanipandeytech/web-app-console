@@ -131,7 +131,7 @@ export class App {
                 user = localStorage.getItem('user');
               }
                   setTimeout(() => {
-                    this.openForgotPopup('',res.data.email, forgotStep);
+                    this.openForgotPopup('',res.data.user.email, forgotStep);
                   }, 0);
               this.cd.detectChanges();
 
@@ -155,7 +155,8 @@ export class App {
   }
 
   openForgotPopup(token:any='', email: any, step: any) {
-    console.log('enter===>');
+    let user:any = localStorage.getItem('user');
+    console.log('enter===>',user);
     
     let data = {
       token: token,

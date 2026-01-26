@@ -111,7 +111,10 @@ export class Checkout {
       //console.log('response==>', response);
       if (response.success == true) {
         this.cartListData = response.data.data;
-        
+        if (this.cartListData.length<=0) {
+          localStorage.removeItem('appliedCoupon');
+          this.cd.detectChanges();
+        }
 
         
         this.calculateGstPrice(response.data.data);
@@ -193,7 +196,6 @@ export class Checkout {
     //console.log('this.selectedPaymentMethod==>', this.selectedPaymentMethod);
 
     if (this.selectedPaymentMethod == 'cod') {
-      this.router.navigate(['/thank-you'])
 
       this.orderSubmit(addressId, this.selectedPaymentMethod);
     }
@@ -257,7 +259,7 @@ export class Checkout {
       )
       .subscribe((res: any) => {
         if (res.success == true) {
-          //console.log('Response:', res);
+          console.log('Response:', res);
           this.globalService.showMsgSnackBar(res);
           if (paymentMethod != 'cod') {
            // this.paymentUpdate(res, paymentResponse);
@@ -290,6 +292,11 @@ export class Checkout {
           }
           // this.razorpayService.openCheckout(this.grandTotal);
           // this.router.navigate(['/cart']);
+               this.router.navigate(['/thank-you'],   {
+                queryParams: {
+                orderId: res.orderId   // 👈 pass your order id here
+                    }
+                  })
         }
         else {
           if (res.err) {
@@ -742,5 +749,8 @@ localStorage.removeItem('appliedCoupon');
   //   }
   // );
   this.calculateGstPrice(this.cartListData);
+}
+addItemAlert(){
+   this.globalService.showMsgSnackBar({message:'Your Cart Is Emply!'});
 }
 }

@@ -175,7 +175,9 @@ private platformId = inject(PLATFORM_ID);
         password: this.resetPasswordForm.value.password,
         password_confirmation: this.resetPasswordForm.value.confirmPassword,
       };
-      apiUrl = 'auth/reset-password-token';
+      // apiUrl = 'auth/reset-password-token';
+      apiUrl = 'auth/reset-password';
+
     }
     this.dataService
       .post(payload, apiUrl)

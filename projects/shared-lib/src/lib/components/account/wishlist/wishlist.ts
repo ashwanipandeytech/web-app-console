@@ -56,7 +56,7 @@ export class Wishlist {
     this.dataService.get('wishlist').subscribe((res: any) => {
       this.wishListData = res.data;
       this.isLoading = false;
-
+      this.globalFunctionService.getCount();
       this.cd.markForCheck();
     })
   }
