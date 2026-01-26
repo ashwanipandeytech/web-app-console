@@ -15,6 +15,7 @@ import { NoDataComponent } from '../no-data/no-data.component';
   styleUrl: './product-sidebar.scss'
 })
 export class ProductSidebarCommon {
+  ratingStars: number[] = [1, 2, 3, 4, 5];
   public dataService:any= inject(DataService);
   private globalFunctionService = inject(GlobalFunctionService);
   productListData: any=[];
