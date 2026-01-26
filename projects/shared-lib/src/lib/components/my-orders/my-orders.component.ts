@@ -201,7 +201,7 @@ updateratingInorderList(productId:any){
       .subscribe((res: any) => {
         //console.log('Response:===>', res);
         if (res.success == true) {
-          this.orderListData = res.data.data;
+          this.orderListData = res.data;
           this.isLoading = false;
           this.cd.detectChanges();
           // this.router.navigate(['/cart']);
@@ -226,7 +226,28 @@ updateratingInorderList(productId:any){
         );
         modal.hide();
       }
-          this.route.navigate(['/contact-us']);
+         
+
+     this.orderId
+    this.dataService
+      .post('', 'orders/'+this.orderId+'/cancel')
+      .pipe(
+        catchError((err) => {
+          console.error('Error:', err);
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        //console.log('Response:', res);
+        if (res.success == true) {
+          this.globalService.showMsgSnackBar(res);
+          this.globalFunctionService.getCount();
+          this.cd.detectChanges();
+
+        } else if (res.error && res.error.message) {
+          this.globalService.showMsgSnackBar(res.error);
+        }
+      });
 
   }
 

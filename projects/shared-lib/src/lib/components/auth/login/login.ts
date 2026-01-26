@@ -316,12 +316,16 @@ private platformId = inject(PLATFORM_ID);
     if (action == 'deny') {
       // this.activeModal.close({result:null});
       this.activeModal.dismiss();
-      this.router.navigate(['/']).then(() => {
+   
+      if(this.router.url!='/cart'){
+  this.router.navigate(['/']).then(() => {
         if (this.isBrowser) {
           window.location.reload(); // Reload the page after navigating
         }
       });
 
+      }
+    
       // return;
     } else {
       this.activeModal.close({ result: 'success' });

@@ -102,7 +102,7 @@
         <a 
           class="dropdown-item px-3 py-2 fs-14"
           [routerLink]="['/user-profile']"
-          [queryParams]="{ key: 'account' }"
+          [queryParams]="{ section: 'account' }"
           >
           <span><i class="fa-solid fa-lg opacity-75 fa-user-tie"></i></span>My Account</a
         >
@@ -111,7 +111,7 @@
         <a
           class="dropdown-item px-3 py-2 fs-14"
           [routerLink]="['/user-profile']"
-          [queryParams]="{ key: 'Orders' }"
+          [queryParams]="{ section: 'Orders' }"
           ><span><i class="fa-solid fa-lg opacity-75 fa-bag-shopping"></i></span>My Order</a
         >
       </li>
@@ -119,7 +119,7 @@
         <a
           class="dropdown-item px-3 py-2 fs-14"
           [routerLink]="['/user-profile']"
-          [queryParams]="{ key: 'wishlist' }"
+          [queryParams]="{ section: 'wishlist' }"
           ><span><i class="fa-solid fa-lg opacity-75 fa-heart"></i></span>Wishlist
           @if(countsList?.wishlist_count > 0) {
           <span class="badge text-bg-primary ms-2">{{ countsList?.wishlist_count }}</span>
@@ -130,7 +130,7 @@
         <a
           class="dropdown-item px-3 py-2 fs-14"
           [routerLink]="['/user-profile']"
-          [queryParams]="{ key: 'address' }"
+          [queryParams]="{ section: 'address' }"
           ><span><i class="fa-solid fa-lg opacity-75 fa-house"></i></span> Address</a
         >
       </li>

@@ -49,8 +49,8 @@ export class UserProfile {
     }
     this.activatedRoute.queryParams.subscribe(params => {
       //console.log(params['key']);
-      if (params['key']) {
-        this.activePage = params['key'];
+      if (params['section']) {
+        this.activePage = params['section'];
         //console.log("this.activePage", this.activePage)
 
         this.openComponent(this.activePage);
@@ -73,7 +73,7 @@ export class UserProfile {
     this.activePage = component;
     this.route.navigate([], {
       relativeTo: this.activatedRoute,
-      queryParams: { key: component },
+      queryParams: { section: component },
       queryParamsHandling: 'merge' // keeps existing params
     });
     if (component == 'account') {
