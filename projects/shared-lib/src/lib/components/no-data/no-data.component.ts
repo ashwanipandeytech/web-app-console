@@ -17,6 +17,8 @@ export class NoDataComponent implements OnInit {
   @Input() showAction: boolean = false;
   @Input() actionText: string = 'Refresh';
   @Input() isLogin: any = false;
+  
+  @Input() displayNoDataText: any = true;
   private signalService = inject(SignalService);
   private ngbModal = inject(NgbModal);
   constructor() {}

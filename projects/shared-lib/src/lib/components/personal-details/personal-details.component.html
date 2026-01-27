@@ -4,7 +4,7 @@
 </div>
 } -->
 
-@if(!isLoading){
+@if(!isLoading && isLoggedIn){
   <div class="top-section d-flex align-items-center border-bottom pb-2 mb-4 px-3 px-md-0">
     <h3 class="fs-20">Personal Detail</h3>
     <button type="button" class="shop-btn ms-3 fs-12 sm-btn" (click)="toggleEdit()">{{ isEditMode ? 'Cancel' : 'Edit' }}
@@ -134,3 +134,16 @@
     </div>
   </form>
 }
+
+
+@if (!isLoggedIn) {
+    <app-no-data
+      title="No Wishlist Found"
+      message="There are no data available right now."
+      [showAction]="false"
+      [displayNoDataText]="false"
+      actionText="Login"
+      [isLogin]="isLoggedIn"
+    >
+    </app-no-data>
+  }

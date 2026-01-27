@@ -5,9 +5,9 @@
 
 }  -->
 
- {{isLoggedIn}}
 
-<!-- @if (!isLoading) { -->
+
+ @if (isLoggedIn) { 
   <div class="top-section d-flex align-items-center border-bottom pb-2 mb-4 px-3 px-md-0">
     <h3 class="fs-20">My Order</h3>
   </div>
@@ -82,6 +82,8 @@
  
 
   </div>
+
+}
  
 
   <!-- Delete product Modal -->
@@ -522,16 +524,17 @@
       </div>
     </div>
   </div>
-  {{orderListData}}
-  @if(!orderListData || orderListData.length === 0){
+  
+  @if(orderListData?.length === 0 ||!isLoggedIn){
  <app-no-data
     title="No Orders Found"
     message="There are no data available right now."
     [showAction]="true"
      actionText="Login"
+    [displayNoDataText]="orderListData.length === 0 && isLoggedIn"
     [isLogin]="isLoggedIn"
   >
-  </app-no-data> 
+</app-no-data> 
   }
  
   <app-mobile-bottom-nav></app-mobile-bottom-nav>

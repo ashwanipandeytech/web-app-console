@@ -1,31 +1,61 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, effect, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DataService } from '../../services/data-service';
 import { catchError, of } from 'rxjs';
 import { GlobaCommonlService } from '../../services/global-common.service';
 import { response } from 'express';
+import { NoDataComponent } from '../no-data/no-data.component';
+import { SignalService } from '../../services/signal-service';
 
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [NoDataComponent,ReactiveFormsModule, CommonModule],
   styleUrls: ['./change-password.component.scss'],
 })
 export class ChangePasswordComponent implements OnInit {
   passwordForm: FormGroup;
   private dataService = inject(DataService);
   private globalService = inject(GlobaCommonlService);
+   private signalService = inject(SignalService);
   showCurrentPassword: boolean = false;
   showNewPassword: boolean = false;
   showConfirmPassword: boolean = false;
   wrongPaasword: any;
+  isLoggedIn: boolean = false;
+   isBrowser: boolean;
+  private platformId = inject(PLATFORM_ID);
 
   constructor(private fb: FormBuilder) {
+     this.isBrowser = isPlatformBrowser(this.platformId);
     this.passwordForm = this.fb.group({
       currentPassword: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
+    });
+
+     if (this.isBrowser) {
+      let userData: any = localStorage.getItem('user');
+      if (userData == null) {
+        this.isLoggedIn = false;
+      } else {
+        this.isLoggedIn = true;
+      }
+    }
+
+    effect(() => {
+      //  this.isLoggedIn = this.signalService.userLoggedIn();
+      if (this.signalService.userLoggedIn()) {
+        this.isLoggedIn = true;
+       
+      
+      } else {
+        this.isLoggedIn = false
+      }
+
+
+
     });
   }
 

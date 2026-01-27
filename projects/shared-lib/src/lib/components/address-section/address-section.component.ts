@@ -30,6 +30,7 @@ export class AddressSectionComponent implements OnInit {
 
   currentUser: any;
   deleteAddressId: any;
+  isLoggedIn:boolean=true
   isLoading: boolean = true;
   isBrowser: boolean;
   private platformId = inject(PLATFORM_ID);
@@ -40,6 +41,7 @@ export class AddressSectionComponent implements OnInit {
     effect(() => {
       if (this.signalService.userLoggedIn()) {
         if (this.isBrowser) {
+           this.isLoggedIn =true;
           this.currentUser = JSON.parse(localStorage.getItem('user') || 'null');
         }
         this.getAddressList();
@@ -63,9 +65,9 @@ export class AddressSectionComponent implements OnInit {
   }
   ngOnInit() {
     if (this.isBrowser) {
-      let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+      this.isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
 
-      if (!isLoggedIn) {
+      if (!this.isLoggedIn ) {
         this.addressListData = []
         this.signalService.openLoginPopup.set(true)
         return;

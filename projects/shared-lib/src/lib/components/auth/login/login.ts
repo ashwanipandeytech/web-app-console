@@ -294,7 +294,7 @@ export class Login {
             //   window.location.reload(); // Reload the page after navigating
             // });
             setTimeout(() => {
-              this.closePopup();
+              this.closePopup(true);
             }, 0);
           } else if (res.error && res.error.message) {
             //console.log('error  :', res.error.message);
@@ -313,43 +313,45 @@ export class Login {
     }
     // //console.log("Form Data:", this.signupForm.value);
   }
-  closePopup(action: any = '') {
+  closePopup(recallApi:boolean=true) {
     // if (action == 'deny') {
     // this.activeModal.close({result:null});
     //  this.activeModal.close({ result: 'success' });
     // this.cd.detectChanges();
 
-    // console.log('this.router.url==>', this.router.url);
+    const keywords = ['cart', 'user-profile'];
 
-    //     if(this.router.url!='/cart'){
-    //       this.router.navigate(['/']).then(() => {
-    //     if (this.isBrowser) {
-    //       window.location.reload(); // Reload the page after navigating
-    //     }
-    //   });
-    // // const currentUrl = this.router.url;
-    // // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-    // //   this.router.navigateByUrl(currentUrl);
-    // // this.activeModal.close({ result: 'success' });
+    // Returns true if the URL contains "cart" OR "user-profile"
+    const shouldExclude = keywords.some(key => this.router.url.includes(key));
 
-    // // });
+    console.info('shouldExclude', shouldExclude, this.router.url,)
+    if (!shouldExclude) {
 
-    //     }
-        if (this.router.url.includes('user-profile')) {
-           this.router.navigate([this.router.url]).then(() => {
-        // if (this.isBrowser) {
-        //   window.location.reload(); // Reload the page after navigating
-        // }
-           });
-           
-        //   if (this.isBrowser) {
-        //   window.location.reload(); // Reload the page after navigating
-        // }
+      this.router.navigate(['/']).then(() => {
+        if (this.isBrowser) {
+          window.location.reload()
         }
+      });
+
+
+    }else{
+      recallApi
+    }
+    // if (this.router.url.includes('user-profile')) {
+    //    this.router.navigate([this.router.url]).then(() => {
+    // // if (this.isBrowser) {
+    // //   window.location.reload(); // Reload the page after navigating
+    // // }
+    //    });
+
+    // //   if (this.isBrowser) {
+    // //   window.location.reload(); // Reload the page after navigating
+    // // }
+    // }
 
     // return;
     // } else {
-    this.activeModal.close({ result: 'success' });
+    this.activeModal.close({ result: 'success',recallApi });
     //console.log('enter login');
     // }
 
@@ -404,7 +406,7 @@ export class Login {
             this.globalFunctionService.getCount();
             this.signalService.userLoggedIn.set(true);
             setTimeout(() => {
-              this.closePopup();
+              this.closePopup(true);
             }, 0);
           } else if (res.error && res.error.message) {
             //console.log('error  :', res.error.message);

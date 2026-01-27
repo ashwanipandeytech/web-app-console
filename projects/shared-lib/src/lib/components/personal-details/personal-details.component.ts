@@ -15,11 +15,12 @@ import { GlobalFunctionService } from '../../services/global-function.service';
 import { GlobaCommonlService } from '../../services/global-common.service';
 import { SignalService } from '../../services/signal-service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { NoDataComponent } from '../no-data/no-data.component';
 
 @Component({
   selector: 'app-personal-details',
   templateUrl: './personal-details.component.html',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [NoDataComponent,ReactiveFormsModule, CommonModule],
   styleUrls: ['./personal-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -36,6 +37,7 @@ export class PersonalDetailsComponent implements OnInit {
   countries: any = [];
   states: any;
   cities: any = [];
+  isLoggedIn:boolean=false;
   isLoading: boolean = true;
   isBrowser: boolean;
   private platformId = inject(PLATFORM_ID);
@@ -44,6 +46,7 @@ export class PersonalDetailsComponent implements OnInit {
 
     effect(() => {
       if (this.signalService.userLoggedIn()) {
+        this.isLoggedIn=true
 
     this.profileDetailsForm();
         this.getProfileList();
@@ -55,9 +58,9 @@ export class PersonalDetailsComponent implements OnInit {
 
   ngOnInit() {
     if (this.isBrowser) {
-      let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+      this.isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
 
-      if (!isLoggedIn) {
+      if (!this.isLoggedIn) {
 
         this.signalService.openLoginPopup.set(true)
         return;

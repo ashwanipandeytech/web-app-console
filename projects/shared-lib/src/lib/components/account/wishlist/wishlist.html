@@ -4,12 +4,28 @@
   <div class="spinner-border spinner-border-lg text-primary" role="status"></div>
 </div>
 } -->
+
+@if(isLoggedIn){
 <div class="top-section d-flex align-items-center border-bottom pb-2 mb-4 px-3 px-md-0">
   <h3 class="fs-20">Wishlist Items</h3>
 </div>
+}
+
 
 <section class="wishlist-container w-1100 mx-auto px-3 px-sm-0">
-  @if (!isLoading) {
+
+   @if (wishListData?.length === 0 || !isLoggedIn) {
+    <app-no-data
+      title="No Wishlist Found"
+      message="There are no data available right now."
+      [showAction]="false"
+      actionText="Login"
+      [displayNoDataText]="wishListData?.length==0 && isLoggedIn"
+      [isLogin]="isLoggedIn"
+    >
+    </app-no-data>
+  }
+  @if (!isLoading ) {
     @for (item of wishListData; track $index) {
       <div class="border rounded mt-3 p-3 row wrapper">
         <div class="col-sm-2 col-12">
@@ -92,15 +108,6 @@
       </div>
     }
   }
-  @if (!wishListData || wishListData.length === 0) {
-    <app-no-data
-      title="No Wishlist Found"
-      message="There are no data available right now."
-      [showAction]="false"
-      actionText="Login"
-      [isLogin]="isLoggedIn"
-    >
-    </app-no-data>
-  }
+ 
 </section>
 <!--------------- wishlist-end---------------->

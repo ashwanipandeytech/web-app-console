@@ -16,12 +16,13 @@ import { GlobalFunctionService } from '../../services/global-function.service';
 import { Router, RouterModule } from '@angular/router';
 import { Login } from '../auth/login/login';
 import { SignalService } from '../../services/signal-service';
+import { NoDataComponent } from '../no-data/no-data.component';
 declare const google: any;
 declare const bootstrap: any;
 
 @Component({
   selector: 'app-cart',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [NoDataComponent,CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './cart.html',
   styleUrl: './cart.scss',
 })
@@ -53,11 +54,11 @@ export class CartCommon {
   loading: boolean = true;
   isLoggedIn: boolean = false;
   cartItemId: any;
-  appliedCoupon: any='';
+  appliedCoupon: any = '';
   isBrowser: boolean;
   private platformId = inject(PLATFORM_ID);
-  gstSummary: any={};
-  constructor(private http: HttpClient, private fb: FormBuilder, private cd: ChangeDetectorRef, ) {
+  gstSummary: any = {};
+  constructor(private http: HttpClient, private fb: FormBuilder, private cd: ChangeDetectorRef,) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.addAddressForm();
     // this.getAddressList();
@@ -74,13 +75,13 @@ export class CartCommon {
     }
 
     effect(() => {
-    //  this.isLoggedIn = this.signalService.userLoggedIn();
+      //  this.isLoggedIn = this.signalService.userLoggedIn();
       if (this.signalService.userLoggedIn()) {
-         this.isLoggedIn = true;
+        this.isLoggedIn = true;
         this.carList()
         this.cd.detectChanges();
-      }else{
-         this.isLoggedIn = false
+      } else {
+        this.isLoggedIn = false
       }
 
 
@@ -279,10 +280,10 @@ export class CartCommon {
         //console.log('response==>', response);
         if (response.success == true) {
           this.cartListData = response.data.data;
-        if (this.cartListData.length<=0) {
-          localStorage.removeItem('appliedCoupon');
-          this.cd.detectChanges();
-        }
+          if (this.cartListData.length <= 0) {
+            localStorage.removeItem('appliedCoupon');
+            this.cd.detectChanges();
+          }
           this.calculateGstPrice(this.cartListData);
           for (let i = 0; i < this.cartListData.length; i++) {
             const element = this.cartListData[i];
@@ -381,7 +382,7 @@ export class CartCommon {
         if (res.success) {
           this.calculateGstPrice(this.cartListData);
           this.grandTotal = this.globalService.calculateGrandTotal(this.cartListData);
-        this.cd.detectChanges();
+          this.cd.detectChanges();
 
         } else if (res && res.error && res.error.message) {
           //console.log('error  :', res.error.message);
@@ -488,7 +489,7 @@ export class CartCommon {
   // 'location' => ['lat' => 12.34, 'lng' => 56.78],
   proccedToCheckout() {
     if (this.isLoggedIn) {
-     this.route.navigate(['/checkout']);
+      this.route.navigate(['/checkout']);
     } else {
       this.openLogin('checkout');
     }
@@ -509,14 +510,18 @@ export class CartCommon {
 
         if (result.result == 'success' && from == 'checkout') {
           this.carList();
-          console.log('this.appliedCoupon==>',this.appliedCoupon);
-          
-         this.route.navigate(['/checkout']);
-        } else {
-          //console.log('result.result=================>');
+          console.log('this.appliedCoupon==>', this.appliedCoupon);
 
+          this.route.navigate(['/checkout']);
+        } else {
+          console.log('result.result=================>',result);
+          if (result?.recallApi==false) {
+           
+            return
+          }
           this.carList();
-          this.cd.detectChanges();
+            this.cd.detectChanges();
+
         }
         // this.route.navigate(['/checkout']);
       })
@@ -525,24 +530,24 @@ export class CartCommon {
       });
   }
 
-    calculateGstPrice(dataObj:any){
-      let data = dataObj;
-    let payload:any={
-      items:[]
+  calculateGstPrice(dataObj: any) {
+    let data = dataObj;
+    let payload: any = {
+      items: []
     };
-    console.log('data=====>',data);
+    console.log('data=====>', data);
     this.appliedCoupon = localStorage.getItem('appliedCoupon') || '';
     payload.coupon_code = this.appliedCoupon;
     for (let i = 0; i < data.length; i++) {
       const element = data[i];
       payload.items.push({
-        quantity : element?.quantity,
-        product_id:element?.product.id,
-        salePrice:element?.product?.price_data?.salePrice,
-        gstPercent:element?.product?.price_data?.caclulatedObj?.gstPercent
-      })   
+        quantity: element?.quantity,
+        product_id: element?.product.id,
+        salePrice: element?.product?.price_data?.salePrice,
+        gstPercent: element?.product?.price_data?.caclulatedObj?.gstPercent
+      })
     }
-    this.dataService.postCommonApi(payload,'calculate-prices')
+    this.dataService.postCommonApi(payload, 'calculate-prices')
       .pipe(
         catchError((err) => {
           console.error('Error:', err);
@@ -553,31 +558,31 @@ export class CartCommon {
         })
       )
       .subscribe((res: any) => {
-        console.log('payload===>',res.data.summary);
+        console.log('payload===>', res.data.summary);
         this.gstSummary = res.data.summary;
         this.gstSummary.items = res.data.items;
         // this.isLoading = false;
-        console.log('this.cartListData==>',this.gstSummary);
-        
+        console.log('this.cartListData==>', this.gstSummary);
+
         this.cd.detectChanges();
       })
 
   }
-    checkCoupon(couponValue:any){
-     console.log('Input value:', couponValue);
-     const ids = this.cartListData.map((item:any) =>{ 
-        return item.id
-       });
-     this.appliedCoupon = couponValue;
-     let payload:any ={
-      coupon_code:couponValue,
-      cart_ids:ids,
-     }
-       let isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
-        if (isGuest !=null) {
-          payload.guest_token = isGuest
-        }
-      this.dataService.post(payload, 'orders/apply-coupon')
+  checkCoupon(couponValue: any) {
+    console.log('Input value:', couponValue);
+    const ids = this.cartListData.map((item: any) => {
+      return item.id
+    });
+    this.appliedCoupon = couponValue;
+    let payload: any = {
+      coupon_code: couponValue,
+      cart_ids: ids,
+    }
+    let isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
+    if (isGuest != null) {
+      payload.guest_token = isGuest
+    }
+    this.dataService.post(payload, 'orders/apply-coupon')
       .pipe(
         catchError(err => {
           console.error('Error:', err);
@@ -586,18 +591,18 @@ export class CartCommon {
       )
       .subscribe((res: any) => {
         if (res.success == true) {
-          console.log('enter , re',res);
-        this.globalService.showMsgSnackBar(res);
+          console.log('enter , re', res);
+          this.globalService.showMsgSnackBar(res);
           const modal = bootstrap.Modal.getInstance(this.couponModal.nativeElement);
-           modal.hide();
-             localStorage.setItem('appliedCoupon', this.appliedCoupon);
-            // this.route.navigate(
-            //     [],
-            //     {
-            //       queryParams: { coupon: this.appliedCoupon },
-            //       queryParamsHandling: 'merge'
-            //     }
-            //   );
+          modal.hide();
+          localStorage.setItem('appliedCoupon', this.appliedCoupon);
+          // this.route.navigate(
+          //     [],
+          //     {
+          //       queryParams: { coupon: this.appliedCoupon },
+          //       queryParamsHandling: 'merge'
+          //     }
+          //   );
           this.calculateGstPrice(this.cartListData);
         }
         else if (res && res.error && res.error.message) {
@@ -606,16 +611,16 @@ export class CartCommon {
         }
       })
   }
-  removeCoupon(){
+  removeCoupon() {
     this.appliedCoupon == '';
-     localStorage.removeItem('appliedCoupon');
-  //     this.route.navigate(
-  //   [],
-  //   {
-  //     queryParams: { coupon: null },
-  //     queryParamsHandling: 'merge'
-  //   }
-  // );
+    localStorage.removeItem('appliedCoupon');
+    //     this.route.navigate(
+    //   [],
+    //   {
+    //     queryParams: { coupon: null },
+    //     queryParamsHandling: 'merge'
+    //   }
+    // );
     this.calculateGstPrice(this.cartListData);
   }
 }

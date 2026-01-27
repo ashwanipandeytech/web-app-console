@@ -4,7 +4,7 @@
 </div>
 } -->
 
-@if(!isLoading){
+@if(!isLoading && isLoggedIn){
   <div class="top-section d-flex align-items-center border-bottom pb-2 mb-4 px-3 px-md-0">
     <h3 class="fs-20">Manage Addresses</h3>
     <button type="button" class="shop-btn ms-3 fs-12 sm-btn" (click)="openAddressPopup()">Add New Address</button>
@@ -220,14 +220,7 @@
           </div>
         </div>
       </div>
-      <app-no-data
-        *ngIf="!addressListData || addressListData.length === 0"
-        title="No Address Found"
-        message="There are no data available right now."
-        [showAction]="false"
-        actionText="Reload"
-      >
-      </app-no-data>
+     
     </div>
   </div>
   
@@ -480,3 +473,15 @@
   </div>
   </div>
 }
+
+@if (addressListData?.length==0 ||!isLoggedIn) {
+    <app-no-data
+      title="No Address Found"
+      message="There are no data available right now."
+      [showAction]="false"
+      [displayNoDataText]="addressListData?.length==0 && isLoggedIn"
+      actionText="Login"
+      [isLogin]="isLoggedIn"
+    >
+    </app-no-data>
+  }

@@ -40,6 +40,7 @@ export class Wishlist {
 
     effect(() => {
       if (this.signalService.userLoggedIn()) {
+        this.isLoggedIn=true
         this.getWishlistData();
         this.cd.detectChanges();
       }

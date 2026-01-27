@@ -1,9 +1,13 @@
 <div class="no-data-wrapper">
   <div class="no-data-card">
-    <div class="icon">📄</div>
-
-    <h2>{{ title }}</h2>
+   
+    @if(displayNoDataText){
+       <div class="icon">📄</div>
+   <h2>{{ title }}</h2>
     <p>{{ message }}</p>
+    }
+
+ 
 
     
     @if (!isLogin) {

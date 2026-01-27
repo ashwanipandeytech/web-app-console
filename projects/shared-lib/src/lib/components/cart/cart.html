@@ -127,12 +127,26 @@
         <p class="content-title"><strong>Empty!</strong> You don’t have any Product in cart</p>
         <a href="/category-details/all" class="shop-btn">Back to Shop</a>
         
-        <p class="text-danger fs-16 mb-0">You are not logged in. Please sign in to continue.</p>
-        <button type="button" class="shop-btn">LogIn</button>
-
+      
       </div>
     </div>
     }
+      @if (!isLoggedIn) {
+    <app-no-data
+      title="No Wishlist Found"
+      message="There are no data available right now."
+      [showAction]="false"
+      [displayNoDataText]="false"
+      actionText="Login"
+      [isLogin]="isLoggedIn"
+    >
+    </app-no-data>
+  }
+    <!-- @if(!isLoggedIn){
+        <p class="text-danger fs-16 mb-0">You are not logged in. Please sign in to continue.</p>
+        <button type="button" class="shop-btn" (click)="openLogin()">LogIn</button>
+
+    } -->
     <!-- Blank cart end -->
 
     @if(cartListData.length>0) {
@@ -328,6 +342,8 @@
       </div>
     </div>
     }
+
+  
   </div>
 </section>
 <!--------------- cart-section-end---------------->
