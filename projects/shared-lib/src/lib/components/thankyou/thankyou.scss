@@ -1,0 +1,10 @@
+@use '../../../../../frontend/src/scss/variable' as *;
+
+.rating-stars{
+    i{
+       &:hover{color:$theme-color ;}
+    }
+    &.best{.active{color: $theme-color;}}
+    &.good{.active{color: $secondary-theme;}}
+    &.poor{.active{color: $btn-bg-1;}}
+}

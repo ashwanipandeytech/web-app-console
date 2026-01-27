@@ -6,7 +6,7 @@ import {
   Output,
   ViewEncapsulation,
   Inject, // Add Inject
-  PLATFORM_ID // Add PLATFORM_ID
+  PLATFORM_ID, // Add PLATFORM_ID
 } from '@angular/core';
 import {
   FormArray,
@@ -26,7 +26,7 @@ import { GlobaCommonlService } from '../../../services/global-common.service';
 import { GlobalFunctionService } from '../../../services/global-function.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common'; // Add isPlatformBrowser
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { environment } from 'environments/environment';
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'web-login',
   imports: [FormsModule, ReactiveFormsModule, CommonModule],
@@ -63,12 +63,12 @@ export class Login {
     this.isSignUp = !this.isSignUp;
   }
   isBrowser: boolean; // Add this
-private platformId = inject(PLATFORM_ID);
+  private platformId = inject(PLATFORM_ID);
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-     // Add this
+    // Add this
   ) {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.isCheckoutPage = params['checkout'] === 'true' ? true : false;
@@ -118,7 +118,7 @@ private platformId = inject(PLATFORM_ID);
         catchError((err) => {
           console.error('Error:', err);
           return of(null);
-        })
+        }),
       )
       .subscribe((res: any) => {
         if (res.success == true) {
@@ -147,7 +147,7 @@ private platformId = inject(PLATFORM_ID);
         catchError((err) => {
           console.error('Error:', err);
           return of(null);
-        })
+        }),
       )
       .subscribe((res: any) => {
         if (res.success == true) {
@@ -177,7 +177,6 @@ private platformId = inject(PLATFORM_ID);
       };
       // apiUrl = 'auth/reset-password-token';
       apiUrl = 'auth/reset-password';
-
     }
     this.dataService
       .post(payload, apiUrl)
@@ -185,7 +184,7 @@ private platformId = inject(PLATFORM_ID);
         catchError((err) => {
           console.error('Error:', err);
           return of(null);
-        })
+        }),
       )
       .subscribe((res: any) => {
         if (res.success == true) {
@@ -226,7 +225,7 @@ private platformId = inject(PLATFORM_ID);
         catchError((err) => {
           console.error('Error:', err);
           return of(null);
-        })
+        }),
       )
       .subscribe((res: any) => {
         //console.log('Response:', res);
@@ -256,7 +255,7 @@ private platformId = inject(PLATFORM_ID);
             console.error('Error:', err);
 
             return of(err);
-          })
+          }),
         )
         .subscribe((res: any) => {
           // //console.log('Response:', res);
@@ -274,9 +273,9 @@ private platformId = inject(PLATFORM_ID);
             // let isNonUserToken: any = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
             if (isNonUserToken) {
               if (this.isBrowser) {
-            if (this.isBrowser) {
-              localStorage.removeItem('GUEST_TOKEN');
-            }
+                if (this.isBrowser) {
+                  localStorage.removeItem('GUEST_TOKEN');
+                }
               }
             }
             if (this.isBrowser) {
@@ -315,24 +314,44 @@ private platformId = inject(PLATFORM_ID);
     // //console.log("Form Data:", this.signupForm.value);
   }
   closePopup(action: any = '') {
-    if (action == 'deny') {
-      // this.activeModal.close({result:null});
-      this.activeModal.dismiss();
-   
-      if(this.router.url!='/cart'){
-  this.router.navigate(['/']).then(() => {
-        if (this.isBrowser) {
-          window.location.reload(); // Reload the page after navigating
-        }
-      });
+    // if (action == 'deny') {
+    // this.activeModal.close({result:null});
+    //  this.activeModal.close({ result: 'success' });
+    // this.cd.detectChanges();
 
-      }
-    
-      // return;
-    } else {
-      this.activeModal.close({ result: 'success' });
-      //console.log('enter login');
-    }
+    // console.log('this.router.url==>', this.router.url);
+
+    //     if(this.router.url!='/cart'){
+    //       this.router.navigate(['/']).then(() => {
+    //     if (this.isBrowser) {
+    //       window.location.reload(); // Reload the page after navigating
+    //     }
+    //   });
+    // // const currentUrl = this.router.url;
+    // // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    // //   this.router.navigateByUrl(currentUrl);
+    // // this.activeModal.close({ result: 'success' });
+
+    // // });
+
+    //     }
+        if (this.router.url.includes('user-profile')) {
+           this.router.navigate([this.router.url]).then(() => {
+        // if (this.isBrowser) {
+        //   window.location.reload(); // Reload the page after navigating
+        // }
+           });
+           
+        //   if (this.isBrowser) {
+        //   window.location.reload(); // Reload the page after navigating
+        // }
+        }
+
+    // return;
+    // } else {
+    this.activeModal.close({ result: 'success' });
+    //console.log('enter login');
+    // }
 
     this.cd.detectChanges();
   }
@@ -358,7 +377,7 @@ private platformId = inject(PLATFORM_ID);
             console.error('Error:', err);
 
             return of(err);
-          })
+          }),
         )
         .subscribe((res: any) => {
           // //console.log('Response:', res.error.message);
@@ -426,18 +445,18 @@ private platformId = inject(PLATFORM_ID);
   }
 
   loginWithGoogle() {
-     const redirectUrl = `${environment.API_URL}auth/google/redirect?redirect=/landing`;
-      window.location.href = redirectUrl;
-      console.log('redirectUrl===>',redirectUrl);
-  
+    const redirectUrl = `${environment.API_URL}auth/google/redirect?redirect=/landing`;
+    window.location.href = redirectUrl;
+    console.log('redirectUrl===>', redirectUrl);
+
     // let endpoint = 'auth/google/redirect?redirect=/landing';
     // this.dataService.get(endpoint).subscribe((res: any) => {
     //   //console.log('res===>', res);
     // });
   }
-   loginWithFacebook() {
-     const redirectUrl = `${environment.API_URL}auth/facebook/redirect?redirect=/landing`;
-  window.location.href = redirectUrl;
+  loginWithFacebook() {
+    const redirectUrl = `${environment.API_URL}auth/facebook/redirect?redirect=/landing`;
+    window.location.href = redirectUrl;
     // let endpoint = 'auth/google/redirect?redirect=/landing';
     // this.dataService.get(endpoint).subscribe((res: any) => {
     //   //console.log('res===>', res);
@@ -473,7 +492,7 @@ private platformId = inject(PLATFORM_ID);
         password: ['', [Validators.required, Validators.minLength(6)]],
         confirmPassword: ['', Validators.required],
       },
-      { validators: this.passwordMatch }
+      { validators: this.passwordMatch },
     );
   }
   verifyOtp() {
@@ -489,7 +508,7 @@ private platformId = inject(PLATFORM_ID);
         catchError((err) => {
           console.error('Error:', err);
           return of(err);
-        })
+        }),
       )
       .subscribe((res: any) => {
         if (res.success == true) {

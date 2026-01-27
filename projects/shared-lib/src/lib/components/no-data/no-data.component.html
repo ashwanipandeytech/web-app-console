@@ -5,8 +5,12 @@
     <h2>{{ title }}</h2>
     <p>{{ message }}</p>
 
-    <button *ngIf="showAction" class="action-btn">
-      {{ actionText }}
-    </button>
+    
+    @if (!isLogin) {
+      <p class="text-danger fs-16 mb-1">You are not logged in. Please sign in to continue.</p>
+      <button class="shop-btn" (click)="openLogin()">
+        {{ actionText }}
+      </button>
+    }
   </div>
 </div>

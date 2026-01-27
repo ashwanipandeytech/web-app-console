@@ -20,8 +20,9 @@
       style="padding: 10px;"
       title="{{currentAddress}}">
         <!-- {{currentAddress}} -->
-         <p class="truncate">{{ currentAddress }}</p>
-        @if(!currentAddress){
+        @if(currentAddress){
+          <span class="">{{ currentAddress }}</span>
+        }@else{
           <span> Select Location</span>
           <i class="fa-solid fa-chevron-down fa-sm ms-1 align-middle ms-2"></i>
         }

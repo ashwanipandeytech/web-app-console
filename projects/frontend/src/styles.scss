@@ -763,6 +763,7 @@
   span {
     font-size: 14px;
     color: $heading;
+    text-transform: capitalize;
   }
 
   a {
@@ -2052,4 +2053,12 @@ input[type="number"] {
       height: 100%;
     }
   }
+}
+
+
+.shop-btn{
+  &:disabled{
+      pointer-events: none;
+      opacity: 0.6;
+    }
 }

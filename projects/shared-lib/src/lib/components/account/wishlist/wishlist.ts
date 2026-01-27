@@ -1,4 +1,13 @@
-import { ChangeDetectorRef, Component, effect, ElementRef, inject, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  effect,
+  ElementRef,
+  inject,
+  Inject,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
 import { DataService } from '../../../services/data-service';
 import { GlobaCommonlService } from '../../../services/global-common.service';
 import { catchError, of } from 'rxjs';
@@ -11,20 +20,21 @@ import { SignalService } from '../../../services/signal-service';
   selector: 'web-wishlist',
   imports: [NoDataComponent, CommonModule],
   templateUrl: './wishlist.html',
-  styleUrl: './wishlist.scss'
+  styleUrl: './wishlist.scss',
 })
 export class Wishlist {
   @ViewChild('removeProduct') removeProduct!: ElementRef;
   public dataService: any = inject(DataService);
   public signalService: any = inject(SignalService);
   public globalFunctionService: any = inject(GlobalFunctionService);
-  public globalCommonService: any = inject(GlobaCommonlService)
+  public globalCommonService: any = inject(GlobaCommonlService);
   public cd = inject(ChangeDetectorRef);
   wishListData: any = [];
   WishListId: any;
   isLoading: boolean = true;
   isBrowser: boolean;
   private platformId = inject(PLATFORM_ID);
+  isLoggedIn: any;
   constructor() {
     this.isBrowser = isPlatformBrowser(this.platformId);
 
@@ -33,23 +43,20 @@ export class Wishlist {
         this.getWishlistData();
         this.cd.detectChanges();
       }
-
     });
   }
   ngOnInit() {
     if (this.isBrowser) {
-      let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+      this.isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
 
-      if (!isLoggedIn) {
-
-        this.signalService.openLoginPopup.set(true)
-        return;
-
+      if (!this.isLoggedIn) {
+        this.signalService.openLoginPopup.set(true);
+        this.cd.detectChanges();
+        // return;
       }
     }
     this.getWishlistData();
   }
-
 
   getWishlistData() {
     this.isLoading = true;
@@ -58,7 +65,7 @@ export class Wishlist {
       this.isLoading = false;
       this.globalFunctionService.getCount();
       this.cd.markForCheck();
-    })
+    });
   }
   removeWishlist(id: any) {
     this.WishListId = id;
@@ -67,18 +74,16 @@ export class Wishlist {
     this.dataService.delete(`wishlist/${this.WishListId}`).subscribe((res: any) => {
       let response = {
         message: 'Item Removed from Wish List',
-        success: true
-      }
+        success: true,
+      };
       if (this.isBrowser) {
-        const modal = bootstrap.Modal.getInstance(
-          this.removeProduct.nativeElement
-        );
+        const modal = bootstrap.Modal.getInstance(this.removeProduct.nativeElement);
         modal.hide();
       }
       this.globalCommonService.showMsgSnackBar(response);
       this.getWishlistData();
       this.cd.markForCheck();
-    })
+    });
   }
   addToCart(data: any) {
     let isGuest: any = null;
@@ -89,7 +94,7 @@ export class Wishlist {
     let finalData = {
       product_id: data.id,
       quantity: '1',
-      guest_token: isGuest
+      guest_token: isGuest,
     };
     // //console.log('finalData==.',finalData);
     // return;
@@ -98,7 +103,7 @@ export class Wishlist {
       .pipe(
         catchError((err) => {
           return of(err);
-        })
+        }),
       )
       .subscribe((res: any) => {
         //console.log('Response:', res);

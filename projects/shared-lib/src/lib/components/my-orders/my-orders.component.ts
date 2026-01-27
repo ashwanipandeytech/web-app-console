@@ -51,13 +51,13 @@ export class MyOrdersComponent implements OnInit {
   stars = [1, 2, 3, 4, 5];
   private platformId = inject(PLATFORM_ID);
   isBrowser: boolean;
+  isLoggedIn:boolean= false;
 
   constructor() {
     this.isBrowser = isPlatformBrowser(this.platformId);
 
     effect(() => {
       if (this.signalService.userLoggedIn()) {
-        this.addRateUsForm();
         this.orderList();
         this.cd.detectChanges();
       }
@@ -65,19 +65,27 @@ export class MyOrdersComponent implements OnInit {
   }
 
   ngOnInit() {
-    let isLoggedIn: any = null;
+    this.isLoggedIn = false;
+    console.info('hererer')
+      this.orderList();
+      this.addRateUsForm();
+      this.cd.detectChanges();
+
     if (this.isBrowser) {
-      isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+      this.isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'null');
+      this.cd.detectChanges();
+
     }
 
-    if (!isLoggedIn) {
-
-      this.signalService.openLoginPopup.set(true)
-      return;
+    if (!this.isLoggedIn) {
+     // this.signalService.openLoginPopup.set(true);
+      this.cd.detectChanges();
+      // return;
 
     }
     this.addRateUsForm();
-    this.orderList();
+      this.cd.detectChanges();
+
   }
   addRateUsForm() {
     this.rateUsForm = this.fb.group({
@@ -158,6 +166,7 @@ export class MyOrdersComponent implements OnInit {
         //console.log('Response:===>', res);
         if (res.success == true) {
           this.orderListData = res.data.data;
+          
           // this.orderListData = [...res.data.data];
 
 
@@ -190,7 +199,7 @@ export class MyOrdersComponent implements OnInit {
     this.orderId = id;
   }
   orderList() {
-    this.isLoading = true;
+    // this.isLoading = true;
     this.dataService
       .get('orders')
       .pipe(
@@ -199,9 +208,10 @@ export class MyOrdersComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:===>', res);
-        if (res.success == true) {
+        console.log('Response:===>', res);
+        if (res?.success == true) {
           this.orderListData = res.data;
+          console.log('orderListData==>',this.orderListData);
 
           this.orderListData.map((item: any) => {
 
@@ -210,6 +220,12 @@ export class MyOrdersComponent implements OnInit {
           this.isLoading = false;
           this.cd.detectChanges();
           // this.router.navigate(['/cart']);
+        }
+        else if(res==null){
+          this.orderListData = [];
+          console.log(this.orderListData);
+          this.cd.detectChanges();
+
         }
       });
   }
