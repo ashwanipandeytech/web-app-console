@@ -47,22 +47,25 @@
               </li>
             </ul>
 
-            <p class="text-muted fs-14 fw-bold">
-              @if (item.status != 'Cancelled' || item.status != 'Delivered') {
-                Delivery expected by {{ item.expected_delivery }}
+            <p class="text-muted fs-14 fw-bold mb-0">
+             @if (
+              item.status !== 'cancelled' &&
+              item.status !== 'delivered'
+            ) {
+                Delivery expected by {{ item.expected_delivery }} --
               }
 
               <span
                 [ngClass]="{
-                  'text-danger': item.status === 'Cancelled',
-                  'text-success': item.status === 'Delivered',
+                  'text-danger': item.status === 'cancelled',
+                  'text-success': item.status === 'delivered',
                   'text-warning': item.status === 'confirmed',
                 }"
-                >-- {{ item.status | titlecase }}</span
+                >{{ item.status | titlecase }}</span
               >
             </p>
 
-            <button type="button" class="icon-link icon-link-hover text-primary mt-sm-3">
+            <button type="button" class="icon-link icon-link-hover text-primary mt-2">
               Order detail
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -156,8 +159,8 @@
                           <li class="">
                             <span class="fw-semibold d-inline-block config-title">Status</span>
                             <span class="text-capitalize" [ngClass]="{
-                              'text-danger': orderDetailList.status === 'Cancelled',
-                              'text-success': orderDetailList.status === 'Delivered',
+                              'text-danger': orderDetailList.status === 'cancelled',
+                              'text-success': orderDetailList.status === 'delivered',
                               'text-warning': orderDetailList.status === 'confirmed',
                             }">{{ orderDetailList?.status }}</span>
                           </li>
@@ -222,14 +225,15 @@
                     ></path>
                   </svg> -->
                       </button>
-
-                      <button
-                        class="fs-14 btn btn-outline-danger"
-                        data-bs-toggle="modal"
-                        data-bs-target="#confirmCancelOrder"
-                      >
-                        Cancel Order
-                      </button>
+                      @if(orderDetailList.status != 'cancelled'){
+                        <button
+                          class="fs-14 btn btn-outline-danger"
+                          data-bs-toggle="modal"
+                          data-bs-target="#confirmCancelOrder"
+                        >
+                          Cancel Order
+                        </button>
+                      }
                     </div>
                     @if (!item?.product_review) {
                       <div class="collapse" [id]="'collapseProduct' + $index" #collapseRef>

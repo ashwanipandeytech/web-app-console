@@ -1,19 +1,39 @@
 <div
-  class="bottom-nav d-flex d-sm-none align-items-center position-fixed start-0 end-0 bottom-0 shadow bg-white py-2"
+  class="bottom-nav d-flex d-sm-none align-items-center position-fixed start-0 end-0 bottom-0 shadow bg-white py-2 justify-content-around z-3"
 >
   <a routerLink="/" class="active">
-    <img src="../images/svg/home.svg" alt="home" />
+     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house-icon lucide-house"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
     <span class="d-block">Home</span>
   </a>
+
+
   <a routerLink="/category">
-    <img src="../images/svg/categories.svg" alt="categories" />
+     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-grid-icon lucide-layout-grid"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
     <span class="d-block">Categories</span>
   </a>
-  <a>
-    <!-- <img src="../images/svg/categories.svg" alt="categories" /> -->
+
+
+  <a data-bs-toggle="collapse" href="#collapseExample">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-75"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
     <span class="d-block">Search</span>
   </a>
+
+  <div class="collapse position-absolute" id="collapseExample" style="bottom: 57px;">
+    <form class="flex-grow-1">
+      <div class="input-group">
+        <span class="input-group-text bg-white">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control border-start-0 ps-0 fw-semibold"
+          placeholder="Search for “cow”"
+        />
+      </div>
+    </form>
+  </div>
+
+
   <a routerLink="/cart">
     <svg
       _ngcontent-ng-c189284604=""
@@ -37,13 +57,11 @@
     </svg>
     <span class="d-block">Cart</span>
   </a>
-  <a>
-    <img
-      [routerLink]="['/user-profile']"
-      [queryParams]="{ key: 'account' }"
-      src="../images/svg/profile.svg"
-      alt="categories"
-    />
+
+
+  <a [routerLink]="['/user-profile']"
+    [queryParams]="{ key: 'account' }">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-user-round-icon lucide-circle-user-round"><path d="M18 20a6 6 0 0 0-12 0"/><circle cx="12" cy="10" r="4"/><circle cx="12" cy="12" r="10"/></svg>
     <span class="d-block">Profile</span>
   </a>
 

@@ -9,7 +9,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   standalone:true
 })
 export class MobileBottomNavComponent implements OnInit {
-
+countsList: any;
   constructor() { }
 
   ngOnInit() {

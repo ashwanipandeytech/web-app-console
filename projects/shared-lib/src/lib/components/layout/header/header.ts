@@ -50,9 +50,6 @@ export class Header {
   constructor() {
     this.isBrowser = isPlatformBrowser(this.platformId);
 
-
-
-
     this.globalFunctionService.getCount();
 
     effect(() => {

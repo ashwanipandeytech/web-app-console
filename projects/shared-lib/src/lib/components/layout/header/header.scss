@@ -48,6 +48,12 @@
         color: $theme-color;
         border-bottom: 3px solid $theme-color;
       }
+      @media screen and (max-width:576px) {
+         &.active {
+          color: #fff;
+          border-bottom: 3px solid #fff;
+        }
+      }
     }
   }
    @media screen and (min-width: 576px) {

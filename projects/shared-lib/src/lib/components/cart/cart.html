@@ -1,13 +1,14 @@
 @if (false) {
-<div class="cart-page bg-light">
-  <div class="cart-card mx-auto pt-2">
-    <div class="bg-white">
-      <button (click)="back()">
-        <= Back</button>
-          <div class="border-bottom px-3 py-2 mb-2">Products in cart</div>
-          <!-- Products -->
-          @for (item of cartListData; track $index; let i=$index) {
-          <div class="cart-item d-flex align-items-center justify-content-between gap-1 border-bottom px-3 pb-2 mb-2">
+  <div class="cart-page bg-light">
+    <div class="cart-card mx-auto pt-2">
+      <div class="bg-white">
+        <button (click)="back()"><= Back</button>
+        <div class="border-bottom px-3 py-2 mb-2">Products in cart</div>
+        <!-- Products -->
+        @for (item of cartListData; track $index; let i = $index) {
+          <div
+            class="cart-item d-flex align-items-center justify-content-between gap-1 border-bottom px-3 pb-2 mb-2"
+          >
             <div class="product-image bg-light rounded" class="img-parent-container">
               <img [src]="item.product.media.uploadedImages[0].url" alt="" class="img-container" />
             </div>
@@ -32,11 +33,11 @@
             <div class="fw-semibold">₹{{ item.product.price_data.finalPrice }}</div>
             <button type="button" (click)="deleteCartItem(item.id)">Delete</button>
           </div>
-          }
-    </div>
+        }
+      </div>
 
-    <!-- Coupon -->
-    <!-- <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2">
+      <!-- Coupon -->
+      <!-- <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2">
       <span class="fw-semibold">Have a coupon?</span>
       <button
         type="button"
@@ -48,51 +49,66 @@
       </button>
     </div> -->
 
-    <!-- Bill details -->
-    <div class="bg-white px-3 py-2 mt-2">
-      <p class="fw-semibold mb-2">Bill details</p>
-      <div class="d-flex justify-content-between mb-1">
-        <span>Items total</span><span>₹{{ grandTotal }}</span>
+      <!-- Bill details -->
+      <div class="bg-white px-3 py-2 mt-2">
+        <p class="fw-semibold mb-2">Bill details</p>
+        <div class="d-flex justify-content-between mb-1">
+          <span>Items total</span><span>₹{{ grandTotal }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-1">
+          <span>Delivery charge</span><span>₹40</span>
+        </div>
+        <div class="d-flex justify-content-between mb-1">
+          <span>Handling fees</span><span>₹16</span>
+        </div>
+        <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+          <span>GST total</span><span>₹9</span>
+        </div>
+        <div class="d-flex justify-content-between fw-semibold mb-2">
+          <span>Grand total</span><span>₹1458</span>
+        </div>
+        <div class="summary-box text-center">Total savings on this order ₹236</div>
       </div>
-      <div class="d-flex justify-content-between mb-1">
-        <span>Delivery charge</span><span>₹40</span>
-      </div>
-      <div class="d-flex justify-content-between mb-1">
-        <span>Handling fees</span><span>₹16</span>
-      </div>
-      <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
-        <span>GST total</span><span>₹9</span>
-      </div>
-      <div class="d-flex justify-content-between fw-semibold mb-2">
-        <span>Grand total</span><span>₹1458</span>
-      </div>
-      <div class="summary-box text-center">Total savings on this order ₹236</div>
-    </div>
 
-    <!-- Delivery -->
-    <div class="bg-white px-3 pt-2 pb-4 mt-3">
-      <div class="d-flex justify-content-between align-items-center">
-        <p class="fw-semibold mb-0">Delivering to:</p>
-        <button type="button" class="btn text-primary fw-semibold p-0" (click)="openAddressPopup()">
-          Change
-        </button>
-      </div>
-      <small class="text-muted">Address here 256, Street 65/4</small>
-      <!-- Button -->
-      <div class="mt-2">
-        <button class="btn btn-primary w-100">Continue to Pay</button>
+      <!-- Delivery -->
+      <div class="bg-white px-3 pt-2 pb-4 mt-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="fw-semibold mb-0">Delivering to:</p>
+          <button
+            type="button"
+            class="btn text-primary fw-semibold p-0"
+            (click)="openAddressPopup()"
+          >
+            Change
+          </button>
+        </div>
+        <small class="text-muted">Address here 256, Street 65/4</small>
+        <!-- Button -->
+        <div class="mt-2">
+          <button class="btn btn-primary w-100">Continue to Pay</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 }
 
 <div class="d-flex d-sm-none align-items-center p-1 py-sm-3 py-1 ms-sm-3 ms-1">
   <button class="btn btn-light d-flex align-items-center" (click)="back()">
-    <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"
-      style="height: 1.5rem; width: 1.5rem; color: black">
-      <path d="M15.5 19L8.5 12L15.5 5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5">
-      </path>
+    <svg
+      fill="none"
+      height="24"
+      viewBox="0 0 24 24"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+      style="height: 1.5rem; width: 1.5rem; color: black"
+    >
+      <path
+        d="M15.5 19L8.5 12L15.5 5"
+        stroke="black"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2.5"
+      ></path>
     </svg>
     <span class="d-inline-block" style="height: 24px; line-height: 24px">Back</span>
   </button>
@@ -118,30 +134,35 @@
 <section class="product-cart w-1100 mx-auto box-shadows rounded-4 py-md-3 px-sm-4 px-2 mb-5">
   <div class="container">
     <!-- Blank cart start -->
-    @if(cartListData.length==0 && !loading ) {
-    <div class="blog-item aos-init aos-animate" data-aos="fade-up">
-      <div class="cart-img">
-        <img src="./images/homepage-one/empty-cart.webp" alt="" height="300" class="object-fit-contain" />
+    @if (cartListData.length == 0 && !loading) {
+      <div class="blog-item aos-init aos-animate">
+        <div class="cart-img">
+          <img
+            src="./images/homepage-one/empty-cart.webp"
+            alt=""
+            height="200"
+            class="object-fit-contain"
+          />
+        </div>
+        <div class="cart-content gap-3">
+          <p class="content-title"><strong>Empty!</strong> You don’t have any Product in cart</p>
+           <!-- @if (isLoggedIn) { -->
+            <a href="/category-details/all" class="shop-btn">Back to Shop</a>
+          <!-- } -->
+        </div>
       </div>
-      <div class="cart-content gap-3">
-        <p class="content-title"><strong>Empty!</strong> You don’t have any Product in cart</p>
-        <a href="/category-details/all" class="shop-btn">Back to Shop</a>
-        
-      
-      </div>
-    </div>
     }
-      @if (!isLoggedIn) {
-    <app-no-data
-      title="No Wishlist Found"
-      message="There are no data available right now."
-      [showAction]="false"
-      [displayNoDataText]="false"
-      actionText="Login"
-      [isLogin]="isLoggedIn"
-    >
-    </app-no-data>
-  }
+    @if (!isLoggedIn) {
+      <app-no-data
+        title="No Wishlist Found"
+        message="There are no data available right now."
+        [showAction]="false"
+        [displayNoDataText]="false"
+        actionText="Login"
+        [isLogin]="isLoggedIn"
+      >
+      </app-no-data>
+    }
     <!-- @if(!isLoggedIn){
         <p class="text-danger fs-16 mb-0">You are not logged in. Please sign in to continue.</p>
         <button type="button" class="shop-btn" (click)="openLogin()">LogIn</button>
@@ -149,147 +170,184 @@
     } -->
     <!-- Blank cart end -->
 
-    @if(cartListData.length>0) {
-    <div class="row">
-      <!-- product config section start-->
-      <div class="col-md-8 col-12">
-        @for (item of cartListData; track $index; let i=$index) {
-        <div class="cart-section mt-3 py-2 px-0 row">
-          <div class="col-12 col-md-3">
-            <div class="wrapper-img bg-light p-2 rounded-2 text-center">
-              <img [src]="item?.product?.media?.uploadedImages[0]?.url" alt=""
-                class="object-contain rounded-2 w-100" />
-            </div>
-          </div>
-          <div class="col-12 col-md-9">
-            <div class="wrapper-content">
-              <div class="d-flex align-items-center">
-                <h5 class="heading text-truncate text-capitalize">{{ item.product.title }}</h5>
-
-                <button (click)="deleteCartItem(item.id)" title="Remove"
-                  class="lh-0 btn cancel-btn p-2 d-flex align-items-center"
-                  [ngClass]="{'invisible': item.quantity <= 1}" data-bs-toggle="modal" data-bs-target="#removeProject">
-                  <i class="fa-solid fa-trash text-danger"></i>
-                </button>
-
+    @if (cartListData.length > 0) {
+      <div class="row">
+        <!-- product config section start-->
+        <div class="col-md-8 col-12">
+          @for (item of cartListData; track $index; let i = $index) {
+            <div class="cart-section mt-3 py-2 px-0 row">
+              <div class="col-12 col-md-3">
+                <div class="wrapper-img bg-light p-2 rounded-2 text-center">
+                  <img
+                    [src]="item?.product?.media?.uploadedImages[0]?.url"
+                    alt=""
+                    class="object-contain rounded-2 w-100"
+                  />
+                </div>
               </div>
-              <ul>
-                <li class="counter d-flex align-items-center">
-                  <span class="fw-semibold config-title">Quantity</span>
-                  <div class="rounded-2 counter d-flex align-items-center mt-1 border">
-                    @if(item.quantity > 1){
-                    <button class="minus btn px-2 py-1 rounded-start rounded-end-0 opacity-75"
-                      (click)="decrease(item.quantity, i)">
-                      <i class="fa-solid fa-minus fa-sm"></i>
-                    </button>
-                    }
-                    @if(item.quantity == 1){
-                    <button class="btn px-2 py-1 rounded-start rounded-end-0 opacity-75" data-bs-toggle="modal"
-                      data-bs-target="#removeProject" (click)="deleteCartItem(item.id)">
-                      <i class="fa-solid fa-trash text-danger fa-sm"></i>
-                    </button>
-                    }
+              <div class="col-12 col-md-9">
+                <div class="wrapper-content">
+                  <div class="d-flex align-items-center">
+                    <h5 class="heading text-truncate text-capitalize">{{ item.product.title }}</h5>
 
-                    <span class="number fw-500 px-2">{{ item.quantity }}</span>
-
-                    <button class="plus btn px-2 py-1 rounded-end rounded-start-0 opacity-75"
-                      (click)="increase(item.quantity, i)">
-                      <i class="fa-solid fa-plus fa-sm"></i>
+                    <button
+                      (click)="deleteCartItem(item.id)"
+                      title="Remove"
+                      class="lh-0 btn cancel-btn p-2 d-flex align-items-center"
+                      [ngClass]="{ invisible: item.quantity <= 1 }"
+                      data-bs-toggle="modal"
+                      data-bs-target="#removeProject"
+                    >
+                      <i class="fa-solid fa-trash text-danger"></i>
                     </button>
                   </div>
-                </li>
-                <li class="mt-3">
-                  <span class="fw-semibold d-inline-block config-title">price</span>
-                  <span>₹{{ item.product.price_data.finalPrice }}</span>
-                </li>
-                <li class="mt-3" *ngIf="item.quantity > 1">
-                  <!-- <span class="">₹{{item.product.price_data.regularPrice}}</span> -->
-                  <div class="price gap-0">
-                    <span class="d-inline-block fw-semibold config-title text-dark fs-14">Unit price</span>
-                    <span class="price-cut fs-12">₹{{ item.product.price_data.regularPrice }}</span>
-                    <span class="new-price ps-2 fs-14">₹{{ item.product.price_data.salePrice }}</span>
-                  </div>
-                </li>
-              </ul>
+                  <ul>
+                    <li class="counter d-flex align-items-center">
+                      <span class="fw-semibold config-title">Quantity</span>
+                      <div class="rounded-2 counter d-flex align-items-center mt-1 border">
+                        @if (item.quantity > 1) {
+                          <button
+                            class="minus btn px-2 py-1 rounded-start rounded-end-0 opacity-75"
+                            (click)="decrease(item.quantity, i)"
+                          >
+                            <i class="fa-solid fa-minus fa-sm"></i>
+                          </button>
+                        }
+                        @if (item.quantity == 1) {
+                          <button
+                            class="btn px-2 py-1 rounded-start rounded-end-0 opacity-75"
+                            data-bs-toggle="modal"
+                            data-bs-target="#removeProject"
+                            (click)="deleteCartItem(item.id)"
+                          >
+                            <i class="fa-solid fa-trash text-danger fa-sm"></i>
+                          </button>
+                        }
+
+                        <span class="number fw-500 px-2">{{ item.quantity }}</span>
+
+                        <button
+                          class="plus btn px-2 py-1 rounded-end rounded-start-0 opacity-75"
+                          (click)="increase(item.quantity, i)"
+                        >
+                          <i class="fa-solid fa-plus fa-sm"></i>
+                        </button>
+                      </div>
+                    </li>
+                    <li class="mt-3">
+                      <span class="fw-semibold d-inline-block config-title">price</span>
+                      <span>₹{{ item.product.price_data.finalPrice }}</span>
+                    </li>
+                    <li class="mt-3" *ngIf="item.quantity > 1">
+                      <!-- <span class="">₹{{item.product.price_data.regularPrice}}</span> -->
+                      <div class="price gap-0">
+                        <span class="d-inline-block fw-semibold config-title text-dark fs-14"
+                          >Unit price</span
+                        >
+                        <span class="price-cut fs-12"
+                          >₹{{ item.product.price_data.regularPrice }}</span
+                        >
+                        <span class="new-price ps-2 fs-14"
+                          >₹{{ item.product.price_data.salePrice }}</span
+                        >
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
-          </div>
+          }
         </div>
-        }
-      </div>
-      <!-- product config section end-->
+        <!-- product config section end-->
 
-      <!-- order summary section start -->
-      <div class="col-md-4 col-12">
-        <div class="mt-3 rounded px-md-2 px-0 pt-2 shadow-sm bg-white">
-          <h3 class="wrapper-heading  fs-12 mb-3 ps-3 shadow-sm py-2 fs-18 text-center" style="background-color: #f1f2f7;">
-            Order Summary</h3>
+        <!-- order summary section start -->
+        <div class="col-md-4 col-12">
+          <div class="mt-3 rounded px-md-2 px-0 pt-2 shadow-sm bg-white">
+            <h3
+              class="wrapper-heading fs-12 mb-3 ps-3 shadow-sm py-2 fs-18 text-center"
+              style="background-color: #f1f2f7"
+            >
+              Order Summary
+            </h3>
 
+            <!-- Coupon -->
+            @if (this.appliedCoupon == '') {
+              <div class="d-flex justify-content-between align-items-center bg-white px-3 pb-2">
+                <span class="fw-semibold">Have a coupon?</span>
+                <button
+                  type="button"
+                  class="shop-btn sm-btn fs-12"
+                  data-bs-toggle="modal"
+                  data-bs-target="#couponModal"
+                >
+                  Apply
+                </button>
+              </div>
+              <hr class="mt-0" />
+            }
+            @if (this.appliedCoupon != '') {
+              <!-- <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2"> -->
+              <div
+                class="alert alert-success d-flex align-items-center gap-2 shadow-sm p-2"
+                role="alert"
+              >
+                <span class="bg-primary text-white fw-semibold opacity-75 p-1">{{
+                  appliedCoupon
+                }}</span
+                ><span class="text-success">20% Off Applied</span>
+                <button
+                  type="button"
+                  class="btn btn-sm text-danger ms-auto"
+                  (click)="removeCoupon()"
+                >
+                  <i class="fa-solid fa-times"></i>
+                </button>
+              </div>
+            }
+            <div class="order-summery">
+              <div class="subtotal product-total px-3">
+                <div class="wrapper-heading fs-12 fw-semibold">Subtotal</div>
+                <div class="wrapper-heading fs-12">
+                  ₹{{ gstSummary?.base_total | number: '1.2-2' }}
+                </div>
+              </div>
+              <div class="subtotal product-total px-3">
+                <div class="wrapper-heading fs-12 fw-semibold">Discount</div>
+                <div class="wrapper-heading fs-12">
+                  ₹{{ gstSummary?.discount_total | number: '1.2-2' }}
+                </div>
+              </div>
+              <div class="subtotal product-total px-3">
+                <div class="wrapper-heading fs-12 fw-semibold">CGST</div>
+                <div class="wrapper-heading fs-12">
+                  ₹{{ gstSummary?.total_cgst | number: '1.2-2' }}
+                </div>
+              </div>
 
-          <!-- Coupon -->
-          @if (this.appliedCoupon == '') {
-          <div class="d-flex justify-content-between align-items-center bg-white px-3 pb-2">
-            <span class="fw-semibold">Have a coupon?</span>
-            <button type="button" class="shop-btn sm-btn fs-12" data-bs-toggle="modal" data-bs-target="#couponModal">
-              Apply
-            </button>
-          </div>
-          <hr class="mt-0"/>
-          }
-          @if (this.appliedCoupon !='') {
-          <!-- <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2"> -->
-          <div class="alert alert-success d-flex align-items-center gap-2 shadow-sm p-2" role="alert">
-            <span class="bg-primary text-white fw-semibold opacity-75 p-1">{{appliedCoupon}}</span><span class="text-success">20% Off Applied</span>
-            <button type="button" class="btn btn-sm text-danger ms-auto" (click)="removeCoupon()">
-              <i class="fa-solid fa-times"></i> </button>
-          </div>
-          }
-          <div class="order-summery">
-            <div class="subtotal product-total px-3">
-              <div class="wrapper-heading  fs-12 fw-semibold">Subtotal</div>
-              <div class="wrapper-heading  fs-12">₹{{ gstSummary?.base_total | number:'1.2-2' }}</div>
-            </div>
-            <div class="subtotal product-total px-3">
-              <div class="wrapper-heading  fs-12 fw-semibold">Discount</div>
-              <div class="wrapper-heading  fs-12">₹{{ gstSummary?.discount_total | number:'1.2-2' }}</div>
-            </div>
-            <div class="subtotal product-total px-3">
-              <div class="wrapper-heading  fs-12 fw-semibold">CGST</div>
-              <div class="wrapper-heading  fs-12">₹{{ gstSummary?.total_cgst | number:'1.2-2' }}</div>
-            </div>
+              <div class="subtotal product-total px-3">
+                <div class="wrapper-heading fs-12 fw-semibold">SGST</div>
+                <div class="wrapper-heading fs-12">
+                  ₹{{ gstSummary?.total_sgst | number: '1.2-2' }}
+                </div>
+              </div>
 
-            <div class="subtotal product-total px-3">
-              <div class="wrapper-heading  fs-12 fw-semibold">SGST</div>
-              <div class="wrapper-heading  fs-12">₹{{ gstSummary?.total_sgst | number:'1.2-2' }}</div>
-            </div>
+              <div class="subtotal product-total px-3">
+                <div class="wrapper-heading fs-12 fw-semibold">Total Tax</div>
+                <div class="wrapper-heading fs-12">
+                  ₹{{ gstSummary?.total_tax | number: '1.2-2' }}
+                </div>
+              </div>
 
-            <div class="subtotal product-total px-3">
-              <div class="wrapper-heading  fs-12 fw-semibold">Total Tax</div>
-              <div class="wrapper-heading  fs-12">₹{{ gstSummary?.total_tax | number:'1.2-2' }}</div>
-            </div>
-
-            <div class="subtotal product-total px-3">
-              <div class="wrapper-heading  fs-12 fw-semibold">Grand Total</div>
-              <div class="wrapper-heading  fs-12 fw-bold text-success">
-                ₹{{gstSummary?.final_total | number:'1.2-2' }}
+              <div class="subtotal product-total px-3">
+                <div class="wrapper-heading fs-12 fw-semibold">Grand Total</div>
+                <div class="wrapper-heading fs-12 fw-bold text-success">
+                  ₹{{ gstSummary?.final_total | number: '1.2-2' }}
+                </div>
               </div>
             </div>
-          </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-          <!-- Coupon -->
-          <!-- <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2">
+            <!-- Coupon -->
+            <!-- <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2">
             <span class="fw-semibold fs-14">Have a coupon?</span>
             <button
               type="button"
@@ -300,23 +358,23 @@
               Apply
             </button>
           </div> -->
-          <!-- <hr class=my-2 /> -->
-          <!-- Bill details -->
-          <div class="bg-white px-3 py-2 mt-2">
-            <p class="fw-semibold fs-14 text-dark mb-2">Bill details</p>
-            <div class="d-flex justify-content-between mb-1">
-              <span>Items total</span><span class="fw-bold">₹{{ grandTotal }}</span>
-            </div>
-            <!-- <div class="d-flex justify-content-between mb-1"><span>Delivery charge</span><span>₹40</span></div>
+            <!-- <hr class=my-2 /> -->
+            <!-- Bill details -->
+            <div class="bg-white px-3 py-2 mt-2">
+              <p class="fw-semibold fs-14 text-dark mb-2">Bill details</p>
+              <div class="d-flex justify-content-between mb-1">
+                <span>Items total</span><span class="fw-bold">₹{{ grandTotal }}</span>
+              </div>
+              <!-- <div class="d-flex justify-content-between mb-1"><span>Delivery charge</span><span>₹40</span></div>
                             <div class="d-flex justify-content-between mb-1"><span>Handling fees</span><span>₹16</span></div>
                             <div class="d-flex justify-content-between border-bottom pb-2 mb-2"><span>GST total</span><span>₹9</span></div>
                             <div class="d-flex justify-content-between fw-semibold mb-2"><span>Grand total</span><span>₹1458</span></div>
                             <div class="summary-box text-center">Total savings on this order ₹236</div> -->
-          </div>
+            </div>
 
-          <hr class=my-2 />
-          <!-- Delivery -->
-          <!-- <div class="bg-white px-3 pt-2 pb-4 mt-3">
+            <hr class="my-2" />
+            <!-- Delivery -->
+            <!-- <div class="bg-white px-3 pt-2 pb-4 mt-3">
             <div class="d-flex justify-content-between align-items-center">
               <p class="fw-semibold fs-14 text-dark mb-0">Delivering to:</p>
               <button
@@ -329,28 +387,34 @@
             </div>
           </div> -->
 
-          <!-- <div class="wishlist-btn cart-btn mb-2"> -->
-          <!-- <a href="empty-cart.html" class="clean-btn">Clear Cart</a> -->
-          <!-- <a href="#" class="shop-btn update-btn">Update Cart</a> -->
-          <!-- <a [routerLink]="isLoggedIn ? '/checkout' : 'openLogin()'" class="shop-btn w-100 mb-2"
+            <!-- <div class="wishlist-btn cart-btn mb-2"> -->
+            <!-- <a href="empty-cart.html" class="clean-btn">Clear Cart</a> -->
+            <!-- <a href="#" class="shop-btn update-btn">Update Cart</a> -->
+            <!-- <a [routerLink]="isLoggedIn ? '/checkout' : 'openLogin()'" class="shop-btn w-100 mb-2"
               >Proceed to Checkout</a
             > -->
-          <a (click)="proccedToCheckout()" class="shop-btn w-100 oder-btn">Proceed to Checkout</a>
-          <!-- </div> -->
+            <a (click)="proccedToCheckout()" class="shop-btn w-100 oder-btn">Proceed to Checkout</a>
+            <!-- </div> -->
+          </div>
+          <!-- order summary section end -->
         </div>
-        <!-- order summary section end -->
       </div>
-    </div>
     }
-
-  
   </div>
 </section>
 <!--------------- cart-section-end---------------->
 
 <!-- Modal -->
-<div #couponModal class="modal mobile-modal fade" id="couponModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="couponModalLabel" aria-hidden="true">
+<div
+  #couponModal
+  class="modal mobile-modal fade"
+  id="couponModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="couponModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header py-2">
@@ -361,12 +425,18 @@
       </div>
       <div class="modal-body text-center">
         <p class="fw-bold">Enter your coupon code here</p>
-        <input type="text" formControlName="productTitle" class="form-control" id="productTitle" placeholder="Enter coupon code" #couponInput>
+        <input
+          type="text"
+          formControlName="productTitle"
+          class="form-control"
+          id="productTitle"
+          placeholder="Enter coupon code"
+          #couponInput
+        />
         <!-- <p class="position-relative bg-white rounded-circle mx-auto">
             <img src="assets/images/svg/coupon.svg" alt="" style="filter: drop-shadow(0 11px 15px);">
         </p> -->
         <span>
-
           <!-- <h4 class="text-primary">Coupon applied!</h4>
             <p class="fs-12 text-muted">KDVND6565FDVDSDF</p>
             <div class="alert alert-success mb-0" role="alert">
@@ -377,15 +447,23 @@
       </div>
       <div class="modal-footer border-0 py-2">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="shop-btn ms-2" (click)="checkCoupon(couponInput.value)">Apply</button>
+        <button type="button" class="shop-btn ms-2" (click)="checkCoupon(couponInput.value)">
+          Apply
+        </button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Delete product Modal -->
-<div #deleteCart class="modal mobile-modal fade" id="removeProject" tabindex="-1" aria-labelledby="removeProjectLabel"
-  aria-hidden="true">
+<div
+  #deleteCart
+  class="modal mobile-modal fade"
+  id="removeProject"
+  tabindex="-1"
+  aria-labelledby="removeProjectLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header py-2">
