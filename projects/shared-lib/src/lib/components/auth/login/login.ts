@@ -175,7 +175,9 @@ private platformId = inject(PLATFORM_ID);
         password: this.resetPasswordForm.value.password,
         password_confirmation: this.resetPasswordForm.value.confirmPassword,
       };
-      apiUrl = 'auth/reset-password-token';
+      // apiUrl = 'auth/reset-password-token';
+      apiUrl = 'auth/reset-password';
+
     }
     this.dataService
       .post(payload, apiUrl)
@@ -316,12 +318,16 @@ private platformId = inject(PLATFORM_ID);
     if (action == 'deny') {
       // this.activeModal.close({result:null});
       this.activeModal.dismiss();
-      this.router.navigate(['/']).then(() => {
+   
+      if(this.router.url!='/cart'){
+  this.router.navigate(['/']).then(() => {
         if (this.isBrowser) {
           window.location.reload(); // Reload the page after navigating
         }
       });
 
+      }
+    
       // return;
     } else {
       this.activeModal.close({ result: 'success' });

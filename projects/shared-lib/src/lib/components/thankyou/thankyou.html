@@ -9,9 +9,57 @@
                 <h1 class="fs-4">Thank You !</h1>
                 <p class="mb-4">Order Placed Successfully</p>
                 <a href="/" class="btn btn-outline-success fw-semibold">Back to home</a>
+                <a (click)="openRateUsModal()" class="btn btn-outline-success fw-semibold ms-2">Rate Us</a>
+
                 <!-- <button class="shop-btn py-2 px-3 ms-3">Rate Us</button> -->
             </div>
         </div>
     </div>
 </div>
     
+<div #rateusModal class="modal mobile-modal fade" id="rateusModal" tabindex="-1" aria-labelledby="rateusModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Header -->
+      <div class="modal-header py-2">
+        <h5 class="modal-title" id="rateusModalLabel">Rate Us</h5>
+        <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <form [formGroup]="rateUsForm" (ngSubmit)="submitRating()">
+        <div class="modal-body text-center">
+          <p class="mb-2">How was your experience?</p>
+
+          <!-- ⭐ Star Rating -->
+          <div class="rating-stars mb-3">
+            <i *ngFor="let star of stars; let i = index" class="fa-star cursor-pointer" [ngClass]="{
+                'fa-solid active': i < rateUsForm.value.rating,
+                'fa-regular': i >= rateUsForm.value.rating
+              }" (click)="setRating(i + 1)"></i>
+          </div>
+
+          <div class="text-danger small" *ngIf="rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid">
+            Please select a rating
+          </div>
+
+          <!-- Feedback -->
+          <textarea class="form-control mt-3" rows="3" placeholder="Write your feedback (optional)"
+            formControlName="comment"></textarea>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+          <button type="submit" class="shop-btn ms-2" [disabled]="rateUsForm.invalid">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

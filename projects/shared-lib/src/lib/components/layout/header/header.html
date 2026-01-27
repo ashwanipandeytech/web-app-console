@@ -19,7 +19,8 @@
       [ngClass]="{'bg-light': !currentAddress}" 
       style="padding: 10px;"
       title="{{currentAddress}}">
-        {{currentAddress}}
+        <!-- {{currentAddress}} -->
+         <p class="truncate">{{ currentAddress }}</p>
         @if(!currentAddress){
           <span> Select Location</span>
           <i class="fa-solid fa-chevron-down fa-sm ms-1 align-middle ms-2"></i>
@@ -102,7 +103,7 @@
         <a 
           class="dropdown-item px-3 py-2 fs-14"
           [routerLink]="['/user-profile']"
-          [queryParams]="{ key: 'account' }"
+          [queryParams]="{ section: 'account' }"
           >
           <span><i class="fa-solid fa-lg opacity-75 fa-user-tie"></i></span>My Account</a
         >
@@ -111,15 +112,19 @@
         <a
           class="dropdown-item px-3 py-2 fs-14"
           [routerLink]="['/user-profile']"
-          [queryParams]="{ key: 'Orders' }"
-          ><span><i class="fa-solid fa-lg opacity-75 fa-bag-shopping"></i></span>My Order</a
+          [queryParams]="{ section: 'Orders' }"
+          ><span><i class="fa-solid fa-lg opacity-75 fa-bag-shopping"></i></span>My Order
+            @if(countsList?.order_count > 0) {
+           <span class="badge text-bg-primary ms-2">{{ countsList?.order_count }}</span>
+            }
+            </a
         >
       </li>
       <li class="mb-1">
         <a
           class="dropdown-item px-3 py-2 fs-14"
           [routerLink]="['/user-profile']"
-          [queryParams]="{ key: 'wishlist' }"
+          [queryParams]="{ section: 'wishlist' }"
           ><span><i class="fa-solid fa-lg opacity-75 fa-heart"></i></span>Wishlist
           @if(countsList?.wishlist_count > 0) {
           <span class="badge text-bg-primary ms-2">{{ countsList?.wishlist_count }}</span>
@@ -130,7 +135,7 @@
         <a
           class="dropdown-item px-3 py-2 fs-14"
           [routerLink]="['/user-profile']"
-          [queryParams]="{ key: 'address' }"
+          [queryParams]="{ section: 'address' }"
           ><span><i class="fa-solid fa-lg opacity-75 fa-house"></i></span> Address</a
         >
       </li>

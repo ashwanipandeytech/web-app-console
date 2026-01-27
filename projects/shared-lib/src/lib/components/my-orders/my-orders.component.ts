@@ -21,28 +21,28 @@ import { GlobalFunctionService } from '../../services/global-function.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SignalService } from '../../services/signal-service';
 import { MobileBottomNavComponent } from '../mobile-bottom-nav/mobile-bottom-nav.component';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-my-orders',
   templateUrl: './my-orders.component.html',
-  imports: [CommonModule, NoDataComponent, ReactiveFormsModule,MobileBottomNavComponent],
+  imports: [CommonModule, NoDataComponent, ReactiveFormsModule, MobileBottomNavComponent, RouterLink],
   styleUrls: ['./my-orders.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyOrdersComponent implements OnInit {
   @ViewChild('orderDetail') orderDetail!: ElementRef;
   @ViewChild('rateusModal') rateusModal!: ElementRef;
- @ViewChild('confirmCancelOrder') confirmCancelOrder!: ElementRef;
-@ViewChildren('collapseRef') collapseRefs!: QueryList<ElementRef>;
+  @ViewChild('confirmCancelOrder') confirmCancelOrder!: ElementRef;
+  @ViewChildren('collapseRef') collapseRefs!: QueryList<ElementRef>;
   dataService = inject(DataService);
   private cd = inject(ChangeDetectorRef);
   public globalService: any = inject(GlobaCommonlService);
   private globalFunctionService = inject(GlobalFunctionService);
   private signalService = inject(SignalService);
   private fb = inject(FormBuilder);
-   private route = inject(Router);
+  private route = inject(Router);
   orderListData: any = [];
   orderId: any;
   orderDetailList: any = {};
@@ -51,7 +51,7 @@ export class MyOrdersComponent implements OnInit {
   stars = [1, 2, 3, 4, 5];
   private platformId = inject(PLATFORM_ID);
   isBrowser: boolean;
-  
+
   constructor() {
     this.isBrowser = isPlatformBrowser(this.platformId);
 
@@ -76,7 +76,7 @@ export class MyOrdersComponent implements OnInit {
       return;
 
     }
-     this.addRateUsForm();
+    this.addRateUsForm();
     this.orderList();
   }
   addRateUsForm() {
@@ -92,18 +92,18 @@ export class MyOrdersComponent implements OnInit {
   // //console.log('item===>',item);
   // this.orderId = item.id;
   // }
-  submitRating(item:any='',productId:any='',index:any=''): void {
-        let apiUrl = 'rate-product';
+  submitRating(item: any = '', productId: any = '', index: any = ''): void {
+    let apiUrl = 'rate-product';
     if (this.rateUsForm.invalid) {
       this.rateUsForm.markAllAsTouched();
       return;
     }
     const payload = this.rateUsForm.value;
     if (!productId) {
-         apiUrl = 'rate';
+      apiUrl = 'rate';
     }
-console.log('this.rateUsForm==>',this.rateUsForm.value);
-console.log('this.productid==>',productId);
+    console.log('this.rateUsForm==>', this.rateUsForm.value);
+    console.log('this.productid==>', productId);
 
     payload.product_id = productId;
     // payload.orderId = this.orderId;
@@ -123,7 +123,7 @@ console.log('this.productid==>',productId);
           this.closeRatingPopup(index);
           item.product_review = {
             comment: payload.comment,
-            rating:payload.rating
+            rating: payload.rating
           }
           this.cd.detectChanges();
           // this.updateratingInorderList(productId);
@@ -146,8 +146,8 @@ console.log('this.productid==>',productId);
 
     this.rateUsForm.reset();
   }
-updateratingInorderList(productId:any){
-   this.dataService
+  updateratingInorderList(productId: any) {
+    this.dataService
       .get('orders')
       .pipe(
         catchError((err) => {
@@ -161,31 +161,31 @@ updateratingInorderList(productId:any){
           // this.orderListData = [...res.data.data];
 
 
-//            this.orderListData = this.orderListData.map((order:any) => {
-//     if (order.id !== this.orderId) return order;
-// console.log('order-------------------------',order);
+          //            this.orderListData = this.orderListData.map((order:any) => {
+          //     if (order.id !== this.orderId) return order;
+          // console.log('order-------------------------',order);
 
-//     return {
-//       ...order,
-//       items: order.items.map((line: any) =>
-//       line.product_id === productId
-//             ? {
-//                 ...line,
-//                 product_review: {
-//                   ...line.product_review,
-//                   rating: line.product_review.rating,
-//                   comment: line.product_review.comment
-//                 }
-//               }
-//             : line
-//       )
-//     };
-//   });
+          //     return {
+          //       ...order,
+          //       items: order.items.map((line: any) =>
+          //       line.product_id === productId
+          //             ? {
+          //                 ...line,
+          //                 product_review: {
+          //                   ...line.product_review,
+          //                   rating: line.product_review.rating,
+          //                   comment: line.product_review.comment
+          //                 }
+          //               }
+          //             : line
+          //       )
+          //     };
+          //   });
           this.cd.detectChanges();
 
         }
       })
-}
+  }
   deleteMyOrder(id: any) {
     this.orderId = id;
   }
@@ -201,32 +201,65 @@ updateratingInorderList(productId:any){
       .subscribe((res: any) => {
         //console.log('Response:===>', res);
         if (res.success == true) {
-          this.orderListData = res.data.data;
+          this.orderListData = res.data;
+
+          this.orderListData.map((item: any) => {
+
+            item.expected_delivery = this.getFormattedDeliveryDate(item.created_at)
+          });
           this.isLoading = false;
           this.cd.detectChanges();
           // this.router.navigate(['/cart']);
         }
       });
   }
+  getFormattedDeliveryDate(createdAt: string): string {
+    const date = new Date(createdAt);
+    date.setDate(date.getDate() + 5);
+
+    // Returns "Jan 31"
+    return date.toLocaleString('en-US', { month: 'short', day: '2-digit' });
+  }
 
 
-  closeRatingPopup(index:any) {
+  closeRatingPopup(index: any) {
     if (this.isBrowser) {
       const collapse = bootstrap.Collapse.getOrCreateInstance(
-    this.collapseRefs.toArray()[index].nativeElement
-  );
-  collapse.hide();
+        this.collapseRefs.toArray()[index].nativeElement
+      );
+      collapse.hide();
 
-  }
+    }
   }
   cancelOrder() {
-   if (this.isBrowser) {
-        const modal = bootstrap.Modal.getInstance(
-          this.confirmCancelOrder.nativeElement
-        );
-        modal.hide();
-      }
-          this.route.navigate(['/contact-us']);
+    if (this.isBrowser) {
+      const modal = bootstrap.Modal.getInstance(
+        this.confirmCancelOrder.nativeElement
+      );
+      modal.hide();
+    }
+
+
+    this.orderId
+    this.dataService
+      .post('', 'orders/' + this.orderId + '/cancel')
+      .pipe(
+        catchError((err) => {
+          console.error('Error:', err);
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        //console.log('Response:', res);
+        if (res.success == true) {
+          this.globalService.showMsgSnackBar(res);
+          this.globalFunctionService.getCount();
+          this.cd.detectChanges();
+
+        } else if (res.error && res.error.message) {
+          this.globalService.showMsgSnackBar(res.error);
+        }
+      });
 
   }
 
@@ -282,5 +315,15 @@ updateratingInorderList(productId:any){
           this.globalService.showMsgSnackBar(res.error);
         }
       });
+  }
+  goToHelp() {
+
+    const modalElement = this.orderDetail.nativeElement;
+    const modalInstance = bootstrap.Modal.getInstance(modalElement)
+      || new bootstrap.Modal(modalElement);
+    modalInstance.hide();
+
+
+    this.route.navigate(['/contact-us']);
   }
 }

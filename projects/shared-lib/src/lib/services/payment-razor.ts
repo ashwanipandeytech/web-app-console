@@ -1,16 +1,28 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
-declare var Razorpay: any;
+import { DataService } from './data-service';
 
+declare var Razorpay: any;
+interface IntentResponse {
+  success: boolean;
+  data: {
+    intent_id: string; // This is the Razorpay Order ID
+    amount: number;
+    currency: string;
+    key: string;
+    name: string;
+  }
+}
 @Injectable({
   providedIn: 'root'
 })
+
 export class RazorpayService {
   isBrowser: boolean; // Add this
-
+  private dataService = inject(DataService);
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { // Inject PLATFORM_ID
     this.isBrowser = isPlatformBrowser(this.platformId); // Initialize isBrowser
   }
@@ -80,7 +92,7 @@ export class RazorpayService {
 
 //   res.status(200).send('OK');
 // });
-openCheckout(payload: any): Observable<any> {
+openCheckout1(payload: any): Observable<any> {
   return new Observable(observer => {
     if (this.isBrowser) {
       const options: any = {
@@ -128,6 +140,65 @@ openCheckout(payload: any): Observable<any> {
       observer.error('Razorpay not available on server side');
     }
   });
+}
+
+
+
+// 2. Your updated method
+openCheckout(internalOrderId: number, payload: any): Observable<any> {
+  // First, call = Intent API
+   
+  // this.http.post<IntentResponse>('/api/v1/payments/create-intent', {
+  //   order_id: internalOrderId,
+  //   gateway: 'razorpay'
+  // })
+  return this.dataService.post({order_id: internalOrderId,gateway: 'razorpay'}, 'payments/create-intent')
+  .pipe(
+    switchMap(res => {
+      return new Observable(observer => {
+        if (!this.isBrowser) {
+          observer.error('Not a browser');
+          return;
+        }
+
+        const options: any = {
+          key: res.data.key, // Use key from backend
+          amount: res.data.amount * 100, // Razorpay expects paise (400 -> 40000)
+          currency: res.data.currency,
+          name: res.data.name,
+          order_id: res.data.intent_id, // <--- THIS IS THE MAGIC LINK
+          description: 'Payment for Order #' + internalOrderId,
+          image: '/images/logos/logo.webp',
+          
+          handler: (response: any) => {
+         
+            // observer.next(response);
+            // observer.complete();
+             // ✅ PAYMENT SUCCESS
+          observer.next({
+            success: true,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_signature: response.razorpay_signature
+          });
+          observer.complete();
+          },
+          prefill: {
+            name: payload.name,
+            email: payload.email,
+            contact: payload.phone
+          },
+          theme: { color: '#3399cc' },
+          modal: {
+            ondismiss: () => observer.error('Payment cancelled by user')
+          }
+        };
+
+        const rzp = new (window as any).Razorpay(options);
+        rzp.open();
+      });
+    })
+  );
 }
 
 

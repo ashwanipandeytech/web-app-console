@@ -34,7 +34,7 @@ export class ProductDetails {
   public globalService: any = inject(GlobaCommonlService);
   private globalFunctionService = inject(GlobalFunctionService);
   readonly ngbModal = inject(NgbModal);
-
+  ratingStars: number[] = [1, 2, 3, 4, 5];
   isWishlisted = false;
   productListData: any = [];
   productDetails: any = {};
@@ -312,8 +312,8 @@ onMainAfterChange(event: any) {
       });
     }
     //  this.callAllProductList();
-    this.globalFunctionService.getCount();
-    this.cd.detectChanges();
+    // this.globalFunctionService.getCount();
+    // this.cd.detectChanges();
 
     // if (this.isWishlisted) {
     //   this.dataService.post(data,'wishlist').subscribe((res:any)=>{

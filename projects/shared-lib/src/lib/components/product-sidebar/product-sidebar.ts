@@ -15,6 +15,7 @@ import { NoDataComponent } from '../no-data/no-data.component';
   styleUrl: './product-sidebar.scss'
 })
 export class ProductSidebarCommon {
+  ratingStars: number[] = [1, 2, 3, 4, 5];
   public dataService:any= inject(DataService);
   private globalFunctionService = inject(GlobalFunctionService);
   productListData: any=[];
@@ -190,19 +191,26 @@ this.isLoading = false;
     }
     if (item.is_wishlisted) {
       item.is_wishlisted = !item.is_wishlisted;
-            this.dataService.delete('wishlist/product',data.product_id).subscribe((res:any)=>{
+       this.dataService.delete(`wishlist/product/${data.product_id}`).subscribe((res:any)=>{
+        this.globalFunctionService.getCount();
+        this.cd.detectChanges();
+
         //console.log('wishlist==>',res);
       })
     }
     else{
       item.is_wishlisted = !item.is_wishlisted
       this.dataService.post(data,'wishlist').subscribe((res:any)=>{
+    this.globalFunctionService.getCount();
+    this.cd.detectChanges();
+
+
         //console.log('wishlist==>',res);
       })
     }
     // this.callAllProductList();
-    this.globalFunctionService.getCount();
-    this.cd.detectChanges();
+    // this.globalFunctionService.getCount();
+    // this.cd.detectChanges();
   }
 
 }

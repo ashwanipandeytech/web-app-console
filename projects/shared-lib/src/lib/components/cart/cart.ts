@@ -279,6 +279,10 @@ export class CartCommon {
         //console.log('response==>', response);
         if (response.success == true) {
           this.cartListData = response.data.data;
+        if (this.cartListData.length<=0) {
+          localStorage.removeItem('appliedCoupon');
+          this.cd.detectChanges();
+        }
           this.calculateGstPrice(this.cartListData);
           for (let i = 0; i < this.cartListData.length; i++) {
             const element = this.cartListData[i];

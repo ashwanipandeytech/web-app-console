@@ -36,8 +36,17 @@
           </li>
         </ul>
 
-        <p class="text-muted fs-14 fw-bold">Delivery expected by Jan 05 / Shipped / Delivered / Refund completed /
-          Cancelled</p>
+        <p class="text-muted fs-14 fw-bold">
+          @if(item.status!='Cancelled' ||item.status!='Delivered'){
+          Delivery expected by  {{item.expected_delivery}}
+          }
+          
+          <!-- Delivery expected by Jan 05 / Shipped / Delivered / Refund completed /
+          Cancelled -->
+
+         {{ item.status | titlecase }}
+        
+        </p>
 
         <button type="button" class="icon-link icon-link-hover text-primary mt-sm-3">
           Order detail
@@ -219,7 +228,10 @@
           <div class="card border-0 shadow-sm p-3">
             <h6 class="fw-semibold mb-2 d-flex align-items-center">
               Delivery Detail
-              <a type="button" href="../pages/contact-us" class="shop-btn ms-3 fs-12 sm-btn help-btn">Help</a>
+              <a type="button"  
+               href="javascript:void(0)"
+               (click)="goToHelp()"
+              class="shop-btn ms-3 fs-12 sm-btn help-btn">Help</a>
             </h6>
 
             <div class="rounded-3 p-3" style="background-color: #f1f2f7">
@@ -227,7 +239,10 @@
               <div class="d-flex align-items-center mb-2">
                 <i class="fa-solid fa-location-dot me-2"></i>
                 <span class="fw-medium text-dark small text-capitalize fs-14">
-                  {{ orderDetailList?.address?.address_line}},
+                  @if(orderDetailList?.address?.address_line){
+  {{ orderDetailList?.address?.address_line}},
+                  }
+                
                   name:{{ orderDetailList?.address?.name }},
                   {{ orderDetailList?.address?.city }},
                   state:{{ orderDetailList?.address?.state }},
