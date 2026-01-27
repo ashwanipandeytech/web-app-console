@@ -437,7 +437,8 @@
 
             <div class="row g-3">
               @for (footer of settingsModel.footer; track $index) {
-              <div class="col-md-4">
+                @if(footer?.colHeading){
+  <div class="col-md-4">
                 <div class="bg-light p-2 rounded">
                   <div class="mb-2">
                     <div class="position-relative">
@@ -473,6 +474,8 @@
 
                 </div>
               </div>
+                }
+            
               }
             </div>
           </div>
@@ -490,7 +493,8 @@
           <div ngbAccordionBody>
             <div class="row g-3">
               @for (social of settingsModel.social; track $index) {
-              <div class="col-md-6">
+                @if( social?.label){
+     <div class="col-md-6">
                 <label class="form-label fw-semibold">{{ social.label | titlecase }}</label>
                 <div class="input-group">
                   <span class="input-group-text">
@@ -500,6 +504,8 @@
                     [(ngModel)]="social.link" placeholder="{{ social.label }} link">
                 </div>
               </div>
+                }
+         
               }
             </div>
           </div>
