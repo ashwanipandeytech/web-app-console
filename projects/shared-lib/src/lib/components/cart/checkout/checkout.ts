@@ -243,7 +243,7 @@ export class Checkout {
       )
       .subscribe((res: any) => {
         if (res.success == true) {
-           console.log('Response:', res);
+          console.log('Response:', res);
           // this.globalService.showMsgSnackBar(res);
           if (paymentMethod != 'cod') {
             // this.paymentUpdate(res, paymentResponse);
@@ -256,10 +256,26 @@ export class Checkout {
                 next: (response: any) => {
                   if (response.success) {
 
-                   
+                    this.dataService.post(response, 'payments/verify')
+                      .pipe(
+                        catchError(err => {
+                          console.error('Error:', err);
+                          return of(err);
+                        })
+                      )
+                      .subscribe((res: any) => {
+                        if (res.success == true) {
+
+
+                        }
+                      })
+
+
+
+
                     this.router.navigate(['/thank-you'], {
                       queryParams: {
-                        orderId:  res.data.data.id  // res.orderId   // 👈 pass your order id here
+                        orderId: res.data.data.id  // res.orderId   // 👈 pass your order id here
                       }
                     })
                     this.globalFunctionService.getCount();

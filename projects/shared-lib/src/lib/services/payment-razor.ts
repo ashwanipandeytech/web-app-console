@@ -172,15 +172,8 @@ openCheckout(internalOrderId: number, payload: any): Observable<any> {
           
           handler: (response: any) => {
          
-            // observer.next(response);
-            // observer.complete();
-             // ✅ PAYMENT SUCCESS
-          observer.next({
-            success: true,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_signature: response.razorpay_signature
-          });
+          
+          observer.next(response);
           observer.complete();
           },
           prefill: {
@@ -198,6 +191,7 @@ openCheckout(internalOrderId: number, payload: any): Observable<any> {
         rzp.open();
       });
     })
+    
   );
 }
 
