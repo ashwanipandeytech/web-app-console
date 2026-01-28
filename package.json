@@ -47,6 +47,7 @@
     "@ng-bootstrap/ng-bootstrap": "^19.0.1",
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
+    "bootstrap": "^5.3.8",
     "contentful": "^11.7.17",
     "express": "^5.1.0",
     "jquery": "^3.7.1",

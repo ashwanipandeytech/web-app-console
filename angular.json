@@ -198,6 +198,9 @@
               "node_modules/quill/dist/quill.bubble.css",
               "node_modules/quill/dist/quill.core.css",
               "projects/console-panel/src/styles.scss"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]
           },
           "configurations": {
