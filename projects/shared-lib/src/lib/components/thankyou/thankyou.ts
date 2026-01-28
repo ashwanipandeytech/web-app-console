@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { catchError, of } from 'rxjs';
-import { GlobaCommonlService } from 'shared-lib/services/global-common.service';
-import { DataService } from 'shared-lib/services/data-service';
+import { GlobaCommonlService } from '../../services/global-common.service';
+import { DataService } from '../../services/data-service';
 import { ActivatedRoute, Router } from '@angular/router';
 declare var bootstrap: any;
 @Component({
