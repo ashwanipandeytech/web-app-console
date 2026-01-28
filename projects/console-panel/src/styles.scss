@@ -21,3 +21,24 @@
     z-index: 99999;
 }
 
+.ql-html-popupTitle {
+	text-align: center;
+	font-weight: 600;
+}
+.ql-html-buttonGroup {
+  transform: unset !important;
+	bottom: -30px !important;
+	button {
+		padding: .5rem 1rem;
+		color: #fff;
+		font-size: 14px;
+		border-radius: 4px;
+		border: 0; 
+		&.ql-html-buttonCancel {
+			background: #da3a3a;
+		}
+		&.ql-html-buttonOk {
+			background: #0093dd;
+		}
+	}
+}

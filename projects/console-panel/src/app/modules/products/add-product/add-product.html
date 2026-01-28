@@ -1,12 +1,17 @@
+@if(activeModal) {
+  <div class="modal-header">
+    <h5 class="modal-title">Update Product</h5>
+    <button type="button" class="btn-close ms-auto" (click)="closeModal()"></button>
+  </div>
+}
 <!-- main content start -->
-<div class="main-content modal-body">
+<div class="main-content" [ngClass]="{'modal-body bg-light':activeModal}">
   <form [formGroup]="productMultipleOptionForm" (ngSubmit)="submitProductMultipleOptionForm()">
     <div class="breadcrumb mb-30">
-      {{isUpdateproduct}}
-      <h2>{{isUpdateproduct?'Update Product':'Add New Product'}}</h2>
+      <!-- {{isUpdateproduct}} -->
       <div class="btn-box">
-        @if (activeModal) {
-        <button type="button" class="btn btn-secondary fs-14" (click)="closeModal()">Close</button>
+        @if (!activeModal) {
+          <h2>Add New Product</h2>
         }
         <!-- <a href="all-product.html" class="btn btn-sm btn-primary">View All</a> -->
       </div>
@@ -51,7 +56,9 @@
                     class="fa fa-angle-up"></i></button>
               </div>
             </div>
-            <quill-editor formControlName="shortDescription" rows="5" [modules]="modulesNoImage"></quill-editor>
+            <div class="panel-body">
+              <quill-editor formControlName="shortDescription" rows="5" [modules]="modulesNoImage"></quill-editor>
+            </div>
           </div>
           <div class="panel mb-30">
             <div class="panel-header">
@@ -62,7 +69,9 @@
                     class="fa fa-angle-up"></i></button>
               </div>
             </div>
-            <quill-editor formControlName="productDescription" [modules]="modulesNoImage"></quill-editor>
+            <div class="panel-body">
+              <quill-editor formControlName="productDescription" [modules]="modulesNoImage"></quill-editor>
+            </div>
           </div>
 
           <div class="panel mb-30">
@@ -74,7 +83,9 @@
                     class="fa fa-angle-up"></i></button>
               </div> -->
             </div>
-            <quill-editor formControlName="features" [modules]="modulesNoImage"></quill-editor>
+            <div class="panel-body">
+              <quill-editor formControlName="features" [modules]="modulesNoImage"></quill-editor>
+            </div>
           </div>
 
           <div class="panel mb-30">
@@ -211,23 +222,26 @@
                         </div>
                       </div>
                     </div>
+
                     <hr>
 
-                    <div class="panel mb-30">
+                    <h5>Product Description Images <span>(jpeg/png)</span></h5>
+                    <form [formGroup]="productDetails">
+                      <quill-editor formControlName="productDescriptionImageGallery"
+                        [modules]="modulesWithImage"></quill-editor>
+                    </form>
+                    <!-- <div class="panel mb-30">
                       <div class="panel-header">
-                        <h5>Product Description Images <span>(jpeg/png)</span></h5>
-                        <!-- <div class="btn-box d-flex gap-2">
+                        <div class="btn-box d-flex gap-2">
                 <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
                 <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
                     class="fa fa-angle-up"></i></button>
-              </div> -->
+              </div>
                       </div>
-                      <form [formGroup]="productDetails">
-
-                        <quill-editor formControlName="productDescriptionImageGallery" [modules]="modulesWithImage"></quill-editor>
-                      </form>
+                      <div class="panel-body">
+                      </div>
                     </div>
-                    <!-- <div class="col-12 mt-4">
+                    <div class="col-12 mt-4">
                       <div class="add-gallery-img product-image-upload">
                         <div class="part-txt">
                           <h5>Product Description Images <span>(jpeg/png)</span></h5>
@@ -722,8 +736,8 @@
         </div>
       </div>
 
-      <div class="col-xxl-3 col-lg-4 add-product-sidebar">
-        <div class="mb-30 w-100">
+      <div class="col-xxl-3 col-lg-4">
+        <div class="position-sticky top-0 z-3 w-100 bg-white mb-30">
           @if (!this.isUpdateproduct) {
 
           <a type="button" class="btn btn-primary d-block" (click)="getProductDetails()">Publish</a>
@@ -734,205 +748,205 @@
           }
 
         </div>
-        @if(false){
-        <div class="panel mb-30">
-          <div class="panel-header">
-            <h5>Published</h5>
-            <div class="btn-box d-flex gap-2">
-              <button type="button" class="btn btn-sm btn-icon btn-outline-primary"><i
-                  class="fa fa-arrows-rotate"></i></button>
-              <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
-                  class="fa fa-angle-up"></i></button>
-            </div>
-          </div>
-          <div class="panel-body">
-            <div class="row g-3">
-              <div class="col-6">
-                <label class="form-label">Status</label>
-                <select class="form-control form-control-sm" formControlName="status">
-                  <option value="0">Published</option>
-                  <option value="1">Draft</option>
-                </select>
-              </div>
-              <div class="col-6">
-                <label class="form-label">Visibility</label>
-                <select class="form-control form-control-sm" formControlName="visibility">
-                  <option value="0">Public</option>
-                  <option value="1">Pass. Protected</option>
-                  <option value="2">Private</option>
-                </select>
-              </div>
-              <div class="col-12">
-                <div class="publish-date">
-                  <label>Published on: </label>
-                  <input class="input-flush" type="date" id="publishDate" formControlName="publishDate">
-                  <label for="publishDate" class="cursor-pointer text-primary"><i
-                      class="fa fa-pen-to-square"></i></label>
-                </div>
-                <!-- <div class="publish-date">
-                      <label>Published on: </label>
-                      <input class="input-flush" type="datetime-local" id="publishDate" formControlName="publishDate">
-                      <label for="publishDate" class="cursor-pointer text-primary"><i class="fa fa-pen-to-square"></i></label>
-                    </div> -->
+        <div class="add-product-sidebar">
+          @if(false){
+          <div class="panel mb-30">
+            <div class="panel-header">
+              <h5>Published</h5>
+              <div class="btn-box d-flex gap-2">
+                <button type="button" class="btn btn-sm btn-icon btn-outline-primary"><i
+                    class="fa fa-arrows-rotate"></i></button>
+                <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
+                    class="fa fa-angle-up"></i></button>
               </div>
             </div>
-          </div>
-        </div>
-        }
-        <div class="panel mb-30">
-          <div class="panel-header">
-            <h5>Category</h5>
-            <div class="btn-box d-flex gap-2">
-              <button type="button" class="btn btn-sm btn-icon btn-outline-primary">
-                <i class="fa fa-arrows-rotate"></i>
-              </button>
-              <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close">
-                <i class="fa fa-angle-up"></i>
-              </button>
-            </div>
-          </div>
-
-          <app-category-tree [categoriesData]="categoryListData" (selectedId)="onGetId($event)"></app-category-tree>
-        </div>
-        <!-- ✅ wrap everything under one form group -->
-        <!-- <div class="panel-body" [formGroup]="categoryForm"> -->
-        <!-- Search Form -->
-        <!-- <form (ngSubmit)="onSearch()" class="input-group-with-icon mb-20">
-                  <span class="input-icon">
-                    <i class="fa fa-magnifying-glass"></i>
-                  </span>
-                  <input
-                    type="search"
-                    formControlName="search"
-                    placeholder="Search category"
-                    class="form-control"
-                  />
-                </form> -->
-
-        <!-- Category Checkboxes -->
-        <!-- <div class="product-categories" formArrayName="selectedCategories">
-                  @for (control of selectedCategories.controls; track $index) {
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        [formControlName]="$index"
-                        id="category-{{$index}}"
-                      />
-                      <label class="form-check-label" for="category-{{$index}}">
-                        {{ getCategoryLabel($index) }}
-                      </label>
-                    </div>
-                  }
-                </div> -->
-
-        <!-- ✅ Visual divider -->
-        <!-- <div class="border-top mt-3 mb-3"></div> -->
-
-        <!-- Add New Category -->
-        <!-- <div class="d-flex justify-content-end">
-                  <button type="button" class="btn-flush add-category-btn">
-                    <i class="fa fa-plus"></i> Add new category
-                  </button>
-                </div> -->
-
-        <!-- ✅ Correctly nested child form group -->
-        <!-- <div class="add-new-category-panel mt-3" formGroupName="newCategory">
-                  <input
-                    type="text"
-                    class="form-control form-control-sm mb-3"
-                    formControlName="name"
-                    placeholder="Category Name"
-                  />
-                  <select
-                    class="form-control form-control-sm mb-3"
-                    formControlName="parent"
-                    data-placeholder="Select Parent"
-                  >
-                    <option value="">Select Parent</option>
-                    @for (category of categories; track $index) {
-                      <option [value]="category.name">{{ category.name }}</option>
-                    }
+            <div class="panel-body">
+              <div class="row g-3">
+                <div class="col-6">
+                  <label class="form-label">Status</label>
+                  <select class="form-control form-control-sm" formControlName="status">
+                    <option value="0">Published</option>
+                    <option value="1">Draft</option>
                   </select>
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Visibility</label>
+                  <select class="form-control form-control-sm" formControlName="visibility">
+                    <option value="0">Public</option>
+                    <option value="1">Pass. Protected</option>
+                    <option value="2">Private</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <div class="publish-date">
+                    <label>Published on: </label>
+                    <input class="input-flush" type="date" id="publishDate" formControlName="publishDate">
+                    <label for="publishDate" class="cursor-pointer text-primary"><i
+                        class="fa fa-pen-to-square"></i></label>
+                  </div>
+                  <!-- <div class="publish-date">
+                        <label>Published on: </label>
+                        <input class="input-flush" type="datetime-local" id="publishDate" formControlName="publishDate">
+                        <label for="publishDate" class="cursor-pointer text-primary"><i class="fa fa-pen-to-square"></i></label>
+                      </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          }
+          <div class="panel mb-30">
+            <div class="panel-header">
+              <h5>Category</h5>
+              <div class="btn-box d-flex gap-2">
+                <button type="button" class="btn btn-sm btn-icon btn-outline-primary">
+                  <i class="fa fa-arrows-rotate"></i>
+                </button>
+                <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close">
+                  <i class="fa fa-angle-up"></i>
+                </button>
+              </div>
+            </div>
 
-                  <div class="d-flex justify-content-end">
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-primary"
-                      (click)="addNewCategory()"
+            <app-category-tree [categoriesData]="categoryListData" (selectedId)="onGetId($event)"></app-category-tree>
+          </div>
+          <!-- ✅ wrap everything under one form group -->
+          <!-- <div class="panel-body" [formGroup]="categoryForm"> -->
+          <!-- Search Form -->
+          <!-- <form (ngSubmit)="onSearch()" class="input-group-with-icon mb-20">
+                    <span class="input-icon">
+                      <i class="fa fa-magnifying-glass"></i>
+                    </span>
+                    <input
+                      type="search"
+                      formControlName="search"
+                      placeholder="Search category"
+                      class="form-control"
+                    />
+                  </form> -->
+
+          <!-- Category Checkboxes -->
+          <!-- <div class="product-categories" formArrayName="selectedCategories">
+                    @for (control of selectedCategories.controls; track $index) {
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          [formControlName]="$index"
+                          id="category-{{$index}}"
+                        />
+                        <label class="form-check-label" for="category-{{$index}}">
+                          {{ getCategoryLabel($index) }}
+                        </label>
+                      </div>
+                    }
+                  </div> -->
+
+          <!-- ✅ Visual divider -->
+          <!-- <div class="border-top mt-3 mb-3"></div> -->
+
+          <!-- Add New Category -->
+          <!-- <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-flush add-category-btn">
+                      <i class="fa fa-plus"></i> Add new category
+                    </button>
+                  </div> -->
+
+          <!-- ✅ Correctly nested child form group -->
+          <!-- <div class="add-new-category-panel mt-3" formGroupName="newCategory">
+                    <input
+                      type="text"
+                      class="form-control form-control-sm mb-3"
+                      formControlName="name"
+                      placeholder="Category Name"
+                    />
+                    <select
+                      class="form-control form-control-sm mb-3"
+                      formControlName="parent"
+                      data-placeholder="Select Parent"
                     >
-                      Update
+                      <option value="">Select Parent</option>
+                      @for (category of categories; track $index) {
+                        <option [value]="category.name">{{ category.name }}</option>
+                      }
+                    </select>
+  
+                    <div class="d-flex justify-content-end">
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-primary"
+                        (click)="addNewCategory()"
+                      >
+                        Update
+                      </button>
+                    </div>
+                  </div> -->
+
+          <!-- </div> -->
+          <!-- </div> -->
+
+          @if(tagsForm){
+          <div class="panel" [formGroup]="tagsForm">
+            <div class="panel-header">
+              <h5>Products Tags</h5>
+              <div class="btn-box d-flex gap-2">
+                <button type="button" class="btn btn-sm btn-icon btn-outline-primary">
+                  <i class="fa fa-arrows-rotate"></i>
+                </button>
+                <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close">
+                  <i class="fa fa-angle-up"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="panel-body">
+              <div class="product-tag-area">
+                <!-- <form > -->
+                <div class="row g-3">
+                  <div class="col-9">
+                    <input type="text" class="input-flush form-control" id="productTags" placeholder="Enter tags"
+                      formControlName="tagInput" />
+                  </div>
+                  <div class="col-3">
+                    <button type="button" class="btn btn-sm btn-primary w-100" (click)="addTag()">
+                      Add
                     </button>
                   </div>
-                </div> -->
-
-        <!-- </div> -->
-        <!-- </div> -->
-
-        @if(tagsForm){
-        <div class="panel" [formGroup]="tagsForm">
-          <div class="panel-header">
-            <h5>Products Tags</h5>
-            <div class="btn-box d-flex gap-2">
-              <button type="button" class="btn btn-sm btn-icon btn-outline-primary">
-                <i class="fa fa-arrows-rotate"></i>
-              </button>
-              <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close">
-                <i class="fa fa-angle-up"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="panel-body">
-            <div class="product-tag-area">
-              <!-- <form > -->
-              <div class="row g-3">
-                <div class="col-9">
-                  <input type="text" class="input-flush form-control" id="productTags" placeholder="Enter tags"
-                    formControlName="tagInput" />
                 </div>
-                <div class="col-3">
-                  <button type="button" class="btn btn-sm btn-primary w-100" (click)="addTag()">
-                    Add
-                  </button>
-                </div>
-              </div>
-              <!-- </form> -->
+                <!-- </form> -->
 
-              <span class="input-txt">Use commas to separate tags</span>
+                <span class="input-txt">Use commas to separate tags</span>
 
-              <!-- Added tags -->
-              <div class="all-tags mt-2">
-                @for (tag of tagsForm.value.tags; track $index) {
-                <div class="item d-inline-block">
-                  {{ tag }}
-                  <span class="close-tag" (click)="removeTag($index)">
-                    <i class="fa fa-xmark"></i>
-                  </span>
-                </div>
-                }
-              </div>
-
-              <!-- Tag History -->
-              <div class="tag-history mt-3">
-                <span class="choose-used-tag input-txt">Choose from most used tags</span>
-                <div class="all-tags used-tags active">
-                  @for (tag of commonTags; track $index) {
-                  <div class="item d-inline-block" (click)="selectTag(tag)">
+                <!-- Added tags -->
+                <div class="all-tags mt-2">
+                  @for (tag of tagsForm.value.tags; track $index) {
+                  <div class="item d-inline-block">
                     {{ tag }}
-                    <span class="close-tag">
+                    <span class="close-tag" (click)="removeTag($index)">
                       <i class="fa fa-xmark"></i>
                     </span>
                   </div>
                   }
                 </div>
+
+                <!-- Tag History -->
+                <div class="tag-history mt-3">
+                  <span class="choose-used-tag input-txt">Choose from most used tags</span>
+                  <div class="all-tags used-tags active">
+                    @for (tag of commonTags; track $index) {
+                    <div class="item d-inline-block" (click)="selectTag(tag)">
+                      {{ tag }}
+                      <span class="close-tag">
+                        <i class="fa fa-xmark"></i>
+                      </span>
+                    </div>
+                    }
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          }
         </div>
-        }
-
-
       </div>
     </div>
 

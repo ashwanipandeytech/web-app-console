@@ -84,7 +84,7 @@
                             <li>Draft (05)</li>
                             <li>Trush (05)</li>
                         </ul>
-                    </div> -->
+                    </div>
                     <div class="table-filter-option">
                         <div class="row g-3">
                             <div class="col-xl-10 col-9 col-xs-12">
@@ -116,13 +116,13 @@
                                             <option value="7">Smart Phone</option>
                                         </select>
                                     </div>
-                                    <!-- <div class="col">
+                                    <.!-- <div class="col">
                                         <select class="form-control form-control-sm">
                                             <option value="0">All Product Type</option>
                                             <option value="1">Downloadable</option>
                                             <option value="2">Virtual</option>
                                         </select>
-                                    </div> -->
+                                    </div> --.>
                                     <div class="col">
                                         <select class="form-control form-control-sm">
                                             <option value="0">All Product Stock</option>
@@ -131,7 +131,7 @@
                                             <option value="3">On backorder</option>
                                         </select>
                                     </div>
-                                    <!-- <div class="col">
+                                    <.!-- <div class="col">
                                         <button class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter</button>
                                     </div>
                                     <div class="col">
@@ -165,90 +165,92 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                    </div> -->
+                                    </div> --.>
                                 </div>
                             </div>
                             <div class="col-xl-2 col-3 col-xs-12 d-flex justify-content-end">
                                 <div id="productTableLength"></div>
                             </div>
                         </div>
+                    </div> -->
+                    <div class="table-responsive">
+                        <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped"
+                            id="allProductTable">
+                            <thead>
+                                <tr>
+                                    <!-- <th class="no-sort">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="markAllProduct">
+                                        </div>
+                                    </th> -->
+                                    <th>Product</th>
+                                    <th>SKU</th>
+                                    <th>Stock</th>
+                                    <th>Price</th>
+                                    <th>Sales</th>
+                                    <th class="d-none">Rating</th>
+                                    <th>Published</th>
+                                    <th class="position-sticky end-0">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for(item of productListData?.data; track $index){
+    
+                                <tr>
+                                    <!-- <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox">
+                                        </div>
+                                    </td> -->
+                                    <td>
+                                        <div class="table-product-card">
+                                            @if(item && item.images.length>0){
+    
+                                            <div class="part-img">
+                                                <img [src]="item?.images[0]?.url" alt="Image">
+                                            </div>
+                                            }
+                                            <div class="part-txt">
+                                                <span class="product-name">{{item.title}}</span>
+                                                <span class="product-category">{{item.category.name}}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{item.sku}}</td>
+                                    <td>{{item.inventory.manageStock}}</td>
+                                    <td>{{item.price_data.regularPrice}}</td>
+                                    <td>{{item.price_data.salePrice}}</td>
+                                    <td class="d-none">
+                                        <div class="rating">
+                                            <div class="star">
+                                                <i class="fa-sharp fa-solid fa-star starred"></i>
+                                                <i class="fa-sharp fa-solid fa-star starred"></i>
+                                                <i class="fa-sharp fa-solid fa-star starred"></i>
+                                                <i class="fa-sharp fa-solid fa-star starred"></i>
+                                                <i class="fa-sharp fa-solid fa-star"></i>
+                                            </div>
+                                            <div class="rating-amount">(42)</div>
+                                        </div>
+                                    </td>
+                                    <td>{{item.published_at}}</td>
+                                    <td  class="position-sticky end-0">
+                                        <div class="btn-box">
+                                            <button type="button" (click)="previewProduct(item.id)"><i class="fa fa-eye"></i></button>
+                                            <button type="button" (click)="editoProduct(item)"><i class="fa fa-pen"></i></button>
+                                            <button type="button" class="text-danger" (click)="openDialog(item.id)"><i class="fa fa-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                }
+    
+                            </tbody>
+                        </table>
                     </div>
-                    <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped"
-                        id="allProductTable">
-                        <thead>
-                            <tr>
-                                <th class="no-sort">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="markAllProduct">
-                                    </div>
-                                </th>
-                                <th>Product</th>
-                                <th>SKU</th>
-                                <th>Stock</th>
-                                <th>Price</th>
-                                <th>Sales</th>
-                                <th class="d-none">Rating</th>
-                                <th>Published</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for(item of productListData?.data; track $index){
-
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="table-product-card">
-                                        @if(item && item.images.length>0){
-
-                                        <div class="part-img">
-                                            <img [src]="item?.images[0]?.url" alt="Image">
-                                        </div>
-                                        }
-                                        <div class="part-txt">
-                                            <span class="product-name">{{item.title}}</span>
-                                            <span class="product-category">{{item.category.name}}</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>{{item.sku}}</td>
-                                <td>{{item.inventory.manageStock}}</td>
-                                <td>{{item.price_data.regularPrice}}</td>
-                                <td>{{item.price_data.salePrice}}</td>
-                                <td class="d-none">
-                                    <div class="rating">
-                                        <div class="star">
-                                            <i class="fa-sharp fa-solid fa-star starred"></i>
-                                            <i class="fa-sharp fa-solid fa-star starred"></i>
-                                            <i class="fa-sharp fa-solid fa-star starred"></i>
-                                            <i class="fa-sharp fa-solid fa-star starred"></i>
-                                            <i class="fa-sharp fa-solid fa-star"></i>
-                                        </div>
-                                        <div class="rating-amount">(42)</div>
-                                    </div>
-                                </td>
-                                <td>{{item.published_at}}</td>
-                                <td>
-                                    <div class="btn-box">
-                                        <button><i class="fa fa-eye" (click)="previewProduct(item.id)"></i></button>
-                                        <button><i class="fa fa-pen" (click)="editoProduct(item)"></i></button>
-                                        <button><i class="fa fa-trash" (click)="openDialog(item.id)"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            }
-
-                        </tbody>
-                    </table>
 
                     <div class="d-flex align-items-center justify-content-end gap-1 py-2">
                         @for (page of productListData?.meta?.links; track $index) {
                         <button type="button" class="btn" (click)="nextPage(page.page)">
-                            {{page.label}}
+                            <span [innerHTML]="page.label"></span>
                         </button>
                         }
                     </div>

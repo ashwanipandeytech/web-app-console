@@ -1,4 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, inject, Optional, Output, ViewChild } from '@angular/core';
+import { NgClass } from '@angular/common';
+
 import { Sidebar } from '../../../layout/sidebar/sidebar';
 import { Header } from '../../../layout/header/header';
 import {
@@ -25,6 +27,8 @@ import { QuillModule } from 'ngx-quill';
 import Quill from 'quill';
 import { ImageHandler, Options } from 'ngx-quill-upload';
 import htmlEditButton from 'quill-html-edit-button';
+// ../../../../../../../node_modules/@angular/common/common_module.d
+// import { CommonModule, NgClass } from "../../../../../../../node_modules/@angular/common/common_module.d";
 Quill.register('modules/htmlEditButton', htmlEditButton);
 Quill.register('modules/imageHandler', ImageHandler);
 Quill.register('modules/imageHandler', ImageHandler);
@@ -35,7 +39,7 @@ interface FoodNode {
 }
 @Component({
   selector: 'app-add-customer',
-  imports: [ReactiveFormsModule, QuillModule, MatTreeModule, MatIconModule, CategoryTreeComponent],
+  imports: [ReactiveFormsModule, QuillModule, MatTreeModule, MatIconModule, CategoryTreeComponent, NgClass],
   templateUrl: './add-product.html',
   styleUrl: './add-product.scss',
 })

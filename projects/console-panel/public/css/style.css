@@ -218,7 +218,7 @@ TABLE OF CONTENTS:
   padding-top: 1px;
 }
 
-.dark-theme .apexcharts-datalabel-value,
+/* .dark-theme .apexcharts-datalabel-value,
 .dark-theme .apexcharts-legend-text,
 .dark-theme .apexcharts-text,
 .dark-theme .apexcharts-xaxis-texts-g > *,
@@ -228,7 +228,7 @@ TABLE OF CONTENTS:
 }
 .dark-theme .apexcharts-gridline {
   stroke: rgba(255, 255, 255, 0.12);
-}
+} */
 
 .light-theme .apexcharts-datalabel-value,
 .light-theme .apexcharts-legend-text,
@@ -262,13 +262,13 @@ body::after {
   background: rgba(7, 23, 57, 0.8);
   z-index: -1;
 }
-body.dark-theme {
+/* body.dark-theme {
   background-color: #18191A;
   color: #a1a1a1;
 }
 body.dark-theme::after {
   background: rgba(24, 25, 26, 0.8);
-}
+} */
 body.light-theme {
   background-color: #f5f5f5;
   color: #464646;
@@ -1621,9 +1621,9 @@ input[type=checkbox] {
   --bs-border-color: rgba(0, 0, 0, 0.1);
   --bs-primary-bg-subtle: #e7f1fe;
 }
-:root .dark-theme {
+/* :root .dark-theme {
   --bs-primary-bg-subtle: #3A3B3C;
-}
+} */
 
 .scrollable {
   height: 100%;
@@ -2232,7 +2232,7 @@ pre .punctuation {
 }
 
 /* ===== Global Style For Dark Theme ===== */
-.dark-theme .form-control[type=file]::-webkit-file-upload-button {
+/* .dark-theme .form-control[type=file]::-webkit-file-upload-button {
   color: #a1a1a1;
   background-color: rgba(255, 255, 255, 0.15);
 }
@@ -2584,7 +2584,7 @@ pre .punctuation {
 .dark-theme .input-group-with-icon input::placeholder {
   color: #a1a1a1;
   opacity: 0.6;
-}
+} */
 
 /* ===== Global Style For Light Theme ===== */
 .light-theme .form-control[type=file]::-webkit-file-upload-button {
@@ -3433,7 +3433,7 @@ pre .punctuation {
 }
 
 /* ===== Header For Dark Theme ===== */
-.dark-theme .header {
+/* .dark-theme .header {
   background: rgba(36, 37, 38, 0.6);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -3494,7 +3494,7 @@ pre .punctuation {
 }
 .dark-theme .dropdown-menu .dropdown-txt span {
   color: #F9F9F9;
-}
+} */
 
 /* ===== Header For Light Theme ===== */
 .light-theme .header {
@@ -4121,7 +4121,7 @@ pre .punctuation {
 }
 
 /* ===== Right Sidebar For Dark Theme ===== */
-.dark-theme .right-sidebar {
+/* .dark-theme .right-sidebar {
   background: #242526;
 }
 .dark-theme .right-sidebar .right-bar-close {
@@ -4143,7 +4143,7 @@ pre .punctuation {
 .dark-theme .right-sidebar .main-content-bg-btn-box button,
 .dark-theme .right-sidebar .sidebar-bg-btn-box button {
   border-color: #464646;
-}
+} */
 
 /* ===== Right Sidebar For Light Theme ===== */
 .light-theme .right-sidebar {
@@ -4852,7 +4852,7 @@ pre .punctuation {
 }
 
 /* ===== Left Sidebar For Dark Theme ===== */
-.dark-theme .main-sidebar {
+/* .dark-theme .main-sidebar {
   background-color: #242526;
 }
 .dark-theme .main-sidebar::after {
@@ -4930,7 +4930,7 @@ pre .punctuation {
 }
 .dark-theme .collapsed .sidebar-item .sidebar-link.has-sub.show .nav-icon {
   color: #ebebeb;
-}
+} */
 
 /* ===== Left Sidebar For Light Theme ===== */
 .light-theme .main-sidebar {
@@ -8957,7 +8957,7 @@ a.ck.ck-button:focus {
 }
 
 /* ===== Main Content For Dark Theme ===== */
-.dark-theme .main-content::after {
+/* .dark-theme .main-content::after {
   background-image: url(../images/bg-dark.jpg);
   background-size: cover;
   opacity: 0.05;
@@ -9466,7 +9466,7 @@ a.ck.ck-button:focus {
 }
 .dark-theme .file-details li span {
   color: #e4e4e4;
-}
+} */
 
 /* ===== Main Content For Light Theme ===== */
 .light-theme .main-content::after {
@@ -10536,7 +10536,7 @@ a.ck.ck-button:focus {
     height: 100px;
   }
   /* dark theme responsive design */
-  .dark-theme .main-content .email-panel .mail-details {
+  /* .dark-theme .main-content .email-panel .mail-details {
     background: #242526;
   }
   .dark-theme .main-content .email-panel .mail-details .mail-reply-option {
@@ -10544,7 +10544,7 @@ a.ck.ck-button:focus {
   }
   .dark-theme .main-content .file-manager-sidebar-col {
     background: #242526;
-  }
+  } */
   /* light theme responsive design */
   .light-theme .main-content .email-panel .mail-details {
     background: #fff;
@@ -11500,7 +11500,7 @@ a.ck.ck-button:focus {
     height: 90px;
   }
   /* dark theme responsive design */
-  .dark-theme .main-content .email-panel .mail-details {
+  /* .dark-theme .main-content .email-panel .mail-details {
     background: #242526;
   }
   .dark-theme .main-content .email-panel .mail-details .mail-reply-option {
@@ -11508,7 +11508,7 @@ a.ck.ck-button:focus {
   }
   .dark-theme .main-content .file-manager-sidebar-col {
     background: #242526;
-  }
+  } */
   /* light theme responsive design */
   .light-theme .main-content .email-panel .mail-details {
     background: #fff;
@@ -11999,9 +11999,9 @@ a.ck.ck-button:focus {
   .header-right-btns .header-btn-box .notification-dropdown a {
     padding: 7px 10px;
   }
-  .dark-theme .site-view-btn.btn {
+  /* .dark-theme .site-view-btn.btn {
     color: #e4e4e4;
-  }
+  } */
   .light-theme .site-view-btn.btn {
     color: #464646;
   }
@@ -13346,7 +13346,7 @@ a.ck.ck-button:focus {
     margin-bottom: 13px;
   }
   /* dark theme responsive design */
-  .dark-theme .main-content .email-panel > .panel:first-child {
+  /* .dark-theme .main-content .email-panel > .panel:first-child {
     background: #242526;
   }
   .dark-theme .main-content .email-panel .mail-details {
@@ -13357,7 +13357,7 @@ a.ck.ck-button:focus {
   }
   .dark-theme .main-content .file-manager-sidebar-col {
     background: #242526;
-  }
+  } */
   /* light theme responsive design */
   .light-theme .main-content .email-panel > .panel:first-child {
     background: #fff;
