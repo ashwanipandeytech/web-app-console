@@ -61,7 +61,7 @@
                 <button
                   type="button"
                   class="btn btn-sm btn-outline-primary"
-                  (click)="openHtmlEditor()">
+                  (click)="openHtmlEditor('shortDescription')">
                   Edit HTML
                 </button>
               </div>
@@ -78,7 +78,15 @@
               </div>
             </div>
             <div class="panel-body">
-              <quill-editor formControlName="productDescription" [modules]="modulesNoImage"></quill-editor>
+               <div class="d-flex justify-content-end mb-2">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="openHtmlEditor('productDescription')">
+                  Edit HTML
+                </button>
+              </div>
+              <quill-editor #productDescriptionQuill formControlName="productDescription" [modules]="modulesNoImage"></quill-editor>
             </div>
           </div>
 

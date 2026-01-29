@@ -53,6 +53,7 @@ export class AddProduct {
   @ViewChild('galleryInput') galleryInput!: ElementRef<HTMLInputElement>;
   @ViewChild('descriptionImageGallery') descriptionImageGallery!: ElementRef<HTMLInputElement>;
   @ViewChild('quillEditor') quillEditor!: QuillEditorComponent;
+  @ViewChild('productDescriptionQuill') productDescriptionQuill!: QuillEditorComponent;
   @Output() data: any = {
     price_data: {},
     shipping_info: {},
@@ -311,10 +312,11 @@ htmlControl = new FormControl('');
     this.productStatus = PRODUCT_TYPE;
 
   }
-openHtmlEditor() {
+openHtmlEditor(quillName:any) {
   this.htmlControl.setValue(
-    this.productDetails.get('shortDescription')?.value || ''
+    this.productDetails.get(quillName)?.value || ''
   );
+
   this.showHtmlEditor = true;
 }
 
