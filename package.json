@@ -52,7 +52,6 @@
     "express": "^5.1.0",
     "jquery": "^3.7.1",
     "ngx-quill": "^16.2.1",
-    "ngx-quill-upload": "^2.0.0",
     "ngx-slick-carousel": "^20.0.0",
     "ngx-toastr": "^19.0.0",
     "quill": "^1.3.7",

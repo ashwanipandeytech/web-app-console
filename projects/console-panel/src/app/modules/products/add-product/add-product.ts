@@ -22,12 +22,6 @@ import { SharedModule } from '../../../shared.module';
 import { CategoryTreeComponent } from './category-tree/category-tree.component';
 import { PRODUCT_TYPE } from 'shared-lib/constants/app-constant';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-// import { QuillEditorComponent, QuillModule } from 'ngx-quill';
-// // import Quill from 'quill';
-// // import { ImageHandler, Options } from 'ngx-quill-upload';
-// import Quill from 'quill';
-// import HtmlEditButton from 'quill-html-edit-button';
 import { QuillModule } from 'ngx-quill';
 import Quill from 'quill';
 import HtmlEditButton from 'quill-html-edit-button';
