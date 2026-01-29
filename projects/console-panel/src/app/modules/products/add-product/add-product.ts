@@ -23,9 +23,12 @@ import { CategoryTreeComponent } from './category-tree/category-tree.component';
 import { PRODUCT_TYPE } from 'shared-lib/constants/app-constant';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { QuillEditorComponent, QuillModule } from 'ngx-quill';
+// import { QuillEditorComponent, QuillModule } from 'ngx-quill';
+// // import Quill from 'quill';
+// // import { ImageHandler, Options } from 'ngx-quill-upload';
 // import Quill from 'quill';
-import { ImageHandler, Options } from 'ngx-quill-upload';
+// import HtmlEditButton from 'quill-html-edit-button';
+import { QuillModule } from 'ngx-quill';
 import Quill from 'quill';
 import HtmlEditButton from 'quill-html-edit-button';
 // import htmlEditButton from 'quill-html-edit-button';
@@ -33,10 +36,6 @@ import HtmlEditButton from 'quill-html-edit-button';
 // import { CommonModule, NgClass } from "../../../../../../../node_modules/@angular/common/common_module.d";
 // Quill.register('modules/imageHandler', ImageHandler);
 // Quill.register('modules/htmlEditButton', htmlEditButton);
-const htmlEditButton =
-  (HtmlEditButton as any).default ?? HtmlEditButton;
-
-(Quill as any).register('modules/htmlEditButton', htmlEditButton,true);
 
 interface FoodNode {
   name: string;
@@ -44,7 +43,7 @@ interface FoodNode {
 }
 @Component({
   selector: 'app-add-customer',
-  imports: [ReactiveFormsModule, QuillModule, MatTreeModule, MatIconModule, CategoryTreeComponent, NgClass,QuillEditorComponent],
+  imports: [ReactiveFormsModule, QuillModule, MatTreeModule, MatIconModule, CategoryTreeComponent, NgClass],
   templateUrl: './add-product.html',
   styleUrl: './add-product.scss',
 })
@@ -98,81 +97,143 @@ export class AddProduct {
 
 
 
-  modulesWithImage = {
-    htmlEditButton: {
-      debug: true, // Developers love logs
-      msg: "Edit HTML", // Tooltip
-      okText: "Save",
-    },
-    toolbar: [
-      // --- TEXT STYLE ---
-      [{ 'font': [] }, { 'size': ['small', false, 'large', 'huge'] }],
+  // modulesWithImage = {
+  //   htmlEditButton: {
+  //     debug: true, // Developers love logs
+  //     msg: "Edit HTML", // Tooltip
+  //     okText: "Save",
+  //   },
+  //   toolbar: [
+  //     // --- TEXT STYLE ---
+  //     [{ 'font': [] }, { 'size': ['small', false, 'large', 'huge'] }],
+  //     ['bold', 'italic', 'underline', 'strike'],
+  //     [{ 'color': [] }, { 'background': [] }],
+  //     [{ 'script': 'sub' }, { 'script': 'super' }],
+
+  //     // --- HEADER & QUOTES ---
+  //     [{ 'header': 1 }, { 'header': 2 }, 'blockquote',],
+
+  //     // --- LISTS & INDENTS ---
+  //     [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+  //     [{ 'indent': '-1' }, { 'indent': '+1' }],
+  //     [{ 'direction': 'rtl' }],
+
+  //     // --- ALIGNMENT ---
+  //     [{ 'align': [] }],
+
+  //     // --- LINKS & MEDIA ---
+  //     ['link', 'image', 'formula'],
+  //     // ['htmlEditButton'],
+  //     // --- UTILS ---
+  //     ['clean']
+  //   ],
+  //   imageHandler: {
+  //     upload: (file: File) => {
+
+  //       return new Promise((resolve, reject) => {
+
+  //         // 1. Validation Logic
+  //         if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
+  //           console.info('Unsupported type');
+  //           return reject('Unsupported type');
+  //         }
+  //         if (file.size > 1000000) {
+  //           console.info('Size');
+  //           return reject('Size too large (Max 1MB)');
+  //         }
+
+  //         // 2. Call the Service
+  //         const formData = new FormData();
+  //         formData.append('files', file);
+  //         formData.append('type', 'product_image_description');
+
+  //         this.dataService
+  //           .postForm('gallery', formData)
+  //           .pipe(
+  //             catchError((err) => {
+  //               return of(null);
+  //             })
+  //           )
+  //           .subscribe((res: any) => {
+  //             console.log('Response:', res);
+  //             resolve(res.data[0].url);
+
+  //           });
+
+  //       });
+  //     },
+  //     accepts: ['png', 'jpg', 'jpeg', 'jfif']
+  //   } as Options,
+
+
+
+
+  // };
+
+modulesWithImage = {
+  htmlEditButton: {
+    debug: true,
+    msg: 'Edit HTML',
+    okText: 'Save',
+  },
+
+  toolbar: {
+    container: [
+      [{ font: [] }, { size: ['small', false, 'large', 'huge'] }],
       ['bold', 'italic', 'underline', 'strike'],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],
-
-      // --- HEADER & QUOTES ---
-      [{ 'header': 1 }, { 'header': 2 }, 'blockquote',],
-
-      // --- LISTS & INDENTS ---
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'indent': '-1' }, { 'indent': '+1' }],
-      [{ 'direction': 'rtl' }],
-
-      // --- ALIGNMENT ---
-      [{ 'align': [] }],
-
-      // --- LINKS & MEDIA ---
+      [{ color: [] }, { background: [] }],
+      [{ script: 'sub' }, { script: 'super' }],
+      [{ header: 1 }, { header: 2 }, 'blockquote'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ indent: '-1' }, { indent: '+1' }],
+      [{ direction: 'rtl' }],
+      [{ align: [] }],
       ['link', 'image', 'formula'],
-      // ['htmlEditButton'],
-      // --- UTILS ---
-      ['clean']
+      ['clean'],
     ],
-    imageHandler: {
-      upload: (file: File) => {
-
-        return new Promise((resolve, reject) => {
-
-          // 1. Validation Logic
-          if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
-            console.info('Unsupported type');
-            return reject('Unsupported type');
-          }
-          if (file.size > 1000000) {
-            console.info('Size');
-            return reject('Size too large (Max 1MB)');
-          }
-
-          // 2. Call the Service
-          const formData = new FormData();
-          formData.append('files', file);
-          formData.append('type', 'product_image_description');
-
-          this.dataService
-            .postForm('gallery', formData)
-            .pipe(
-              catchError((err) => {
-                return of(null);
-              })
-            )
-            .subscribe((res: any) => {
-              console.log('Response:', res);
-              resolve(res.data[0].url);
-
-            });
-
-        });
-      },
-      accepts: ['png', 'jpg', 'jpeg', 'jfif']
-    } as Options,
-
-
-
-
-  };
+    handlers: {
+      image: () => this.handleImageUpload(),
+    },
+  },
+};
 
 
   dataSource = [];
+handleImageUpload() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/png,image/jpeg,image/jpg';
+  input.click();
+
+  input.onchange = () => {
+    const file = input.files?.[0];
+    if (!file) return;
+
+    if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
+      console.info('Unsupported type');
+      return;
+    }
+
+    if (file.size > 1_000_000) {
+      console.info('Size too large');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('files', file);
+    formData.append('type', 'product_image_description');
+
+    this.dataService.postForm('gallery', formData).subscribe((res: any) => {
+      const imageUrl = res?.data?.[0]?.url;
+      if (!imageUrl) return;
+
+      const quill = (this as any).quillEditor?.quillEditor;
+      const range = quill.getSelection(true);
+      quill.insertEmbed(range.index, 'image', imageUrl);
+      quill.setSelection(range.index + 1);
+    });
+  };
+}
 
   hasChild = (_: number, node: FoodNode) => !!node.children && node.children.length > 0;
   productDetails!: FormGroup;
@@ -253,17 +314,20 @@ export class AddProduct {
     @Optional() public activeModal: NgbActiveModal
   ) {
     this.productStatus = PRODUCT_TYPE;
-    console.log(htmlEditButton);
-    // Quill.register('modules/htmlEditButton', htmlEditButton);
-    // Quill.register('modules/imageHandler', ImageHandler);
-    console.log('after',htmlEditButton);
   }
 
   onGetId(id: number) {
     this.parentId = id;
   }
   ngOnInit() {
+const HtmlEditButtonClass =
+    (HtmlEditButton as any).default ?? HtmlEditButton;
 
+  (Quill as any).register(
+    'modules/htmlEditButton',
+    HtmlEditButtonClass,
+    true
+  );
     this.domain = window.location.origin;
     this.getCategoryList();
     this.initializeForms();
