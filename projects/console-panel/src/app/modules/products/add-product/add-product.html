@@ -57,7 +57,15 @@
               </div>
             </div>
             <div class="panel-body">
-              <quill-editor formControlName="shortDescription" rows="5" [modules]="modulesNoImage"></quill-editor>
+              <div class="d-flex justify-content-end mb-2">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="openHtmlEditor()">
+                  Edit HTML
+                </button>
+              </div>
+              <quill-editor #quillEditor formControlName="shortDescription" rows="5" [modules]="modulesNoImage"></quill-editor>
             </div>
           </div>
           <div class="panel mb-30">
@@ -118,7 +126,36 @@
             </div>
           </div>
         </form>
+     <!-- HTML EDIT MODAL -->
+           @if (showHtmlEditor) {
 
+          <div class="modal-backdrop fade show"></div>
+
+<div class="modal fade show d-block" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit HTML</h5>
+        <button type="button" class="btn-close" (click)="closeHtmlEditor()"></button>
+      </div>
+
+      <div class="modal-body">
+        <textarea
+          class="form-control"
+          rows="15"
+          [formControl]="htmlControl">
+        </textarea>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeHtmlEditor()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveHtml()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+           }
         <div class="panel mb-30">
           <form [formGroup]="productOptionData" (ngSubmit)="productOptionType()">
             <div class="panel-header">

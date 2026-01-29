@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, inject, Optional, Output, ViewChild } from '@angular/core';
-import { NgClass } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 
 import { Sidebar } from '../../../layout/sidebar/sidebar';
 import { Header } from '../../../layout/header/header';
@@ -8,6 +8,7 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -22,9 +23,15 @@ import { SharedModule } from '../../../shared.module';
 import { CategoryTreeComponent } from './category-tree/category-tree.component';
 import { PRODUCT_TYPE } from 'shared-lib/constants/app-constant';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { QuillModule } from 'ngx-quill';
+
+// import { QuillEditorComponent, QuillModule } from 'ngx-quill';
+// // import Quill from 'quill';
+// // import { ImageHandler, Options } from 'ngx-quill-upload';
+// import Quill from 'quill';
+// import HtmlEditButton from 'quill-html-edit-button';
+import { QuillEditorComponent, QuillModule } from 'ngx-quill';
 import Quill from 'quill';
-import HtmlEditButton from 'quill-html-edit-button';
+// import HtmlEditButton from 'quill-html-edit-button';
 // import htmlEditButton from 'quill-html-edit-button';
 // ../../../../../../../node_modules/@angular/common/common_module.d
 // import { CommonModule, NgClass } from "../../../../../../../node_modules/@angular/common/common_module.d";
@@ -37,7 +44,7 @@ interface FoodNode {
 }
 @Component({
   selector: 'app-add-customer',
-  imports: [ReactiveFormsModule, QuillModule, MatTreeModule, MatIconModule, CategoryTreeComponent, NgClass],
+  imports: [ReactiveFormsModule, QuillModule, MatTreeModule, MatIconModule, CategoryTreeComponent, NgClass,CommonModule,FormsModule ],
   templateUrl: './add-product.html',
   styleUrl: './add-product.scss',
 })
@@ -45,6 +52,7 @@ export class AddProduct {
   childrenAccessor = (node: FoodNode) => node.children ?? [];
   @ViewChild('galleryInput') galleryInput!: ElementRef<HTMLInputElement>;
   @ViewChild('descriptionImageGallery') descriptionImageGallery!: ElementRef<HTMLInputElement>;
+  @ViewChild('quillEditor') quillEditor!: QuillEditorComponent;
   @Output() data: any = {
     price_data: {},
     shipping_info: {},
@@ -54,11 +62,11 @@ export class AddProduct {
   };
 
   modulesNoImage = {
-    htmlEditButton: {
-      debug: true, // Developers love logs
-      msg: "Edit HTML", // Tooltip
-      okText: "Save",
-    },
+    // htmlEditButton: {
+    //   debug: true, // Developers love logs
+    //   msg: "Edit HTML", // Tooltip
+    //   okText: "Save",
+    // },
     toolbar: [
       // --- TEXT STYLE ---
       [{ 'font': [] }, { 'size': ['small', false, 'large', 'huge'] }],
@@ -165,24 +173,15 @@ export class AddProduct {
   // };
 
 modulesWithImage = {
-  htmlEditButton: {
-    debug: true,
-    msg: 'Edit HTML',
-    okText: 'Save',
-  },
-
   toolbar: {
     container: [
       [{ font: [] }, { size: ['small', false, 'large', 'huge'] }],
       ['bold', 'italic', 'underline', 'strike'],
       [{ color: [] }, { background: [] }],
-      [{ script: 'sub' }, { script: 'super' }],
-      [{ header: 1 }, { header: 2 }, 'blockquote'],
+      [{ header: 1 }, { header: 2 }],
       [{ list: 'ordered' }, { list: 'bullet' }],
-      [{ indent: '-1' }, { indent: '+1' }],
-      [{ direction: 'rtl' }],
       [{ align: [] }],
-      ['link', 'image', 'formula'],
+      ['link', 'image'],
       ['clean'],
     ],
     handlers: {
@@ -301,6 +300,8 @@ handleImageUpload() {
   statusMap: any = [];
   isUpdateproduct: boolean = false;
   finalpriceObj: any;
+  showHtmlEditor = false;
+htmlControl = new FormControl('');
   constructor(
     private fb: FormBuilder,
     private globalService: GlobalService,
@@ -308,20 +309,38 @@ handleImageUpload() {
     @Optional() public activeModal: NgbActiveModal
   ) {
     this.productStatus = PRODUCT_TYPE;
-  }
 
+  }
+openHtmlEditor() {
+  this.htmlControl.setValue(
+    this.productDetails.get('shortDescription')?.value || ''
+  );
+  this.showHtmlEditor = true;
+}
+
+closeHtmlEditor() {
+  this.showHtmlEditor = false;
+}
+
+saveHtml() {
+  this.productDetails
+    .get('shortDescription')
+    ?.setValue(this.htmlControl.value);
+
+  this.showHtmlEditor = false;
+}
   onGetId(id: number) {
     this.parentId = id;
   }
   ngOnInit() {
-const HtmlEditButtonClass =
-    (HtmlEditButton as any).default ?? HtmlEditButton;
+// const HtmlEditButtonClass =
+//     (HtmlEditButton as any).default ?? HtmlEditButton;
 
-  (Quill as any).register(
-    'modules/htmlEditButton',
-    HtmlEditButtonClass,
-    true
-  );
+//   (Quill as any).register(
+//     'modules/htmlEditButton',
+//     HtmlEditButtonClass,
+//     true
+//   );
     this.domain = window.location.origin;
     this.getCategoryList();
     this.initializeForms();

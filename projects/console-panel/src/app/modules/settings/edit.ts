@@ -10,10 +10,7 @@ import { GlobalService } from '../../global.service';
 
 import { QuillModule } from 'ngx-quill';
 import Quill from 'quill';
-import { ImageHandler, Options } from 'ngx-quill-upload';
 import htmlEditButton from 'quill-html-edit-button';
-Quill.register('modules/htmlEditButton', htmlEditButton);
-Quill.register('modules/imageHandler', ImageHandler);
 
 
 
@@ -42,79 +39,79 @@ export class EditPage implements OnInit {
 
   ngOnInit() {
 
-    this.modules = {
+    // this.modules = {
 
-      htmlEditButton: {
-        debug: true, // Developers love logs
-        msg: "Edit HTML", // Tooltip
-        okText: "Save",
-      },
-      toolbar: [
-        // --- TEXT STYLE ---
-        [{ 'font': [] }, { 'size': ['small', false, 'large', 'huge'] }],
-        ['bold', 'italic', 'underline', 'strike'],
-        [{ 'color': [] }, { 'background': [] }],
-         [{ 'script': 'sub' }, { 'script': 'super' }],
+    //   htmlEditButton: {
+    //     debug: true, // Developers love logs
+    //     msg: "Edit HTML", // Tooltip
+    //     okText: "Save",
+    //   },
+    //   toolbar: [
+    //     // --- TEXT STYLE ---
+    //     [{ 'font': [] }, { 'size': ['small', false, 'large', 'huge'] }],
+    //     ['bold', 'italic', 'underline', 'strike'],
+    //     [{ 'color': [] }, { 'background': [] }],
+    //      [{ 'script': 'sub' }, { 'script': 'super' }],
 
-        // --- HEADER & QUOTES ---
-        [{ 'header': 1 }, { 'header': 2 }, 'blockquote'],
+    //     // --- HEADER & QUOTES ---
+    //     [{ 'header': 1 }, { 'header': 2 }, 'blockquote'],
 
-        // --- LISTS & INDENTS ---
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-        [{ 'indent': '-1' }, { 'indent': '+1' }],
-        [{ 'direction': 'rtl' }],
+    //     // --- LISTS & INDENTS ---
+    //     [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    //     [{ 'indent': '-1' }, { 'indent': '+1' }],
+    //     [{ 'direction': 'rtl' }],
 
-        // --- ALIGNMENT ---
-        [{ 'align': [] }],
+    //     // --- ALIGNMENT ---
+    //     [{ 'align': [] }],
 
-        // --- LINKS & MEDIA ---
-        ['link', 'image', 'formula'],
-        ['htmlEditButton'],
-        // --- UTILS ---
-        ['clean']
-      ],
-      imageHandler: {
-        upload: (file: File) => {
+    //     // --- LINKS & MEDIA ---
+    //     ['link', 'image', 'formula'],
+    //     ['htmlEditButton'],
+    //     // --- UTILS ---
+    //     ['clean']
+    //   ],
+    //   imageHandler: {
+    //     upload: (file: File) => {
 
-          return new Promise((resolve, reject) => {
+    //       return new Promise((resolve, reject) => {
 
-            // 1. Validation Logic
-            if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
-              console.info('Unsupported type');
-              return reject('Unsupported type');
-            }
-            // if (file.size > 1000000) {
-            //     console.info('Size');
-            //   return reject('Size too large (Max 1MB)');
-            // }
+    //         // 1. Validation Logic
+    //         if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
+    //           console.info('Unsupported type');
+    //           return reject('Unsupported type');
+    //         }
+    //         // if (file.size > 1000000) {
+    //         //     console.info('Size');
+    //         //   return reject('Size too large (Max 1MB)');
+    //         // }
 
-            // 2. Call the Service
-            const formData = new FormData();
-            formData.append('files', file);
-            formData.append('type', 'pages');
+    //         // 2. Call the Service
+    //         const formData = new FormData();
+    //         formData.append('files', file);
+    //         formData.append('type', 'pages');
 
-            this.dataService
-              .postForm('gallery', formData)
-              .pipe(
-                catchError((err) => {
-                  return of(null);
-                })
-              )
-              .subscribe((res: any) => {
-                console.log('Response:', res);
-                resolve(res.data[0].url);
+    //         this.dataService
+    //           .postForm('gallery', formData)
+    //           .pipe(
+    //             catchError((err) => {
+    //               return of(null);
+    //             })
+    //           )
+    //           .subscribe((res: any) => {
+    //             console.log('Response:', res);
+    //             resolve(res.data[0].url);
 
-              });
+    //           });
 
-          });
-        },
-        accepts: ['png', 'jpg', 'jpeg', 'jfif']
-      } as Options,
-
-
+    //       });
+    //     },
+    //     accepts: ['png', 'jpg', 'jpeg', 'jfif']
+    //   } as Options,
 
 
-    };
+
+
+    // };
     let slug = this.route.snapshot.params['id']
 
     this.dataService.get('pages/' + slug)
