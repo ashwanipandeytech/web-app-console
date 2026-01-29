@@ -13,6 +13,7 @@ import { PageList } from './modules/settings/pages.component';
 import { AddPage } from './modules/settings/add';
 import { EditPage } from './modules/settings/edit';
 import { CouponsComponent } from './modules/coupons/coupons.component';
+import { CustomerReportsComponent } from './modules/customer-reports/customer-reports.component';
 
 export const routes: Routes = [
     // {
@@ -95,6 +96,12 @@ export const routes: Routes = [
         component: AddPage,
         canActivate: [authGuard]
     },
+     {
+        path: 'reports',
+        component: CustomerReportsComponent,
+        canActivate: [authGuard]
+    },
+
 
       {
        path: 'edit-page/:id',

@@ -31,7 +31,7 @@ import htmlEditButton from 'quill-html-edit-button';
 // import { CommonModule, NgClass } from "../../../../../../../node_modules/@angular/common/common_module.d";
 Quill.register('modules/htmlEditButton', htmlEditButton);
 Quill.register('modules/imageHandler', ImageHandler);
-Quill.register('modules/imageHandler', ImageHandler);
+
 
 interface FoodNode {
   name: string;

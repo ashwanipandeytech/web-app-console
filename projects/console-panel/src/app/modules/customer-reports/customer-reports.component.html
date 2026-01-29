@@ -1,0 +1,56 @@
+<div class="table-responsive m-4 card">
+  <table class="table table-bordered table-hover align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Subject</th>
+        <th>Message</th>
+        <th>Status</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (item of contactsList.data; track $index) {
+
+        <tr>
+          <td>{{ $index + 1 }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.email }}</td>
+          <td>{{ item.subject }}</td>
+         <td style="max-width: 300px;">
+  <span>
+    {{
+      item.showFullMessage
+        ? item.message
+        : (item.message | slice: 0:50)
+    }}
+    <span *ngIf="item.message.length > 50">
+      ...
+    </span>
+  </span>
+
+  <button
+    type="button"
+    class="btn btn-link p-0 ms-1"
+    (click)="toggleMessage(item)"
+  >
+   <p class="fs-6"> {{ item.showFullMessage ? 'Read less' : 'Read more' }}</p>
+  </button>
+</td>
+          <td>
+            <span
+              class="badge"
+              [ngClass]="item.is_read ? 'bg-success' : 'bg-warning text-dark'"
+            >
+              {{ item.is_read ? 'Read' : 'Unread' }}
+            </span>
+          </td>
+          <td>{{ item.created_at | date: 'dd MMM yyyy, hh:mm a' }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
