@@ -23,15 +23,20 @@ import { CategoryTreeComponent } from './category-tree/category-tree.component';
 import { PRODUCT_TYPE } from 'shared-lib/constants/app-constant';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { QuillModule } from 'ngx-quill';
-import Quill from 'quill';
+import { QuillEditorComponent, QuillModule } from 'ngx-quill';
+// import Quill from 'quill';
 import { ImageHandler, Options } from 'ngx-quill-upload';
-import htmlEditButton from 'quill-html-edit-button';
+import Quill from 'quill';
+import HtmlEditButton from 'quill-html-edit-button';
+// import htmlEditButton from 'quill-html-edit-button';
 // ../../../../../../../node_modules/@angular/common/common_module.d
 // import { CommonModule, NgClass } from "../../../../../../../node_modules/@angular/common/common_module.d";
-Quill.register('modules/htmlEditButton', htmlEditButton);
-Quill.register('modules/imageHandler', ImageHandler);
+// Quill.register('modules/imageHandler', ImageHandler);
+// Quill.register('modules/htmlEditButton', htmlEditButton);
+const htmlEditButton =
+  (HtmlEditButton as any).default ?? HtmlEditButton;
 
+(Quill as any).register('modules/htmlEditButton', htmlEditButton,true);
 
 interface FoodNode {
   name: string;
@@ -39,7 +44,7 @@ interface FoodNode {
 }
 @Component({
   selector: 'app-add-customer',
-  imports: [ReactiveFormsModule, QuillModule, MatTreeModule, MatIconModule, CategoryTreeComponent, NgClass],
+  imports: [ReactiveFormsModule, QuillModule, MatTreeModule, MatIconModule, CategoryTreeComponent, NgClass,QuillEditorComponent],
   templateUrl: './add-product.html',
   styleUrl: './add-product.scss',
 })
@@ -81,7 +86,7 @@ export class AddProduct {
 
       // --- LINKS & MEDIA ---
       ['link', 'formula'],
-      ['htmlEditButton'],
+      // ['htmlEditButton'],
       // --- UTILS ---
       ['clean']
     ],
@@ -119,7 +124,7 @@ export class AddProduct {
 
       // --- LINKS & MEDIA ---
       ['link', 'image', 'formula'],
-      ['htmlEditButton'],
+      // ['htmlEditButton'],
       // --- UTILS ---
       ['clean']
     ],
@@ -248,7 +253,10 @@ export class AddProduct {
     @Optional() public activeModal: NgbActiveModal
   ) {
     this.productStatus = PRODUCT_TYPE;
-
+    console.log(htmlEditButton);
+    // Quill.register('modules/htmlEditButton', htmlEditButton);
+    Quill.register('modules/imageHandler', ImageHandler);
+    console.log(htmlEditButton);
   }
 
   onGetId(id: number) {
