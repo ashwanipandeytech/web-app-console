@@ -255,8 +255,8 @@ export class AddProduct {
     this.productStatus = PRODUCT_TYPE;
     console.log(htmlEditButton);
     // Quill.register('modules/htmlEditButton', htmlEditButton);
-    Quill.register('modules/imageHandler', ImageHandler);
-    console.log(htmlEditButton);
+    // Quill.register('modules/imageHandler', ImageHandler);
+    console.log('after',htmlEditButton);
   }
 
   onGetId(id: number) {
