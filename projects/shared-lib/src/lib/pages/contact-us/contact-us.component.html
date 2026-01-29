@@ -114,7 +114,7 @@
             formControlName="name"
             [class.is-invalid]="name?.touched && name?.invalid"
           />
-          <div class="text-danger" *ngIf="name?.touched && name?.invalid">
+          <div class="text-danger position-absolute" *ngIf="name?.touched && name?.invalid">
             Name is required
           </div>
         </div>
@@ -129,7 +129,7 @@
             formControlName="email"
             [class.is-invalid]="email?.touched && email?.invalid"
           />
-          <div class="text-danger" *ngIf="email?.touched && email?.errors">
+          <div class="text-danger position-absolute" *ngIf="email?.touched && email?.errors">
             Enter a valid email
           </div>
         </div>
@@ -144,7 +144,7 @@
             formControlName="subject"
             [class.is-invalid]="subject?.touched && subject?.invalid"
           />
-          <div class="text-danger" *ngIf="subject?.touched && subject?.errors">
+          <div class="text-danger position-absolute" *ngIf="subject?.touched && subject?.errors">
             Subject is required
           </div>
         </div>
@@ -160,7 +160,7 @@
           formControlName="message"
           [class.is-invalid]="message?.touched && message?.invalid"
         ></textarea>
-        <div class="text-danger" *ngIf="message?.touched && message?.errors">
+        <div class="text-danger position-absolute" *ngIf="message?.touched && message?.errors">
           Message is required
         </div>
       </div>

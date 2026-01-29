@@ -179,6 +179,10 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "allowedCommonJsDependencies": [
+    "quill",
+    "quill-html-edit-button"
+  ],
             "browser": "projects/console-panel/src/main.ts",
             "tsConfig": "projects/console-panel/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -189,7 +193,14 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/quill/dist/quill.snow.css",
+              "node_modules/quill/dist/quill.bubble.css",
+              "node_modules/quill/dist/quill.core.css",
               "projects/console-panel/src/styles.scss"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]
           },
           "configurations": {
@@ -246,6 +257,7 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
+            
             "tsConfig": "projects/console-panel/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [

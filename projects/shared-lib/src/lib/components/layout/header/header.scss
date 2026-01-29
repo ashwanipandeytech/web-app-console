@@ -1,11 +1,7 @@
 @use '../../../scss/variable' as *;
 
 .location-dropdown {
-  // @media screen and (min-width: 768px) {
-    .btn {
-      max-width: 275px;
-    }
-  // }
+    .btn {max-width: 275px;}
 }
 
 .icon-badge {
@@ -73,6 +69,15 @@
           margin-inline: auto !important;
         }
       }
+    }
+  }
+}
+
+.bottom-nav{
+  svg{opacity: 75%;}
+  .icon-menu{
+    span{
+      font-size: 12px!important;
     }
   }
 }

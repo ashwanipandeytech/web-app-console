@@ -14,15 +14,18 @@
 
     <!-- Location -->
     <div class="location-dropdown dropdown">
-      <button class="btn text-truncate text-dark fs-14 fw-bold" data-bs-toggle="dropdown" 
-      (click)="openAddressPopup('header')"
-      [ngClass]="{'bg-light': !currentAddress}" 
-      style="padding: 10px;"
-      title="{{currentAddress}}">
+      <button
+        class="btn text-truncate text-dark fs-14 fw-bold"
+        data-bs-toggle="dropdown"
+        (click)="openAddressPopup('header')"
+        [ngClass]="{ 'bg-light': !currentAddress }"
+        style="padding: 10px"
+        title="{{ currentAddress }}"
+      >
         <!-- {{currentAddress}} -->
-        @if(currentAddress){
+        @if (currentAddress) {
           <span class="">{{ currentAddress }}</span>
-        }@else{
+        } @else {
           <span> Select Location</span>
           <i class="fa-solid fa-chevron-down fa-sm ms-1 align-middle ms-2"></i>
         }
@@ -30,124 +33,256 @@
     </div>
 
     <!-- Search -->
-    <form class="flex-grow-1 d-none d-lg-block">
-      <div class="input-group">
-        <span class="input-group-text bg-white">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </span>
-        <input
-          type="text"
-          class="form-control border-start-0 ps-0 fw-semibold"
-          placeholder="Search for “cow”"
-           [(ngModel)]="searchText"
-           (keyup.enter)="searchCategory()"
-        />
-      </div>
-    </form>
+    <div class="d-none d-lg-block w-100">
+      <ng-container *ngTemplateOutlet="searchCategoryRef"></ng-container>
+    </div>
 
     <!-- Right Icons -->
     <div class="d-sm-flex align-items-center gap-md-4 gap-2 d-none">
-      <li class="text-nowrap px-3 py-2 fw-semibold bg-light fs-14 rounded d-md-inline-block d-none text-truncate" style="max-width: 250px;">Hello, {{ userName==undefined?'Guest': userName}}</li>
+      <li
+        class="text-nowrap px-3 py-2 fw-semibold bg-light fs-14 rounded d-md-inline-block d-none text-truncate"
+        style="max-width: 250px"
+      >
+        Hello, {{ userName == undefined ? 'Guest' : userName }}
+      </li>
       <div class="text-center small cursor-pointer">
-       <ng-container *ngTemplateOutlet="userProfile"></ng-container>
+        <ng-container *ngTemplateOutlet="userProfile"></ng-container>
       </div>
       <div class="text-center small cursor-pointer">
         <ng-container *ngTemplateOutlet="cart"></ng-container>
       </div>
     </div>
-
   </div>
 </nav>
 
+<!-- Mobile bottom menu -->
+<div
+  class="bottom-nav d-flex d-sm-none align-items-center position-fixed start-0 end-0 bottom-0 shadow bg-white py-1 justify-content-around z-3"
+>
+  <a routerLink="/" class="active">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-house-icon lucide-house"
+    >
+      <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+      <path
+        d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+      />
+    </svg>
+    <span class="d-block">Home</span>
+  </a>
+
+  <a routerLink="/category">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-layout-grid-icon lucide-layout-grid"
+    >
+      <rect width="7" height="7" x="3" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="14" rx="1" />
+      <rect width="7" height="7" x="3" y="14" rx="1" />
+    </svg>
+    <span class="d-block">Categories</span>
+  </a>
+
+  <a data-bs-toggle="collapse" href="#collapseSearch">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="m21 21-4.34-4.34" />
+      <circle cx="11" cy="11" r="8" />
+    </svg>
+    <span class="d-block">Search</span>
+  </a>
+
+  <div class="collapse position-absolute" id="collapseSearch" style="bottom: 53px">
+    <ng-container *ngTemplateOutlet="searchCategoryRef"></ng-container>
+  </div>
+
+  <div class="text-center small cursor-pointer">
+    <ng-container *ngTemplateOutlet="cart"></ng-container>
+  </div>
+
+  <div class="text-center small cursor-pointer">
+    <ng-container *ngTemplateOutlet="userProfile"></ng-container>
+  </div>
+
+</div>
+
+<ng-template #searchCategoryRef>
+  <form class="flex-grow-1">
+    <div class="input-group">
+      <span class="input-group-text bg-white">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </span>
+      <input
+        type="text"
+        class="form-control border-start-0 ps-0 fw-semibold"
+        placeholder="Search for “cow”"
+        [(ngModel)]="searchText"
+        (keyup.enter)="searchCategory()"
+      />
+    </div>
+  </form>
+</ng-template>
 
 <ng-template #cart>
   <a routerLink="/cart" class="cart-item position-relative icon-menu d-inline-block">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart-icon lucide-shopping-cart"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-shopping-cart-icon lucide-shopping-cart"
+    >
+      <circle cx="8" cy="21" r="1" />
+      <circle cx="19" cy="21" r="1" />
+      <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+    </svg>
     <span class="fs-14 d-block">Cart</span>
 
-    @if(countsList?.cart_count > 0) {
-      <i class="icon-badge position-absolute fs-12 d-inline-block text-center text-white bg-primary rounded-circle">{{
-        countsList?.cart_count
-      }}</i>
+    @if (countsList?.cart_count > 0) {
+      <i
+        class="icon-badge position-absolute fs-12 d-inline-block text-center text-white bg-primary rounded-circle"
+        >{{ countsList?.cart_count }}</i
+      >
     }
   </a>
 </ng-template>
 
 <ng-template #userProfile>
-  @if(true) {
-  <div class="dropdown user-account icon-menu">
-    <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-       <span [hidden]="isLoggedIn">
-         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-icon lucide-user-round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
-          <span class="fs-14 d-block">Login</span>
-       </span>
-        
-     
-     <span [hidden]="!isLoggedIn" class="position-relative">
-       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-check-icon lucide-user-round-check"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path class="text-primary" d="m16 19 2 2 4-4"/></svg>
-      <span class="fs-14 d-block">Profile</span>
-     </span>
-    
-    </button>
-    <ul
-      class="dropdown-menu dropdown-menu-end bg-white border-0 shadow rounded-3 pt-0"
-      style="z-index: 9999"
-    >
-      <li class="text-nowrap px-3 py-2 fw-semibold bg-light fs-14 mb-2 d-md-none">Hello, {{ userName==undefined?'Guest': userName}}</li>
-      <li [hidden]="isLoggedIn">
-        <a class="dropdown-item px-3 py-2 fs-14 cursor-pointer bg-primary text-white text-center" (click)="openLogin()"
-          ><span><i class="fa-solid fa-arrow-right-to-bracket fa-lg me-1"></i></span
-          >Login</a
-        >
-      </li>
-      <li class="mb-1">
-        <a 
-          class="dropdown-item px-3 py-2 fs-14"
-          [routerLink]="['/user-profile']"
-          [queryParams]="{ section: 'account' }"
+  @if (true) {
+    <div class="dropdown user-account icon-menu">
+      <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <span [hidden]="isLoggedIn">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-user-round-icon lucide-user-round"
           >
-          <span><i class="fa-solid fa-lg opacity-75 fa-user-tie"></i></span>My Account</a
-        >
-      </li>
-      <li class="mb-1">
-        <a
-          class="dropdown-item px-3 py-2 fs-14"
-          [routerLink]="['/user-profile']"
-          [queryParams]="{ section: 'Orders' }"
-          ><span><i class="fa-solid fa-lg opacity-75 fa-bag-shopping"></i></span>My Order
-            @if(countsList?.order_count > 0) {
-           <span class="badge text-bg-primary ms-2">{{ countsList?.order_count }}</span>
+            <circle cx="12" cy="8" r="5" />
+            <path d="M20 21a8 8 0 0 0-16 0" />
+          </svg>
+          <span class="fs-14 d-block">Login</span>
+        </span>
+
+        <span [hidden]="!isLoggedIn" class="position-relative">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-user-round-check-icon lucide-user-round-check"
+          >
+            <path d="M2 21a8 8 0 0 1 13.292-6" />
+            <circle cx="10" cy="8" r="5" />
+            <path class="text-primary" d="m16 19 2 2 4-4" />
+          </svg>
+          <span class="fs-14 d-block">Profile</span>
+        </span>
+      </button>
+      <ul
+        class="dropdown-menu dropdown-menu-end bg-white border-0 shadow rounded-3 pt-0 text-start"
+        style="z-index: 9999"
+      >
+        <!-- <li class="text-nowrap px-3 py-2 fw-semibold bg-light fs-14 d-md-none">
+          Hello, {{ userName == undefined ? 'Guest' : userName }}
+        </li> -->
+        <li [hidden]="isLoggedIn">
+          <a
+            class="dropdown-item px-3 py-2 fs-14 cursor-pointer bg-primary text-white text-center"
+            (click)="openLogin()"
+            ><span><i class="fa-solid fa-arrow-right-to-bracket fa-lg me-1"></i></span>Login</a
+          >
+        </li>
+        <li class="mb-1">
+          <a
+            class="dropdown-item px-3 py-2 fs-14 text-start"
+            [routerLink]="['/user-profile']"
+            [queryParams]="{ section: 'account' }"
+          >
+            <span><i class="fa-solid fa-lg opacity-75 fa-user-tie"></i></span>My Account</a
+          >
+        </li>
+        <li class="mb-1">
+          <a
+            class="dropdown-item px-3 py-2 fs-14 text-start"
+            [routerLink]="['/user-profile']"
+            [queryParams]="{ section: 'Orders' }"
+            ><span><i class="fa-solid fa-lg opacity-75 fa-bag-shopping"></i></span>My Order
+            @if (countsList?.order_count > 0) {
+              <span class="badge text-bg-primary ms-2">{{ countsList?.order_count }}</span>
             }
-            </a
-        >
-      </li>
-      <li class="mb-1">
-        <a
-          class="dropdown-item px-3 py-2 fs-14"
-          [routerLink]="['/user-profile']"
-          [queryParams]="{ section: 'wishlist' }"
-          ><span><i class="fa-solid fa-lg opacity-75 fa-heart"></i></span>Wishlist
-          @if(countsList?.wishlist_count > 0) {
-          <span class="badge text-bg-primary ms-2">{{ countsList?.wishlist_count }}</span>
-          }</a
-        >
-      </li>
-      <li class="mb-1">
-        <a
-          class="dropdown-item px-3 py-2 fs-14"
-          [routerLink]="['/user-profile']"
-          [queryParams]="{ section: 'address' }"
-          ><span><i class="fa-solid fa-lg opacity-75 fa-house"></i></span> Address</a
-        >
-      </li>
-      <li [hidden]="!isLoggedIn">
-        <a class="dropdown-item px-3 py-2 fs-14 cursor-pointer" (click)="logout()"
-          ><span><i class="fa-solid fa-lg opacity-75 fa-arrow-right-from-bracket"></i></span
-          >Logout</a
-        >
-      </li>
-    </ul>
-  </div>
+          </a>
+        </li>
+        <li class="mb-1">
+          <a
+            class="dropdown-item px-3 py-2 fs-14 text-start"
+            [routerLink]="['/user-profile']"
+            [queryParams]="{ section: 'wishlist' }"
+            ><span><i class="fa-solid fa-lg opacity-75 fa-heart"></i></span>Wishlist
+            @if (countsList?.wishlist_count > 0) {
+              <span class="badge text-bg-primary ms-2">{{ countsList?.wishlist_count }}</span>
+            }
+          </a>
+        </li>
+        <li class="mb-1">
+          <a
+            class="dropdown-item px-3 py-2 fs-14 text-start"
+            [routerLink]="['/user-profile']"
+            [queryParams]="{ section: 'address' }"
+            ><span><i class="fa-solid fa-lg opacity-75 fa-house"></i></span> Address</a
+          >
+        </li>
+        <li [hidden]="!isLoggedIn">
+          <a class="dropdown-item px-3 py-2 fs-14 cursor-pointer text-start" (click)="logout()"
+            ><span><i class="fa-solid fa-lg opacity-75 fa-arrow-right-from-bracket"></i></span
+            >Logout</a
+          >
+        </li>
+      </ul>
+    </div>
   }
 </ng-template>
 
@@ -155,25 +290,31 @@
 <div class="category-wrapper border-bottom">
   <div class="container d-flex align-items-center justify-content-center px-0">
     <ul class="nav category-nav gap-2 flex-nowrap overflow-auto">
-       @for (item of categoryListData; track $index) {
+      @for (item of categoryListData; track $index) {
         <!-- <pre>{{categoryListData | json}}</pre> -->
         <li class="nav-item">
-          <a  [routerLink]="['/category-details', item.id]" routerLinkActive="active" class="nav-link fs-14 fw-semibold d-flex align-items-center">
+          <a
+            [routerLink]="['/category-details', item.id]"
+            routerLinkActive="active"
+            class="nav-link fs-14 fw-semibold d-flex align-items-center"
+          >
             <!-- <img src="{{item.thumbnail}}" alt="catImg" width="24px" height="24px" class="me-1"> -->
-            <img src="{{baseUrl}}/{{item.thumbnail}}" alt="catImg" width="24px" height="24px" class="me-1">
+            <img
+              src="{{ baseUrl }}/{{ item.thumbnail }}"
+              alt="catImg"
+              width="24px"
+              height="24px"
+              class="me-1"
+            />
 
             {{ item.name }}
           </a>
         </li>
-        }
+      }
     </ul>
-     <!-- <a href="/contact-us" class="shop-btn ms-auto lh-lg">Bulk Order</a> -->
+    <!-- <a href="/contact-us" class="shop-btn ms-auto lh-lg">Bulk Order</a> -->
   </div>
 </div>
-
-
-
-
 
 <!-- General Settings -->
 <!-- <pre> {{this.dataService.getAllGeneralSettings() | json}} </pre> -->
