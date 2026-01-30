@@ -45,3 +45,55 @@
   height: auto !important;
   overflow-y: hidden; /* prevent scroll */
 }
+
+
+
+
+
+
+/* Base textarea styling */
+.html-editor-textarea {
+  font-family: Consolas, Monaco, 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  border-radius: 6px;
+  padding: 12px;
+  resize: vertical;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* LIGHT THEME */
+.html-editor-textarea.light {
+  background-color: #ffffff;
+  color: #212529;
+  border: 1px solid #ced4da;
+}
+
+/* DARK THEME */
+.html-editor-textarea.dark {
+  background-color: #1e1e1e;   /* VS Code dark background */
+  color: #d4d4d4;              /* VS Code editor text */
+  caret-color: #ffffff;        /* cursor */
+  border: 1px solid #3c3c3c;
+}
+
+/* Improve focus visibility */
+.html-editor-textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Optional: scrollbar styling (nice touch) */
+.html-editor-textarea.dark::-webkit-scrollbar {
+  width: 8px;
+}
+.html-editor-textarea.dark::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}
+
+.html-editor-textarea.dark::selection {
+  background-color: #264f78;   /* VS Code blue selection */
+  color: #ffffff;
+}
+

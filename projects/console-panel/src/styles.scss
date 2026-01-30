@@ -45,3 +45,36 @@
 		}
 	}
 }
+/* FONT PICKER LABELS */
+.ql-snow .ql-picker.ql-font .ql-picker-label::before {
+  content: 'Sans Serif';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="sans-serif"]::before {
+  content: 'Sans Serif';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="serif"]::before {
+  content: 'Serif';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]::before {
+  content: 'Monospace';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="roboto"]::before {
+  content: 'Roboto';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="lato"]::before {
+  content: 'Lato';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="poppins"]::before {
+  content: 'Poppins';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="montserrat"]::before {
+  content: 'Montserrat';
+}
+

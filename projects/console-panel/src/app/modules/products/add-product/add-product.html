@@ -100,6 +100,14 @@
               </div> -->
             </div>
             <div class="panel-body">
+                <div class="d-flex justify-content-end mb-2">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="openHtmlEditor('features')">
+                  Edit HTML
+                </button>
+              </div>
               <quill-editor formControlName="features" [modules]="modulesNoImage"></quill-editor>
             </div>
           </div>
@@ -144,14 +152,30 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Edit HTML</h5>
+         <button
+  type="button"
+  class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
+  (click)="toggleTheme()">
+
+  <i
+    class="fa"
+    [ngClass]="editorTheme === 'light' ? 'fa-moon' : 'fa-sun'"
+    aria-hidden="true">
+  </i>
+
+  {{ editorTheme === 'light' ? 'Dark Mode' : 'Light Mode' }}
+</button>
+
         <button type="button" class="btn-close" (click)="closeHtmlEditor()"></button>
       </div>
 
       <div class="modal-body">
         <textarea
-          class="form-control"
+          class="form-control html-editor-textarea"
           rows="15"
-          [formControl]="htmlControl">
+          [formControl]="htmlControl"
+          [ngClass]="editorTheme"
+          >
         </textarea>
       </div>
 
@@ -272,6 +296,14 @@
 
                     <h5>Product Description Images <span>(jpeg/png)</span></h5>
                     <form [formGroup]="productDetails">
+                      <div class="d-flex justify-content-end mb-2">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="openHtmlEditor('productDescriptionImageGallery')">
+                  Edit HTML
+                </button>
+              </div>
                       <quill-editor formControlName="productDescriptionImageGallery"
                         [modules]="modulesWithImage"></quill-editor>
                     </form>
