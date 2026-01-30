@@ -184,14 +184,26 @@ modulesNoImage = {
   // };
 
 modulesWithImage = {
-      htmlEditButton: {
-      debug: true, // Developers love logs
-      msg: "Edit HTML", // Tooltip
-      okText: "Save",
-    },
+    //   htmlEditButton: {
+    //   debug: true, // Developers love logs
+    //   msg: "Edit HTML", // Tooltip
+    //   okText: "Save",
+    // },
   toolbar: {
     container: [
-      [{ font: [] }, { size: ['small', false, 'large', 'huge'] }],
+      [{ font: [
+        'sans-serif',
+        'serif',
+        'monospace',
+        'roboto',
+        'lato',
+        'poppins',
+        'montserrat'
+      ] },
+       { size: ['small', false, 'large', 'huge'], }],
+       [
+      { header: [1, 2, 3, 4, 5, 6, false] }
+    ],
       ['bold', 'italic', 'underline', 'strike'],
       [{ color: [] }, { background: [] }],
       [{ header: 1 }, { header: 2 }],
@@ -237,7 +249,7 @@ handleImageUpload() {
       const imageUrl = res?.data?.[0]?.url;
       if (!imageUrl) return;
 
-      const quill = (this as any).quillEditor?.quillEditor;
+      const quill = (this as any).descriptionImageGallery?.quillEditor;
       const range = quill.getSelection(true);
       quill.insertEmbed(range.index, 'image', imageUrl);
       quill.setSelection(range.index + 1);
