@@ -29,7 +29,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 // // import { ImageHandler, Options } from 'ngx-quill-upload';
 // import Quill from 'quill';
 // import HtmlEditButton from 'quill-html-edit-button';
-import { QuillEditorComponent, QuillModule } from 'ngx-quill';
 import Quill from 'quill';
 // import HtmlEditButton from 'quill-html-edit-button';
 // import htmlEditButton from 'quill-html-edit-button';
@@ -44,7 +43,7 @@ interface FoodNode {
 }
 @Component({
   selector: 'app-add-customer',
-  imports: [ReactiveFormsModule, QuillModule, MatTreeModule, MatIconModule, CategoryTreeComponent, NgClass,CommonModule,FormsModule ],
+  imports: [ReactiveFormsModule, MatTreeModule, MatIconModule, CategoryTreeComponent, NgClass,CommonModule,FormsModule ],
   templateUrl: './add-product.html',
   styleUrl: './add-product.scss',
 })
@@ -52,8 +51,6 @@ export class AddProduct {
   childrenAccessor = (node: FoodNode) => node.children ?? [];
   @ViewChild('galleryInput') galleryInput!: ElementRef<HTMLInputElement>;
   @ViewChild('descriptionImageGallery') descriptionImageGallery!: ElementRef<HTMLInputElement>;
-  @ViewChild('quillEditor') quillEditor!: QuillEditorComponent;
-  @ViewChild('productDescriptionQuill') productDescriptionQuill!: QuillEditorComponent;
   @Output() data: any = {
     price_data: {},
     shipping_info: {},
@@ -221,6 +218,11 @@ modulesWithImage = {
 
   dataSource = [];
   inputControlName: any;
+  ngAfterViewInit(){
+       const quill = new Quill('#editor', {
+    theme: 'snow'
+  });
+  }
 handleImageUpload() {
   const input = document.createElement('input');
   input.type = 'file';

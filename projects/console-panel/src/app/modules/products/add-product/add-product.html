@@ -65,7 +65,8 @@
                   Edit HTML
                 </button>
               </div>
-              <quill-editor #quillEditor formControlName="shortDescription" rows="5" [modules]="modulesNoImage"></quill-editor>
+              <div id="editor"></div>
+              <quill-editor formControlName="shortDescription" rows="5"></quill-editor>
             </div>
           </div>
           <div class="panel mb-30">
@@ -86,7 +87,7 @@
                   Edit HTML
                 </button>
               </div>
-              <quill-editor #productDescriptionQuill formControlName="productDescription" [modules]="modulesNoImage"></quill-editor>
+              <quill-editor #productDescriptionQuill formControlName="productDescription"></quill-editor>
             </div>
           </div>
 
@@ -108,7 +109,7 @@
                   Edit HTML
                 </button>
               </div>
-              <quill-editor formControlName="features" [modules]="modulesNoImage"></quill-editor>
+              <quill-editor formControlName="features"></quill-editor>
             </div>
           </div>
 
@@ -305,7 +306,7 @@
                 </button>
               </div>
                       <quill-editor #descriptionImageGallery formControlName="productDescriptionImageGallery"
-                        [modules]="modulesWithImage"></quill-editor>
+                       ></quill-editor>
                     </form>
                     <!-- <div class="panel mb-30">
                       <div class="panel-header">

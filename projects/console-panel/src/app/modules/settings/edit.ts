@@ -7,17 +7,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { GlobalService } from '../../global.service';
-
-import { QuillModule } from 'ngx-quill';
 import Quill from 'quill';
-import htmlEditButton from 'quill-html-edit-button';
 
 
 
 @Component({
   selector: 'app-editpage',
   templateUrl: './edit.html',
-  imports: [FormsModule, CommonModule, QuillModule],
+  imports: [FormsModule, CommonModule],
   styleUrls: ['./edit.scss'],
   standalone: true
 })

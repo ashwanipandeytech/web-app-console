@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTreeModule } from '@angular/material/tree';
-import { QuillModule } from 'ngx-quill';
+// import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'app-category-tree',

@@ -3,14 +3,13 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { QuillModule } from 'ngx-quill';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { GlobalService } from '../../global.service';
 @Component({
   selector: 'app-addpage',
   templateUrl: './add.html',
-  imports: [FormsModule, CommonModule,QuillModule],
+  imports: [FormsModule, CommonModule],
   styleUrls: ['./add.scss'],
   standalone:true
 })
