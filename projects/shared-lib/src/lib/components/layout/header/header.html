@@ -1,8 +1,16 @@
 <!-- HEADER -->
 <nav class="navbar navbar-expand-lg border-bottom bg-white py-2 sticky-top z-3">
-  <div class="container align-items-center gap-lg-4 gap-1 flex-nowrap">
+  <div class="container align-items-center gap-lg-4 gap-1 flex-nowrap px-2">
     <!-- Logo -->
     <!-- <pre> {{this.dataService.getSpecificGeneralSettings('general').logo.desktop.imgSrc| json}} </pre> -->
+
+    @if (router.url !== '/' && !router.url.includes('/checkout')) {
+      <button class="btn btn-light d-flex align-items-center" (click)="back()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-move-left-icon lucide-move-left"><path d="M6 8L2 12L6 16"/><path d="M2 12H22"/></svg>
+        <span class="d-inline-block fs-12 ps-1">Back</span>
+      </button>
+    }
+
     <a routerLink="/">
       <img
         [src]="this.dataService.getSpecificGeneralSettings('general').logo.desktop.imgSrc"
@@ -15,11 +23,10 @@
     <!-- Location -->
     <div class="location-dropdown dropdown">
       <button
-        class="btn text-truncate text-dark fs-14 fw-bold"
+        class="btn text-truncate text-dark fs-14 fw-semibold py-2"
         data-bs-toggle="dropdown"
         (click)="openAddressPopup('header')"
         [ngClass]="{ 'bg-light': !currentAddress }"
-        style="padding: 10px"
         title="{{ currentAddress }}"
       >
         <!-- {{currentAddress}} -->
@@ -56,82 +63,84 @@
 </nav>
 
 <!-- Mobile bottom menu -->
-<div
-  class="bottom-nav d-flex d-sm-none align-items-center position-fixed start-0 end-0 bottom-0 shadow bg-white py-1 justify-content-around z-3"
->
-  <a routerLink="/" class="active">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="lucide lucide-house-icon lucide-house"
-    >
-      <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
-      <path
-        d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
-      />
-    </svg>
-    <span class="d-block">Home</span>
-  </a>
 
-  <a routerLink="/category">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="lucide lucide-layout-grid-icon lucide-layout-grid"
-    >
-      <rect width="7" height="7" x="3" y="3" rx="1" />
-      <rect width="7" height="7" x="14" y="3" rx="1" />
-      <rect width="7" height="7" x="14" y="14" rx="1" />
-      <rect width="7" height="7" x="3" y="14" rx="1" />
-    </svg>
-    <span class="d-block">Categories</span>
-  </a>
+@if (!router.url.startsWith('/cart') && !router.url.includes('/checkout')) {
+  <div
+    class="bottom-nav d-flex d-sm-none align-items-center position-fixed start-0 end-0 bottom-0 shadow bg-white py-1 justify-content-around z-3"
+  >
+    <a routerLink="/" class="active">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-house-icon lucide-house"
+      >
+        <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+        <path
+          d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+        />
+      </svg>
+      <span class="d-block">Home</span>
+    </a>
 
-  <a data-bs-toggle="collapse" href="#collapseSearch">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <path d="m21 21-4.34-4.34" />
-      <circle cx="11" cy="11" r="8" />
-    </svg>
-    <span class="d-block">Search</span>
-  </a>
+    <a routerLink="/category">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-layout-grid-icon lucide-layout-grid"
+      >
+        <rect width="7" height="7" x="3" y="3" rx="1" />
+        <rect width="7" height="7" x="14" y="3" rx="1" />
+        <rect width="7" height="7" x="14" y="14" rx="1" />
+        <rect width="7" height="7" x="3" y="14" rx="1" />
+      </svg>
+      <span class="d-block">Categories</span>
+    </a>
 
-  <div class="collapse position-absolute" id="collapseSearch" style="bottom: 53px">
-    <ng-container *ngTemplateOutlet="searchCategoryRef"></ng-container>
+    <a data-bs-toggle="collapse" href="#collapseSearch">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m21 21-4.34-4.34" />
+        <circle cx="11" cy="11" r="8" />
+      </svg>
+      <span class="d-block">Search</span>
+    </a>
+
+    <div class="collapse position-absolute" id="collapseSearch" style="bottom: 53px">
+      <ng-container *ngTemplateOutlet="searchCategoryRef"></ng-container>
+    </div>
+
+    <div class="text-center small cursor-pointer">
+      <ng-container *ngTemplateOutlet="cart"></ng-container>
+    </div>
+
+    <div class="text-center small cursor-pointer">
+      <ng-container *ngTemplateOutlet="userProfile"></ng-container>
+    </div>
   </div>
-
-  <div class="text-center small cursor-pointer">
-    <ng-container *ngTemplateOutlet="cart"></ng-container>
-  </div>
-
-  <div class="text-center small cursor-pointer">
-    <ng-container *ngTemplateOutlet="userProfile"></ng-container>
-  </div>
-
-</div>
+}
 
 <ng-template #searchCategoryRef>
   <form class="flex-grow-1">
@@ -287,7 +296,7 @@
 </ng-template>
 
 <!-- CATEGORY BAR -->
-<div class="category-wrapper border-bottom">
+<div class="category-wrapper border-bottom py-0">
   <div class="container d-flex align-items-center justify-content-center px-0">
     <ul class="nav category-nav gap-2 flex-nowrap overflow-auto">
       @for (item of categoryListData; track $index) {

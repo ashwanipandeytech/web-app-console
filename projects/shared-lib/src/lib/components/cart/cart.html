@@ -2,7 +2,7 @@
   <div class="cart-page bg-light">
     <div class="cart-card mx-auto pt-2">
       <div class="bg-white">
-        <button (click)="back()"><= Back</button>
+        <!-- <button (click)="back()"><= Back</button> -->
         <div class="border-bottom px-3 py-2 mb-2">Products in cart</div>
         <!-- Products -->
         @for (item of cartListData; track $index; let i = $index) {
@@ -92,7 +92,7 @@
   </div>
 }
 
-<div class="d-flex d-sm-none align-items-center p-1 py-sm-3 py-1 ms-sm-3 ms-1">
+<div class="d-flex d-none align-items-center p-1 py-sm-3 py-1 ms-sm-3 ms-1">
   <button class="btn btn-light d-flex align-items-center" (click)="back()">
     <svg
       fill="none"
@@ -134,8 +134,8 @@
 <section class="product-cart w-1100 mx-auto box-shadows rounded-4 py-md-3 px-sm-4 px-2 mb-5">
   <div class="container">
     <!-- Blank cart start -->
-    @if (cartListData.length == 0 && !loading) {
-      <div class="blog-item aos-init aos-animate">
+    @if (cartListData.length == 0 && isLoggedIn && !loading) {
+      <div class="blog-item">
         <div class="cart-img">
           <img
             src="./images/homepage-one/empty-cart.webp"
@@ -152,9 +152,8 @@
         </div>
       </div>
     }
-    @if (!isLoggedIn) {
+    @if (!isLoggedIn && cartListData.length == 0) {
       <app-no-data
-        title="No Wishlist Found"
         message="There are no data available right now."
         [showAction]="false"
         [displayNoDataText]="false"

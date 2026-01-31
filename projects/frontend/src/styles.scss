@@ -1776,13 +1776,27 @@ safure-root {
 
 .innerHtml {
   strong{font-weight: 600;}
+  a{
+    color: $theme-color;
+    &:hover{
+      text-decoration: underline;
+    }
+  }
   ul {
     padding-left: 20px;
 
     li {
       list-style-type: disc;
       margin-bottom: 8px;
+      font-size: 14px;
+      > *{
+        font-size: inherit;
+      }
     }
+  }
+  img{
+    max-height: 400px;
+    object-fit: cover;
   }
 }
 

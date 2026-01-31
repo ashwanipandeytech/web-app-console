@@ -32,7 +32,7 @@ export class Header {
   private signalService = inject(SignalService);
   readonly ngbModal = inject(NgbModal);
   private cd = inject(ChangeDetectorRef);
-  
+
   isLoggedIn: any = false;
   cartItemCount: any = 0;
   userName: any;
@@ -43,11 +43,9 @@ export class Header {
   baseUrl = environment.DOMAIN;
   currentAddress: any;
 
-
-
-  isBrowser: boolean;  
+  isBrowser: boolean;
   private platformId = inject(PLATFORM_ID);
-  constructor() {
+  constructor(public router: Router) {
     this.isBrowser = isPlatformBrowser(this.platformId);
 
     this.globalFunctionService.getCount();
@@ -78,20 +76,18 @@ export class Header {
       //   this.currentAddress = localStorage.getItem('currentLocation');
       // }
       // }
-
     });
     const address = effect(() => {
       if (this.signalService.currentLocation() != null) {
         this.currentAddress = this.signalService.currentLocation();
         this.cd.detectChanges();
-      }
-      else {
+      } else {
         if (this.isBrowser && localStorage.getItem('currentLocation')) {
           this.currentAddress = localStorage.getItem('currentLocation');
           this.cd.detectChanges();
         }
       }
-    })
+    });
 
     effect(() => {
       //console.log('fsgfdgvdfgdfgfdgf',this.signalService.user());
@@ -106,15 +102,14 @@ export class Header {
       //   this.cd.detectChanges();
       // }
       // }
-    })
+    });
 
     let profileUpdate = effect(() => {
       if (this.signalService.profileChanged()) {
         this.userName = this.signalService.profileChanged();
         this.cd.detectChanges();
       }
-
-    })
+    });
 
     //  else {
     //   this.currentAddress = this.signalService.currentLocation();
@@ -171,6 +166,7 @@ export class Header {
   gotoCategory(id: any) {
     this.route.navigate(['/category-details', id]);
   }
+
   openDashboard() {
     if (this.isLoggedIn) {
       this.route.navigate(['/user-profile.html']);
@@ -179,6 +175,7 @@ export class Header {
       this.openLogin();
     }
   }
+
   logout() {
     if (this.isBrowser) {
       localStorage.clear();
@@ -195,7 +192,7 @@ export class Header {
 
     const matchedCategory = this.categoryListData.find((cat: { name: string }) =>
       // cat.name.toLowerCase() === this.searchText.toLowerCase()
-      cat.name.toLowerCase().includes(this.searchText.toLowerCase())
+      cat.name.toLowerCase().includes(this.searchText.toLowerCase()),
     );
 
     if (matchedCategory) {
@@ -206,6 +203,7 @@ export class Header {
       alert('Category not found');
     }
   }
+
   getCategoryList() {
     this.categoryListData = [];
     this.dataService
@@ -214,7 +212,7 @@ export class Header {
         catchError((err) => {
           console.error('Error:', err);
           return of(null);
-        })
+        }),
       )
       .subscribe((res: any) => {
         if (res.data) {
@@ -232,13 +230,14 @@ export class Header {
         // this.categoryListData = res.data;
       });
   }
+
   carList() {
     this.dataService
       .get('cart')
       .pipe(
         catchError((error) => {
           return of(null); // or you can return a default value if needed
-        })
+        }),
       )
       .subscribe((response: any) => {
         //console.log('response==>', response);
@@ -248,22 +247,12 @@ export class Header {
         }
       });
   }
-  //   getCartCount(){
-  //     this.dataService.get('user/overview-counts').subscribe((res:any)=>{
-  //       //console.log('res====>',res);
-  //       this.countsList = res.data;
-  //     })
-  //   // this.dataService.get((data)=>{
-  //   //   this.arrCartLength = data
-  //   //   this.cdr.detectChanges();
-  //   // });
-  // }
 
   openAddressPopup(from: any = '') {
     const modalRef: NgbModalRef = this.ngbModal.open(AddAddressModal, {
       windowClass: 'mobile-modal',
       scrollable: true,
-      centered: true
+      centered: true,
     });
     modalRef.componentInstance.isfrom = from;
     modalRef.result
@@ -274,9 +263,8 @@ export class Header {
         //console.log('Modal dismissed:', reason);
       });
   }
+
   openLogin() {
-
-
     setTimeout(() => {
       let isLogginOpened: any = null;
       let isLoggedIn: any = null;
@@ -289,7 +277,7 @@ export class Header {
         const modalRef: NgbModalRef = this.ngbModal.open(Login, {
           windowClass: 'mobile-modal login-popup',
           scrollable: true,
-          centered: true
+          centered: true,
         });
         modalRef.result
           .then((result) => {
@@ -299,8 +287,14 @@ export class Header {
             //console.log('Modal dismissed:', reason);
           });
       }
-
     }, 200);
-
   }
+
+  back() {
+    if (this.isBrowser) {
+      window.history.back();
+    }
+  }
+
+
 }

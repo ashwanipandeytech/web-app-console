@@ -1,22 +1,37 @@
-<div class="d-flex d-sm-none align-items-center bg-light p-1">
-    <button class="btn btn-light d-flex align-items-center" (click)="back()"> 
-        <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" style="height: 1.5rem; width: 1.5rem; color: black;"><path d="M15.5 19L8.5 12L15.5 5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
-        <span class="d-inline-block" style="height: 24px; line-height: 24px;">Back</span>
-    </button>
+<div class="d-flex d-none align-items-center bg-light p-1">
+  <button class="btn btn-light d-flex align-items-center" (click)="back()">
+    <svg
+      fill="none"
+      height="24"
+      viewBox="0 0 24 24"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+      style="height: 1.5rem; width: 1.5rem; color: black"
+    >
+      <path
+        d="M15.5 19L8.5 12L15.5 5"
+        stroke="black"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2.5"
+      ></path>
+    </svg>
+    <span class="d-inline-block" style="height: 24px; line-height: 24px">Back</span>
+  </button>
 </div>
 
 <!--------------- blog-tittle-section---------------->
 <section class="blog">
-    <div class="container">
-        <div class="blog-bradcrum">
-            <span><a href="/">Home</a></span>
-            <span class="devider">/</span>
-            <span class="fw-semibold">Category</span>
-        </div>
-        <div class="blog-heading about-heading">
-            <h1 class="heading">Category</h1>
-        </div>
+  <div class="container">
+    <div class="blog-bradcrum">
+      <span><a href="/">Home</a></span>
+      <span class="devider">/</span>
+      <span class="fw-semibold">Category</span>
     </div>
+    <div class="blog-heading about-heading">
+      <h1 class="heading">Category</h1>
+    </div>
+  </div>
 </section>
 <!--------------- blog-tittle-section-end---------------->
 
@@ -41,36 +56,29 @@
     </div>
 </section> -->
 
- <section class="product-category product">
-    <div class="container">
-     <div class="row category-section d-flex gap-0">
-  @for (item of categoryListData; track $index) {
-    <div class="col-md-2 col-6">
-      <a class="category-link" (click)="gotoCategory(item.id)">
-        <div class="product-wrapper">
-          <div class="wrapper-img">
-            <img
-              [src]="imgUrl + '/' + item?.thumbnail"
-              width="120"
-              alt=""
-            />
-          </div>
+<section class="product-category product">
+  <div class="container">
+    <div class="row category-section d-flex gap-0">
+      @for (item of categoryListData; track $index) {
+        <div class="col-md-2 col-6">
+          <a class="category-link" (click)="gotoCategory(item.id)">
+            <div class="product-wrapper">
+              <div class="wrapper-img">
+                <img [src]="imgUrl + '/' + item?.thumbnail" width="120" alt="" />
+              </div>
 
-          <div class="wrapper-info">
-            <span class="wrapper-details">
-              {{ item?.name }}
-            </span>
-          </div>
+              <div class="wrapper-info">
+                <span class="wrapper-details">
+                  {{ item?.name }}
+                </span>
+              </div>
+            </div>
+          </a>
         </div>
-      </a>
+      }
     </div>
-  }
-</div>
-
-    </div>
+  </div>
 </section>
 
-
-
 <!-- Mobile Bottom Navigation -->
-  <!-- <app-mobile-bottom-nav></app-mobile-bottom-nav> -->
+<!-- <app-mobile-bottom-nav></app-mobile-bottom-nav> -->

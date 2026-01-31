@@ -492,6 +492,9 @@ hr {
   width: 100%;
   border: 1px solid #eee;
   max-height: 500px;
+  @media screen and (max-width:575.98px) {
+    height: 300px;
+  }
   .cta-actions{
     button{
       font-size: 14px;

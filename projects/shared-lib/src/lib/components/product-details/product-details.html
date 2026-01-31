@@ -1,4 +1,4 @@
-<div class="d-flex d-sm-none align-items-center bg-light p-1">
+<div class="d-flex d-none align-items-center bg-light p-1">
   <button class="btn btn-light d-flex align-items-center" (click)="back()">
     <svg
       fill="none"
@@ -40,44 +40,6 @@
     <div class="product-info-section">
       <div class="row">
         <div class="col-md-6 col-12 mt-0">
-          <!-- <div
-            class="position-relative product-info-img bg-white rounded-4 overflow-hidden w-100"
-            data-aos="fade-right"
-          >
-            <div class="product-discount-content">
-              <h4>-50%</h4>
-            </div>
-            @if(isLogin){
-            <div
-              class="product-cart-items bg-white rounded p-1 position-absolute end-0 pe-3 z-3 cursor-pointer"
-              (click)="toggleHeart(productDetails)"
-              [ngClass]="{ wishlisted: productDetails.is_wishlisted }"
-            >
-              <i
-                class="fa-heart"
-                [ngClass]="productDetails.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"
-              ></i>
-            </div>
-            }
-
-            <ngx-slick-carousel id="slick-carousel" class="slick-carousel" [config]="slideConfig">
-              @for (item of productDetails.images; track $index) {
-              <div ngxSlickItem>
-                <img
-                  src="{{ item.url }}"
-                  alt="img"
-                  class="object-fit-contain"
-                  [ngStyle]="{ 'aspect-ratio': '1' }"
-                />
-              </div>
-              }
-            </ngx-slick-carousel>
-
-            <div class="d-flex justify-content-center gap-3 p-2 mt-4">
-              <a (click)="addToCart()" class="shop-btn">Add to Cart</a>
-              <a (click)="addToCart('buy')" class="shop-btn shop-btn-warning">Buy now</a>
-            </div>
-          </div> -->
 
           <div class="product-gallery d-flex gap-4">
             <!-- LEFT THUMBNAILS -->
@@ -106,6 +68,7 @@
 
               <!-- Wishlist -->
 
+              @if(isLogin==true){
               <button
                 class="wishlist-btn position-absolute top-0 end-0 mt-2 me-2 z-3 rounded-pill p-2 shadow"
                 (click)="toggleHeart(productDetails)"
@@ -116,6 +79,7 @@
                   [ngClass]="productDetails.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"
                 ></i>
               </button>
+            }
 
               <ngx-slick-carousel
                 class="slick-main slick-carousel"
@@ -130,7 +94,7 @@
                 }
               </ngx-slick-carousel>
 
-               <div class="d-flex justify-content-center gap-3 p-2 mt-4 cta-actions">
+               <div class="d-flex justify-content-center gap-3 cta-actions" style="transform: translateY(-27px);">
                 <button (click)="addToCart()" class="shop-btn w-100">Add to Cart</button>
                 <button (click)="addToCart('buy')" class="shop-btn w-100 shop-btn-warning">Buy now</button>
               </div>
@@ -376,7 +340,7 @@
         </div>
       </div>
 
-      <section class="product product-description">
+      <section class="product product-description mt-4">
         <div class="container">
           <div class="product-detail-section">
             <nav>
