@@ -318,7 +318,10 @@ export class Login {
     // this.activeModal.close({result:null});
     //  this.activeModal.close({ result: 'success' });
     // this.cd.detectChanges();
-
+if(recallApi == false){
+  this.activeModal.dismiss();
+  return;
+}
     const keywords = ['cart', 'user-profile'];
 
     // Returns true if the URL contains "cart" OR "user-profile"

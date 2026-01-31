@@ -3,6 +3,7 @@ import {Sidebar} from "../../layout/sidebar/sidebar";
 import {Header} from "../../layout/header/header";
 import { DataService } from 'shared-lib/services/data-service';
 import { catchError, of } from 'rxjs';
+import { GlobalService } from '../../global.service';
 
 @Component({
   selector: 'app-customers',
@@ -14,6 +15,7 @@ import { catchError, of } from 'rxjs';
 export class Customers {
   private dataService = inject(DataService);
   private cd=inject(ChangeDetectorRef);
+  globalService = inject(GlobalService);
   customerList: any=[];
 constructor(){
 
@@ -35,6 +37,10 @@ getCustomerList(){
           if (res?.data) {
             this.customerList = res.data.data;
             this.cd.detectChanges();
+          }
+          if (res.error) {
+          this.globalService.showMsgSnackBar(res.error);
+          return;
           }
         })
       }
