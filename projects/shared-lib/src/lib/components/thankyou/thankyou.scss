@@ -8,3 +8,9 @@
     &.good{.active{color: $secondary-theme;}}
     &.poor{.active{color: $btn-bg-1;}}
 }
+.card{
+    @media screen and (max-width:575.98px) {
+        border: 0!important;
+        box-shadow: none!important;
+    }
+}
