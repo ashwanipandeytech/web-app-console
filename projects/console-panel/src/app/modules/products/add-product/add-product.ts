@@ -53,6 +53,7 @@ export class AddProduct {
   @ViewChild('galleryInput') galleryInput!: ElementRef<HTMLInputElement>;
   @ViewChild('descriptionImageGallery') descriptionImageGallery!: ElementRef<HTMLInputElement>;
   @ViewChild('quillEditor') quillEditor!: QuillEditorComponent;
+  @ViewChild('productDescriptionQuill') productDescriptionQuill!: QuillEditorComponent;
   @Output() data: any = {
     price_data: {},
     shipping_info: {},
@@ -60,42 +61,52 @@ export class AddProduct {
     offer: {},
 
   };
-
-  modulesNoImage = {
-    // htmlEditButton: {
-    //   debug: true, // Developers love logs
-    //   msg: "Edit HTML", // Tooltip
-    //   okText: "Save",
-    // },
-    toolbar: [
-      // --- TEXT STYLE ---
-      [{ 'font': [] }, { 'size': ['small', false, 'large', 'huge'] }],
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],
-
-      // --- HEADER & QUOTES ---
-      [{ 'header': 1 }, { 'header': 2 }, 'blockquote',],
-
-      // --- LISTS & INDENTS ---
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'indent': '-1' }, { 'indent': '+1' }],
-      [{ 'direction': 'rtl' }],
-
-      // --- ALIGNMENT ---
-      [{ 'align': [] }],
-
-      // --- LINKS & MEDIA ---
-      ['link', 'formula'],
-      // ['htmlEditButton'],
-      // --- UTILS ---
-      ['clean']
+  editorTheme: 'light' | 'dark' = 'light';
+modulesNoImage = {
+  toolbar: [
+    // --- FONT FAMILY & SIZE ---
+    [
+      { font: [
+        'sans-serif',
+        'serif',
+        'monospace',
+        'roboto',
+        'lato',
+        'poppins',
+        'montserrat'
+      ]},
+      { size: ['small', false, 'large', 'huge'] }
     ],
 
+    // --- HEADINGS (H1–H6) ---
+    [
+      { header: [1, 2, 3, 4, 5, 6, false] }
+    ],
 
+    // --- TEXT STYLE ---
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ color: [] }, { background: [] }],
+    [{ script: 'sub' }, { script: 'super' }],
 
+    // --- BLOCK ELEMENTS ---
+    ['blockquote', 'code-block'],
 
-  };
+    // --- LISTS & INDENTS ---
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    [{ indent: '-1' }, { indent: '+1' }],
+    [{ direction: 'rtl' }],
+
+    // --- ALIGNMENT ---
+    [{ align: [] }],
+
+    // --- LINKS & MEDIA ---
+    ['link', 'formula'],
+
+    // --- UTILS ---
+    ['clean']
+  ]
+};
+
 
 
 
@@ -173,9 +184,26 @@ export class AddProduct {
   // };
 
 modulesWithImage = {
+    //   htmlEditButton: {
+    //   debug: true, // Developers love logs
+    //   msg: "Edit HTML", // Tooltip
+    //   okText: "Save",
+    // },
   toolbar: {
     container: [
-      [{ font: [] }, { size: ['small', false, 'large', 'huge'] }],
+      [{ font: [
+        'sans-serif',
+        'serif',
+        'monospace',
+        'roboto',
+        'lato',
+        'poppins',
+        'montserrat'
+      ] },
+       { size: ['small', false, 'large', 'huge'], }],
+       [
+      { header: [1, 2, 3, 4, 5, 6, false] }
+    ],
       ['bold', 'italic', 'underline', 'strike'],
       [{ color: [] }, { background: [] }],
       [{ header: 1 }, { header: 2 }],
@@ -192,6 +220,7 @@ modulesWithImage = {
 
 
   dataSource = [];
+  inputControlName: any;
 handleImageUpload() {
   const input = document.createElement('input');
   input.type = 'file';
@@ -220,7 +249,7 @@ handleImageUpload() {
       const imageUrl = res?.data?.[0]?.url;
       if (!imageUrl) return;
 
-      const quill = (this as any).quillEditor?.quillEditor;
+      const quill = (this as any).descriptionImageGallery?.quillEditor;
       const range = quill.getSelection(true);
       quill.insertEmbed(range.index, 'image', imageUrl);
       quill.setSelection(range.index + 1);
@@ -228,6 +257,9 @@ handleImageUpload() {
   };
 }
 
+toggleTheme() {
+  this.editorTheme = this.editorTheme === 'light' ? 'dark' : 'light';
+}
   hasChild = (_: number, node: FoodNode) => !!node.children && node.children.length > 0;
   productDetails!: FormGroup;
   inventoryForm!: FormGroup;
@@ -311,10 +343,12 @@ htmlControl = new FormControl('');
     this.productStatus = PRODUCT_TYPE;
 
   }
-openHtmlEditor() {
+openHtmlEditor(quillName:any) {
+  this.inputControlName = quillName;
   this.htmlControl.setValue(
-    this.productDetails.get('shortDescription')?.value || ''
+    this.productDetails.get(quillName)?.value || ''
   );
+
   this.showHtmlEditor = true;
 }
 
@@ -324,7 +358,7 @@ closeHtmlEditor() {
 
 saveHtml() {
   this.productDetails
-    .get('shortDescription')
+    .get(this.inputControlName)
     ?.setValue(this.htmlControl.value);
 
   this.showHtmlEditor = false;

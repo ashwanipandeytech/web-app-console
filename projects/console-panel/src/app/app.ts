@@ -19,7 +19,7 @@ export class App {
   public router=inject(Router)
   isLogin: boolean=false;
   constructor(){
-alert('hello 2');
+// alert('hello 2');
    let userData= localStorage.getItem('user');
 
    if(userData==null ||userData==undefined|| userData==''){
