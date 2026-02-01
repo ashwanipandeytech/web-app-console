@@ -196,7 +196,7 @@
                                     <th>Order ID</th>
                                     <th>Customer</th>
                                     <th>Status</th>
-                                    <th>Product</th>
+                                    <th class="text-start" style="width: 250px;">Product</th>
                                     <th>Price</th>
                                     <th>Payment Method</th>
                                     <th>Delivery Status</th>
@@ -212,10 +212,10 @@
                                                 <input class="form-check-input" type="checkbox">
                                             </div>
                                         </td> -->
-                                        <td><a href="invoices.html">{{order.id}}</a></td>
+                                        <td>{{order.id}}</td>
                                         <td>{{order.user.name}}</td>
                                         <td><span class="text-danger">{{order.status}}</span></td>
-                                        <td>{{order?.items[0]?.product?.title}}</td>
+                                        <td class="text-start">{{order?.items[0]?.product?.title}}</td>
                                         <td>{{order.total_amount}}</td>
                                         <td>{{order.payment_method}}</td>
                                         <td><span class="badge bg-success">Delivered</span></td>
