@@ -254,7 +254,7 @@ export class Checkout {
             this.razorpayService.openCheckout(res.data.data.id, checkoutPaymentData)
               .subscribe({
                 next: (response: any) => {
-                  if (response.success) {
+                  if (response) {
 
                     this.dataService.post(response, 'payments/verify')
                       .pipe(
