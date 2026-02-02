@@ -1,6 +1,14 @@
 @if(activeModal) {
   <div class="modal-header">
-    <h5 class="modal-title">Update Product</h5>
+    @if (this.data?.mode == 'new') {
+      <h5 class="modal-title">Add New Product</h5>
+    }
+       @if (this.data?.mode == 'clone') {
+      <h5 class="modal-title">Clone Product</h5>
+    }
+       @if (this.data?.mode == 'update') {
+      <h5 class="modal-title">Update Product</h5>
+    }
     <button type="button" class="btn-close ms-auto" (click)="closeModal()"></button>
   </div>
 }
@@ -57,15 +65,25 @@
               </div>
             </div>
             <div class="panel-body">
-              <div class="d-flex justify-content-end mb-2">
+              <!-- <div class="d-flex justify-content-end mb-2">
                 <button
                   type="button"
                   class="btn btn-sm btn-outline-primary"
                   (click)="openHtmlEditor('shortDescription')">
                   Edit HTML
                 </button>
+              </div> -->
+
+              <div class="editor-container">
+                <ckeditor [editor]="Editor" [config]="config" *ngIf="isLayoutReady"  formControlName="shortDescription" (ready)="onReady($event)"/>
               </div>
-              <quill-editor #quillEditor formControlName="shortDescription" rows="5" [modules]="modulesNoImage"></quill-editor>
+              <!-- <div class="editor-container__editor">
+                <div>
+                </div>
+              </div> -->
+              <!-- <div class="main-container">
+</div> -->
+              <!-- <quill-editor #quillEditor formControlName="shortDescription" rows="5" [modules]="modulesNoImage"></quill-editor> -->
             </div>
           </div>
           <div class="panel mb-30">
@@ -79,14 +97,21 @@
             </div>
             <div class="panel-body">
                <div class="d-flex justify-content-end mb-2">
-                <button
+                <!-- <button
                   type="button"
                   class="btn btn-sm btn-outline-primary"
                   (click)="openHtmlEditor('productDescription')">
                   Edit HTML
-                </button>
+                </button> -->
               </div>
-              <quill-editor #productDescriptionQuill formControlName="productDescription" [modules]="modulesNoImage"></quill-editor>
+
+             <div class="editor-container">
+                <ckeditor [editor]="Editor" [config]="config" *ngIf="isLayoutReady"  formControlName="productDescription" (ready)="onReady($event)"/>
+              </div>
+
+
+
+              <!-- <quill-editor #productDescriptionQuill formControlName="productDescription" [modules]="modulesNoImage"></quill-editor> -->
             </div>
           </div>
 
@@ -101,14 +126,30 @@
             </div>
             <div class="panel-body">
                 <div class="d-flex justify-content-end mb-2">
-                <button
+                <!-- <button
                   type="button"
                   class="btn btn-sm btn-outline-primary"
                   (click)="openHtmlEditor('features')">
                   Edit HTML
-                </button>
+                </button> -->
               </div>
-              <quill-editor formControlName="features" [modules]="modulesNoImage"></quill-editor>
+
+
+
+              <!-- <div class="main-container">
+	<div class="editor-container editor-container_classic-editor editor-container_include-style editor-container_include-fullscreen">
+		<div class="editor-container__editor">
+			<div>
+				<ckeditor [editor]="Editor" [config]="config" *ngIf="isLayoutReady"  formControlName="features" (ready)="onReady($event)"/>
+			</div>
+		</div>
+	</div>
+</div> -->
+   <div class="editor-container">
+                <ckeditor [editor]="Editor" [config]="config" *ngIf="isLayoutReady"  formControlName="features" (ready)="onReady($event)"/>
+              </div>
+
+              <!-- <quill-editor formControlName="features" [modules]="modulesNoImage"></quill-editor> -->
             </div>
           </div>
 
@@ -297,15 +338,30 @@
                     <h5>Product Description Images <span>(jpeg/png)</span></h5>
                     <form [formGroup]="productDetails">
                       <div class="d-flex justify-content-end mb-2">
-                <button
+                <!-- <button
                   type="button"
                   class="btn btn-sm btn-outline-primary"
                   (click)="openHtmlEditor('productDescriptionImageGallery')">
                   Edit HTML
-                </button>
+                </button> -->
               </div>
-                      <quill-editor #descriptionImageGallery formControlName="productDescriptionImageGallery"
-                        [modules]="modulesWithImage"></quill-editor>
+
+              
+              <!-- <div class="main-container">
+	<div class="editor-container editor-container_classic-editor editor-container_include-style editor-container_include-fullscreen">
+		<div class="editor-container__editor">
+			<div>
+				<ckeditor [editor]="Editor" [config]="config" *ngIf="isLayoutReady"  formControlName="productDescriptionImageGallery" (ready)="onReady($event)"/>
+			</div>
+		</div>
+	</div>
+</div> -->
+              <div class="editor-container">
+                <ckeditor [editor]="Editor" [config]="config" *ngIf="isLayoutReady"  formControlName="productDescriptionImageGallery" (ready)="onReady($event)"/>
+              </div>
+
+                      <!-- <quill-editor #descriptionImageGallery formControlName="productDescriptionImageGallery"
+                        [modules]="modulesWithImage"></quill-editor> -->
                     </form>
                     <!-- <div class="panel mb-30">
                       <div class="panel-header">
@@ -815,12 +871,11 @@
 
       <div class="col-xxl-3 col-lg-4">
         <div class="position-sticky top-0 z-3 w-100 bg-white mb-30">
-          @if (!this.isUpdateproduct) {
-
+          @if (!this.isUpdateproduct || this.data.mode == 'new' || this.data.mode == 'clone') {
           <a type="button" class="btn btn-primary d-block" (click)="getProductDetails()">Publish</a>
           }
 
-          @if (this.isUpdateproduct) {
+          @if (this.isUpdateproduct && this.data.mode == 'update') {
           <a type="button" class="btn btn-primary d-block" (click)="updateProduct()">Update</a>
           }
 

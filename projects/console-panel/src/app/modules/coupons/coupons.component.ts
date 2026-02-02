@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib/services/data-service';
@@ -13,11 +13,14 @@ import { DataService } from 'shared-lib/services/data-service';
 export class CouponsComponent implements OnInit {
 discountForm!:FormGroup;
 fb= inject(FormBuilder);
-dataService = inject(DataService)
+dataService = inject(DataService);
+cd = inject(ChangeDetectorRef);
+  couponList: any=[];
   constructor() { }
 
   ngOnInit() {
     this.couponForm();
+    this.getCouponList();
   }
 couponForm(){
    this.discountForm = this.fb.group({
@@ -53,5 +56,24 @@ submit() {
     //   return;
     // }
 
+  }
+
+  getCouponList(){
+       this.dataService
+      .get('coupons')
+      .pipe(
+        catchError((err) => {
+          console.error('Error:', err);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        if (res.success == true) {
+          this.couponList = res.data;
+          console.log('res==>',res);
+          this.cd.detectChanges();
+          
+        }
+      })
   }
 }

@@ -23,7 +23,7 @@ export class Order {
   private modalService = inject(NgbModal);
   private fb = inject(FormBuilder);
   orderListData: any = [];
-
+  defaultPage = 1;
   constructor(private cd: ChangeDetectorRef) {
     this.createForm();
     this.getOrderList();
@@ -56,6 +56,10 @@ export class Order {
       backdrop: 'static',
     });
   }
+ nextPage(page:any){
+// this.defaultPage = page;
+this.getOrderList();
+  }
 
   submit(modal: any) {
     if (this.orderForm.invalid) return;
@@ -75,8 +79,9 @@ export class Order {
   
   getOrderList() {
     this.orderListData = [];
+    
     this.dataService
-      .get('orders')
+      .get(`orders?page=${this.defaultPage}`)
       .pipe(
         catchError((err) => {
           console.error('Error:', err);
@@ -84,7 +89,9 @@ export class Order {
         })
       )
       .subscribe((res: any) => {
-        this.orderListData = res.data.data;
+        this.orderListData = res.data;
+        console.log('this.orderListData===>',this.orderListData);
+        
         this.cd.detectChanges();
       });
   }
