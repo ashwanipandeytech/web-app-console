@@ -231,7 +231,7 @@
                                     </td> -->
                                     <td><a>{{item.name}}</a></td>
                                     <td>{{item.is_active}}</td>
-                                    <td>{{item.created_at}}</td>
+                                    <td> {{ item.created_at | date: 'dd MMM yyyy' }} </td>
                                     <td>{{item.email}}</td>
                                     <!-- <td>November 23, 2021</td> -->
                                     <!-- <td><a href="#">testgmail.com</a></td> -->

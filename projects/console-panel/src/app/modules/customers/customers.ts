@@ -4,10 +4,11 @@ import {Header} from "../../layout/header/header";
 import { DataService } from 'shared-lib/services/data-service';
 import { catchError, of } from 'rxjs';
 import { GlobalService } from '../../global.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-customers',
-  imports: [Sidebar, Header],
+  imports: [Sidebar, Header,CommonModule],
   templateUrl: './customers.html',
   styleUrl: './customers.scss'
 })

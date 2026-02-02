@@ -1,8 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, inject, Optional, Output, ViewChild,ViewEncapsulation, type AfterViewInit  } from '@angular/core';
 import { CommonModule, NgClass } from '@angular/common';
-
-import { Sidebar } from '../../../layout/sidebar/sidebar';
-import { Header } from '../../../layout/header/header';
+import {SpecialCharacterHelper} from 'shared-lib/services/special-character-helper'
 import {
   FormArray,
   FormBuilder,
@@ -145,6 +143,7 @@ interface FoodNode {
   styleUrl: './add-product.scss',
 })
 export class AddProduct {
+  specialCharacterHelper = inject(SpecialCharacterHelper)
   childrenAccessor = (node: FoodNode) => node.children ?? [];
   @ViewChild('galleryInput') galleryInput!: ElementRef<HTMLInputElement>;
   @ViewChild('descriptionImageGallery') descriptionImageGallery!: ElementRef<HTMLInputElement>;
@@ -1785,11 +1784,58 @@ saveHtml() {
       });
   }
 
+  slugify(value: string): string {
+  return value
+    .toLowerCase()
+    .trim()                              // remove start/end spaces
+    .replace(/[–—]/g, '-')               // replace long dashes with normal dash
+    .replace(/[^a-z0-9\s-]/g, '')         // remove special characters
+    .replace(/\s+/g, '-')                 // spaces → dash
+    .replace(/-+/g, '-')                  // multiple dashes → single dash
+    .replace(/^-+|-+$/g, '');             // remove dash from start/end
+}
+
   createPermalink() {
-    this.productDetails.value.productTitle;
+// Onchange 
+//     const cleanedTitle =
+//   this.specialCharacterHelper.specialCharacterChecker(
+//     this.productDetails.value.productTitle,
+//     {
+//       replaceWithSpace: ['-'],
+//       remove: ['&','*','('],
+//       capitalize: true
+//     }
+//   );
+//   this.productDetails.patchValue({
+//   productTitle: cleanedTitle
+// });
+
+// onblur 
+  const control = this.productDetails.get('productTitle');
+  if (!control) return;
+
+  const cleanedTitle =
+    this.specialCharacterHelper.specialCharacterChecker(
+      control.value,
+      // {
+      //   replaceWithSpace: ['-'],
+      //   remove: ['&', '*', '('],
+      //   capitalize: true
+      // }
+      {
+        allowOnly: ['|'],
+    replaceWithSpace: ['-'],
+    capitalize: true
+      }
+    );
+
+  control.setValue(cleanedTitle, { emitEvent: false });
+    // this.specialCharacterHelper.specialCharacterChecker( 'adjustable--cow|-anti kick',{replaceWithSpace: ['-'],remove: ['|'],capitalize: true});
+    // this.productDetails.value.productTitle = this.slugToTitle(this.productDetails.value.productTitle);
     // let permaLinkValue = this.productDetails.value.productTitle.contains(' ')
     const formatted = this.productDetails.value.productTitle.replace(/\s+/g, '-').toLowerCase();
-    this.permaLink = formatted;
+    const cleanSlug = this.slugify(formatted);
+    this.permaLink = cleanSlug;
     this.seoForm.patchValue({ slugText: formatted });
     this.cd.detectChanges();
   }

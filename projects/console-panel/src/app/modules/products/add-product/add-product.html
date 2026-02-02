@@ -33,7 +33,7 @@
               <input type="text" formControlName="productTitle" class="form-control" id="productTitle"
                 placeholder="Title for product"
                 [class.is-invalid]="addProductDetailsValidation['productTitle'].touched && addProductDetailsValidation['productTitle'].invalid"
-                (input)="createPermalink()">
+                 (change)="createPermalink()">
               @if (addProductDetailsValidation['productTitle'].touched &&
               addProductDetailsValidation['productTitle'].errors?.['required']) {
               <div class="text-danger fs-12 mt-1">
