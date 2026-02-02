@@ -222,7 +222,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @for (item of customerList; track $index) {
+                                @for (item of customerList?.data; track $index) {
                                 <tr>
                                     <!-- <td>
                                         <div class="form-check">
@@ -245,6 +245,13 @@
                                 }
                             </tbody>
                         </table>
+                           <div class="d-flex align-items-center justify-content-end gap-1 py-2">
+                        @for (page of customerList?.meta?.links; track $index) {
+                        <button type="button" class="btn" (click)="nextPage(page.page)">
+                            <span [innerHTML]="page.label"></span>
+                        </button>
+                        }
+                    </div>
                     </div>
                     <!-- <div class="table-bottom-control"></div> -->
                 </div>

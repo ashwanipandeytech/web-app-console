@@ -9,7 +9,7 @@ import {
   Inject,
   PLATFORM_ID,
 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
@@ -115,6 +115,7 @@ onMainAfterChange(event: any) {
   isLogin: boolean = false;
   isPreview: any;
   isBrowser: boolean;
+  safeContent!: SafeHtml;
   private platformId = inject(PLATFORM_ID);
   constructor(
     private cd: ChangeDetectorRef,
@@ -122,11 +123,14 @@ onMainAfterChange(event: any) {
     private sanitizer: DomSanitizer,
     private renderer: Renderer2,
     private router: Router,
+    
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.callAllProductList();
   }
-
+setEditorContent(html: string) {
+    this.safeContent = this.sanitizer.bypassSecurityTrustHtml(html);
+  }
   ngOnInit() {
     if (this.isBrowser) {
       window.scrollTo(0, 0);
@@ -140,6 +144,9 @@ onMainAfterChange(event: any) {
       this.dataService.get(`products/${this.productId}`).subscribe((res: any) => {
         console.log('productId==>', res.data);
         this.productDetails = res.data.data;
+        console.log('this.productDetails==>',this.productDetails);
+       let html = this.productDetails?.product_details?.productDescriptionImageGallery
+         this.setEditorContent(html) 
         let user;
         if (this.isBrowser) {
           user = JSON.parse(localStorage.getItem('user') || '{}');

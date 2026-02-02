@@ -85,7 +85,7 @@ import {
 	List,
 	ImageUtils,
 	ImageEditing,
-	PageBreak,
+	// PageBreak,
 	RemoveFormat,
 	SpecialCharactersArrows,
 	SpecialCharacters,
@@ -107,21 +107,21 @@ import {
 	Underline,
   SourceEditing 
 } from 'ckeditor5';
-import {
-	CaseChange,
-	PasteFromOfficeEnhanced,
-	ExportPdf,
-	ExportWord,
-	Footnotes,
-	FormatPainter,
-	ImportWord,
-	LineHeight,
-	MergeFields,
-	MultiLevelList,
-	SlashCommand,
-	TableOfContents,
-	Template,
-} from 'ckeditor5-premium-features';
+// import {
+// 	CaseChange,
+// 	PasteFromOfficeEnhanced,
+// 	ExportPdf,
+// 	// ExportWord,
+// 	Footnotes,
+// 	FormatPainter,
+// 	ImportWord,
+// 	LineHeight,
+// 	MergeFields,
+// 	MultiLevelList,
+// 	SlashCommand,
+// 	// TableOfContents,
+// 	// Template,
+// } from 'ckeditor5-premium-features';
 const LICENSE_KEY =
 	'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NzExMTM1OTksImp0aSI6IjYyOWZhMjQwLWU5NDYtNDVhMy1hYzY0LTIyMGUyZWI4ZGZjMyIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6IjIwNDIxM2VlIn0.ByZeqEIV_6l6BZ1s3SuFFbgaOv60egZva89wCzbr7URIsTuFrRotsm1w0fGYlLud_15hr0klDJNg4GFlwsT49Q';
 
@@ -326,35 +326,33 @@ modulesWithImage = {
 				items: [
 					'undo',
 					'redo',
-					'|',
-					'insertMergeField',
-					'previewMergeFields',
-					'|',
-					'formatPainter',
-					'|',
+					// '|',
+          'sourceEditing',
+          'link',
+					'insertImage',
+					'insertTable',
+					// 'highlight',
+					// 'insertMergeField',
+					// 'previewMergeFields',
+					// '|',
+					// 'formatPainter',
+					// '|',
 					'heading',
-					'style',
-					'|',
+					// 'style',
+					// '|',
 					'fontSize',
 					'fontFamily',
 					'fontColor',
 					'fontBackgroundColor',
-					'|',
+					// '|',
 					'bold',
 					'italic',
 					'underline',
-					'|',
-					'link',
-					'insertImage',
-					'insertTable',
-					'highlight',
+					// '|',
 					'blockQuote',
-					'|',
-					'alignment',
-          '|',
-          'sourceEditing',
-					'lineHeight',
-					'|',
+					// 'alignment',
+					// 'lineHeight',
+					// '|',
 					'bulletedList',
 					'numberedList',
 					'multiLevelList',
@@ -374,22 +372,22 @@ modulesWithImage = {
 				BlockQuote,
 				Bold,
 				Bookmark,
-				CaseChange,
+				// CaseChange,
 				CKBox,
 				CKBoxImageEdit,
 				CloudServices,
 				Code,
 				Emoji,
 				Essentials,
-				ExportPdf,
-				ExportWord,
+				// ExportPdf,
+				// ExportWord,
 				FindAndReplace,
 				FontBackgroundColor,
 				FontColor,
 				FontFamily,
 				FontSize,
-				Footnotes,
-				FormatPainter,
+				// Footnotes,
+				// FormatPainter,
 				Fullscreen,
 				GeneralHtmlSupport,
 				Heading,
@@ -407,25 +405,25 @@ modulesWithImage = {
 				ImageToolbar,
 				ImageUpload,
 				ImageUtils,
-				ImportWord,
+				// ImportWord,
 				Indent,
 				IndentBlock,
 				Italic,
-				LineHeight,
+				// LineHeight,
 				Link,
 				LinkImage,
 				List,
 				ListProperties,
 				Mention,
-				MergeFields,
-				MultiLevelList,
-				PageBreak,
+				// MergeFields,
+				// MultiLevelList,
+				// PageBreak,
 				Paragraph,
 				PasteFromOffice,
-				PasteFromOfficeEnhanced,
+				// PasteFromOfficeEnhanced,
 				PictureEditing,
 				RemoveFormat,
-				SlashCommand,
+				// SlashCommand,
 				SpecialCharacters,
 				SpecialCharactersArrows,
 				SpecialCharactersCurrency,
@@ -441,10 +439,10 @@ modulesWithImage = {
 				TableCaption,
 				TableCellProperties,
 				TableColumnResize,
-				TableOfContents,
+				// TableOfContents,
 				TableProperties,
 				TableToolbar,
-				Template,
+				// Template,
 				TextTransformation,
 				TodoList,
 				Underline
@@ -583,8 +581,8 @@ modulesWithImage = {
 			initialData:'',
 			licenseKey: LICENSE_KEY,
 			lineHeight: {
-				supportAllValues: true
-			},
+  options: ['1', '1.15', '1.5', '2'],
+},
 			link: {
 				addTargetToExternalLinks: true,
 				defaultProtocol: 'https://',
@@ -729,6 +727,44 @@ onReady(editor: any) {
   editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
     return new MyUploadAdapter(loader, this.dataService);
   };
+  
+  editor.editing.view.document.on(
+    'clipboardInput',
+    (evt: any, data: any) => {
+      const text = data.dataTransfer.getData('text/plain');
+      if (!text) return;
+
+      // Detect tab-separated content
+      if (text.includes('\t')) {
+        evt.stop();
+
+        const rows = text
+          .split('\n')
+          .map((r:any) => r.split('\t'))
+          .filter((r:any) => r.length > 1);
+
+        if (!rows.length) return;
+
+        const tableHtml = `
+          <table>
+            <tbody>
+              ${rows
+                .map((cols:any) =>
+                    `<tr>${cols.map((c:any) => `<td>${c.trim()}</td>`).join('')}</tr>`
+                )
+                .join('')}
+            </tbody>
+          </table>
+        `;
+
+        editor.model.change((writer: any) => {
+          const viewFragment = editor.data.processor.toView(tableHtml);
+          const modelFragment = editor.data.toModel(viewFragment);
+          editor.model.insertContent(modelFragment);
+        });
+      }
+    }
+  );
 }
 
 handleImageUpload() {
@@ -897,25 +933,27 @@ saveHtml() {
   initializeForms() {
     // console.log('data',this.data);
     // console.log('this.data.category.length ===>',this.data.images );
-    console.log('log==>', this.data);
+    console.log('log==>', this.data?.item);
     //    Object.keys(this.data.flags || {}).length ||
     // Object.keys(this.data.images || {}).length ||
-    const hasValidData =
-      Object.keys(this.data?.product_details || {}).length;
-    if (this.data && hasValidData) {
-      console.log('log==> enrer', this.data);
-      this.isUpdateproduct = true;
-      if (this.data?.flags) {
-        console.log('this.data.category.length ===>', this.data.flags);
 
-        this.productStatus = this.data.flags;
+    this.permaLink = this.data?.item?.product_details?.permaLink;
+    const hasValidData =
+      Object.keys(this.data?.item?.product_details || {}).length;
+    if (this.data?.item && hasValidData) {
+      console.log('log==> enrer', this.data?.item);
+      this.isUpdateproduct = true;
+      if (this.data?.item?.flags) {
+        console.log('this.data.category.length ===>', this.data?.item.flags);
+
+        this.productStatus = this.data?.item.flags;
       }
-      if (this.data?.images) {
-        this.thumbGallery = this.data?.images
+      if (this.data?.item?.images) {
+        this.thumbGallery = this.data?.item?.images
           ?.filter((img: any) => img.type === 'gallery')
           .map((img: any) => img.url);
 
-        this.thumbPreview = this.data?.images
+        this.thumbPreview = this.data?.item?.images
           ?.filter((img: any) => img.type === "thumbnail")
           .map((img: any) => img.url);
         console.log('thumbPreview===>', this.thumbGallery);
@@ -925,8 +963,8 @@ saveHtml() {
 
         // this.cd.detectChanges();
       }
-      if (this.data?.category) {
-        console.log(' this.data?.category==>', Array.isArray(this.data?.category));
+      if (this.data?.item?.category) {
+        console.log(' this.data?.category==>', Array.isArray(this.data?.item?.category));
 
         // category exists and is NOT blank
         // this.getCategoryList();
@@ -969,12 +1007,13 @@ saveHtml() {
   }
   addProductDetails() {
     this.productDetails = this.fb.group({
-      productTitle: [this.data?.title, Validators.required], //product_title
-      shortDescription: [this.data?.product_details?.shortDescription], //short_description
-      productDescription: [this.data?.product_details?.productDescription], //description
-      features: [this.data?.product_details?.features], //features
-      // productStatus: [this.data.attributes?.productDetailsObj?.productStatus],
-      productDescriptionImageGallery: [this.data?.product_details?.productDescriptionImageGallery]
+      productTitle: [this.data?.item?.title, Validators.required], //product_title
+      shortDescription: [this.data?.item?.product_details?.shortDescription], //short_description
+      productDescription: [this.data?.item?.product_details?.productDescription], //description
+      features: [this.data?.item?.product_details?.features], //features
+      permaLink:[this.data?.item?.product_details?.permaLink],
+      // productStatus: [this.data?.item.attributes?.productDetailsObj?.productStatus],
+      productDescriptionImageGallery: [this.data?.item?.product_details?.productDescriptionImageGallery]
     });
   }
   get addProductDetailsValidation() {
@@ -1026,23 +1065,23 @@ saveHtml() {
 
   inventryForm() {
     this.productInventrySection = this.fb.group({
-      sku: [this.data?.sku, Validators.required],
-      manageStock: [this.data?.inventory?.manageStock],
-      stockStatus: [this.data?.inventory?.stockStatus],
-      soldIndividually: [this.data?.inventory?.soldIndividually],
-      productCode: [this.data?.inventory?.productCode],
-      lowStockWarning: [this.data?.inventory?.lowStockWarning],
-      showStockQuantity: [this.data?.inventory?.showStockQuantity],
-      showStockWithText: [this.data?.inventory?.showStockWithText],
-      hideStock: [this.data?.inventory?.hideStock],
+      sku: [this.data?.item?.sku, Validators.required],
+      manageStock: [this.data?.item?.inventory?.manageStock],
+      stockStatus: [this.data?.item?.inventory?.stockStatus],
+      soldIndividually: [this.data?.item?.inventory?.soldIndividually],
+      productCode: [this.data?.item?.inventory?.productCode],
+      lowStockWarning: [this.data?.item?.inventory?.lowStockWarning],
+      showStockQuantity: [this.data?.item?.inventory?.showStockQuantity],
+      showStockWithText: [this.data?.item?.inventory?.showStockWithText],
+      hideStock: [this.data?.item?.inventory?.hideStock],
     });
   }
 
   priceForm() {
     this.priceSection = this.fb.group({
-      regularPrice: [this.data?.price_data?.regularPrice, [Validators.required, Validators.min(1)]],
-      salePrice: [this.data?.price_data?.salePrice, [Validators.min(0)]],
-      gstPercent: [this.data?.price_data?.gstPercent],
+      regularPrice: [this.data?.item?.price_data?.regularPrice, [Validators.required, Validators.min(1)]],
+      salePrice: [this.data?.item?.price_data?.salePrice, [Validators.min(0)]],
+      gstPercent: [this.data?.item?.price_data?.gstPercent],
       discountType: ['Flat'],
       priceDateStart: [''],
       priceDateEnd: [''],
@@ -1090,10 +1129,10 @@ saveHtml() {
   }
   shippingForm() {
     this.shippingInfoSection = this.fb.group({
-      weight: [this.data?.shipping_info?.weight, Validators.min(0)],
-      length: [this.data?.shipping_info?.length, Validators.min(0)],
-      width: [this.data?.shipping_info?.width, Validators.min(0)],
-      height: [this.data?.shipping_info?.height, Validators.min(0)],
+      weight: [this.data?.item?.shipping_info?.weight, Validators.min(0)],
+      length: [this.data?.item?.shipping_info?.length, Validators.min(0)],
+      width: [this.data?.item?.shipping_info?.width, Validators.min(0)],
+      height: [this.data?.item?.shipping_info?.height, Validators.min(0)],
       shippingClass: ['0'],
     });
   }
@@ -1118,27 +1157,27 @@ saveHtml() {
 
   shippingConfigForms() {
     this.shippingConfigForm = this.fb.group({
-      estimateShippingTime: [this.data?.shipping_config?.estimateShippingTime],
-      freeShipping: [this.data?.shipping_config?.freeShipping],
-      flatRate: [this.data?.shipping_config?.flatRate],
-      quantityMulitiply: [this.data?.shipping_config?.quantityMulitiply],
-      cashOnDelivery: [this.data?.shipping_config?.cashOnDelivery],
+      estimateShippingTime: [this.data?.item?.shipping_config?.estimateShippingTime],
+      freeShipping: [this.data?.item?.shipping_config?.freeShipping],
+      flatRate: [this.data?.item?.shipping_config?.flatRate],
+      quantityMulitiply: [this.data?.item?.shipping_config?.quantityMulitiply],
+      cashOnDelivery: [this.data?.item?.shipping_config?.cashOnDelivery],
     });
   }
 
   offerFormGroup() {
     this.offerForm = this.fb.group({
-      flashDeal: [this.data?.offer?.flashDeal],
-      todaysDeal: [this.data?.offer?.todaysDeal],
-      featured: [this.data?.offer?.featured],
+      flashDeal: [this.data?.item?.offer?.flashDeal],
+      todaysDeal: [this.data?.item?.offer?.todaysDeal],
+      featured: [this.data?.item?.offer?.featured],
     });
   }
   seoFormGroup() {
     this.seoForm = this.fb.group({
-      focusKeyphrase: [this.data?.seo?.focusKeyphrase, Validators.required],
-      metaTitle: [this.data?.seo?.metaTitle, [Validators.required, Validators.maxLength(60)]],
-      slugText: [this.data?.seo?.slugText, [Validators.required, Validators.pattern('^[a-z0-9-]+$')]],
-      metaDscr: [this.data?.seo?.metaDscr, [Validators.required, Validators.maxLength(160)]],
+      focusKeyphrase: [this.data?.item?.seo?.focusKeyphrase, Validators.required],
+      metaTitle: [this.data?.item?.seo?.metaTitle, [Validators.required, Validators.maxLength(60)]],
+      slugText: [this.data?.item?.seo?.slugText, [Validators.required, Validators.pattern('^[a-z0-9-]+$')]],
+      metaDscr: [this.data?.item?.seo?.metaDscr, [Validators.required, Validators.maxLength(160)]],
     });
   }
 
@@ -1219,7 +1258,7 @@ saveHtml() {
   addTagsForm() {
     this.tagsForm = this.fb.group({
       tagInput: [''],
-      tags: [this.data?.tags?.tags],
+      tags: [this.data?.item?.tags?.tags],
     });
   }
   // private initializeCategoryControls(): void {
@@ -1401,7 +1440,7 @@ saveHtml() {
     this.galleryFiles = event.target.files;
   }
   updateProduct() {
-    console.log('this.data?.id===>', this.data?.id);
+    console.log('this.data?.id===>', this.data?.item?.id);
 
     this.finalpriceObj = this.priceSection.value;
     this.finalpriceObj.lastUpdatedDate = new Date().getTime();
@@ -1436,7 +1475,10 @@ saveHtml() {
       attributes: {
       }
     };
-    let url = `products/${this.data?.id}`
+    console.log('this.permaLink==>',this.permaLink);
+    
+    finalData.product_details.permaLink = this.permaLink;
+    let url = `products/${this.data?.item?.id}`
     this.dataService
       .put(finalData, url)
       .pipe(
@@ -1561,7 +1603,9 @@ saveHtml() {
         // }
       }
     };
-    console.log('finalData==>', finalData);
+    console.log('this.permaLink===>',this.permaLink);
+    
+    finalData.product_details.permaLink = this.permaLink;
     this.dataService
       .post(finalData, 'products')
       .pipe(
@@ -1631,6 +1675,7 @@ saveHtml() {
           }
           setTimeout(() => {
             this.globalService.showMsgSnackBar(res);
+            this.resetProductForm();
           }, 100);
         }
         // this.addCategory.reset();
@@ -1664,6 +1709,9 @@ saveHtml() {
     // const tagsArray = this.tagsForm.value.tags;
     // const tagsString = tagsArray.join(', ');
     // //console.log('tagsString',tagsString);
+
+
+
   }
 
   callUploadnediaSection(formData: any) {
@@ -1711,9 +1759,9 @@ saveHtml() {
               //console.log('environment.API_URL==>', environment.API_URL);
               element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
             }
-            if (this.data) {
+            if (this.data?.item) {
 
-              if (element.id == this.data?.category?.id) {
+              if (element.id == this.data?.item?.category?.id) {
                 element.checked = true;
               }
               else {
@@ -1869,4 +1917,19 @@ saveHtml() {
   //               }
   //             }
   //    }
+
+  resetProductForm(){
+  this.productDetails.reset();
+this.productOptionData.reset();
+this.productMultipleOptionForm.reset();
+this.tagsForm.reset();
+this.productMediaSection.reset();
+this.productInventrySection.reset();
+this.priceSection.reset(); 
+this.shippingInfoSection.reset();
+ this.productAttributesForm.reset();
+ this.shippingConfigForm.reset();
+ this.offerForm.reset();
+ this.seoForm.reset();
+  }
 }

@@ -1,74 +1,164 @@
 <div class="main-content">
-  <div class="panel">
-    <div class="panel-header">
-      <h5 class="fw-bold">Add coupons</h5>
-    </div>
-    <div class="panel-body">
-      <form [formGroup]="discountForm" (ngSubmit)="submit()">
+    <div class="row g-4">
+        <div class="col-xxl-4 col-md-5">
+
+          <div class="panel">
+            <div class="panel-header">
+              <h5 class="fw-bold">Add coupons</h5>
+            </div>
+            <div class="panel-body">
+              <form [formGroup]="discountForm" (ngSubmit)="submit()">
+              
+                <div class="form-row">
+                  <label>Coupon Code</label>
+                  <input type="text" formControlName="code" />
+                </div>
+              
+                <div class="form-row">
+                  <label>Type</label>
+                  <select formControlName="type">
+                    <option value="single">Single</option>
+                    <option value="multiple">Multiple</option>
+                  </select>
+                </div>
+              
+                <div class="form-row">
+                  <label>Discount Amount</label>
+                  <input type="number" formControlName="discount_amount" />
+                </div>
+              
+                <div class="form-row">
+                  <label>Discount Type</label>
+                  <select formControlName="discount_type">
+                    <option value="percentage">Percentage</option>
+                    <option value="flat">Flat</option>
+                  </select>
+                </div>
+              
+                <div class="form-row">
+                  <label>Minimum Cart Value</label>
+                  <input type="number" formControlName="min_cart_value" />
+                </div>
+              
+                <div class="form-row">
+                  <label>Maximum Usage</label>
+                  <input type="number" formControlName="max_usage" />
+                </div>
+              
+                <div class="form-row">
+                  <label>Usage Per User</label>
+                  <input type="number" formControlName="usage_per_user" />
+                </div>
+              
+                <div class="form-row">
+                  <label>Valid From</label>
+                  <input type="datetime-local" formControlName="valid_from" />
+                </div>
+              
+                <div class="form-row">
+                  <label>Valid To</label>
+                  <input type="datetime-local" formControlName="valid_to" />
+                </div>
+              
+                <div class="form-row checkbox-row">
+                  <label>
+                    <input type="checkbox" formControlName="is_active" />
+                    Active
+                  </label>
+                </div>
+              
+                <button type="submit" class="btn-primary">
+                  Save Discount
+                </button>
+              
+              </form>
+            </div>
+          </div>
+          </div>
+  <div class="col-xxl-8 col-md-5">
+ <div class="panel">
+
+   <table class="table table-bordered table-hover align-middle">
+     <thead class="table-dark">
+       <tr>
+         <th>#</th>
+         <th>Coupon Code</th>
+         <th>Type</th>
+         <th>Discount</th>
+         <th>Min Cart Value</th>
+         <th>Usage</th>
+         <th>Validity</th>
+         <th>Status</th>
+         <th>Created At</th>
+       </tr>
+     </thead>
+   
+     <tbody>
+       @for (item of couponList; track $index) {
+         <tr>
+           <td>{{ $index + 1 }}</td>
+   
+           <td class="fw-semibold">
+             {{ item.code }}
+           </td>
+   
+           <td class="text-capitalize">
+             {{ item.type }}
+           </td>
+   
+           <td>
+             <span class="fw-semibold">
+               {{ item.discount_amount }}
+               {{ item.discount_type === 'percentage' ? '%' : '₹' }}
+             </span>
+             <div
+               *ngIf="item.max_discount_amount"
+               class="text-muted small"
+             >
+               Max: ₹{{ item.max_discount_amount }}
+             </div>
+           </td>
+   
+           <td>
+             ₹{{ item.min_cart_value }}
+           </td>
+   
+           <td>
+             {{ item.max_usage }} /
+             {{ item.usage_per_user }} per user
+           </td>
+   
+           <td>
+             <div>
+               {{ item.valid_from | date: 'dd MMM yyyy' }}
+             </div>
+             <div class="text-muted small">
+               to {{ item.valid_to | date: 'dd MMM yyyy' }}
+             </div>
+           </td>
+   
+           <td>
+             <span
+               class="badge"
+               [ngClass]="item.is_active ? 'bg-success' : 'bg-secondary'"
+             >
+               {{ item.is_active ? 'Active' : 'Inactive' }}
+             </span>
+           </td>
+   
+           <td>
+             {{ item.created_at | date: 'dd MMM yyyy, hh:mm a' }}
+           </td>
+         </tr>
+       }
+     </tbody>
+   </table>
+ </div>
+
+
+          </div>
+
+
+</div>
       
-        <div class="form-row">
-          <label>Coupon Code</label>
-          <input type="text" formControlName="code" />
-        </div>
-      
-        <div class="form-row">
-          <label>Type</label>
-          <select formControlName="type">
-            <option value="single">Single</option>
-            <option value="multiple">Multiple</option>
-          </select>
-        </div>
-      
-        <div class="form-row">
-          <label>Discount Amount</label>
-          <input type="number" formControlName="discount_amount" />
-        </div>
-      
-        <div class="form-row">
-          <label>Discount Type</label>
-          <select formControlName="discount_type">
-            <option value="percentage">Percentage</option>
-            <option value="flat">Flat</option>
-          </select>
-        </div>
-      
-        <div class="form-row">
-          <label>Minimum Cart Value</label>
-          <input type="number" formControlName="min_cart_value" />
-        </div>
-      
-        <div class="form-row">
-          <label>Maximum Usage</label>
-          <input type="number" formControlName="max_usage" />
-        </div>
-      
-        <div class="form-row">
-          <label>Usage Per User</label>
-          <input type="number" formControlName="usage_per_user" />
-        </div>
-      
-        <div class="form-row">
-          <label>Valid From</label>
-          <input type="datetime-local" formControlName="valid_from" />
-        </div>
-      
-        <div class="form-row">
-          <label>Valid To</label>
-          <input type="datetime-local" formControlName="valid_to" />
-        </div>
-      
-        <div class="form-row checkbox-row">
-          <label>
-            <input type="checkbox" formControlName="is_active" />
-            Active
-          </label>
-        </div>
-      
-        <button type="submit" class="btn-primary">
-          Save Discount
-        </button>
-      
-      </form>
-    </div>
-  </div>
 </div>

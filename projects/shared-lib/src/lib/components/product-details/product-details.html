@@ -391,7 +391,7 @@
                   @if (productDetails?.product_details?.productDescriptionImageGallery) {
                     <div
                       class="innerHtml product-detail"
-                      [innerHTML]="productDetails?.product_details?.productDescriptionImageGallery"
+                      [innerHTML]="safeContent"
                     ></div>
                   }
                 </div>

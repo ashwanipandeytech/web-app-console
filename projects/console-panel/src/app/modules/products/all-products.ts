@@ -11,11 +11,11 @@ import { ConfirmationPopupComponent } from '../../confirmationPopup/confirmation
 import { MatDialog } from '@angular/material/dialog';
 import { GlobalService } from '../../global.service';
 import { AddProduct } from './add-product/add-product';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'shared-lib/environments/environment';
 @Component({
   selector: 'app-all-products',
-  imports: [],
+  imports: [NgbTooltip],
   templateUrl: './all-products.html',
   styleUrl: './all-products.scss'
 })
@@ -74,7 +74,11 @@ this.callAllProductList();
     size:'xl',
     backdrop: 'static' // optional
   });
-  dialogRef.componentInstance.data = action;
+  // dialogRef.componentInstance.data = action;
+    dialogRef.componentInstance.data = {
+      data:null,
+      mode: 'new' // 'new' | 'clone'
+    };
   }
 editoProduct(item:any){
   console.log('item==>',item);
@@ -86,7 +90,11 @@ editoProduct(item:any){
     size:'xl',
     backdrop: 'static' // optional
   });
-  dialogRef.componentInstance.data = item;
+  // dialogRef.componentInstance.data = item;
+      dialogRef.componentInstance.data = {
+      item,
+      mode: 'update' // 'new' | 'clone'
+    };
 
        dialogRef.result
       .then((result) => {
@@ -100,6 +108,31 @@ editoProduct(item:any){
       });
 }
 
+cloneProduct(item:any){
+  console.log('item==>',item);
+   const dialogRef: NgbModalRef = this.ngbModal.open(AddProduct, {
+    windowClass: 'mobile-modal product-edit-popup',
+    scrollable: true,
+    centered: true,
+    size:'xl',
+    backdrop: 'static' // optional
+  });
+    dialogRef.componentInstance.data = {
+      item,
+      mode: 'clone' // 'new' | 'clone'
+    };
+
+       dialogRef.result
+      .then((result) => {
+        console.log('Modal closed with result:', result);
+        if (result == 'success') {
+          this.callAllProductList();
+        }
+      })
+      .catch((reason) => {
+        //console.log('Modal dismissed:', reason);
+      });
+}
     openDialog(id: any): void {
       let popupData = {
         title: 'Product',

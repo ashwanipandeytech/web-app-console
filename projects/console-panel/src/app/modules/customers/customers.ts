@@ -17,6 +17,7 @@ export class Customers {
   private cd=inject(ChangeDetectorRef);
   globalService = inject(GlobalService);
   customerList: any=[];
+   defaultPage = 1;
 constructor(){
 
 }
@@ -25,7 +26,7 @@ this.getCustomerList();
  
 }
 getCustomerList(){
-  this.dataService.get('users?per_page=5').pipe(
+  this.dataService.get(`users?page=${this.defaultPage}`).pipe(
           catchError((err) => {
             console.error('Error:', err);
             return of(err);
@@ -35,7 +36,7 @@ getCustomerList(){
           let filteredData = [];
           console.log('Response:', res);
           if (res?.data) {
-            this.customerList = res.data.data;
+            this.customerList = res.data;
             this.cd.detectChanges();
           }
           if (res.error) {
@@ -44,4 +45,7 @@ getCustomerList(){
           }
         })
       }
+       nextPage(page:any){
+        this.getCustomerList();
+       }
 }

@@ -190,3 +190,12 @@
 .ck-content .button--black {
 	background-color: #141517;
 }
+/* Reduce default paragraph spacing inside CKEditor */
+.ck-content p {
+  margin: 0.25em 0;   /* default is too big */
+}
+
+/* Fix pasted empty paragraphs */
+.ck-content p:empty {
+  margin: 0;
+}
