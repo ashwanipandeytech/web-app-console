@@ -212,18 +212,7 @@
                         (click)="addToCart(item)"
                       >
                         Add to Cart
-                        <!-- <svg
-                    _ngcontent-ng-c3478470960=""
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 16 16"
-                    aria-hidden="true"
-                    class="bi"
-                  >
-                    <path
-                      _ngcontent-ng-c3478470960=""
-                      d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                    ></path>
-                  </svg> -->
+                       
                       </button>
                       @if(orderDetailList.status != 'cancelled'){
                         <button
@@ -315,15 +304,16 @@
 
               <div class="rounded-3 p-3" style="background-color: #f1f2f7">
                 <!-- Address -->
-                <div class="d-flex align-items-center mb-2">
+                <div class="d-flex align-items-baseline mb-2">
                   <i class="fa-solid fa-location-dot me-2"></i>
                   <span class="fw-medium text-dark small text-capitalize fs-14">
                     @if (orderDetailList?.address?.address_line) {
-                      {{ orderDetailList?.address?.address_line }},
+                      <span class="d-block">{{ orderDetailList?.address?.address_line }},</span>
                     }
 
-                    name:{{ orderDetailList?.address?.name }}, {{ orderDetailList?.address?.city }},
-                    state:{{ orderDetailList?.address?.state }},
+                    <span class="d-block">name: {{ orderDetailList?.address?.name }}, </span>
+                    <span class="d-block">City: {{ orderDetailList?.address?.city }},</span>
+                    <span class="d-block">state: {{ orderDetailList?.address?.state }},</span>
                     <!-- street:{{ orderDetailList?.address?.street }}, -->
                   </span>
                 </div>

@@ -1,8 +1,6 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, Optional, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, inject, Optional, Output, ViewChild,ViewEncapsulation, type AfterViewInit  } from '@angular/core';
 import { CommonModule, NgClass } from '@angular/common';
-
-import { Sidebar } from '../../../layout/sidebar/sidebar';
-import { Header } from '../../../layout/header/header';
+import {SpecialCharacterHelper} from 'shared-lib/services/special-character-helper'
 import {
   FormArray,
   FormBuilder,
@@ -49,6 +47,7 @@ interface FoodNode {
   styleUrl: './add-product.scss',
 })
 export class AddProduct {
+  specialCharacterHelper = inject(SpecialCharacterHelper)
   childrenAccessor = (node: FoodNode) => node.children ?? [];
   @ViewChild('galleryInput') galleryInput!: ElementRef<HTMLInputElement>;
   @ViewChild('descriptionImageGallery') descriptionImageGallery!: ElementRef<HTMLInputElement>;
@@ -1005,6 +1004,18 @@ saveHtml() {
       });
 
   }
+  confirmBeforeSaveProduct(action:any){
+     const confirmed = confirm(`Are you sure you want to ${action} this product?`);
+    if (!confirmed) {
+      return; 
+    }
+     if (action == 'update') {
+      this.updateProduct();
+    }
+    else{
+       this.getProductDetails();
+    }
+  }
   getProductDetails() {
     //console.log('productDetails==>', this.productDetails.value);
 
@@ -1227,11 +1238,61 @@ saveHtml() {
       });
   }
 
+  slugify(value: string): string {
+  return value
+    .toLowerCase()
+    .trim()                              // remove start/end spaces
+    .replace(/[–—]/g, '-')               // replace long dashes with normal dash
+    .replace(/[^a-z0-9\s-]/g, '')         // remove special characters
+    .replace(/\s+/g, '-')                 // spaces → dash
+    .replace(/-+/g, '-')                  // multiple dashes → single dash
+    .replace(/^-+|-+$/g, '');             // remove dash from start/end
+}
+
   createPermalink() {
-    this.productDetails.value.productTitle;
+// Onchange 
+//     const cleanedTitle =
+//   this.specialCharacterHelper.specialCharacterChecker(
+//     this.productDetails.value.productTitle,
+//     {
+//       replaceWithSpace: ['-'],
+//       remove: ['&','*','('],
+//       capitalize: true
+//     }
+//   );
+//   this.productDetails.patchValue({
+//   productTitle: cleanedTitle
+// });
+
+// onblur 
+  const control = this.productDetails.get('productTitle');
+  if (!control) return;
+
+  const cleanedTitle =
+    this.specialCharacterHelper.specialCharacterChecker(
+      control.value,
+      // {
+      //   replaceWithSpace: ['-'],
+      //   remove: ['&', '*', '('],
+      //   capitalize: true
+      // }
+      {
+        allowOnly: ['|'],
+    replaceWithSpace: ['-'],
+    capitalize: true
+      }
+    );
+
+  control.setValue(cleanedTitle, { emitEvent: false });
+    // this.specialCharacterHelper.specialCharacterChecker( 'adjustable--cow|-anti kick',{replaceWithSpace: ['-'],remove: ['|'],capitalize: true});
+    // this.productDetails.value.productTitle = this.slugToTitle(this.productDetails.value.productTitle);
     // let permaLinkValue = this.productDetails.value.productTitle.contains(' ')
     const formatted = this.productDetails.value.productTitle.replace(/\s+/g, '-').toLowerCase();
-    this.permaLink = formatted;
+    const cleanSlug = this.slugify(formatted);
+    let limitedSlug = cleanSlug.slice(0, 25);
+    limitedSlug = limitedSlug.replace(/-+$/g, '');
+    this.permaLink = limitedSlug;
+    // this.permaLink = cleanSlug;
     this.seoForm.patchValue({ slugText: formatted });
     this.cd.detectChanges();
   }
@@ -1359,4 +1420,42 @@ saveHtml() {
   //               }
   //             }
   //    }
+
+  resetProductForm(){
+  this.productDetails.reset();
+this.productOptionData.reset();
+this.productMultipleOptionForm.reset();
+this.tagsForm.reset();
+this.productMediaSection.reset();
+this.productInventrySection.reset();
+this.priceSection.reset(); 
+this.shippingInfoSection.reset();
+ this.productAttributesForm.reset();
+ this.shippingConfigForm.reset();
+ this.offerForm.reset();
+ this.seoForm.reset();
+  }
+  @HostListener('window:beforeunload', ['$event'])
+unloadNotification($event: BeforeUnloadEvent) {
+  if (this.hasUnsavedChanges()) {
+    $event.preventDefault();
+    $event.returnValue = true; // triggers browser alert
+  }
+}
+  hasUnsavedChanges(): boolean {
+  return (
+    this.productDetails?.dirty ||
+    this.productOptionData?.dirty ||
+    this.productMultipleOptionForm?.dirty ||
+    this.tagsForm?.dirty ||
+    this.productMediaSection?.dirty ||
+    this.productInventrySection?.dirty ||
+    this.priceSection?.dirty ||
+    this.shippingInfoSection?.dirty ||
+    this.productAttributesForm?.dirty ||
+    this.shippingConfigForm?.dirty ||
+    this.offerForm?.dirty ||
+    this.seoForm?.dirty
+  );
+}
 }

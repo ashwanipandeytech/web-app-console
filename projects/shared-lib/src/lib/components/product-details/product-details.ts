@@ -135,7 +135,8 @@ setEditorContent(html: string) {
     if (this.isBrowser) {
       window.scrollTo(0, 0);
     }
-    this.productId = this.route.snapshot.paramMap.get('id');
+    // this.productId = this.route.snapshot.paramMap.get('id');
+     this.productId = this.route.snapshot.queryParamMap.get('id');
     this.route.queryParams.subscribe((param: any) => {
       console.log('paramsss=>', param.preview);
       this.isPreview = param.preview;

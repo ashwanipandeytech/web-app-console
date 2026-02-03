@@ -44,6 +44,7 @@
             <span
               class="badge"
               [ngClass]="item.is_read ? 'bg-success' : 'bg-warning text-dark'"
+              (click)="item.is_read==false?reportRead(item):''"
             >
               {{ item.is_read ? 'Read' : 'Unread' }}
             </span>

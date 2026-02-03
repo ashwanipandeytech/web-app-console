@@ -76,8 +76,16 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  openProduct(id: number) {
-    this.router.navigate(['/product-details', id]);
+  openProduct(item: any) {
+
+    console.log('openProduct===>',item.product_details.permaLink);
+    
+   this.router.navigate(
+  ['/product-details', item.product_details.permaLink],
+  {
+    queryParams: { id: item.id }
+  }
+);
   }
   toggleHeart(item: any) {
     console.info('item', item);

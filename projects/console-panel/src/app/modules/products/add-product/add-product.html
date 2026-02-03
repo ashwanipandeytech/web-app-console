@@ -33,7 +33,7 @@
               <input type="text" formControlName="productTitle" class="form-control" id="productTitle"
                 placeholder="Title for product"
                 [class.is-invalid]="addProductDetailsValidation['productTitle'].touched && addProductDetailsValidation['productTitle'].invalid"
-                (input)="createPermalink()">
+                 (change)="createPermalink()">
               @if (addProductDetailsValidation['productTitle'].touched &&
               addProductDetailsValidation['productTitle'].errors?.['required']) {
               <div class="text-danger fs-12 mt-1">
@@ -872,11 +872,11 @@
       <div class="col-xxl-3 col-lg-4">
         <div class="position-sticky top-0 z-3 w-100 bg-white mb-30">
           @if (!this.isUpdateproduct || this.data.mode == 'new' || this.data.mode == 'clone') {
-          <a type="button" class="btn btn-primary d-block" (click)="getProductDetails()">Publish</a>
+          <a type="button" class="btn btn-primary d-block" (click)="confirmBeforeSaveProduct('add')">Publish</a>
           }
 
           @if (this.isUpdateproduct && this.data.mode == 'update') {
-          <a type="button" class="btn btn-primary d-block" (click)="updateProduct()">Update</a>
+          <a type="button" class="btn btn-primary d-block" (click)="confirmBeforeSaveProduct('update')">Update</a>
           }
 
         </div>

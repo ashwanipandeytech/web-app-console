@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, inject, ViewChild } from '@angular/core';
 import { Sidebar } from "../../layout/sidebar/sidebar";
 import { Header } from "../../layout/header/header";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -31,6 +31,13 @@ export class Category {
   constructor(private fb: FormBuilder, private cd: ChangeDetectorRef,private globalService:GlobalService) {
     this.addCategoryForm();
   }
+    @HostListener('window:beforeunload', ['$event'])
+unloadNotification($event: BeforeUnloadEvent) {
+  if (this.addCategory?.dirty) {
+    $event.preventDefault();
+    $event.returnValue = true; // triggers browser alert
+  }
+}
   addCategoryForm() {
    this.addCategory = this.fb.group({
   name: ['', [Validators.required, Validators.minLength(3)]],
@@ -61,6 +68,19 @@ export class Category {
   }
   ngOnInit() {
     this.getCategoryList();
+  }
+
+   confirmBeforeSaveCategory(action:any){
+     const confirmed = confirm(`Are you sure you want to ${action} this Category?`);
+    if (!confirmed) {
+      return; 
+    }
+    if (action == 'update') {
+      this.updatecategory();
+    }
+    else{
+      this.saveCategoryData();
+    }
   }
   saveCategoryData() {
     const formData = new FormData();
