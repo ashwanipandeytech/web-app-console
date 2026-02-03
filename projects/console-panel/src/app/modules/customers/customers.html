@@ -132,7 +132,7 @@
                             <button class="btn btn-sm btn-icon btn-outline-primary" title="Download PDF" id="downloadPdf"><i class="fa fa-file-pdf"></i></button>
                         </div>
                     </div> -->
-                    
+
                     <!-- <div class="table-filter-option">
                         <div class="row g-3">
                             <div class="col-xl-10 col-9 col-xs-12">
@@ -196,9 +196,10 @@
                             </div>
                         </div>
                     </div> -->
-                    
+
                     <div class="table-responsive">
-                        <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped" id="allProductTable">
+                        <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped"
+                            id="allProductTable">
                             <thead>
                                 <tr>
                                     <!-- <th class="no-sort">
@@ -206,7 +207,7 @@
                                             <input class="form-check-input" type="checkbox" id="markAllProduct">
                                         </div>
                                     </th> -->
-                                    <th>Name</th>
+                                    <th class="position-sticky start-0">Name</th>
                                     <!-- <th>Username</th> -->
                                     <!-- <th>Status</th> -->
                                     <th>Date Registered</th>
@@ -229,7 +230,7 @@
                                             <input class="form-check-input" type="checkbox">
                                         </div>
                                     </td> -->
-                                    <td><a>{{item.name}}</a></td>
+                                    <td class="position-sticky start-0">{{item.name}}</td>
                                     <td>{{item.is_active}}</td>
                                     <td> {{ item.created_at | date: 'dd MMM yyyy' }} </td>
                                     <td>{{item.email}}</td>
@@ -245,13 +246,13 @@
                                 }
                             </tbody>
                         </table>
-                           <div class="d-flex align-items-center justify-content-end gap-1 py-2">
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end gap-1 py-2">
                         @for (page of customerList?.meta?.links; track $index) {
                         <button type="button" class="btn" (click)="nextPage(page.page)">
                             <span [innerHTML]="page.label"></span>
                         </button>
                         }
-                    </div>
                     </div>
                     <!-- <div class="table-bottom-control"></div> -->
                 </div>

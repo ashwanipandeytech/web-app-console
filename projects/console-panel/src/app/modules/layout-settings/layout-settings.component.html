@@ -16,34 +16,34 @@
               </button>
             </h2>
             <form [formGroup]="seoForm">
-    
+
               <div id="collapseSeo" class="accordion-collapse collapse show" aria-labelledby="headingLogo">
                 <div class="accordion-body">
-    
+
                   <!-- Focus Keyphrase -->
                   <div class="mb-3">
                     <label class="form-label">Focus Keyphrase</label>
                     <input type="text" class="form-control" formControlName="keywords" />
                   </div>
-    
+
                   <!-- SEO Meta Title -->
                   <div class="mb-3">
                     <label class="form-label">SEO Meta Title</label>
                     <input type="text" class="form-control" formControlName="metaTitle" />
                   </div>
-    
+
                   <!-- SEO Meta Description -->
                   <div class="mb-3">
                     <label class="form-label">SEO Meta Description</label>
                     <textarea class="form-control" rows="3" formControlName="metaDescription">
             </textarea>
                   </div>
-    
+
                 </div>
               </div>
-    
+
             </form>
-    
+
           </div>
           <!-- 1. General - Logo -->
           <div class="accordion-item">
@@ -63,11 +63,11 @@
                       <input type="text" class="form-control" name="general.logo.desktop.imgSrc"
                         [(ngModel)]="settingsModel.general.logo.desktop.imgSrc"
                         placeholder="https://example.com/desktop-logo.png">
-    
+
                       <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto"
                         (click)="uploadFrom('desktop')">Upload</button>
                     </div>
-    
+
                     @if (settingsModel.general.logo.desktop.imgSrc) {
                     <div class="mt-3">
                       <small class="text-muted">Preview:</small>
@@ -77,14 +77,14 @@
                     </div>
                     }
                   </div>
-    
+
                   <!-- Desktop Alt -->
                   <div class="col-md-6">
                     <label class="form-label fw-semibold">Desktop Logo Alt Text</label>
                     <input type="text" class="form-control" name="general.logo.desktop.alt"
                       [(ngModel)]="settingsModel.general.logo.desktop.alt">
                   </div>
-    
+
                   <!-- Mobile Logo -->
                   <div class="col-md-6">
                     <label class="form-label fw-semibold">Mobile Logo</label>
@@ -92,11 +92,11 @@
                       <input type="text" class="form-control" name="general.logo.mobile.imgSrc"
                         [(ngModel)]="settingsModel.general.logo.mobile.imgSrc"
                         placeholder="https://example.com/mobile-logo.png">
-    
+
                       <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto"
                         (click)="uploadFrom('mobile')">Upload</button>
                     </div>
-    
+
                     @if (settingsModel.general.logo.mobile.imgSrc) {
                     <div class="mt-3">
                       <small class="text-muted">Preview:</small>
@@ -106,7 +106,7 @@
                     </div>
                     }
                   </div>
-    
+
                   <!-- Mobile Alt -->
                   <div class="col-md-6">
                     <label class="form-label fw-semibold">Mobile Logo Alt Text</label>
@@ -117,7 +117,7 @@
               </div>
             </div>
           </div>
-    
+
           <!-- 2. Favicon -->
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingFavicon">
@@ -138,24 +138,24 @@
                       <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto"
                         (click)="uploadFrom('fav_desktop')">Upload</button>
                     </div>
-    
+
                     @if (settingsModel.general.favico.desktop.imgSrc) {
-                    <img [src]="settingsModel.general.favico.desktop.imgSrc" alt="Favicon Preview" class="img-preview mt-3"
-                      style="width: 64px; height: 64px;">
+                    <img [src]="settingsModel.general.favico.desktop.imgSrc" alt="Favicon Preview"
+                      class="img-preview mt-3" style="width: 64px; height: 64px;">
                     }
                   </div>
-    
+
                   <div class="col-md-6">
                     <label class="form-label fw-semibold">Mobile Favicon</label>
                     <div class="d-flex">
                       <input type="text" class="form-control" name="general.favico.mobile.imgSrc"
                         [(ngModel)]="settingsModel.general.favico.mobile.imgSrc"
                         placeholder="https://example.com/mobile-favicon.png">
-    
+
                       <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto"
                         (click)="uploadFrom('fav_mobile')">Upload</button>
                     </div>
-    
+
                     @if (settingsModel.general.favico.mobile.imgSrc) {
                     <img [src]="settingsModel.general.favico.mobile.imgSrc" alt="Mobile Favicon Preview"
                       class="img-preview mt-3" style="width: 64px; height: 64px;">
@@ -165,7 +165,7 @@
               </div>
             </div>
           </div>
-    
+
           <!-- 3. Home Banner Slider -->
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingSlider">
@@ -182,7 +182,7 @@
                     <i class="fa fa-plus-circle me-1"></i> Add New Slide
                   </button>
                 </div>
-    
+
                 @for (slide of settingsModel.home_Banner_Slider; track $index) {
                 <div class="card mb-4 shadow-sm position-relative">
                   <div class="card-body">
@@ -191,7 +191,7 @@
                       (click)="deleteSlide('home_Banner_Slider',$index)" title="Delete this slide">
                       <i class="fa fa-trash"></i>
                     </button>
-    
+
                     <h5 class="card-title">Slide {{ $index + 1 }}</h5>
                     <div class="row g-3">
                       <div class="col-md-4">
@@ -199,11 +199,11 @@
                         <div class="d-flex">
                           <input type="text" class="form-control" [name]="'home_Banner_Slider[' + $index + '].imgSrc'"
                             [(ngModel)]="slide.imgSrc" placeholder="https://example.com/slide.jpg">
-    
+
                           <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto"
                             (click)="uploadFrom('slider'+ $index)">Upload</button>
                         </div>
-    
+
                         @if (slide.imgSrc) {
                         <img [src]="slide.imgSrc" [alt]="slide.alt || 'Slide ' + ($index + 1)"
                           class="img-fluid img-preview mt-3 rounded shadow">
@@ -231,7 +231,7 @@
               </div>
             </div>
           </div>
-    
+
           <!-- 4. Home Promo Slider -->
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingSlider">
@@ -248,7 +248,7 @@
                     <i class="fa fa-plus-circle me-1"></i> Add New Slide
                   </button>
                 </div>
-    
+
                 @for (slide of settingsModel.home_Promo_Slider; track $index) {
                 <div class="card mb-4 shadow-sm position-relative">
                   <div class="card-body">
@@ -257,7 +257,7 @@
                       (click)="deleteSlide('home_Promo_Slider',$index)" title="Delete this slide">
                       <i class="fa fa-trash"></i>
                     </button>
-    
+
                     <h5 class="card-title">Slide {{ $index + 1 }}</h5>
                     <div class="row g-3">
                       <div class="col-md-4">
@@ -265,11 +265,11 @@
                         <div class="d-flex">
                           <input type="text" class="form-control" [name]="'home_Promo_Slider[' + $index + '].imgSrc'"
                             [(ngModel)]="slide.imgSrc" placeholder="https://example.com/slide.jpg">
-    
+
                           <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto"
                             (click)="uploadFrom('promoslider'+ $index)">Upload</button>
                         </div>
-    
+
                         @if (slide.imgSrc) {
                         <img [src]="slide.imgSrc" [alt]="slide.alt || 'Slide ' + ($index + 1)"
                           class="img-fluid img-preview mt-3 rounded shadow">
@@ -296,7 +296,7 @@
               </div>
             </div>
           </div>
-    
+
           <!-- Home Promo testimonial Slider -->
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingSlider">
@@ -309,11 +309,12 @@
               <div class="accordion-body">
                 <!-- Add Button -->
                 <div class="mb-4 text-end">
-                  <button type="button" class="btn btn-success btn-sm" (click)="addSlide('home_Promo_Slider_testimonials')">
+                  <button type="button" class="btn btn-success btn-sm"
+                    (click)="addSlide('home_Promo_Slider_testimonials')">
                     <i class="fa fa-plus-circle me-1"></i> Add New Slide
                   </button>
                 </div>
-    
+
                 @for (slide of settingsModel.home_Promo_Slider_testimonials; track $index) {
                 <div class="card mb-4 shadow-sm position-relative">
                   <div class="card-body">
@@ -322,7 +323,7 @@
                       (click)="deleteSlide('home_Promo_Slider_testimonials',$index)" title="Delete this slide">
                       <i class="fa fa-trash"></i>
                     </button>
-    
+
                     <h5 class="card-title">Slide {{ $index + 1 }}</h5>
                     <div class="row g-3">
                       <div class="col-md-4">
@@ -331,11 +332,11 @@
                           <input type="text" class="form-control"
                             [name]="'home_Promo_Slider_testimonials[' + $index + '].imgSrc'" [(ngModel)]="slide.imgSrc"
                             placeholder="https://example.com/slide.jpg">
-    
+
                           <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto"
                             (click)="uploadFrom('promoslidertestimonial'+ $index)">Upload</button>
                         </div>
-    
+
                         @if (slide.imgSrc) {
                         <img [src]="slide.imgSrc" [alt]="slide.alt || 'Slide ' + ($index + 1)"
                           class="img-fluid img-preview mt-3 rounded shadow">
@@ -379,7 +380,7 @@
                     <i class="fa fa-plus-circle me-1"></i> Add New Slide
                   </button>
                 </div>
-    
+
                 @for (slide of settingsModel.home_Promo_Slider_bottom; track $index) {
                 <div class="card mb-4 shadow-sm position-relative">
                   <div class="card-body">
@@ -388,19 +389,20 @@
                       (click)="deleteSlide('home_Promo_Slider_bottom',$index)" title="Delete this slide">
                       <i class="fa fa-trash"></i>
                     </button>
-    
+
                     <h5 class="card-title">Slide {{ $index + 1 }}</h5>
                     <div class="row g-3">
                       <div class="col-md-4">
                         <label class="form-label fw-semibold">Image URL</label>
                         <div class="d-flex">
-                          <input type="text" class="form-control" [name]="'home_Promo_Slider_bottom[' + $index + '].imgSrc'"
-                            [(ngModel)]="slide.imgSrc" placeholder="https://example.com/slide.jpg">
-    
+                          <input type="text" class="form-control"
+                            [name]="'home_Promo_Slider_bottom[' + $index + '].imgSrc'" [(ngModel)]="slide.imgSrc"
+                            placeholder="https://example.com/slide.jpg">
+
                           <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto"
                             (click)="uploadFrom('homebottombanner'+ $index)">Upload</button>
                         </div>
-    
+
                         @if (slide.imgSrc) {
                         <img [src]="slide.imgSrc" [alt]="slide.alt || 'Slide ' + ($index + 1)"
                           class="img-fluid img-preview mt-3 rounded shadow">
@@ -442,7 +444,7 @@
                     <i class="bi bi-plus-circle me-1"></i> Add Footer Column
                   </button>
                 </div>
-    
+
                 <div class="row g-3">
                   @for (footer of settingsModel.footer; track $index) {
                   <div class="col-md-4">
@@ -450,14 +452,11 @@
                       <div class="mb-2">
                         <div class="position-relative">
                           <label class="form-label fw-semibold">Column Heading: {{$index+1}}</label>
-                            <button
-                              type="button"
-                              class="btn text-danger position-absolute top-0 end-0 p-0"
-                              style="margin-top: -4px; margin-right: 19px;"
-                              (click)="toggleExternalLinkInput(footer)"
-                              title="Add External Link">
-                              <i class="fa fa-pencil"></i>
-                            </button>
+                          <button type="button" class="btn text-danger position-absolute top-0 end-0 p-0"
+                            style="margin-top: -4px; margin-right: 19px;" (click)="toggleExternalLinkInput(footer)"
+                            title="Add External Link">
+                            <i class="fa fa-pencil"></i>
+                          </button>
                           <button type="button" class="btn text-danger position-absolute top-0 end-0 p-0 "
                             style="margin-top: -4px; margin-right: -4px;" (click)="deleteFooterColumn($index)"
                             title="Delete this slide">
@@ -468,52 +467,43 @@
                           <input type="text" class="form-control" [name]="'footer[' + $index + '].colHeading'"
                             [(ngModel)]="footer.colHeading" placeholder="Enter Column Heading">
 
-                            <div *ngIf="footer.showExternalInput" class="mt-2 d-flex gap-2">
-  <input
-    type="text"
-    class="form-control"
-    placeholder="Enter external link"
-    [name]="'footerField[' + $index + '].externalLink'"
-    [(ngModel)]="footer.externalLinkValue"
-    [class.is-invalid]="footer.invalidUrl"
-  />
-  <button
-    class="btn btn-success"
-    type="button"
-    (click)="saveExternalLink(footer)">
-    ✔
-  </button>
+                          <div *ngIf="footer.showExternalInput" class="mt-2 d-flex align-items-start gap-2">
+                            <div>
+                              <input type="text" class="form-control" placeholder="Enter external link"
+                              [name]="'footerField[' + $index + '].externalLink'" [(ngModel)]="footer.externalLinkValue"
+                              [class.is-invalid]="footer.invalidUrl" />
+                              <div *ngIf="footer.invalidUrl" class="invalid-feedback">
+                                Enter a valid URL (http://, https://, or www)
+                              </div>
+                            </div>
+                            <button class="btn btn-success" type="button" (click)="saveExternalLink(footer)">
+                              <i class="fa fa-check"></i>
+                            </button>
 
-  <button
-    class="btn btn-secondary"
-    type="button"
-    (click)="cancelExternalLink(footer)">
-    ✖
-  </button>
-                            <div *ngIf="footer.invalidUrl" class="invalid-feedback">
-  Enter a valid URL (http://, https://, or www)
-</div>
-</div>
+                            <button class="btn btn-secondary" type="button" (click)="cancelExternalLink(footer)">
+                              <i class="fa fa-times"></i>
+                            </button>
+                          </div>
 
                         </div>
                       </div>
-    
-    
-    
-    
+
+
+
+
                       <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event,footer.pageList)">
                         @for (page of footer.pageList; track $index) {
                         <div class="example-box" cdkDrag>
                           <input type="checkbox" [checked]="page.isSelected"
                             (change)="page.isSelected = $event.target.checked">
                           {{ page.slug }}
-    
+
                         </div>
                         }
                       </div>
-    
-    
-    
+
+
+
                     </div>
                   </div>
                   }
@@ -521,7 +511,7 @@
               </div>
             </div>
           </div>
-    
+
           <!-- 4. Social Media -->
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingSocial">
@@ -549,7 +539,7 @@
               </div>
             </div>
           </div>
-    
+
           <!-- 5. Contacts -->
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingContacts">
@@ -586,7 +576,7 @@
             </div>
           </div>
         </div>
-    
+
         <!-- Submit Button -->
         <div class="text-center mt-5" (click)="saveSettings()">
           <button type="submit" class="btn btn-primary btn-lg px-5">

@@ -131,12 +131,13 @@
                             <div class="col-12 d-flex justify-content-end">
                                 <div class="btn-box">
 
-                                    <button class="btn btn-sm btn-primary" *ngIf="isEdit" (click)="confirmBeforeSaveCategory('update')">
+                                    <button class="btn btn-sm btn-primary" *ngIf="isEdit"
+                                        (click)="confirmBeforeSaveCategory('update')">
                                         Update Category
                                     </button>
 
-                                    <button class="btn btn-sm btn-primary" *ngIf="!isEdit" (click)="confirmBeforeSaveCategory('add')"
-                                        [disabled]="addCategory.invalid">
+                                    <button class="btn btn-sm btn-primary" *ngIf="!isEdit"
+                                        (click)="confirmBeforeSaveCategory('add')" [disabled]="addCategory.invalid">
                                         Add Category
                                     </button>
 
@@ -253,7 +254,7 @@
                             </thead>
                             <tbody>
                                 @for (control of categoryListData; track $index) {
-    
+
                                 <tr>
                                     <!-- <td>
                                         <div class="form-check">
@@ -278,7 +279,8 @@
                                             <button><i class="fa fa-eye"></i></button>
                                             <button><i class="fa fa-pen-to-square"
                                                     (click)="editCategory(control)"></i></button>
-                                            <button class="text-danger" (click)="openDialog(control.id)"><i class="fa fa-trash"></i></button>
+                                            <button class="text-danger" (click)="openDialog(control.id)"><i
+                                                    class="fa fa-trash"></i></button>
                                         </div>
                                     </td>
                                 </tr>
