@@ -490,11 +490,12 @@ hr {
     width: calc(100% - 80px);
   }
   width: 100%;
+  aspect-ratio: 1;
   border: 1px solid #eee;
-  max-height: 500px;
-  @media screen and (max-width:575.98px) {
-    height: 300px;
-  }
+  // max-height: 500px;
+  // @media screen and (max-width:575.98px) {
+  //   height: 300px;
+  // }
   .cta-actions{
     button{
       font-size: 14px;

@@ -35,30 +35,9 @@
 </section>
 <!--------------- blog-tittle-section-end---------------->
 
-<!-- <section class="product-category product">
-    <div class="container">
-        <div class="row category-section d-flex gap-0">
-            @for (control of categoryListData; track $index) {
-                <div class="col-md-2 col-6">
-                    <a (click)="gotoCategory(control.id)">
-                        <div class="product-wrapper">
-                            <div class="wrapper-img">
-                                <img src="{{control?.thumbnail}}" width="120px" alt="">
-                            </div>
-                            <div class="wrapper-info">
-                                <a class="wrapper-details">{{control?.name}}</a>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            }
-        </div>
-    </div>
-</section> -->
-
 <section class="product-category product">
   <div class="container">
-    <div class="row category-section d-flex gap-0">
+    <div class="row d-flex gap-0">
       @for (item of categoryListData; track $index) {
         <div class="col-md-2 col-6">
           <a class="category-link" (click)="gotoCategory(item.id)">
