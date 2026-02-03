@@ -231,7 +231,8 @@ this.seoFormGroup();
           // })
 
           // })
-          this.settingsModel.footer.forEach((item: any) => {
+          //  this.settingsModel.footer.forEach((item: any) => {
+          this.settingsModel.footer.map((item: any) => {
             const pageList = JSON.parse(JSON.stringify(this.pageList));
 
             // Create a map for quick lookup of order
@@ -291,6 +292,8 @@ this.seoFormGroup();
   addFooterColumn() {
     this.settingsModel.footer.push({
       colHeading: '',
+      externalLinkValue : '',
+      showExternalInput : false,
       pageList: JSON.parse(JSON.stringify(this.pageList)),
       items: [
         {
@@ -745,4 +748,42 @@ this.seoFormGroup();
     modal.hide();
     this.getImageApi();
   }
+ toggleExternalLinkInput(footer: any) {
+  footer.showExternalInput = true;
+}
+isValidExternalUrl(value: string): boolean {
+  const url = value.trim();
+
+  // allows http://, https://, www.
+  const pattern = /^(https?:\/\/|www\.)[^\s/$.?#].[^\s]*$/i;
+
+  return pattern.test(url);
+}
+saveExternalLink(footer: any) {
+  const value = footer.externalLinkValue?.trim();
+  if (!value) return;
+  if (!this.isValidExternalUrl(value)) {
+  footer.invalidUrl = true;
+  return;
+}
+footer.invalidUrl = false;
+//  if (!this.isValidExternalUrl(value)) {
+//     alert('Please enter a valid URL (http, https, or www)');
+//     return;
+//   }
+  footer.pageList.push({
+    slug: footer.externalLinkValue.trim(),
+    isSelected: false,
+    isExternal: true
+  });
+
+  footer.externalLinkValue = '';
+  footer.showExternalInput = false;
+}
+cancelExternalLink(footer: any) {
+  footer.externalLinkValue = '';
+  footer.showExternalInput = false;
+}
+
+
 }

@@ -11,10 +11,11 @@
     @if (dataService.getSpecificGeneralSettings(data.data.title).length === 1) {
       <div class="single-banner text-center">
         <img
-          [src]="dataService.getSpecificGeneralSettings(data.data.title)[0].imgSrc"
+        [routerLink]="dataService.getSpecificGeneralSettings(data.data.title)[0]?.url"
+          [src]="dataService.getSpecificGeneralSettings(data.data.title)[0]?.imgSrc"
           loading="lazy"
           class="w-100"
-          alt=""
+          [alt]="dataService.getSpecificGeneralSettings(data.data.title)[0]?.alt"
         />
       </div>
     }

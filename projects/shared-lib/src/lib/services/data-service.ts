@@ -118,8 +118,8 @@ export class DataService {
     return this.request('POST', endpoint, data, { headers });
   }
 
-  patch(endpoint: string, data: any, id: any) {
-    return this.request('PATCH', `${endpoint}/${id}`, data);
+  patch(endpoint: string, data: any) {
+    return this.request('PATCH', `${endpoint}`, data);
   }
   put(data: any, endpoint: string) {
     return this.request('PUT', endpoint, data);

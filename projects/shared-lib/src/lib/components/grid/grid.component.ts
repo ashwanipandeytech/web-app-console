@@ -2,10 +2,11 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { DataService } from '../../services/data-service';
 import { promoBannerSlideConfig } from 'shared-lib/constants/app-constant';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-grid',
   templateUrl: './grid.component.html',
-  imports:[SlickCarouselModule],
+  imports:[SlickCarouselModule,RouterLink],
   styleUrls: ['./grid.component.scss']
 })
 export class GridComponent implements OnInit {
@@ -15,6 +16,7 @@ promoBannerSlideConfig = promoBannerSlideConfig;
   constructor() { }
 
   ngOnInit() {
+    
   }
 
 }

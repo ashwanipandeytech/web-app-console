@@ -367,7 +367,7 @@ export class CartCommon {
       quantity: quantity,
     };
     this.dataService
-      .patch('cart', data, id)
+      .patch(`cart${id}`, data)
       .pipe(
         catchError((err) => {
           console.error('Error:', err);

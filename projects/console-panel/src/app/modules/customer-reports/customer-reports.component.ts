@@ -33,6 +33,23 @@ getCustomerReports(){
     this.cd.detectChanges();
     })
 }
+reportRead(item:any){
+  let data = {
+    is_read: true
+}
+  this.dataService.patch(`contacts/${item.id}/status`, data)
+      .pipe(
+        catchError((err) => {
+          return of(err);
+        })
+      )
+      .subscribe((res: any) => {
+        if (res.success == true) {
+          this.getCustomerReports();
+        }
+      })
+
+}
 toggleMessage(item: any): void {
     item.showFullMessage = !item.showFullMessage;
   }

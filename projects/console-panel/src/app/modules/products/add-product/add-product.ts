@@ -1835,7 +1835,10 @@ saveHtml() {
     // let permaLinkValue = this.productDetails.value.productTitle.contains(' ')
     const formatted = this.productDetails.value.productTitle.replace(/\s+/g, '-').toLowerCase();
     const cleanSlug = this.slugify(formatted);
-    this.permaLink = cleanSlug;
+    let limitedSlug = cleanSlug.slice(0, 25);
+    limitedSlug = limitedSlug.replace(/-+$/g, '');
+    this.permaLink = limitedSlug;
+    // this.permaLink = cleanSlug;
     this.seoForm.patchValue({ slugText: formatted });
     this.cd.detectChanges();
   }

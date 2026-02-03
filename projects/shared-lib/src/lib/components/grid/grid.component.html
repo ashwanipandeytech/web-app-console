@@ -9,8 +9,8 @@
       <!-- Slide 1 -->
       @for (slide of dataService.getSpecificGeneralSettings(data.data.title); track slide.img) {
       <div class="" ngxSlickItem>
-        <a href="/category-details">
-          <img [src]="slide.imgSrc" alt="" height="250px" class="rounded-4" />
+        <a>
+          <img [routerLink]="slide.url" [src]="slide.imgSrc" alt="" height="250px" class="rounded-4" />
         </a>
       </div>
       }

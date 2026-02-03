@@ -450,7 +450,14 @@
                       <div class="mb-2">
                         <div class="position-relative">
                           <label class="form-label fw-semibold">Column Heading: {{$index+1}}</label>
-    
+                            <button
+                              type="button"
+                              class="btn text-danger position-absolute top-0 end-0 p-0"
+                              style="margin-top: -4px; margin-right: 19px;"
+                              (click)="toggleExternalLinkInput(footer)"
+                              title="Add External Link">
+                              <i class="fa fa-pencil"></i>
+                            </button>
                           <button type="button" class="btn text-danger position-absolute top-0 end-0 p-0 "
                             style="margin-top: -4px; margin-right: -4px;" (click)="deleteFooterColumn($index)"
                             title="Delete this slide">
@@ -460,6 +467,34 @@
                         <div class="">
                           <input type="text" class="form-control" [name]="'footer[' + $index + '].colHeading'"
                             [(ngModel)]="footer.colHeading" placeholder="Enter Column Heading">
+
+                            <div *ngIf="footer.showExternalInput" class="mt-2 d-flex gap-2">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Enter external link"
+    [name]="'footerField[' + $index + '].externalLink'"
+    [(ngModel)]="footer.externalLinkValue"
+    [class.is-invalid]="footer.invalidUrl"
+  />
+  <button
+    class="btn btn-success"
+    type="button"
+    (click)="saveExternalLink(footer)">
+    ✔
+  </button>
+
+  <button
+    class="btn btn-secondary"
+    type="button"
+    (click)="cancelExternalLink(footer)">
+    ✖
+  </button>
+                            <div *ngIf="footer.invalidUrl" class="invalid-feedback">
+  Enter a valid URL (http://, https://, or www)
+</div>
+</div>
+
                         </div>
                       </div>
     
