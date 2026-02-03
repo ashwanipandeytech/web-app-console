@@ -470,8 +470,8 @@
                           <div *ngIf="footer.showExternalInput" class="mt-2 d-flex align-items-start gap-2">
                             <div>
                               <input type="text" class="form-control" placeholder="Enter external link"
-                              [name]="'footerField[' + $index + '].externalLink'" [(ngModel)]="footer.externalLinkValue"
-                              [class.is-invalid]="footer.invalidUrl" />
+                                [name]="'footerField[' + $index + '].externalLink'"
+                                [(ngModel)]="footer.externalLinkValue" [class.is-invalid]="footer.invalidUrl" />
                               <div *ngIf="footer.invalidUrl" class="invalid-feedback">
                                 Enter a valid URL (http://, https://, or www)
                               </div>
@@ -684,7 +684,7 @@
           </div>
         </div>
         <div class="px-3 mt-3">
-          <div class="row">
+          <div class="row g-3">
             <div class="col-3">
               <div class="upload-card w-100" (click)="fileInput.click()">
                 <input type="file" accept="image/*" hidden #fileInput (change)="onImageChange($event)" />
