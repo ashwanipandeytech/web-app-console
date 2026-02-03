@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, inject, Optional, Output, ViewChild,ViewEncapsulation, type AfterViewInit  } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, inject, Optional, Output, ViewChild,ViewEncapsulation, type AfterViewInit  } from '@angular/core';
 import { CommonModule, NgClass } from '@angular/common';
 import {SpecialCharacterHelper} from 'shared-lib/services/special-character-helper'
 import {
@@ -1556,6 +1556,18 @@ saveHtml() {
       });
 
   }
+  confirmBeforeSaveProduct(action:any){
+     const confirmed = confirm(`Are you sure you want to ${action} this product?`);
+    if (!confirmed) {
+      return; 
+    }
+     if (action == 'update') {
+      this.updateProduct();
+    }
+    else{
+       this.getProductDetails();
+    }
+  }
   getProductDetails() {
     //console.log('productDetails==>', this.productDetails.value);
 
@@ -1981,4 +1993,27 @@ this.shippingInfoSection.reset();
  this.offerForm.reset();
  this.seoForm.reset();
   }
+  @HostListener('window:beforeunload', ['$event'])
+unloadNotification($event: BeforeUnloadEvent) {
+  if (this.hasUnsavedChanges()) {
+    $event.preventDefault();
+    $event.returnValue = true; // triggers browser alert
+  }
+}
+  hasUnsavedChanges(): boolean {
+  return (
+    this.productDetails?.dirty ||
+    this.productOptionData?.dirty ||
+    this.productMultipleOptionForm?.dirty ||
+    this.tagsForm?.dirty ||
+    this.productMediaSection?.dirty ||
+    this.productInventrySection?.dirty ||
+    this.priceSection?.dirty ||
+    this.shippingInfoSection?.dirty ||
+    this.productAttributesForm?.dirty ||
+    this.shippingConfigForm?.dirty ||
+    this.offerForm?.dirty ||
+    this.seoForm?.dirty
+  );
+}
 }

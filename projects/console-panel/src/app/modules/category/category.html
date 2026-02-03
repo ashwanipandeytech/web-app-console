@@ -131,11 +131,11 @@
                             <div class="col-12 d-flex justify-content-end">
                                 <div class="btn-box">
 
-                                    <button class="btn btn-sm btn-primary" *ngIf="isEdit" (click)="updatecategory()">
+                                    <button class="btn btn-sm btn-primary" *ngIf="isEdit" (click)="confirmBeforeSaveCategory('update')">
                                         Update Category
                                     </button>
 
-                                    <button class="btn btn-sm btn-primary" *ngIf="!isEdit" (click)="saveCategoryData()"
+                                    <button class="btn btn-sm btn-primary" *ngIf="!isEdit" (click)="confirmBeforeSaveCategory('add')"
                                         [disabled]="addCategory.invalid">
                                         Add Category
                                     </button>
