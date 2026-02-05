@@ -6,7 +6,11 @@
   --bs-body-font-size: 14px;
   --bs-primary-rgb: 0, 147, 221;
 }
-.cdk-overlay-container{z-index: 1060;}
+
+.cdk-overlay-container {
+  z-index: 1060;
+}
+
 .container-fluid {
   max-width: 1400px;
 }
@@ -43,8 +47,23 @@
 
         .modal-content {
           margin-bottom: -10%;
-          border-radius: .75rem .75rem 0 0;
+          border-radius: 1.25rem 1.25rem 0 0;
           transition: margin-bottom .3s ease-out;
+
+          // .close-btn {
+          //   color: #fff;
+          //   // position: absolute;
+          //   top: unset !important;
+          //   left: 0 !important;
+          //   // right: 0 !\;
+          //   margin: auto;
+          //   bottom: 100%;
+          //   background-color: #00000038;
+          //   width: 32px;
+          //   aspect-ratio: 1;
+          //   border-radius: 16px;
+          //   margin-bottom: .5rem;
+          // }
         }
       }
 
@@ -58,7 +77,7 @@
   }
 }
 
-.bottom-nav { 
+.bottom-nav {
   a {
     text-align: center;
     font-size: 12px;
@@ -515,6 +534,7 @@ table {
 // checkout--------------------
 .checkout {
   background: $primary-color;
+
   .billing-section {
     margin-top: 0;
   }
@@ -1018,13 +1038,18 @@ safure-root {
 }
 
 .innerHtml {
-  strong{font-weight: 600;}
-  a{
+  strong {
+    font-weight: 600;
+  }
+
+  a {
     color: $theme-color;
-    &:hover{
+
+    &:hover {
       text-decoration: underline;
     }
   }
+
   ul {
     padding-left: 20px;
 
@@ -1032,20 +1057,35 @@ safure-root {
       list-style-type: disc;
       margin-bottom: 8px;
       font-size: 14px;
-      > *{
+
+      >* {
         font-size: inherit;
       }
     }
   }
-  img{
+
+  img {
     max-height: 400px;
     object-fit: cover;
   }
-  h1, h2, h3, h4{font-size: inherit;}
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-size: inherit;
+  }
 }
-.text-break{
-  p{margin-bottom: 0;}
-  td, tr{border-color: transparent;}
+
+.text-break {
+  p {
+    margin-bottom: 0;
+  }
+
+  td,
+  tr {
+    border-color: transparent;
+  }
 }
 
 .product-detail {
@@ -1094,8 +1134,9 @@ safure-root {
 
 .w-1100 {
   max-width: 1100px;
+
   @media screen and (max-width:576px) {
-    box-shadow: none!important;
+    box-shadow: none !important;
   }
 }
 
@@ -1206,7 +1247,8 @@ input[type=radio] {
     &:hover {
       background: #fff;
     }
-    &.slick-disabled{
+
+    &.slick-disabled {
       cursor: not-allowed;
     }
   }
@@ -1229,12 +1271,13 @@ input[type=radio] {
   }
 }
 
-.grocery-section.container{
-    padding-inline: 0;
-    .slick-track{
-      display: flex;
-      gap: 12px;
-    }
+.grocery-section.container {
+  padding-inline: 0;
+
+  .slick-track {
+    display: flex;
+    gap: 12px;
+  }
 }
 
 .hero-section {
@@ -1309,11 +1352,15 @@ input[type="number"] {
   animation: spin 1s linear infinite;
 }
 
-.product-info-section{
-  .main-slider{
-    .slick-main, .slick-list, .main-img img {
+.product-info-section {
+  .main-slider {
+
+    .slick-main,
+    .slick-list,
+    .main-img img {
       aspect-ratio: 1;
     }
+
     // .slick-main, .slick-list, .slick-track, .main-img, .main-img img{
     //   height: 100%;
     // }
@@ -1321,9 +1368,85 @@ input[type="number"] {
 }
 
 
-.shop-btn{
-  &:disabled{
-      pointer-events: none;
-      opacity: 0.6;
+.shop-btn {
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+}
+
+.editor-text {
+  & * {
+    font-size: 1rem;
+  }
+
+  .h1,
+  h1 {
+    font-size: calc(1.375rem + 1.5vw)
+  }
+
+  @media (min-width: 1200px) {
+
+    .h1,
+    h1 {
+      font-size: 2.5rem
     }
+  }
+
+  .h2,
+  h2 {
+    font-size: calc(1.325rem + .9vw)
+  }
+
+  @media (min-width: 1200px) {
+
+    .h2,
+    h2 {
+      font-size: 2rem
+    }
+  }
+
+  .h3,
+  h3 {
+    font-size: calc(1.3rem + .6vw)
+  }
+
+  @media (min-width: 1200px) {
+
+    .h3,
+    h3 {
+      font-size: 1.75rem
+    }
+  }
+
+  .h4,
+  h4 {
+    font-size: calc(1.275rem + .3vw)
+  }
+
+  @media (min-width: 1200px) {
+
+    .h4,
+    h4 {
+      font-size: 1.5rem
+    }
+  }
+
+  .h5,
+  h5 {
+    font-size: 1.25rem
+  }
+
+  .h6,
+  h6 {
+    font-size: 1rem
+  }
+
+  img,
+  iframe,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
 }
