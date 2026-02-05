@@ -39,7 +39,7 @@
                 <div class="row gy-3">
                     <div class="col-lg-4 col-12">
                         <div class="logo mb-4">
-                            <img src="../images/logos/top-logo.png" alt="logo" class="img-fluid" />
+                            <img [src]="this.dataService.getSpecificGeneralSettings('general').logo.desktop.imgSrc" alt="logo" class="img-fluid" />
                         </div> 
                         <div class="social-item d-flex gap-3 my-3 opacity-75">
                             <a href="#" class="social-icon instagram">
@@ -63,22 +63,26 @@
                     </div>
                     <div class="col-lg-8 col-12">
                         <div class="row gy-3">
-                            <div class="col-lg-4 col-6">
-                                <div class="about-us">
-                                    <h4 class="footer-heading footer-title">
-                                        About Us
-                                    </h4>
-                                    <div class="footer-link about-link">
-                                        <ul>
-                                            <li><a href="/order">Track Order</a></li>
-                                            <li><a href="/cart">Delivery & Returns</a></li>
-                                            <li><a href="/about-us">Warranty</a></li>
-                                            <li><a href="/contact-us">Contact Us</a></li>
-                                        </ul>
+                            @for (data of footerData; track data) {
+                                <div class="col-lg-4 col-6">
+                                    <div class="about-us">
+                                        <h4 class="footer-heading footer-title">
+                                           {{data.colHeading}}
+                                        </h4>
+                                        <div class="footer-link about-link">
+                                            <ul>
+                                                @for (item of data.items; track item) {
+                                                    <li><a [href]="item.link">{{item.label}}</a></li>
+                                                } 
+                                                <!-- <li><a href="/cart">Delivery & Returns</a></li>
+                                                <li><a href="/about-us">Warranty</a></li>
+                                                <li><a href="/contact-us">Contact Us</a></li> -->
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-4 col-6">
+                            }
+                            <!-- <div class="col-lg-4 col-6">
                                 <div class="links">
                                     <h4 class="footer-heading footer-title">
                                         Useful Links
@@ -92,7 +96,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-lg-4 col-12">
                                 <div class="links">
                                     <h4 class="footer-heading footer-title">
@@ -174,7 +178,7 @@
                                             </div>
                                             <div class="details">
                                                 <h4 class="footer-heading">Email:</h4>
-                                                <p><a href="mailto:info@a2zlivestock.com">info@a2zlivestock.com</a></p>
+                                                <p><a href="mailto:info@a2zlivestock.com">{{'info@a2zlivestock.com'}}</a></p>
                                             </div>
                                         </div>
                                     </div>
@@ -188,7 +192,7 @@
     </div>
 </section>
 <!--------------- footer-section-end--------------->
-
+<!-- <pre> {{dataService.getSpecificGeneralSettings('footer') | json}} </pre> -->
 
 <!-- General Settings -->
 <!-- <pre> {{this.dataService.getAllGeneralSettings() | json}} </pre> -->

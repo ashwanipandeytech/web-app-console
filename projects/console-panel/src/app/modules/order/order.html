@@ -1,11 +1,3 @@
-<!-- header start -->
-<!-- <app-header></app-header> -->
-<!-- header end -->
-
-<!-- main sidebar start -->
-<!-- <app-sidebar></app-sidebar> -->
-<!-- main sidebar end -->
-
 <!-- main content start -->
 <div class="main-content">
     <div class="row g-4">
@@ -183,9 +175,10 @@
                             </div>
                         </div>
                     </div> -->
-                    
+
                     <div class="table-responsive">
-                        <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped" id="allProductTable">
+                        <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped"
+                            id="allProductTable">
                             <thead>
                                 <tr>
                                     <!-- <th class="no-sort">
@@ -196,7 +189,7 @@
                                     <th>Order ID</th>
                                     <th>Customer</th>
                                     <th>Status</th>
-                                    <th>Product</th>
+                                    <th class="text-start" style="width: 250px;">Product</th>
                                     <th>Price</th>
                                     <th>Payment Method</th>
                                     <th>Delivery Status</th>
@@ -207,27 +200,28 @@
                             <tbody>
                                 @for(order of orderListData?.data; track $index){
                                 <tr>
-                                        <!-- <td>
+                                    <!-- <td>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox">
                                             </div>
                                         </td> -->
-                                        <td><a href="invoices.html">{{order.id}}</a></td>
-                                        <td>{{order.user.name}}</td>
-                                        <td><span class="text-danger">{{order.status}}</span></td>
-                                        <td>{{order?.items[0]?.product?.title}}</td>
-                                        <td>{{order.total_amount}}</td>
-                                        <td>{{order.payment_method}}</td>
-                                        <td><span class="badge bg-success">Delivered</span></td>
-                                        <td>{{order.created_at | date:'hh:mm a'}}</td>
-                                        <td class="position-sticky end-0 z-3">
-                                            <button type="button" class="btn text-danger p-0"><i class="fa fa-eye"></i></button>
-                                            <!-- <div class="btn-box">
+                                    <td>{{order.id}}</td>
+                                    <td>{{order.user.name}}</td>
+                                    <td><span class="text-danger">{{order.status}}</span></td>
+                                    <td class="text-start">{{order?.items[0]?.product?.title}}</td>
+                                    <td>{{order.total_amount}}</td>
+                                    <td>{{order.payment_method}}</td>
+                                    <td><span class="badge bg-success">Delivered</span></td>
+                                    <td>{{order.created_at | date:'hh:mm a'}}</td>
+                                    <td class="position-sticky end-0 z-3">
+                                        <button type="button" class="btn text-danger p-0"><i
+                                                class="fa fa-eye"></i></button>
+                                        <!-- <div class="btn-box">
                                                 <button><i class="fa fa-pen" (click)="openEditModal(order)"></i></button>
                                                 <button><i class="fa fa-trash"></i></button>
                                             </div> -->
-                                        </td>
-                                    </tr>
+                                    </td>
+                                </tr>
                                 }
                                 <!-- <tr>
                                     <td>
@@ -473,15 +467,15 @@
                                 </tr> -->
                             </tbody>
                         </table>
-                           <div class="d-flex align-items-center justify-content-end gap-1 py-2">
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end gap-1 py-2">
                         @for (page of orderListData?.links; track $index) {
                         <button type="button" class="btn" (click)="nextPage(page.page)">
                             <span [innerHTML]="page.label"></span>
                         </button>
                         }
                     </div>
-                    </div>
-                    
+
                     <!-- <div class="table-bottom-control"></div> -->
                 </div>
             </div>
@@ -490,62 +484,63 @@
 
     <!-- footer start -->
     <div class="footer">
-        <p>Copyright© <script>document.write(new Date().getFullYear())</script> All Rights Reserved By <span class="text-primary">Safure</span></p>
+        <p>Copyright©
+            <script>document.write(new Date().getFullYear())</script> All Rights Reserved By <span
+                class="text-primary">Safure</span>
+        </p>
     </div>
     <!-- footer end -->
 </div>
 <!-- main content end -->
 
-
 <!-- Modal start  -->
-
 <ng-template #editOrderModal let-modal>
-  <div class="modal-header">
-    <h5 class="modal-title">Edit Order</h5>
-    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
-  </div>
-
-  <form [formGroup]="orderForm" (ngSubmit)="submit(modal)">
-    <div class="modal-body">
-
-      <div class="mb-3">
-        <label>Customer</label>
-        <input class="form-control" formControlName="customer">
-      </div>
-
-      <div class="mb-3">
-        <label>Status</label>
-        <select class="form-control" formControlName="status">
-          <option value="confirmed">Confirmed</option>
-          <option value="pending">Pending</option>
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label>Product</label>
-        <input class="form-control" formControlName="product">
-      </div>
-
-      <div class="mb-3">
-        <label>Price</label>
-        <input type="number" class="form-control" formControlName="price">
-      </div>
-
-      <div class="mb-3">
-        <label>Payment Method</label>
-        <select class="form-control" formControlName="payment_method">
-          <option value="cod">COD</option>
-          <option value="online">Online</option>
-        </select>
-      </div>
-
+    <div class="modal-header">
+        <h5 class="modal-title">Edit Order</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
     </div>
 
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
-      <button type="submit" class="btn btn-primary" [disabled]="orderForm.invalid">
-        Update
-      </button>
-    </div>
-  </form>
+    <form [formGroup]="orderForm" (ngSubmit)="submit(modal)">
+        <div class="modal-body">
+
+            <div class="mb-3">
+                <label>Customer</label>
+                <input class="form-control" formControlName="customer">
+            </div>
+
+            <div class="mb-3">
+                <label>Status</label>
+                <select class="form-control" formControlName="status">
+                    <option value="confirmed">Confirmed</option>
+                    <option value="pending">Pending</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label>Product</label>
+                <input class="form-control" formControlName="product">
+            </div>
+
+            <div class="mb-3">
+                <label>Price</label>
+                <input type="number" class="form-control" formControlName="price">
+            </div>
+
+            <div class="mb-3">
+                <label>Payment Method</label>
+                <select class="form-control" formControlName="payment_method">
+                    <option value="cod">COD</option>
+                    <option value="online">Online</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="orderForm.invalid">
+                Update
+            </button>
+        </div>
+    </form>
 </ng-template>
