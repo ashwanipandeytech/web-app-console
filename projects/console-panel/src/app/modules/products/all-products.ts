@@ -153,8 +153,8 @@ cloneProduct(item:any){
         }
       })
     }
-    previewProduct(id:any){
-      let url = `${environment.WEB_URL}/product-details/${id}?preview=1`
+    previewProduct(item:any){
+      let url = `${environment.WEB_URL}/product-details/${item?.product_details?.permaLink}?id=${item.id}`
 window.open(url,'_blank')
     }
       deleteProduct(id: any) {
