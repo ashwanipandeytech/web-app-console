@@ -11,121 +11,122 @@ import { UserProfile } from 'shared-lib/components/account/user-profile/user-pro
 import { Wishlist } from 'shared-lib/components/account/wishlist/wishlist';
 import { Compaire } from 'shared-lib/components/account/compaire/compaire';
 import { authGuard } from './app.guard';
-import { ProductDetails} from 'shared-lib/components/product-details/product-details';
-import { ProductSidebarCommon} from 'shared-lib/components/product-sidebar/product-sidebar';
-import { CategoryCommon} from 'shared-lib/components/category/category';
+import { ProductDetails } from 'shared-lib/components/product-details/product-details';
+import { ProductSidebarCommon } from 'shared-lib/components/product-sidebar/product-sidebar';
+import { CategoryCommon } from 'shared-lib/components/category/category';
 import { CartCommon } from 'shared-lib/components/cart/cart';
 import { Thankyou } from '../../../shared-lib/src/lib/components/thankyou/thankyou';
+import { BackendPagesComponent } from '../../../shared-lib/src/lib/components/backend-pages/backend-pages';
 
 export const routes: Routes = [
     {
         path: '',
         component: LandingPage,
-       // canActivate: [authGuard]
-        
+        // canActivate: [authGuard]
+
     },
-     {
+    {
         path: 'landing',
         redirectTo: '',
         component: LandingPage,
-        
+
     },
     {
         path: 'login',
         component: Login,
         canActivate: [authGuard]
-         
+
     },
     {
         path: 'reset-password',
         component: Login
-     },
-  
+    },
+
     {
         path: 'category',
         component: CategoryCommon,
-         
+
     },
-   
-      {
+
+    {
         path: 'category-details/:id',
         component: ProductSidebarCommon,
-         
+
     },
-       
-         {
-       path: 'product-details/:value',
+
+    {
+        path: 'product-details/:value',
         component: ProductDetails,
-         
-        },
-   
-      {
+
+    },
+
+    {
         path: 'cart',
         component: CartCommon,
-         
-    }, 
+
+    },
     {
         path: 'user-profile',
         component: UserProfile,
         //canActivate: [authGuard]
-         
+
     },
     {
         path: 'wishlist',
         component: Wishlist,
-         
+
     },
     {
         path: 'compaire',
         component: Compaire,
-         
+
     },
     {
         path: 'checkout',
         component: Checkout,
-         
+
     },
 
-   
+
     {
         path: 'thank-you',
         component: Thankyou,
-         
+
     },
 
 
-//  {
-//         path: 'about-us',
-//         component: AboutUs,
-         
-//     },
-//     {
-//         path: 'terms',
-//         component: Terms,
-         
-//     },
-//     {
-//         path: 'privacy',
-//         component: Privacy,
-         
-//     },
     {
         path: 'contact-us',
         component: ContactUs,
-         
+
     },
 
 
 
-   
-    // {
-    //     path: 'fotobuch',  
-    //     pathMatch: 'full',     
-    //     loadComponent: () => import('./host-outlet/host.component').then(m => m.HostOutletComponent),
-    //     resolve: {
-    //         pageData: PageContentResolver
-    //     }
-    // },
+    {
+        path: '**',
+        component: BackendPagesComponent,  
+       resolve: { 
+      pageData: PageContentResolver  
+    }
+    }
 
-   
+    //  {
+    //         path: 'about-us',
+    //         component: AboutUs,
+
+    //     },
+    //     {
+    //         path: 'terms',
+    //         component: Terms,
+
+    //     },
+    //     {
+    //         path: 'privacy',
+    //         component: Privacy,
+
+    //     },
+
+
+
 ];

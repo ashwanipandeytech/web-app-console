@@ -16,6 +16,7 @@ export class PageContentResolver implements Resolve<any> {
   resolve(route: ActivatedRouteSnapshot,state: RouterStateSnapshot): Observable<any> {  
    const currentUrl = state.url;
   
+   console.info('Resolving content for URL:', currentUrl);
     const path = route.url.map(segment => segment.path).join('/');
     const fieldValue=route.paramMap.get('pageSlug') || 'home';
     //return of([]);
