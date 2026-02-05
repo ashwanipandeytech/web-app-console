@@ -57,7 +57,7 @@ import {
 	TableColumnResize,
 	Table,
 	TableToolbar,
-	Emoji,
+	// Emoji,
 	Mention,
 	PasteFromOffice,
 	FindAndReplace,
@@ -65,7 +65,7 @@ import {
 	FontColor,
 	FontFamily,
 	FontSize,
-	Fullscreen,
+	// Fullscreen,
 	Heading,
 	Highlight,
 	HorizontalLine,
@@ -93,7 +93,7 @@ import {
 	SpecialCharactersMathematical,
 	SpecialCharactersText,
 	Strikethrough,
-	Style,
+	// Style,
 	GeneralHtmlSupport,
 	Subscript,
 	Superscript,
@@ -354,7 +354,7 @@ modulesWithImage = {
 					// '|',
 					'bulletedList',
 					'numberedList',
-					'multiLevelList',
+					// 'multiLevelList',
 					'todoList',
 					'outdent',
 					'indent'
@@ -372,11 +372,11 @@ modulesWithImage = {
 				Bold,
 				Bookmark,
 				// CaseChange,
-				CKBox,
-				CKBoxImageEdit,
-				CloudServices,
+				// CKBox,
+				// CKBoxImageEdit,
+				// CloudServices,
 				Code,
-				Emoji,
+				// Emoji,
 				Essentials,
 				// ExportPdf,
 				// ExportWord,
@@ -387,7 +387,7 @@ modulesWithImage = {
 				FontSize,
 				// Footnotes,
 				// FormatPainter,
-				Fullscreen,
+				// Fullscreen,
 				GeneralHtmlSupport,
 				Heading,
 				Highlight,
@@ -431,7 +431,7 @@ modulesWithImage = {
 				SpecialCharactersMathematical,
 				SpecialCharactersText,
 				Strikethrough,
-				Style,
+				// Style,
 				Subscript,
 				Superscript,
 				Table,
@@ -446,51 +446,51 @@ modulesWithImage = {
 				TodoList,
 				Underline
 			],
-			cloudServices: {
-				tokenUrl: CLOUD_SERVICES_TOKEN_URL
-			},
-			exportPdf: {
-				stylesheets: [
-					/* This path should point to the content stylesheets on your assets server. */
-					/* See: https://ckeditor.com/docs/ckeditor5/latest/features/converters/export-pdf.html */
-					'./export-style.css',
-					/* Export PDF needs access to stylesheets that style the content. */
-					'https://cdn.ckeditor.com/ckeditor5/47.4.0/ckeditor5.css',
-					'https://cdn.ckeditor.com/ckeditor5-premium-features/47.4.0/ckeditor5-premium-features.css'
-				],
-				fileName: 'export-pdf-demo.pdf',
-				converterOptions: {
-					format: 'Tabloid',
-					margin_top: '20mm',
-					margin_bottom: '20mm',
-					margin_right: '24mm',
-					margin_left: '24mm',
-					page_orientation: 'portrait'
-				}
-			},
-			exportWord: {
-				stylesheets: [
-					/* This path should point to the content stylesheets on your assets server. */
-					/* See: https://ckeditor.com/docs/ckeditor5/latest/features/converters/export-word.html */
-					'./export-style.css',
-					/* Export Word needs access to stylesheets that style the content. */
-					'https://cdn.ckeditor.com/ckeditor5/47.4.0/ckeditor5.css',
-					'https://cdn.ckeditor.com/ckeditor5-premium-features/47.4.0/ckeditor5-premium-features.css'
-				],
-				fileName: 'export-word-demo.docx',
-				converterOptions: {
-					document: {
-						orientation: 'portrait',
-						size: 'Tabloid',
-						margins: {
-							top: '20mm',
-							bottom: '20mm',
-							right: '24mm',
-							left: '24mm'
-						}
-					}
-				}
-			},
+			// cloudServices: {
+			// 	tokenUrl: CLOUD_SERVICES_TOKEN_URL
+			// },
+			// exportPdf: {
+			// 	stylesheets: [
+			// 		/* This path should point to the content stylesheets on your assets server. */
+			// 		/* See: https://ckeditor.com/docs/ckeditor5/latest/features/converters/export-pdf.html */
+			// 		'./export-style.css',
+			// 		/* Export PDF needs access to stylesheets that style the content. */
+			// 		'https://cdn.ckeditor.com/ckeditor5/47.4.0/ckeditor5.css',
+			// 		'https://cdn.ckeditor.com/ckeditor5-premium-features/47.4.0/ckeditor5-premium-features.css'
+			// 	],
+			// 	fileName: 'export-pdf-demo.pdf',
+			// 	converterOptions: {
+			// 		format: 'Tabloid',
+			// 		margin_top: '20mm',
+			// 		margin_bottom: '20mm',
+			// 		margin_right: '24mm',
+			// 		margin_left: '24mm',
+			// 		page_orientation: 'portrait'
+			// 	}
+			// },
+			// exportWord: {
+			// 	stylesheets: [
+			// 		/* This path should point to the content stylesheets on your assets server. */
+			// 		/* See: https://ckeditor.com/docs/ckeditor5/latest/features/converters/export-word.html */
+			// 		'./export-style.css',
+			// 		/* Export Word needs access to stylesheets that style the content. */
+			// 		'https://cdn.ckeditor.com/ckeditor5/47.4.0/ckeditor5.css',
+			// 		'https://cdn.ckeditor.com/ckeditor5-premium-features/47.4.0/ckeditor5-premium-features.css'
+			// 	],
+			// 	fileName: 'export-word-demo.docx',
+			// 	converterOptions: {
+			// 		document: {
+			// 			orientation: 'portrait',
+			// 			size: 'Tabloid',
+			// 			margins: {
+			// 				top: '20mm',
+			// 				bottom: '20mm',
+			// 				right: '24mm',
+			// 				left: '24mm'
+			// 			}
+			// 		}
+			// 	}
+			// },
 			fontFamily: {
 				supportAllValues: true
 			},
@@ -498,16 +498,16 @@ modulesWithImage = {
 				options: [10, 12, 14, 'default', 18, 20, 22],
 				supportAllValues: true
 			},
-			fullscreen: {
-				onEnterCallback: container =>
-					container.classList.add(
-						'editor-container',
-						'editor-container_classic-editor',
-						'editor-container_include-style',
-						'editor-container_include-fullscreen',
-						'main-container'
-					)
-			},
+			// fullscreen: {
+			// 	onEnterCallback: container =>
+			// 		container.classList.add(
+			// 			'editor-container',
+			// 			'editor-container_classic-editor',
+			// 			'editor-container_include-style',
+			// 			'editor-container_include-fullscreen',
+			// 			'main-container'
+			// 		)
+			// },
 			heading: {
 				options: [
 					{
@@ -703,24 +703,24 @@ modulesWithImage = {
 
 	(this.configUpdateAlert as any).configUpdateAlertShown = true;
 
-	if (!isModifiedByUser(config.licenseKey, '<YOUR_LICENSE_KEY>')) {
-		valuesToUpdate.push('LICENSE_KEY');
-	}
+	// if (!isModifiedByUser(config.licenseKey, '<YOUR_LICENSE_KEY>')) {
+	// 	valuesToUpdate.push('LICENSE_KEY');
+	// }
 
-	if (!isModifiedByUser(config.cloudServices?.tokenUrl, '<YOUR_CLOUD_SERVICES_TOKEN_URL>')) {
-		valuesToUpdate.push('CLOUD_SERVICES_TOKEN_URL');
-	}
+	// if (!isModifiedByUser(config.cloudServices?.tokenUrl, '<YOUR_CLOUD_SERVICES_TOKEN_URL>')) {
+	// 	valuesToUpdate.push('CLOUD_SERVICES_TOKEN_URL');
+	// }
 
-	if (valuesToUpdate.length) {
-		window.alert(
-			[
-				'Please update the following values in your editor config',
-				'to receive full access to Premium Features:',
-				'',
-				...valuesToUpdate.map(value => ` - ${value}`)
-			].join('\n')
-		);
-	}
+	// if (valuesToUpdate.length) {
+	// 	window.alert(
+	// 		[
+	// 			'Please update the following values in your editor config',
+	// 			'to receive full access to Premium Features:',
+	// 			'',
+	// 			...valuesToUpdate.map(value => ` - ${value}`)
+	// 		].join('\n')
+	// 	);
+	// }
 }
 onReady(editor: any) {
   editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {

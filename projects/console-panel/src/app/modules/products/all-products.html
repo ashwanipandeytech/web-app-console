@@ -235,7 +235,7 @@
                                     <td>{{item.published_at}}</td>
                                     <td  class="position-sticky end-0">
                                         <div class="btn-box">
-                                            <button type="button" (click)="previewProduct(item.id)"><i class="fa fa-eye" ngbTooltip="Preview" placement="top"></i></button>
+                                            <button type="button" (click)="previewProduct(item)"><i class="fa fa-eye" ngbTooltip="Preview" placement="top"></i></button>
                                             <button type="button" (click)="editoProduct(item)"><i class="fa fa-pen" ngbTooltip="Edit" placement="top"></i></button>
                                             <button type="button" (click)="cloneProduct(item)" ngbTooltip="Copy" placement="top"><i class="fa fa-copy"></i></button>
                                             <button type="button" class="text-danger" (click)="openDialog(item.id)" ngbTooltip="Delete" placement="top"><i class="fa fa-trash"></i></button>
