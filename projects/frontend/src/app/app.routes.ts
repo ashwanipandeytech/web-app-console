@@ -106,6 +106,9 @@ export const routes: Routes = [
     {
         path: '**',
         component: BackendPagesComponent,  
+       resolve: { 
+      pageData: PageContentResolver  
+    }
     }
 
     //  {
