@@ -578,7 +578,7 @@ modulesWithImage = {
 				]
 			},
 			initialData:'',
-			licenseKey: LICENSE_KEY,
+			licenseKey: '',
 			lineHeight: {
   options: ['1', '1.15', '1.5', '2'],
 },
@@ -703,9 +703,9 @@ modulesWithImage = {
 
 	(this.configUpdateAlert as any).configUpdateAlertShown = true;
 
-	// if (!isModifiedByUser(config.licenseKey, '<YOUR_LICENSE_KEY>')) {
-	// 	valuesToUpdate.push('LICENSE_KEY');
-	// }
+	if (!isModifiedByUser(config.licenseKey, '<YOUR_LICENSE_KEY>')) {
+		valuesToUpdate.push('LICENSE_KEY');
+	}
 
 	// if (!isModifiedByUser(config.cloudServices?.tokenUrl, '<YOUR_CLOUD_SERVICES_TOKEN_URL>')) {
 	// 	valuesToUpdate.push('CLOUD_SERVICES_TOKEN_URL');
