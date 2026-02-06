@@ -21,6 +21,9 @@
     "baseUrl": ".",
     
     "paths": {
+      "custom-editor": [
+        "projects/custom-editor/src/public-api.ts"
+      ],
       "login-shared-lib": [
         "./dist/login-shared-lib"
       ],
@@ -43,12 +46,12 @@
   "rootDir": ".",
   "files": [],
   "references": [
-   {
-    "path": "./projects/frontend/tsconfig.app.json"
-   },
-   {
-"path": "./projects/frontend/tsconfig.spec.json"
-   },
+    {
+      "path": "./projects/frontend/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/frontend/tsconfig.spec.json"
+    },
     {
       "path": "./projects/console-panel/tsconfig.app.json"
     },
@@ -66,6 +69,12 @@
     },
     {
       "path": "./projects/setting-component-shared-lib/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/custom-editor/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/custom-editor/tsconfig.spec.json"
     }
   ]
 }

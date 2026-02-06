@@ -75,7 +75,10 @@
               </div> -->
 
               <div class="editor-container">
-                <ckeditor [editor]="Editor" [config]="config" *ngIf="isLayoutReady"  formControlName="shortDescription" (ready)="onReady($event)"/>
+                <ce-custom-editor
+                  formControlName="shortDescription"
+                  [uploadFn]="handleImageUpload">
+                </ce-custom-editor>
               </div>
               <!-- <div class="editor-container__editor">
                 <div>
@@ -105,8 +108,11 @@
                 </button> -->
               </div>
 
-             <div class="editor-container">
-                <ckeditor [editor]="Editor" [config]="config" *ngIf="isLayoutReady"  formControlName="productDescription" (ready)="onReady($event)"/>
+              <div class="editor-container">
+                <ce-custom-editor
+                  formControlName="productDescription"
+                  [uploadFn]="handleImageUpload">
+                </ce-custom-editor>
               </div>
 
 
@@ -136,22 +142,17 @@
 
 
 
-              <!-- <div class="main-container">
-	<div class="editor-container editor-container_classic-editor editor-container_include-style editor-container_include-fullscreen">
-		<div class="editor-container__editor">
-			<div>
-				<ckeditor [editor]="Editor" [config]="config" *ngIf="isLayoutReady"  formControlName="features" (ready)="onReady($event)"/>
-			</div>
-		</div>
-	</div>
-</div> -->
-   <div class="editor-container">
-                <ckeditor [editor]="Editor" [config]="config" *ngIf="isLayoutReady"  formControlName="features" (ready)="onReady($event)"/>
+              <div class="editor-container">
+                <ce-custom-editor
+                  formControlName="features"
+                  [uploadFn]="handleImageUpload">
+                </ce-custom-editor>
               </div>
 
               <!-- <quill-editor formControlName="features" [modules]="modulesNoImage"></quill-editor> -->
             </div>
           </div>
+
 
           <div class="panel mb-30">
             <div class="panel-body">
@@ -346,18 +347,11 @@
                 </button> -->
               </div>
 
-              
-              <!-- <div class="main-container">
-	<div class="editor-container editor-container_classic-editor editor-container_include-style editor-container_include-fullscreen">
-		<div class="editor-container__editor">
-			<div>
-				<ckeditor [editor]="Editor" [config]="config" *ngIf="isLayoutReady"  formControlName="productDescriptionImageGallery" (ready)="onReady($event)"/>
-			</div>
-		</div>
-	</div>
-</div> -->
               <div class="editor-container">
-                <ckeditor [editor]="Editor" [config]="config" *ngIf="isLayoutReady"  formControlName="productDescriptionImageGallery" (ready)="onReady($event)"/>
+                <ce-custom-editor
+                  formControlName="productDescriptionImageGallery"
+                  [uploadFn]="handleImageUpload">
+                </ce-custom-editor>
               </div>
 
                       <!-- <quill-editor #descriptionImageGallery formControlName="productDescriptionImageGallery"

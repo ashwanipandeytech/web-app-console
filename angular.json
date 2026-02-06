@@ -310,6 +310,32 @@
           }
         }
       }
+    },
+    "custom-editor": {
+      "projectType": "library",
+      "root": "projects/custom-editor",
+      "sourceRoot": "projects/custom-editor/src",
+      "prefix": "ce",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/custom-editor/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/custom-editor/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "tsConfig": "projects/custom-editor/tsconfig.spec.json"
+          }
+        }
+      }
     }
   },
   "cli": {

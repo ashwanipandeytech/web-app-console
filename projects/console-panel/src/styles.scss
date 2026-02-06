@@ -199,3 +199,36 @@
 .ck-content p:empty {
   margin: 0;
 }
+
+/* Keep CKEditor branding visible but less prominent */
+.ck-powered-by {
+  opacity: 0.65;
+  font-size: 10px;
+  line-height: 1.2;
+  display: flex;
+  justify-content: flex-end;
+  padding: 2px 4px 4px;
+}
+
+.ck-powered-by a,
+.ck-powered-by__text {
+  color: #6b6f75;
+  text-decoration: none;
+}
+
+.ck-powered-by a:hover,
+.ck-powered-by a:focus {
+  color: #495057;
+  text-decoration: underline;
+}
+
+
+.ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by a {
+    cursor: pointer;
+    display: none !important;
+    align-items: center;
+    opacity: .66;
+    filter: grayscale(80%);
+    line-height: var(--ck-powered-by-line-height);
+    padding: var(--ck-powered-by-padding-vertical) var(--ck-powered-by-padding-horizontal);
+}
