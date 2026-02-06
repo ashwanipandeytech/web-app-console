@@ -94,6 +94,10 @@ export const routes: Routes = [
 
     },
 
+  {
+    path: 'category-details/:id',
+    component: ProductSidebarCommon,
+  },
 
     {
         path: 'contact-us',
@@ -101,7 +105,32 @@ export const routes: Routes = [
 
     },
 
+  {
+    path: 'cart',
+    component: CartCommon,
+  },
+  {
+    path: 'user-profile',
+    component: UserProfile,
+    //canActivate: [authGuard]
+  },
+  {
+    path: 'wishlist',
+    component: Wishlist,
+  },
+  {
+    path: 'compaire',
+    component: Compaire,
+  },
+  {
+    path: 'checkout',
+    component: Checkout,
+  },
 
+  {
+    path: 'thank-you',
+    component: Thankyou,
+  },
 
     {
         path: '**',

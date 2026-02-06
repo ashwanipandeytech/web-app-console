@@ -7,7 +7,7 @@ import { GlobaCommonlService } from '../../services/global-common.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { GlobalFunctionService } from '../../services/global-function.service';
 import { NoDataComponent } from '../no-data/no-data.component';
-import { SignalService } from 'shared-lib/services/signal-service';
+import { SignalService } from '../../services/signal-service';
 
 @Component({
   selector: 'web-category-details',
@@ -56,8 +56,8 @@ export class ProductSidebarCommon {
     this.getCategoryList();
   }
 
-  openProduct(id: number) {
-    this.router.navigate(['/product-details', id]);
+  openProduct(item: any) {
+    this.router.navigate([`/product-details/${item.product_details.permaLink}`],{queryParams:{id:item.id}});
   }
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
