@@ -190,7 +190,7 @@ if (this.searchQuery == '') {
     '',
     [
       Validators.required,
-      Validators.pattern(/^[0-9]{14}$/)  // 10 digit phone number
+      Validators.pattern(/^[0-9]{10}$/)  // 10 digit phone number
     ]
   ],
 
