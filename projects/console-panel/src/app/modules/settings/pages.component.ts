@@ -50,8 +50,10 @@ export class PageList implements OnInit {
 
   editPage(page: any) {
     //console.log('Edit Page:', page);
-    // navigate to edit page
-    this.router.navigate(['/edit-page', page.slug]);
+    // open add page and bind data for editing
+    this.router.navigate(['/add-page'], {
+      queryParams: { slug: page.slug, mode: 'edit' }
+    });
   }
 
   deletePage(index: number) {

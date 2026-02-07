@@ -117,6 +117,7 @@ if (this.searchQuery == '') {
     type:this.data.type,
     city: this.data.city || this.data.town || '',
     state: this.data.state || '',
+    house_no: this.data.house_no || '',
     postal_code: this.data.postcode || this.data.postal_code || '',
     country: this.data.country || 'IN',
     // location:[{ lat:item.properties.lat,lng:item.properties.lon}]
@@ -146,6 +147,7 @@ if (this.searchQuery == '') {
     street: item.properties.county || item.properties.address_line1 || '',
     city: item.properties.city || item.properties.town || '',
     state: item.properties.state || '',
+    house_no: item.properties.house_no || '',
     postal_code: item.properties.postcode || item.properties.postal_code || '',
     country: item.properties.country || '',
     // location:[{ lat:item.properties.lat,lng:item.properties.lon}]
@@ -198,7 +200,7 @@ if (this.searchQuery == '') {
   city: ['', Validators.required],
 
   state: ['', Validators.required],
-
+house_no:['',Validators.required],
   postal_code: [
     '',
     [
@@ -353,6 +355,7 @@ get phone() { return this.addressForm.get('phone'); }
 get street() { return this.addressForm.get('street'); }
 get city() { return this.addressForm.get('city'); }
 get state() { return this.addressForm.get('state'); }
+get house_no() { return this.addressForm.get('house_no'); }
 get postal_code() { return this.addressForm.get('postal_code'); }
 get country() { return this.addressForm.get('country'); }
 get type() { return this.addressForm.get('type'); }

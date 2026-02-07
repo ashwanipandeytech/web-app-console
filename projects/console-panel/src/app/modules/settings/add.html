@@ -1,7 +1,7 @@
 <div class="main-content">
   <div class="panel">
     <div class="panel-header">
-      <h5 class="fw-bold">Add New Page</h5>
+      <h5 class="fw-bold">{{ isEdit ? 'Edit Page' : 'Add New Page' }}</h5>
     </div>
   
     <div class="panel-body">
@@ -29,8 +29,13 @@
             <!-- Description -->
             <div class="mb-3">
               <label class="form-label">Description*</label>
-              <textarea class="form-control" name="description" [(ngModel)]="newPage.description" #description="ngModel"
-                required></textarea>
+              <ce-custom-editor
+                name="description"
+                [(ngModel)]="newPage.description"
+                #description="ngModel"
+                required
+                [uploadFn]="handleImageUpload">
+              </ce-custom-editor>
     
               @if (description.invalid && description.touched) {
               <div class="text-danger">
@@ -54,9 +59,11 @@
             <!-- Page Content -->
             <div class="mb-3">
               <label class="form-label">Page Content</label>
-    
-    
-              <quill-editor name="pageContent" [(ngModel)]="newPage.pageContent"></quill-editor>
+              <ce-custom-editor
+                name="pageContent"
+                [(ngModel)]="newPage.pageContent"
+                [uploadFn]="handleImageUpload">
+              </ce-custom-editor>
             </div>
     
           </div>
@@ -94,7 +101,7 @@
         <!-- SUBMIT -->
         <div class="text-end">
           <button class="btn btn-primary" type="submit" [disabled]="pageForm.invalid">
-            Add Page
+            {{ isEdit ? 'Update Page' : 'Add Page' }}
           </button>
         </div>
     
