@@ -33,6 +33,15 @@ export class AllProducts {
   email:any='superadmin@demohandler.com'
   password:any='R9!hQ7k$2Pm@A1eZx4LwT8uV#cN0sBf'
   productListData: any=[];
+  allProducts: any[] = [];
+  filteredProducts: any[] = [];
+  categoryOptions: string[] = [];
+  searchTerm = '';
+  selectedCategory = 'all';
+  selectedStock = 'all';
+  selectedSort = 'newest';
+  minPrice: number | null = null;
+  maxPrice: number | null = null;
   defaultPage = 1;
   constructor(private cd:ChangeDetectorRef,private globalService:GlobalService) {
   this.callAllProductList()
@@ -52,7 +61,10 @@ this.productListData = [];
       })
     ).subscribe((response: any) => {
       //console.log('Response:', response);
-    this.productListData = response.data;
+    this.productListData = response?.data || { data: [], meta: { links: [] } };
+    this.allProducts = this.productListData?.data || [];
+    this.refreshCategoryOptions();
+    this.applyFilters();
     this.cd.detectChanges();
       if (response && response.success) {
       
@@ -63,8 +75,150 @@ this.productListData = [];
     
   }
   nextPage(page:any){
+if (!page) return;
 this.defaultPage = page;
 this.callAllProductList();
+  }
+
+  onSearch(event: Event) {
+    this.searchTerm = (event.target as HTMLInputElement).value || '';
+    this.applyFilters();
+  }
+
+  onCategoryChange(event: Event) {
+    this.selectedCategory = (event.target as HTMLSelectElement).value || 'all';
+    this.applyFilters();
+  }
+
+  onStockChange(event: Event) {
+    this.selectedStock = (event.target as HTMLSelectElement).value || 'all';
+    this.applyFilters();
+  }
+
+  onSortChange(event: Event) {
+    this.selectedSort = (event.target as HTMLSelectElement).value || 'newest';
+    this.applyFilters();
+  }
+
+  onMinPriceChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.minPrice = value ? Number(value) : null;
+    this.applyFilters();
+  }
+
+  onMaxPriceChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.maxPrice = value ? Number(value) : null;
+    this.applyFilters();
+  }
+
+  clearFilters() {
+    this.searchTerm = '';
+    this.selectedCategory = 'all';
+    this.selectedStock = 'all';
+    this.selectedSort = 'newest';
+    this.minPrice = null;
+    this.maxPrice = null;
+    this.applyFilters();
+  }
+
+  refreshCategoryOptions() {
+    const categories = new Set<string>();
+    for (const item of this.allProducts) {
+      const name = item?.category?.name;
+      if (name) categories.add(name);
+    }
+    this.categoryOptions = Array.from(categories).sort();
+  }
+
+  applyFilters() {
+    const term = this.searchTerm.trim().toLowerCase();
+    let result = [...this.allProducts];
+
+    if (term) {
+      result = result.filter((item) => {
+        const title = String(item?.title || '').toLowerCase();
+        const sku = String(item?.sku || '').toLowerCase();
+        return title.includes(term) || sku.includes(term);
+      });
+    }
+
+    if (this.selectedCategory !== 'all') {
+      result = result.filter(
+        (item) => String(item?.category?.name || '') === this.selectedCategory
+      );
+    }
+
+    if (this.selectedStock !== 'all') {
+      result = result.filter((item) => {
+        const qty = Number(
+          item?.inventory?.manageStock ??
+          item?.inventory?.quantity ??
+          item?.inventory?.stock ??
+          0
+        );
+        const status = String(
+          item?.inventory?.stockStatus ?? item?.inventory?.status ?? ''
+        ).toLowerCase();
+
+        if (this.selectedStock === 'in') {
+          return qty > 0 || status === 'in' || status === 'in_stock';
+        }
+        if (this.selectedStock === 'out') {
+          return qty <= 0 || status === 'out' || status === 'out_of_stock';
+        }
+        if (this.selectedStock === 'backorder') {
+          return status.includes('backorder');
+        }
+        return true;
+      });
+    }
+
+    if (this.minPrice !== null || this.maxPrice !== null) {
+      result = result.filter((item) => {
+        const priceValue = this.getPriceValue(item);
+        if (this.minPrice !== null && priceValue < this.minPrice) return false;
+        if (this.maxPrice !== null && priceValue > this.maxPrice) return false;
+        return true;
+      });
+    }
+
+    result = this.sortProducts(result);
+
+    this.filteredProducts = result;
+  }
+
+  getPriceValue(item: any): number {
+    const sale = Number(item?.price_data?.salePrice);
+    const regular = Number(item?.price_data?.regularPrice);
+    if (!Number.isNaN(sale) && sale > 0) return sale;
+    if (!Number.isNaN(regular)) return regular;
+    return 0;
+  }
+
+  sortProducts(items: any[]): any[] {
+    const list = [...items];
+    switch (this.selectedSort) {
+      case 'price_asc':
+        return list.sort((a, b) => this.getPriceValue(a) - this.getPriceValue(b));
+      case 'price_desc':
+        return list.sort((a, b) => this.getPriceValue(b) - this.getPriceValue(a));
+      case 'title_asc':
+        return list.sort((a, b) =>
+          String(a?.title || '').localeCompare(String(b?.title || ''))
+        );
+      case 'title_desc':
+        return list.sort((a, b) =>
+          String(b?.title || '').localeCompare(String(a?.title || ''))
+        );
+      case 'newest':
+      default:
+        return list.sort((a, b) => {
+          const dateA = new Date(a?.published_at || a?.created_at || 0).getTime();
+          const dateB = new Date(b?.published_at || b?.created_at || 0).getTime();
+          return dateB - dateA;
+        });
+    }
   }
   openAddProductModal(action:any){
      const dialogRef: NgbModalRef = this.ngbModal.open(AddProduct, {

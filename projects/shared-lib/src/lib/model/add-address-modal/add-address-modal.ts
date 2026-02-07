@@ -118,7 +118,7 @@ if (this.searchQuery == '') {
     city: this.data.city || this.data.town || '',
     state: this.data.state || '',
     postal_code: this.data.postcode || this.data.postal_code || '',
-    country: this.data.country || '',
+    country: this.data.country || 'IN',
     // location:[{ lat:item.properties.lat,lng:item.properties.lon}]
   });
     }
@@ -187,7 +187,7 @@ if (this.searchQuery == '') {
   name: ['', [Validators.required, Validators.minLength(2)]],
 
   phone: [
-    '+91- ',
+    '',
     [
       Validators.required,
       Validators.pattern(/^[0-9]{10}$/)  // 10 digit phone number
