@@ -30,7 +30,7 @@
   </button>
 </div>
 
-<div class="modal-body">
+<div class="modal-body add-address-modal">
   @if (isfrom == 'header') {
     <ng-container>
       <div class="search-bar mb-3">
@@ -209,7 +209,7 @@
                 type="text"
                 class="form-control"
                 formControlName="postal_code"
-                placeholder="Pin-code"
+                placeholder="Enter Pincode"
                 [class.is-invalid]="postal_code?.invalid && postal_code?.touched"
               />
               @if (postal_code?.errors?.['required'] && postal_code?.touched) {
