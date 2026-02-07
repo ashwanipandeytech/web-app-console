@@ -34,7 +34,7 @@
             <!-- LEFT THUMBNAILS -->
             <div class="thumb-slider d-md-inline-block d-none">
               <ngx-slick-carousel class="slick-thumb" [config]="thumbConfig">
-                @for (item of productDetails.images; track $index) {
+                @for (item of productDetails?.images; track $index) {
                 <div ngxSlickItem class="thumb-item cursor-pointer" (click)="goToSlide($index)" [ngClass]="{
                       'border-primary': activeIndex === $index,
                       'rounded-2': activeIndex === $index
@@ -56,15 +56,15 @@
 
               @if(isLogin==true){
               <button class="wishlist-btn position-absolute top-0 end-0 mt-2 me-2 z-3 rounded-pill p-2 shadow"
-                (click)="toggleHeart(productDetails)" [ngClass]="{ wishlisted: productDetails.is_wishlisted }">
+                (click)="toggleHeart(productDetails)" [ngClass]="{ wishlisted: productDetails?.is_wishlisted }">
                 <i class="fa-heart"
-                  [ngClass]="productDetails.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"></i>
+                  [ngClass]="productDetails?.is_wishlisted ? 'fa-solid text-primary' : 'fa-regular'"></i>
               </button>
               }
 
               <ngx-slick-carousel class="slick-main slick-carousel" #mainSlick="slick-carousel" [config]="mainConfig"
                 (afterChange)="onMainAfterChange($event)">
-                @for (item of productDetails.images; track $index) {
+                @for (item of productDetails?.images; track $index) {
                 <div ngxSlickItem class="main-img">
                   <img [src]="item.url" alt="product" class="w-100 object-fit-contain" />
                 </div>
@@ -101,7 +101,7 @@
                   <!-- Stars -->
                   <div class="stars">
                     @for (star of ratingStars; track star) {
-                    <i [ngClass]="star <= productDetails.rating.average
+                    <i [ngClass]="star <= productDetails?.rating?.average
       ? 'fa-solid fa-star text-warning'
       : 'fa-regular fa-star text-muted'">
                     </i>
@@ -110,12 +110,12 @@
 
                   <!-- Average -->
                   <span class="fw-semibold">
-                    {{ productDetails.rating.average }}/5
+                    {{ productDetails?.rating?.average }}/5
                   </span>
 
                   <!-- Total -->
                   <span class="text-muted fs-12">
-                    ({{ productDetails.rating.total }} rating{{ productDetails.rating.total > 1 ? 's' : '' }})
+                    ({{ productDetails?.rating?.total }} rating{{ productDetails?.rating?.total > 1 ? 's' : '' }})
                   </span>
 
                 </div>
@@ -164,7 +164,7 @@
             <div class="d-sm-flex align-items-center">
               <div class="fs-16">
                 <span>Availabillity : </span>
-                <strong class="inner-text text-black fw-semibold">{{ productDetails.inventory.manageStock }} Products
+                <strong class="inner-text text-black fw-semibold">{{ productDetails?.inventory?.manageStock }} Products
                   Available</strong>
               </div>
 
@@ -197,7 +197,7 @@
               <p class="category">
                 Category :
                 <strong class="inner-text text-black fw-semibold">{{
-                  productDetails.category.name
+                  productDetails?.category?.name
                   }}</strong>
               </p>
               <!-- <p class="tags">

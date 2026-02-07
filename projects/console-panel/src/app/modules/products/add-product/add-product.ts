@@ -512,9 +512,25 @@ saveHtml() {
     // this.addInverntoryForm();
   }
   closeModal() {
-    this.activeModal.close();
-    this.isUpdateproduct = true;
+    console.log('this.hasUnsavedChanges()==>',this.hasUnsavedChanges());
+    
+  if (this.hasUnsavedChanges()) {
+    const confirmLeave = confirm(
+      'You have unsaved changes. Do you really want to continue?'
+    );
 
+    if (!confirmLeave) {
+      return;
+    }
+    else{
+         this.activeModal.close();
+      this.isUpdateproduct = true;
+    }
+  }
+  else{
+          this.activeModal.close();
+      this.isUpdateproduct = true;
+  }
   }
   addProductDetails() {
     this.productDetails = this.fb.group({

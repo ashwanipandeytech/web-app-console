@@ -2,7 +2,7 @@
 <div class="modal-header justify-content-center border-0" id="loginOpened" #loginModal>
   <div class="mb-2">
     <div class="text-center mb-1">
-      <img src="../images/logos/top-logo.png" alt="logo" class="img-fluid">
+      <img [src]="this.dataService.getSpecificGeneralSettings('general').logo.desktop.imgSrc" alt="logo" class="img-fluid">
     </div>
     <p class="text-muted mb-0">
       @if(!isSignUp){

@@ -199,7 +199,7 @@ export class Login {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: [
-        '',
+        '+91-',
         [
           Validators.pattern(/^[0-9]{10}$/), // only 10 digits allowed
         ],
