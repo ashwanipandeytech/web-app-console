@@ -60,7 +60,7 @@ export class PageList implements OnInit {
     if (confirm('Are you sure you want to delete this page?')) {
      
 
-       this.dataService.delete('pages', this.pageList[index].slug)
+       this.dataService.delete(`pages/${this.pageList[index].slug}`)
       .pipe(
         catchError(err => {
           console.error('Error:', err);
