@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, HostListener, inject, Optional, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CommonModule, NgClass } from '@angular/common';
-import {SpecialCharacterHelper} from 'shared-lib/services/special-character-helper'
+import { SpecialCharacterHelper } from 'shared-lib/services/special-character-helper'
 import {
   FormArray,
   FormBuilder,
@@ -43,7 +43,7 @@ interface FoodNode {
 }
 @Component({
   selector: 'app-add-customer',
-  imports: [ReactiveFormsModule, QuillModule, MatTreeModule, MatIconModule, CategoryTreeComponent, NgClass,CommonModule,FormsModule, CustomEditorComponent],
+  imports: [ReactiveFormsModule, QuillModule, MatTreeModule, MatIconModule, CategoryTreeComponent, NgClass, CommonModule, FormsModule, CustomEditorComponent],
   templateUrl: './add-product.html',
   styleUrl: './add-product.scss',
 })
@@ -152,50 +152,52 @@ export class AddProduct {
     return normalizeUrl(imageUrl);
   };
   editorTheme: 'light' | 'dark' = 'light';
-modulesNoImage = {
-  toolbar: [
-    // --- FONT FAMILY & SIZE ---
-    [
-      { font: [
-        'sans-serif',
-        'serif',
-        'monospace',
-        'roboto',
-        'lato',
-        'poppins',
-        'montserrat'
-      ]},
-      { size: ['small', false, 'large', 'huge'] }
-    ],
+  modulesNoImage = {
+    toolbar: [
+      // --- FONT FAMILY & SIZE ---
+      [
+        {
+          font: [
+            'sans-serif',
+            'serif',
+            'monospace',
+            'roboto',
+            'lato',
+            'poppins',
+            'montserrat'
+          ]
+        },
+        { size: ['small', false, 'large', 'huge'] }
+      ],
 
-    // --- HEADINGS (H1–H6) ---
-    [
-      { header: [1, 2, 3, 4, 5, 6, false] }
-    ],
+      // --- HEADINGS (H1–H6) ---
+      [
+        { header: [1, 2, 3, 4, 5, 6, false] }
+      ],
 
-    // --- TEXT STYLE ---
-    ['bold', 'italic', 'underline', 'strike'],
-    [{ color: [] }, { background: [] }],
-    [{ script: 'sub' }, { script: 'super' }],
+      // --- TEXT STYLE ---
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ color: [] }, { background: [] }],
+      [{ script: 'sub' }, { script: 'super' }],
 
-    // --- BLOCK ELEMENTS ---
-    ['blockquote', 'code-block'],
+      // --- BLOCK ELEMENTS ---
+      ['blockquote', 'code-block'],
 
-    // --- LISTS & INDENTS ---
-    [{ list: 'ordered' }, { list: 'bullet' }],
-    [{ indent: '-1' }, { indent: '+1' }],
-    [{ direction: 'rtl' }],
+      // --- LISTS & INDENTS ---
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ indent: '-1' }, { indent: '+1' }],
+      [{ direction: 'rtl' }],
 
-    // --- ALIGNMENT ---
-    [{ align: [] }],
+      // --- ALIGNMENT ---
+      [{ align: [] }],
 
-    // --- LINKS & MEDIA ---
-    ['link', 'formula'],
+      // --- LINKS & MEDIA ---
+      ['link', 'formula'],
 
-    // --- UTILS ---
-    ['clean']
-  ]
-};
+      // --- UTILS ---
+      ['clean']
+    ]
+  };
 
 
 
@@ -273,50 +275,52 @@ modulesNoImage = {
 
   // };
 
-modulesWithImage = {
+  modulesWithImage = {
     //   htmlEditButton: {
     //   debug: true, // Developers love logs
     //   msg: "Edit HTML", // Tooltip
     //   okText: "Save",
     // },
-  toolbar: {
-    container: [
-      [{ font: [
-        'sans-serif',
-        'serif',
-        'monospace',
-        'roboto',
-        'lato',
-        'poppins',
-        'montserrat'
-      ] },
-       { size: ['small', false, 'large', 'huge'], }],
-       [
-      { header: [1, 2, 3, 4, 5, 6, false] }
-    ],
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ color: [] }, { background: [] }],
-      [{ header: 1 }, { header: 2 }],
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      [{ align: [] }],
-      ['link', 'image'],
-      ['clean'],
-    ],
-    handlers: {
-      image: () => {},
+    toolbar: {
+      container: [
+        [{
+          font: [
+            'sans-serif',
+            'serif',
+            'monospace',
+            'roboto',
+            'lato',
+            'poppins',
+            'montserrat'
+          ]
+        },
+        { size: ['small', false, 'large', 'huge'], }],
+        [
+          { header: [1, 2, 3, 4, 5, 6, false] }
+        ],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ color: [] }, { background: [] }],
+        [{ header: 1 }, { header: 2 }],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        [{ align: [] }],
+        ['link', 'image'],
+        ['clean'],
+      ],
+      handlers: {
+        image: () => { },
+      },
     },
-  },
-};
+  };
 
 
   dataSource = [];
   inputControlName: any;
 
-// Image upload handler is provided to the custom editor via [uploadFn].
+  // Image upload handler is provided to the custom editor via [uploadFn].
 
-toggleTheme() {
-  this.editorTheme = this.editorTheme === 'light' ? 'dark' : 'light';
-}
+  toggleTheme() {
+    this.editorTheme = this.editorTheme === 'light' ? 'dark' : 'light';
+  }
   hasChild = (_: number, node: FoodNode) => !!node.children && node.children.length > 0;
   productDetails!: FormGroup;
   inventoryForm!: FormGroup;
@@ -390,7 +394,7 @@ toggleTheme() {
   isUpdateproduct: boolean = false;
   finalpriceObj: any;
   showHtmlEditor = false;
-htmlControl = new FormControl('');
+  htmlControl = new FormControl('');
   constructor(
     private fb: FormBuilder,
     private globalService: GlobalService,
@@ -400,38 +404,38 @@ htmlControl = new FormControl('');
     this.productStatus = PRODUCT_TYPE;
 
   }
-openHtmlEditor(quillName:any) {
-  this.inputControlName = quillName;
-  this.htmlControl.setValue(
-    this.productDetails.get(quillName)?.value || ''
-  );
+  openHtmlEditor(quillName: any) {
+    this.inputControlName = quillName;
+    this.htmlControl.setValue(
+      this.productDetails.get(quillName)?.value || ''
+    );
 
-  this.showHtmlEditor = true;
-}
+    this.showHtmlEditor = true;
+  }
 
-closeHtmlEditor() {
-  this.showHtmlEditor = false;
-}
+  closeHtmlEditor() {
+    this.showHtmlEditor = false;
+  }
 
-saveHtml() {
-  this.productDetails
-    .get(this.inputControlName)
-    ?.setValue(this.htmlControl.value);
+  saveHtml() {
+    this.productDetails
+      .get(this.inputControlName)
+      ?.setValue(this.htmlControl.value);
 
-  this.showHtmlEditor = false;
-}
+    this.showHtmlEditor = false;
+  }
   onGetId(id: number) {
     this.parentId = id;
   }
   ngOnInit() {
-// const HtmlEditButtonClass =
-//     (HtmlEditButton as any).default ?? HtmlEditButton;
+    // const HtmlEditButtonClass =
+    //     (HtmlEditButton as any).default ?? HtmlEditButton;
 
-//   (Quill as any).register(
-//     'modules/htmlEditButton',
-//     HtmlEditButtonClass,
-//     true
-//   );
+    //   (Quill as any).register(
+    //     'modules/htmlEditButton',
+    //     HtmlEditButtonClass,
+    //     true
+    //   );
     this.domain = window.location.origin;
     this.getCategoryList();
     this.initializeForms();
@@ -512,25 +516,25 @@ saveHtml() {
     // this.addInverntoryForm();
   }
   closeModal() {
-    console.log('this.hasUnsavedChanges()==>',this.hasUnsavedChanges());
-    
-  if (this.hasUnsavedChanges()) {
-    const confirmLeave = confirm(
-      'You have unsaved changes. Do you really want to continue?'
-    );
+    console.log('this.hasUnsavedChanges()==>', this.hasUnsavedChanges());
 
-    if (!confirmLeave) {
-      return;
+    if (this.hasUnsavedChanges()) {
+      const confirmLeave = confirm(
+        'You have unsaved changes. Do you really want to continue?'
+      );
+
+      if (!confirmLeave) {
+        return;
+      }
+      else {
+        this.activeModal.close();
+        this.isUpdateproduct = true;
+      }
     }
-    else{
-         this.activeModal.close();
+    else {
+      this.activeModal.close();
       this.isUpdateproduct = true;
     }
-  }
-  else{
-          this.activeModal.close();
-      this.isUpdateproduct = true;
-  }
   }
   addProductDetails() {
     this.productDetails = this.fb.group({
@@ -538,7 +542,7 @@ saveHtml() {
       shortDescription: [this.data?.item?.product_details?.shortDescription], //short_description
       productDescription: [this.data?.item?.product_details?.productDescription], //description
       features: [this.data?.item?.product_details?.features], //features
-      permaLink:[this.data?.item?.product_details?.permaLink],
+      permaLink: [this.data?.item?.product_details?.permaLink],
       // productStatus: [this.data?.item.attributes?.productDetailsObj?.productStatus],
       productDescriptionImageGallery: [this.data?.item?.product_details?.productDescriptionImageGallery]
     });
@@ -1002,8 +1006,8 @@ saveHtml() {
       attributes: {
       }
     };
-    console.log('this.permaLink==>',this.permaLink);
-    
+    console.log('this.permaLink==>', this.permaLink);
+
     finalData.product_details.permaLink = this.permaLink;
     let url = `products/${this.data?.item?.id}`
     this.dataService
@@ -1084,16 +1088,16 @@ saveHtml() {
       });
 
   }
-  confirmBeforeSaveProduct(action:any){
-     const confirmed = confirm(`Are you sure you want to ${action} this product?`);
+  confirmBeforeSaveProduct(action: any) {
+    const confirmed = confirm(`Are you sure you want to ${action} this product?`);
     if (!confirmed) {
-      return; 
+      return;
     }
-     if (action == 'update') {
+    if (action == 'update') {
       this.updateProduct();
     }
-    else{
-       this.getProductDetails();
+    else {
+      this.getProductDetails();
     }
   }
   getProductDetails() {
@@ -1142,8 +1146,8 @@ saveHtml() {
         // }
       }
     };
-    console.log('this.permaLink===>',this.permaLink);
-    
+    console.log('this.permaLink===>', this.permaLink);
+
     finalData.product_details.permaLink = this.permaLink;
     this.dataService
       .post(finalData, 'products')
@@ -1325,51 +1329,51 @@ saveHtml() {
   }
 
   slugify(value: string): string {
-  return value
-    .toLowerCase()
-    .trim()                              // remove start/end spaces
-    .replace(/[–—]/g, '-')               // replace long dashes with normal dash
-    .replace(/[^a-z0-9\s-]/g, '')         // remove special characters
-    .replace(/\s+/g, '-')                 // spaces → dash
-    .replace(/-+/g, '-')                  // multiple dashes → single dash
-    .replace(/^-+|-+$/g, '');             // remove dash from start/end
-}
+    return value
+      .toLowerCase()
+      .trim()                              // remove start/end spaces
+      .replace(/[–—]/g, '-')               // replace long dashes with normal dash
+      .replace(/[^a-z0-9\s-]/g, '')         // remove special characters
+      .replace(/\s+/g, '-')                 // spaces → dash
+      .replace(/-+/g, '-')                  // multiple dashes → single dash
+      .replace(/^-+|-+$/g, '');             // remove dash from start/end
+  }
 
   createPermalink() {
-// Onchange 
-//     const cleanedTitle =
-//   this.specialCharacterHelper.specialCharacterChecker(
-//     this.productDetails.value.productTitle,
-//     {
-//       replaceWithSpace: ['-'],
-//       remove: ['&','*','('],
-//       capitalize: true
-//     }
-//   );
-//   this.productDetails.patchValue({
-//   productTitle: cleanedTitle
-// });
+    // Onchange 
+    //     const cleanedTitle =
+    //   this.specialCharacterHelper.specialCharacterChecker(
+    //     this.productDetails.value.productTitle,
+    //     {
+    //       replaceWithSpace: ['-'],
+    //       remove: ['&','*','('],
+    //       capitalize: true
+    //     }
+    //   );
+    //   this.productDetails.patchValue({
+    //   productTitle: cleanedTitle
+    // });
 
-// onblur 
-  const control = this.productDetails.get('productTitle');
-  if (!control) return;
+    // onblur 
+    const control = this.productDetails.get('productTitle');
+    if (!control) return;
 
-  const cleanedTitle =
-    this.specialCharacterHelper.specialCharacterChecker(
-      control.value,
-      // {
-      //   replaceWithSpace: ['-'],
-      //   remove: ['&', '*', '('],
-      //   capitalize: true
-      // }
-      {
-        allowOnly: ['|'],
-    replaceWithSpace: ['-'],
-    capitalize: true
-      }
-    );
+    const cleanedTitle =
+      this.specialCharacterHelper.specialCharacterChecker(
+        control.value,
+        // {
+        //   replaceWithSpace: ['-'],
+        //   remove: ['&', '*', '('],
+        //   capitalize: true
+        // }
+        {
+          allowOnly: ['|'],
+          replaceWithSpace: ['-'],
+          capitalize: true
+        }
+      );
 
-  control.setValue(cleanedTitle, { emitEvent: false });
+    control.setValue(cleanedTitle, { emitEvent: false });
     // this.specialCharacterHelper.specialCharacterChecker( 'adjustable--cow|-anti kick',{replaceWithSpace: ['-'],remove: ['|'],capitalize: true});
     // this.productDetails.value.productTitle = this.slugToTitle(this.productDetails.value.productTitle);
     // let permaLinkValue = this.productDetails.value.productTitle.contains(' ')
@@ -1507,41 +1511,41 @@ saveHtml() {
   //             }
   //    }
 
-  resetProductForm(){
-  this.productDetails.reset();
-this.productOptionData.reset();
-this.productMultipleOptionForm.reset();
-this.tagsForm.reset();
-this.productMediaSection.reset();
-this.productInventrySection.reset();
-this.priceSection.reset(); 
-this.shippingInfoSection.reset();
- this.productAttributesForm.reset();
- this.shippingConfigForm.reset();
- this.offerForm.reset();
- this.seoForm.reset();
+  resetProductForm() {
+    this.productDetails.reset();
+    this.productOptionData.reset();
+    this.productMultipleOptionForm.reset();
+    this.tagsForm.reset();
+    this.productMediaSection.reset();
+    this.productInventrySection.reset();
+    this.priceSection.reset();
+    this.shippingInfoSection.reset();
+    this.productAttributesForm.reset();
+    this.shippingConfigForm.reset();
+    this.offerForm.reset();
+    this.seoForm.reset();
   }
   @HostListener('window:beforeunload', ['$event'])
-unloadNotification($event: BeforeUnloadEvent) {
-  if (this.hasUnsavedChanges()) {
-    $event.preventDefault();
-    $event.returnValue = true; // triggers browser alert
+  unloadNotification($event: BeforeUnloadEvent) {
+    if (this.hasUnsavedChanges()) {
+      $event.preventDefault();
+      $event.returnValue = true; // triggers browser alert
+    }
   }
-}
   hasUnsavedChanges(): boolean {
-  return (
-    this.productDetails?.dirty ||
-    this.productOptionData?.dirty ||
-    this.productMultipleOptionForm?.dirty ||
-    this.tagsForm?.dirty ||
-    this.productMediaSection?.dirty ||
-    this.productInventrySection?.dirty ||
-    this.priceSection?.dirty ||
-    this.shippingInfoSection?.dirty ||
-    this.productAttributesForm?.dirty ||
-    this.shippingConfigForm?.dirty ||
-    this.offerForm?.dirty ||
-    this.seoForm?.dirty
-  );
-}
+    return (
+      this.productDetails?.dirty ||
+      this.productOptionData?.dirty ||
+      this.productMultipleOptionForm?.dirty ||
+      this.tagsForm?.dirty ||
+      this.productMediaSection?.dirty ||
+      this.productInventrySection?.dirty ||
+      this.priceSection?.dirty ||
+      this.shippingInfoSection?.dirty ||
+      this.productAttributesForm?.dirty ||
+      this.shippingConfigForm?.dirty ||
+      this.offerForm?.dirty ||
+      this.seoForm?.dirty
+    );
+  }
 }
