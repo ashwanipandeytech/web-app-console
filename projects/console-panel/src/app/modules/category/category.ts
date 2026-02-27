@@ -247,6 +247,9 @@ unloadNotification($event: BeforeUnloadEvent) {
       )
       .subscribe((res: any) => {
         //console.log('Response:', res);
+         this.addCategory.reset();
+         this.isEdit = false;
+         this.imagePreview = '';
         if (res.error) {
           this.globalService.showMsgSnackBar(res.err);
           

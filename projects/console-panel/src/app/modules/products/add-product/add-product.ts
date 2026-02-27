@@ -1258,7 +1258,7 @@ export class AddProduct {
   }
 
   callUploadnediaSection(formData: any) {
-    //console.log('formData==>', formData);
+    console.log('formData==>', formData);
 
     this.dataService
       .postForm('media/upload', formData)
@@ -1272,7 +1272,7 @@ export class AddProduct {
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        console.log('Response:', res);
         // this.getCategoryList();
         // setTimeout(() => {
         //   this.globalService.showMsgSnackBar(res);
@@ -1378,10 +1378,10 @@ export class AddProduct {
     // this.productDetails.value.productTitle = this.slugToTitle(this.productDetails.value.productTitle);
     // let permaLinkValue = this.productDetails.value.productTitle.contains(' ')
     const formatted = this.productDetails.value.productTitle.replace(/\s+/g, '-').toLowerCase();
-    const cleanSlug = this.slugify(formatted);
-    let limitedSlug = cleanSlug.slice(0, 25);
-    limitedSlug = limitedSlug.replace(/-+$/g, '');
-    this.permaLink = limitedSlug;
+    let cleanSlug = this.slugify(formatted);
+    // let limitedSlug = cleanSlug.slice(0, 25);
+    cleanSlug = cleanSlug.replace(/-+$/g, '');
+    this.permaLink = cleanSlug;
     // this.permaLink = cleanSlug;
     this.seoForm.patchValue({ slugText: formatted });
     this.cd.detectChanges();
