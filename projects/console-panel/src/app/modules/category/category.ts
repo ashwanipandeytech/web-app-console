@@ -246,7 +246,7 @@ unloadNotification($event: BeforeUnloadEvent) {
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        console.log('Response:', res);
          this.addCategory.reset();
          this.isEdit = false;
          this.imagePreview = '';
