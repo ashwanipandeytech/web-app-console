@@ -248,7 +248,7 @@
                                     <th>Name</th>
                                     <th>Description</th>
                                     <th>Slug</th>
-                                    <!-- <th>Count</th> -->
+                                    <th>Product Count</th>
                                     <th class="position-sticky end-0">Action</th>
                                 </tr>
                             </thead>
@@ -273,10 +273,14 @@
                                     </td>
                                     <td><span class="table-dscr">{{control.description}}</span></td>
                                     <td>{{control.slug}}</td>
+                                    <td>{{control.products_count}}</td>
+
                                     <!-- <td><a href="all-product.html">10</a></td> -->
                                     <td class="position-sticky end-0">
                                         <div class="btn-box">
-                                            <button><i class="fa fa-eye"></i></button>
+                                            <button type="button" (click)="openCategoryPreview(control)">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
                                             <button><i class="fa fa-pen-to-square"
                                                     (click)="editCategory(control)"></i></button>
                                             <button class="text-danger" (click)="openDialog(control.id)"><i
@@ -439,3 +443,34 @@
     <!-- footer end -->
 </div>
 <!-- main content end -->
+
+<ng-template #categoryPreviewModal let-data>
+    <div class="p-3 p-md-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Category Preview</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="closeCategoryPreview()"></button>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <img [src]="data?.thumbnail" [alt]="data?.name || 'category image'" class="img-fluid rounded border" />
+            </div>
+            <div class="col-md-8">
+                <div class="mb-2"><strong>Name:</strong> {{ data?.name || '-' }}</div>
+                <div class="mb-2"><strong>Slug:</strong> {{ data?.slug || '-' }}</div>
+                <div class="mb-2"><strong>Products:</strong> {{ data?.productCount ?? 0 }}</div>
+                <div class="mb-2"><strong>Allow On:</strong> {{ data?.allow_on || '-' }}</div>
+                <div class="mb-2">
+                    <strong>Show In Menu:</strong>
+                    {{ data?.is_menu ? 'Yes' : 'No' }}
+                </div>
+            </div>
+            <div class="col-12">
+                <strong>Description:</strong>
+                <div class="border rounded p-2 mt-1 bg-light">
+                    {{ data?.description || '-' }}
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

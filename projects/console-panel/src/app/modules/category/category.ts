@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, inject, TemplateRef, ViewChild } from '@angular/core';
 import { Sidebar } from "../../layout/sidebar/sidebar";
 import { Header } from "../../layout/header/header";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { DataService } from 'shared-lib';
 import { catchError, of } from 'rxjs';
 import { environment } from 'environments/environment';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmationPopupComponent } from '../../confirmationPopup/confirmationPopup.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GlobalService } from '../../global.service';
@@ -20,8 +20,10 @@ import { GlobalService } from '../../global.service';
 })
 export class Category {
   @ViewChild('fileInput') fileInput!: ElementRef;
+  @ViewChild('categoryPreviewModal') categoryPreviewModal!: TemplateRef<any>;
   isEdit:boolean=false;
   readonly dialog = inject(MatDialog);
+  previewDialogRef?: MatDialogRef<any>;
   public dataService: any = inject(DataService);
   addCategory!: FormGroup;
   imageFile: File | null = null;
@@ -173,6 +175,21 @@ unloadNotification($event: BeforeUnloadEvent) {
       }
     })
   }
+
+  openCategoryPreview(item: any): void {
+    if (!this.categoryPreviewModal) return;
+    this.previewDialogRef = this.dialog.open(this.categoryPreviewModal, {
+      width: '700px',
+      maxWidth: '95vw',
+      data: item
+    });
+  }
+
+  closeCategoryPreview(): void {
+    this.previewDialogRef?.close();
+    this.previewDialogRef = undefined;
+  }
+
   editCategory(item:any){
     this.imagePreview = '';
      this.isEdit = true;

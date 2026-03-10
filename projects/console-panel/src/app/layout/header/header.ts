@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataService } from 'shared-lib/services/data-service';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrl: './header.scss'
 })
 export class Header {
-
+dataService = inject(DataService);
   constructor(private route:Router){
 
   }
