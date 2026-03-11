@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build frontend --configuration web-production-ssr && npm run serve:ssr:frontend",
+    "build": "ng build frontend --configuration web-production-ssr",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:frontend": "node dist/frontend/server/server.mjs",

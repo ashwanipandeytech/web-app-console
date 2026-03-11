@@ -45,7 +45,8 @@ export class Header {
 
   isBrowser: boolean;
   private platformId = inject(PLATFORM_ID);
-  constructor(public router: Router) {
+  constructor() {
+    console.info('deploy test ssr 5')
     this.isBrowser = isPlatformBrowser(this.platformId);
 
     this.globalFunctionService.getCount();
