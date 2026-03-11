@@ -58,6 +58,7 @@ unloadNotification($event: BeforeUnloadEvent) {
   }
   onImageChange(event: any): void {
     const file = event.target.files?.[0];
+    
     if (file) {
       this.addCategory.patchValue({ categoryThumbnail: file });
     this.addCategory.get('categoryThumbnail')?.updateValueAndValidity();
@@ -173,9 +174,26 @@ unloadNotification($event: BeforeUnloadEvent) {
     })
   }
   editCategory(item:any){
-    this.isEdit = true;
+    this.imagePreview = '';
+     this.isEdit = true;
     this.updateCategoryId = item.id;
-  this.addCategory.patchValue(item);
+    const thumbControl = this.addCategory.get('categoryThumbnail');
+    thumbControl?.clearValidators();
+    thumbControl?.updateValueAndValidity();
+    this.imagePreview = item.thumbnail; 
+    this.imageFile = null;
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
+  // this.addCategory.patchValue(item);
+   this.addCategory.patchValue({
+      name: item?.name ?? '',
+      categoryThumbnail: null,
+      customCategoryIcon: item?.customCategoryIcon ?? '',
+      description: item?.description ?? '',
+      is_menu: !!Number(item?.is_menu),
+      allow_on: item?.allow_on ?? ''
+    });
   }
   updatecategory(){
     // let formData = this.addCategory.value;
@@ -228,7 +246,10 @@ unloadNotification($event: BeforeUnloadEvent) {
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        console.log('Response:', res);
+         this.addCategory.reset();
+         this.isEdit = false;
+         this.imagePreview = '';
         if (res.error) {
           this.globalService.showMsgSnackBar(res.err);
           
@@ -248,7 +269,7 @@ else{
       });
   }
   deleteCategory(id: any) {
-    this.dataService.delete('categories', id)
+    this.dataService.delete(`categories/${id}`)
       .pipe(
         catchError(err => {
           console.error('Error:', err);
@@ -268,12 +289,23 @@ else{
         // this.categoryListData = res.data;
       });
   }
-  clearForm(){
+  // clearForm(){
+  //   this.addCategory.reset();
+  // if (this.fileInput) {
+  //   this.fileInput.nativeElement.value = '';
+  //   this.imagePreview = '';
+  // }
+  //   this.isEdit = false;
+  // }
+    clearForm(){
     this.addCategory.reset();
+  this.addCategory.get('categoryThumbnail')?.setValidators([Validators.required]);
+  this.addCategory.get('categoryThumbnail')?.updateValueAndValidity();
   if (this.fileInput) {
     this.fileInput.nativeElement.value = '';
     this.imagePreview = '';
   }
+    this.imageFile = null;
     this.isEdit = false;
   }
   get f() {

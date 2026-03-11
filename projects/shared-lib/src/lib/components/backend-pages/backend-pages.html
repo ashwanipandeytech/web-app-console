@@ -9,26 +9,26 @@
 
 @if(this.pageData){
 <div class="container">
-    <div class="blog-bradcrum d-none d-sm-block py-4 px-3">
+    <div class="blog-bradcrum d-none d-sm-block py-4">
         <span><a href="/">Home</a></span>
         <span class="devider">/</span>
-        <span><a href="#">{{pageData.title}}</a></span>
+        <span class="fw-semibold">{{pageData.title}}</span>
     </div>
-    <div class="blog-heading text-center py-4">
+    <!-- <div class="blog-heading text-center py-4">
         <h1 class="text-break editor-text">{{pageData.title}}</h1>
-    </div>
+    </div> -->
     
     <div class="text-break editor-text" [innerHTML]="pageData.description"></div>
 </div>
 
-<section class="backend-page-content pb-5">
+<section class="backend-page-content pt-3 pb-5">
     <div class="container">
-        <div class="text-break editor-text" [innerHTML]="pageData.pageContent"></div>
+        <div class="text-break editor-text fs-14" [innerHTML]="pageData.pageContent"></div>
     </div>
 </section>
 }
 
-@if(!this.pageData){
+@if(!this.pageData && !this.isLoading){
 <div class="container-fluid error-container">
     <div class="error-content">
         <!-- Large 404 Text -->
