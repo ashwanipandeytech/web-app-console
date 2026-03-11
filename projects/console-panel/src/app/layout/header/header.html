@@ -5,7 +5,7 @@
             <div class="main-logo d-lg-block d-none">
                 <div class="logo-big">
                     <a href="/dashboard">
-                        <img src="https://safure.demohandler.in/images/logos/top-logo.png" alt="Logo">
+                        <img  [src]="dataService.getSpecificGeneralSettings('general').logo?.desktop?.imgSrc" alt="logo" class="d-lg-inline-block img-fluid">
                     </a>
                 </div>
             </div>

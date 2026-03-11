@@ -23,7 +23,16 @@
             <tr>
               <td>{{ i + 1 }}</td>
               <td>{{ page.title || '-' }}</td>
-              <td class="text-start">{{ page.description || '-' }}</td>
+              <td class="text-start" [title]="getDescriptionPreview(page.description, 500)">
+                <img
+                  *ngIf="getDescriptionImage(page.description) as descriptionImage"
+                  [src]="descriptionImage"
+                  alt="Description image"
+                  class="rounded mb-1 d-block"
+                  style="width: 90px; height: 50px; object-fit: cover;"
+                />
+                <div>{{ getDescriptionPreview(page.description) }}</div>
+              </td>
               <td>{{ page.slug || '-' }}</td>
     
     

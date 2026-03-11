@@ -262,8 +262,7 @@ editoProduct(item:any){
       });
 }
 
-cloneProduct(item:any){
-  console.log('item==>',item);
+cloneProduct(data:any){
    const dialogRef: NgbModalRef = this.ngbModal.open(AddProduct, {
     windowClass: 'mobile-modal product-edit-popup',
     scrollable: true,
@@ -271,6 +270,13 @@ cloneProduct(item:any){
     size:'xl',
     backdrop: 'static' // optional
   });
+  let item = JSON.parse(JSON.stringify(data || {}));
+   if (item?.product_details) {
+    delete item.product_details.permaLink;
+   }
+   delete item.title;
+console.log('item==>',item);
+
     dialogRef.componentInstance.data = {
       item,
       mode: 'clone' // 'new' | 'clone'

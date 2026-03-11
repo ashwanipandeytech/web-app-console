@@ -456,6 +456,21 @@ export class AddProduct {
     const hasValidData =
       Object.keys(this.data?.item?.product_details || {}).length;
     if (this.data?.item && hasValidData) {
+      this.onGetId(this.data?.item?.category.id);
+      this.finalpriceObj = this.data?.item?.price_data;
+      // for (let i = 0; i < this.data.item.images.length; i++) {
+      //   const element = this.data.item.images[i];
+      //   if (element.type == "gallery") {
+      //     this.selectedFile.push(element);
+      //   }
+      //   else{
+      //     this.selectedThumbImg = element;
+      //   }
+      // }
+      console.log('this.thumbGallery==>',this.thumbGallery);
+      console.log('this.thumbPreview==>',this.thumbPreview);
+      
+      
       console.log('log==> enrer', this.data?.item);
       this.isUpdateproduct = true;
       if (this.data?.item?.flags) {
@@ -464,13 +479,23 @@ export class AddProduct {
         this.productStatus = this.data?.item.flags;
       }
       if (this.data?.item?.images) {
-        this.thumbGallery = this.data?.item?.images
-          ?.filter((img: any) => img.type === 'gallery')
+        const images = this.data?.item?.images || [];
+
+        this.thumbGallery = images
+          .filter((img: any) => {
+            const type = String(img?.type || '').toLowerCase();
+            return type === 'gallery' || type === 'thumbgallery';
+          })
           .map((img: any) => img.url);
 
-        this.thumbPreview = this.data?.item?.images
-          ?.filter((img: any) => img.type === "thumbnail")
+        const previewList = images
+          .filter((img: any) => {
+            const type = String(img?.type || '').toLowerCase();
+            return type === 'thumbnail' || type === 'thumbpreview';
+          })
           .map((img: any) => img.url);
+
+        this.thumbPreview = previewList?.[0] || '';
         console.log('thumbPreview===>', this.thumbGallery);
 
         // this.thumbPreview =  environment.DOMAIN + '/' + this.data?.thumbnail;
@@ -707,7 +732,7 @@ export class AddProduct {
     this.seoForm = this.fb.group({
       focusKeyphrase: [this.data?.item?.seo?.focusKeyphrase, Validators.required],
       metaTitle: [this.data?.item?.seo?.metaTitle, [Validators.required, Validators.maxLength(60)]],
-      slugText: [this.data?.item?.seo?.slugText, [Validators.required, Validators.pattern('^[a-z0-9-]+$')]],
+      slugText: [this.data?.item?.seo?.slugText],
       metaDscr: [this.data?.item?.seo?.metaDscr, [Validators.required, Validators.maxLength(160)]],
     });
   }
@@ -970,6 +995,108 @@ export class AddProduct {
   onGallerySelect(event: any) {
     this.galleryFiles = event.target.files;
   }
+
+  private getPrimaryThumbPreviewUrl(): string {
+    if (Array.isArray(this.thumbPreview)) {
+      return this.thumbPreview.find((url: any) => typeof url === 'string' && url.trim() !== '') || '';
+    }
+    return typeof this.thumbPreview === 'string' ? this.thumbPreview : '';
+  }
+
+  private getGalleryPreviewUrls(): string[] {
+    if (!Array.isArray(this.thumbGallery)) {
+      return [];
+    }
+    return this.thumbGallery.filter((url: any) => typeof url === 'string' && url.trim() !== '');
+  }
+
+  private isRemoteLikeImageUrl(url: string): boolean {
+    if (!url) return false;
+    const lowered = url.toLowerCase();
+    return !lowered.startsWith('data:') && !lowered.startsWith('blob:');
+  }
+
+  private buildAbsoluteImageUrl(url: string): string {
+    if (/^https?:\/\//i.test(url)) return url;
+    if (url.startsWith('/')) {
+      return `${environment.DOMAIN.replace(/\/$/, '')}${url}`;
+    }
+    return `${environment.DOMAIN.replace(/\/$/, '')}/${url.replace(/^\/+/, '')}`;
+  }
+
+  private getFileNameFromUrl(url: string, fallbackBase: string): string {
+    const cleanedUrl = url.split('?')[0];
+    const rawName = cleanedUrl.split('/').pop() || '';
+    if (rawName.includes('.')) {
+      return rawName;
+    }
+    return `${fallbackBase}.jpg`;
+  }
+
+  private async convertImageUrlToFile(url: string, fallbackBase: string): Promise<File | null> {
+    try {
+      const absoluteUrl = this.buildAbsoluteImageUrl(url);
+      const response = await fetch(absoluteUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch image. Status: ${response.status}`);
+      }
+      const blob = await response.blob();
+      const fileName = this.getFileNameFromUrl(absoluteUrl, fallbackBase);
+      return new File([blob], fileName, { type: blob.type || 'image/jpeg' });
+    } catch (error) {
+      console.error('Failed to convert image URL to file:', url, error);
+      return null;
+    }
+  }
+
+  private uploadSingleMediaFile(file: File, moduleId: number | string, type: string) {
+    const formData = new FormData();
+    formData.append('files', file);
+    formData.append('module', 'product');
+    formData.append('module_id', String(moduleId));
+    formData.append('type', type);
+    this.callUploadnediaSection(formData);
+  }
+
+  private async uploadProductMedia(moduleId: number | string) {
+    if (this.selectedThumbImg instanceof File) {
+      this.uploadSingleMediaFile(this.selectedThumbImg, moduleId, 'thumbnail');
+    } else if (this.data?.mode === 'clone') {
+      const thumbUrl = this.getPrimaryThumbPreviewUrl();
+      if (this.isRemoteLikeImageUrl(thumbUrl)) {
+        const thumbFile = await this.convertImageUrlToFile(thumbUrl, 'thumbnail-clone');
+        if (thumbFile) {
+          this.uploadSingleMediaFile(thumbFile, moduleId, 'thumbnail');
+        }
+      }
+    }
+
+    if (this.selectProductDesciptionImageGallery?.length) {
+      for (const file of this.selectProductDesciptionImageGallery) {
+        this.uploadSingleMediaFile(file, moduleId, 'photoDescriptionImageGallery');
+      }
+    }
+
+    if (this.selectedFile?.length) {
+      for (const file of this.selectedFile) {
+        this.uploadSingleMediaFile(file, moduleId, 'gallery');
+      }
+    }
+
+    if (this.data?.mode === 'clone') {
+      const galleryUrls = Array.from(
+        new Set(this.getGalleryPreviewUrls().filter((url) => this.isRemoteLikeImageUrl(url)))
+      );
+
+      for (let i = 0; i < galleryUrls.length; i++) {
+        const galleryFile = await this.convertImageUrlToFile(galleryUrls[i], `gallery-clone-${i + 1}`);
+        if (galleryFile) {
+          this.uploadSingleMediaFile(galleryFile, moduleId, 'gallery');
+        }
+      }
+    }
+  }
+
   updateProduct() {
     console.log('this.data?.id===>', this.data?.item?.id);
 
@@ -1028,58 +1155,12 @@ export class AddProduct {
           return;
         } else if (res.success == true) {
           let id = res.data.data.id;
-          //console.log('this.selectedThumbImg==>', this.selectedThumbImg);
-
-          if (this.selectedThumbImg != undefined) {
-            const formDataThumb = new FormData();
-            // for (let i = 0; i < this.selectedFile.length; i++) {
-            // const element = this.selectedFile[i];
-            formDataThumb.append('files', this.selectedThumbImg, this.selectedThumbImg.name);
-            formDataThumb.append('module', 'product');
-            formDataThumb.append('module_id', id);
-            formDataThumb.append('type', 'thumbnail');
-            this.callUploadnediaSection(formDataThumb);
-          }
-          if (this.selectProductDesciptionImageGallery?.length) {
-            for (const file of this.selectProductDesciptionImageGallery) {
-              const formData = new FormData();
-              formData.append('files', file);
-              formData.append('module', 'product');
-              formData.append('module_id', id);
-              formData.append('type', 'photoDescriptionImageGallery');
-              this.callUploadnediaSection(formData);
-            }
-          }
-          if (this.selectedFile?.length) {
-            for (const file of this.selectedFile) {
-              const formData = new FormData();
-              formData.append('files', file);
-              formData.append('module', 'product');
-              formData.append('module_id', id);
-              formData.append('type', 'gallery');
-
-              this.callUploadnediaSection(formData);
-            }
-
-
-            //   for (let i = 0; i < this.selectedFile.length; i++) {
-            //   const element = this.selectedFile[i];
-
-            //   const formData = new FormData();   // IMPORTANT: create new for each file
-
-            //   formData.append("files", element, element.name);
-            //   formData.append("module", "product");
-            //   formData.append("module_id", id);
-            //   formData.append("type", "gallery");
-            // //console.log('formData==>',formData);
-
-            //   this.callUploadnediaSection(formData);
-            // }
-          }
-          setTimeout(() => {
-            this.globalService.showMsgSnackBar(res);
-            this.activeModal.close('success');
-          }, 100);
+          this.uploadProductMedia(id).finally(() => {
+            setTimeout(() => {
+              this.globalService.showMsgSnackBar(res);
+              this.activeModal.close('success');
+            }, 100);
+          });
         }
         // this.addCategory.reset();
         // this.imagePreview = '';
@@ -1168,58 +1249,13 @@ export class AddProduct {
         } else if (res.success == true) {
           // let id = res.data.id;
           let id = res.data.data.id;
-          //console.log('this.selectedThumbImg==>', this.selectedThumbImg);
-
-          if (this.selectedThumbImg != undefined) {
-            const formDataThumb = new FormData();
-            // for (let i = 0; i < this.selectedFile.length; i++) {
-            // const element = this.selectedFile[i];
-            formDataThumb.append('files', this.selectedThumbImg, this.selectedThumbImg.name);
-            formDataThumb.append('module', 'product');
-            formDataThumb.append('module_id', id);
-            formDataThumb.append('type', 'thumbnail');
-            this.callUploadnediaSection(formDataThumb);
-          }
-          if (this.selectProductDesciptionImageGallery?.length) {
-            for (const file of this.selectProductDesciptionImageGallery) {
-              const formData = new FormData();
-              formData.append('files', file);
-              formData.append('module', 'product');
-              formData.append('module_id', id);
-              formData.append('type', 'photoDescriptionImageGallery');
-              this.callUploadnediaSection(formData);
-            }
-          }
-          if (this.selectedFile?.length) {
-            for (const file of this.selectedFile) {
-              const formData = new FormData();
-              formData.append('files', file);
-              formData.append('module', 'product');
-              formData.append('module_id', id);
-              formData.append('type', 'gallery');
-
-              this.callUploadnediaSection(formData);
-            }
-
-
-            //   for (let i = 0; i < this.selectedFile.length; i++) {
-            //   const element = this.selectedFile[i];
-
-            //   const formData = new FormData();   // IMPORTANT: create new for each file
-
-            //   formData.append("files", element, element.name);
-            //   formData.append("module", "product");
-            //   formData.append("module_id", id);
-            //   formData.append("type", "gallery");
-            // //console.log('formData==>',formData);
-
-            //   this.callUploadnediaSection(formData);
-            // }
-          }
-          setTimeout(() => {
-            this.globalService.showMsgSnackBar(res);
-            this.resetProductForm();
-          }, 100);
+          this.uploadProductMedia(id).finally(() => {
+            setTimeout(() => {
+              this.globalService.showMsgSnackBar(res);
+              this.resetProductForm();
+              this.activeModal.close('success');
+            }, 100);
+          });
         }
         // this.addCategory.reset();
         // this.imagePreview = '';
@@ -1512,6 +1548,7 @@ export class AddProduct {
   //    }
 
   resetProductForm() {
+    let removeCategory:any = null;
     this.productDetails.reset();
     this.productOptionData.reset();
     this.productMultipleOptionForm.reset();
@@ -1524,6 +1561,11 @@ export class AddProduct {
     this.shippingConfigForm.reset();
     this.offerForm.reset();
     this.seoForm.reset();
+    this.permaLink = '';
+    this.thumbPreview = '';
+    this.thumbGallery = '';
+    this.onGetId(removeCategory);
+    this.cd.detectChanges();
   }
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: BeforeUnloadEvent) {

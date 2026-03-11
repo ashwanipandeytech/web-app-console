@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { GlobalService } from '../../global.service';
+import { environment } from 'environments/environment';
 @Component({
   selector: 'app-pages',
   templateUrl: './pages.component.html',
@@ -80,6 +81,58 @@ export class PageList implements OnInit {
   }
   addPage() {
     this.router.navigate(['/add-page']);
+  }
+
+  getDescriptionPreview(value: any, maxLength: number = 120): string {
+    const plainText = this.stripHtml(value);
+    if (!plainText) {
+      return '-';
+    }
+
+    if (plainText.length <= maxLength) {
+      return plainText;
+    }
+
+    const cutAtSpace = plainText.lastIndexOf(' ', maxLength);
+    const cutIndex = cutAtSpace > 0 ? cutAtSpace : maxLength;
+    return `${plainText.slice(0, cutIndex).trim()}...`;
+  }
+
+  getDescriptionImage(value: any): string {
+    const html = String(value ?? '');
+    if (!html) return '';
+
+    const match = html.match(/<img[^>]+src\s*=\s*['"]([^'"]+)['"][^>]*>/i);
+    const rawSrc = match?.[1]?.trim() || '';
+    if (!rawSrc) return '';
+
+    return this.normalizeImageUrl(rawSrc);
+  }
+
+  private stripHtml(value: any): string {
+    const text = String(value ?? '')
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/&amp;/gi, '&')
+      .replace(/&lt;/gi, '<')
+      .replace(/&gt;/gi, '>')
+      .replace(/&quot;/gi, '"')
+      .replace(/&#39;/gi, "'")
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    return text;
+  }
+
+  private normalizeImageUrl(raw: string): string {
+    if (/^https?:\/\//i.test(raw)) {
+      if (raw.startsWith('http://') && environment.DOMAIN.startsWith('https://')) {
+        return raw.replace(/^http:\/\//i, 'https://');
+      }
+      return raw;
+    }
+
+    return `${environment.DOMAIN.replace(/\/$/, '')}/${raw.replace(/^\/+/, '')}`;
   }
 
 
