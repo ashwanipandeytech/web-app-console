@@ -59,4 +59,9 @@ export class Dashboard {
     this.orderPreviewRef?.close();
     this.orderPreviewRef = undefined;
   }
+
+  downloadInvoice(order: any) {
+    console.info('downloadInvoice===>', order);
+    this.dataService.downloadReport(`orders/${order.id}/invoice`, `${order.downloadInvoceName}`);
+  }
 }

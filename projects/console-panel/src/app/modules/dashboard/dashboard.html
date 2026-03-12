@@ -178,11 +178,13 @@
                                     <td>
                                         <div class="btn-box">
                                             <button type="button" (click)="openOrderPreview(item)"><i class="fa fa-eye"></i></button>
+                                            <button type="button" (click)="downloadInvoice(item)" title="Download Invoice">
+                                                <i class="fa fa-file-invoice"></i>
+                                            </button>
                                             <!-- <button><i class="fa fa-pen"></i></button> -->
                                             <!-- <button><i class="fa fa-trash"></i></button> -->
                                         </div>
-                                    </td>
-                                </tr>
+                                    </td>                                </tr>
                                 }
                         </tbody>
                     </table>

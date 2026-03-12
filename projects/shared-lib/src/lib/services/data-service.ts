@@ -140,6 +140,64 @@ export class DataService {
     return this.request('POST_COMMON', endpoint, data);
   }
 
+  download(url: string, filename: string) {
+    if (!this.isBrowser) return;
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (blob: Blob) => {
+        const a = document.createElement('a');
+        const objectUrl = URL.createObjectURL(blob);
+        a.href = objectUrl;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      },
+      error: (err) => {
+        console.error('Download failed:', err);
+      },
+    });
+  }
+
+  downloadReport(endpoint: string, filename: string) {
+    if (!this.isBrowser) return;
+    let user: any = {};
+    let guestToken: any = {};
+
+    user = JSON.parse(localStorage.getItem('user') || '{}');
+    guestToken = JSON.parse(localStorage.getItem('GUEST_TOKEN') || '{}');
+
+    let headers: any;
+    let httpOptions: any = { responseType: 'blob' };
+    let finalEndpoint = endpoint;
+
+    if (user?.token) {
+      headers = new HttpHeaders({
+        Authorization: `Bearer ${user.token}`,
+      });
+      httpOptions.headers = headers;
+    } else {
+      finalEndpoint = `${endpoint}?guest_token=${guestToken}`;
+    }
+
+    this.http
+      .get(`${environment.API_URL}${finalEndpoint}`, httpOptions)
+      .subscribe({
+        next: (blob: any) => {
+          const a = document.createElement('a');
+          const objectUrl = URL.createObjectURL(blob);
+          a.href = objectUrl;
+          a.download = filename;
+          a.click();
+          URL.revokeObjectURL(objectUrl);
+        },
+        error: (err) => {
+          console.error('Download failed:', err);
+          this.snackBar.open('Download failed. Please try again.', 'OK', {
+            duration: 2000,
+          });
+        },
+      });
+  }
+
   // Called by APP_INITIALIZER; returns a Promise that resolves when loaded
   loadGeneralSettings(endpoint: string): Promise<void> {
     // return firstValueFrom(this.http.get<Record<string, any>>(endpoint))

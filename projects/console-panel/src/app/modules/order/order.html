@@ -214,8 +214,13 @@
                                     <td><span class="badge bg-success">Delivered</span></td>
                                     <td>{{order.created_at | date:'hh:mm a'}}</td>
                                     <td class="position-sticky end-0 z-3">
-                                        <button type="button" class="btn text-danger p-0"><i
-                                                class="fa fa-eye"></i></button>
+                                        <div class="d-flex gap-2">
+                                            <button type="button" class="btn text-danger p-0"><i
+                                                    class="fa fa-eye"></i></button>
+                                            <button type="button" class="btn text-primary p-0" title="Download Invoice" (click)="downloadInvoice(order)">
+                                                <i class="fa fa-file-invoice"></i>
+                                            </button>
+                                        </div>
                                         <!-- <div class="btn-box">
                                                 <button><i class="fa fa-pen" (click)="openEditModal(order)"></i></button>
                                                 <button><i class="fa fa-trash"></i></button>

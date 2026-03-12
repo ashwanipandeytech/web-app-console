@@ -279,6 +279,11 @@ export class MyOrdersComponent implements OnInit {
 
   }
 
+  downloadInvoice(order: any) {
+    console.info('downloadInvoice===>', order);
+    this.dataService.downloadReport(`orders/${this.orderId}/invoice`, `${order.downloadInvoceName}`);
+  }
+
   getOrderDetailData(data: any) {
     this.orderDetailList = [];
     this.orderDetailList = data;

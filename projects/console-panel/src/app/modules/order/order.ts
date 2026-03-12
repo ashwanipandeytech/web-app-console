@@ -1,6 +1,7 @@
 import { Component, ChangeDetectorRef, inject, ViewChild, TemplateRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { DataService } from '../../../../../shared-lib/src/lib/services/data-service';
+import { GlobaCommonlService } from '../../../../../shared-lib/src/lib/services/global-common.service';
 import { catchError, of } from 'rxjs';
 import { environment } from 'environments/environment';
 
@@ -20,6 +21,7 @@ export class Order {
   orderForm!: FormGroup;
   selectedOrder: any;
   public dataService: any = inject(DataService);
+  private globalService = inject(GlobaCommonlService);
   private modalService = inject(NgbModal);
   private fb = inject(FormBuilder);
   orderListData: any = [];
@@ -59,6 +61,11 @@ export class Order {
  nextPage(page:any){
 // this.defaultPage = page;
 this.getOrderList();
+  }
+
+  downloadInvoice(order: any) {
+  
+    this.dataService.downloadReport(`orders/${order.id}/invoice`, `${order.downloadInvoceName}`);
   }
 
   submit(modal: any) {

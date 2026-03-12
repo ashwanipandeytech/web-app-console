@@ -26,7 +26,7 @@ import { environment } from '../../../environments/environment';
   styleUrl: './header.scss',
 })
 export class Header {
-  private route = inject(Router);
+  public router = inject(Router);
   readonly dataService = inject(DataService);
   private globalFunctionService = inject(GlobalFunctionService);
   private signalService = inject(SignalService);
@@ -165,14 +165,14 @@ export class Header {
   }
 
   gotoCategory(id: any) {
-    this.route.navigate(['/category-details', id]);
+    this.router.navigate(['/category-details', id]);
   }
 
   openDashboard() {
     if (this.isLoggedIn) {
-      this.route.navigate(['/user-profile.html']);
+      this.router.navigate(['/user-profile.html']);
     } else {
-      // this.route.navigate(['/login']);
+      // this.router.navigate(['/login']);
       this.openLogin();
     }
   }
@@ -181,7 +181,7 @@ export class Header {
     if (this.isBrowser) {
       localStorage.clear();
 
-      this.route.navigate(['/']).then(() => {
+      this.router.navigate(['/']).then(() => {
         window.location.reload();
       });
       // window.location.reload();
@@ -198,8 +198,8 @@ export class Header {
 
     if (matchedCategory) {
       // redirect to category page
-      // this.route.navigate(['/category', matchedCategory.id]);
-      this.route.navigate(['/category-details', matchedCategory.id]);
+      // this.router.navigate(['/category', matchedCategory.id]);
+      this.router.navigate(['/category-details', matchedCategory.id]);
     } else {
       alert('Category not found');
     }
