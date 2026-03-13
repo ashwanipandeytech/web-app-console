@@ -85,10 +85,10 @@ export class SetPassword {
       )
       .subscribe((res: any) => {
         if (res.success == true) {
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
           this.activeModal.close({ result: 'success' });
         } else if (res.error && res.error.message) {
-            this.globalService.showMsgSnackBar(res.error);
+            this.globalService.showToast(res.error);
         }
       });
   }

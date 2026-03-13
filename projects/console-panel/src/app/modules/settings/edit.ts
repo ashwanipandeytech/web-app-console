@@ -117,7 +117,7 @@ export class EditPage implements OnInit {
     this.dataService.get('pages/' + slug)
       .pipe(
         catchError(err => {
-          this.globalService.showMsgSnackBar(err);
+          this.globalService.showToast(err);
           console.error('Error:', err);
           return of(null);
         })
@@ -206,7 +206,7 @@ export class EditPage implements OnInit {
       )
       .subscribe((res: any) => {
         //console.log('Response:', res);
-        this.globalService.showMsgSnackBar(res);
+        this.globalService.showToast(res);
         this.router.navigate(['/pages']);
 
       });

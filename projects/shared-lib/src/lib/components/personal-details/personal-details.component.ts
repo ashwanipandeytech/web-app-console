@@ -130,15 +130,15 @@ export class PersonalDetailsComponent implements OnInit {
       .pipe(
         catchError((err) => {
           console.error('Error:', err);
-          //  this.globalService.showMsgSnackBar(err);
+          //  this.globalService.showToast(err);
           return of(null);
         })
       )
       .subscribe((res: any) => {
         //console.log('Response:', res);
-        // this.globalService.showMsgSnackBar(res);
+        // this.globalService.showToast(res);
         if (res.success == true) {
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
           if (this.isBrowser) {
             let userData: any = localStorage.getItem('user');
 
@@ -159,7 +159,7 @@ export class PersonalDetailsComponent implements OnInit {
           // this.router.navigate(['/cart']);
         } else if (res.error && res.error.message) {
           //console.log('error  :', res.error.message);
-          this.globalService.showMsgSnackBar(res.error);
+          this.globalService.showToast(res.error);
         }
       });
     // }

@@ -129,7 +129,7 @@ export class Login {
           } else {
             this.closePopup();
           }
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
         }
       });
     // API CALL: send OTP
@@ -152,7 +152,7 @@ export class Login {
       .subscribe((res: any) => {
         if (res.success == true) {
           //console.log('Response:', res);
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
         }
       });
   }
@@ -189,7 +189,7 @@ export class Login {
       .subscribe((res: any) => {
         if (res.success == true) {
           //console.log('Response:', res);
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
           this.closePopup();
         }
       });
@@ -231,7 +231,7 @@ export class Login {
         //console.log('Response:', res);
         if (res.success == true) {
           this.closePopup();
-          //  this.globalService.showMsgSnackBar(res);
+          //  this.globalService.showToast(res);
         }
       });
   }
@@ -260,7 +260,7 @@ export class Login {
         .subscribe((res: any) => {
           // //console.log('Response:', res);
           if (res.success == true) {
-            this.globalService.showMsgSnackBar(res);
+            this.globalService.showToast(res);
             if (this.isBrowser) {
               localStorage.setItem('user', JSON.stringify(res.data));
             }
@@ -298,7 +298,7 @@ export class Login {
             }, 0);
           } else if (res.error && res.error.message) {
             //console.log('error  :', res.error.message);
-            this.globalService.showMsgSnackBar(res.error);
+            this.globalService.showToast(res.error);
           }
 
           // if (res.success ==true) {
@@ -387,7 +387,7 @@ if(recallApi == false){
         .subscribe((res: any) => {
           // //console.log('Response:', res.error.message);
           if (res.success == true) {
-            this.globalService.showMsgSnackBar(res);
+            this.globalService.showToast(res);
             //  let tempAddress: any = JSON.parse(localStorage.getItem('tempAddress') || 'null');
             // if (tempAddress !=null) {
             //   this.addAddress(tempAddress);
@@ -413,7 +413,7 @@ if(recallApi == false){
             }, 0);
           } else if (res.error && res.error.message) {
             //console.log('error  :', res.error.message);
-            this.globalService.showMsgSnackBar(res.error);
+            this.globalService.showToast(res.error);
           }
 
           //  let popupData = {
@@ -519,10 +519,10 @@ if(recallApi == false){
       .subscribe((res: any) => {
         if (res.success == true) {
           //console.log('Response:', res);
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
           this.forgotStep = 'reset-password';
         } else if (res.success == false) {
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
         }
       });
   }

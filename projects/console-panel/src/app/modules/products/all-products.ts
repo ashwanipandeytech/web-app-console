@@ -8,16 +8,16 @@ import { DataService } from 'shared-lib';
 import {Sidebar} from "../../layout/sidebar/sidebar";
 import {Header} from "../../layout/header/header";
 import { ConfirmationPopupComponent } from '../../confirmationPopup/confirmationPopup.component';
-import { MatDialog } from '@angular/material/dialog';
 import { GlobalService } from '../../global.service';
 import { AddProduct } from './add-product/add-product';
 import { NgbModal, NgbModalRef, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'shared-lib/environments/environment';
 @Component({
   selector: 'app-all-products',
-  imports: [NgbTooltip],
+  imports: [NgbTooltip, Sidebar, Header, ConfirmationPopupComponent],
   templateUrl: './all-products.html',
-  styleUrl: './all-products.scss'
+  styleUrl: './all-products.scss',
+  standalone: true
 })
 
 
@@ -26,8 +26,7 @@ export class AllProducts {
 
   public dataService:any= inject(DataService);
   private activatedRoute= inject(ActivatedRoute);
-  readonly dialog = inject(MatDialog);
-  readonly ngbModal = inject(NgbModal);
+  private readonly ngbModal = inject(NgbModal);
   public router=inject(Router)
  //add toastr library private activatedRoute= inject(ActivatedRoute);
   email:any='superadmin@demohandler.com'
@@ -299,19 +298,16 @@ console.log('item==>',item);
         description: 'Are you sure, you want to delete Product',
         id: id
       }
-      let dialogRef = this.dialog.open(ConfirmationPopupComponent, {
-        width: '250px',
-        data: popupData,
+      const modalRef = this.ngbModal.open(ConfirmationPopupComponent, {
+        size: 'sm',
+        centered: true
       });
-      dialogRef.afterClosed().subscribe(result => {
-        //console.log('Dialog closed with:', result);
-  
-        if (result.action === 'delete') {
-          // Perform delete
+      modalRef.componentInstance.data = popupData;
+      modalRef.result.then((result) => {
+        if (result && result.action === 'delete') {
           this.deleteProduct(result.id);
-  
         }
-      })
+      }).catch(() => {});
     }
     previewProduct(item:any){
       let url = `${environment.WEB_URL}/product-details/${item?.product_details?.permaLink}?id=${item.id}`
@@ -323,7 +319,7 @@ window.open(url,'_blank')
         catchError(err => {
           console.error('Error:', err);
            setTimeout(() => {
-          this.globalService.showMsgSnackBar(err);
+          this.globalService.showToast(err);
         }, 100);
           return of(null);
         })
@@ -333,7 +329,7 @@ window.open(url,'_blank')
         //console.log('Response:', res);
         this.callAllProductList();
           setTimeout(() => {
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
         }, 100);
         this.cd.detectChanges();
         // this.categoryListData = res.data;

@@ -244,7 +244,7 @@ if (userData == null) {
   localStorage.removeItem('tempAddress');
   localStorage.setItem('tempAddress',JSON.stringify(fullAddrress));
   this.closePopup('success');
-  // this.globalService.showMsgSnackBar(res);
+  // this.globalService.showToast(res);
   // this.getAddressList();
   this.cd.detectChanges();
   return;
@@ -264,7 +264,7 @@ else{
          //console.log('Response:', res);
          if (res.success == true) {   
            this.closePopup('success');
-           this.globalService.showMsgSnackBar(res);
+           this.globalService.showToast(res);
           //  this.getAddressList();
            this.cd.detectChanges();
   
@@ -319,7 +319,7 @@ else{
               //console.log('Response:', res);
               if (res.success == true) {   
                 this.closePopup('success');
-                this.globalService.showMsgSnackBar(res);
+                this.globalService.showToast(res);
                 // this.getAddressList();
                 this.cd.detectChanges();
                 // this.router.navigate(['/cart']);

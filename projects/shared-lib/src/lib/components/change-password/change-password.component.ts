@@ -92,12 +92,12 @@ export class ChangePasswordComponent implements OnInit {
       .subscribe((res: any) => {
         //console.log('Response:', res);
         if (res.success == true) {
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
           this.passwordForm.reset();
 
           // this.router.navigate(['/cart']);
         } else if (res.error && res.error.message) {
-          this.globalService.showMsgSnackBar(res.error);
+          this.globalService.showToast(res.error);
         }
       });
   }
@@ -107,7 +107,7 @@ export class ChangePasswordComponent implements OnInit {
     //     message:'Please Use Different Password',
     //     success:false
     //   }
-    //     this.globalService.showMsgSnackBar(data);
+    //     this.globalService.showToast(data);
     // }
     // return
     this.dataService

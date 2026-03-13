@@ -1,21 +1,24 @@
-import { Component, ChangeDetectorRef, inject, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ChangeDetectorRef, inject, TemplateRef, ViewChild, OnInit } from '@angular/core';
 import { Sidebar } from '../../layout/sidebar/sidebar';
 import { Header } from '../../layout/header/header';
 import { DataService } from 'shared-lib/services/data-service';
 import { DatePipe } from '@angular/common';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'app-dashboard',
   imports: [Sidebar, Header, DatePipe],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
+  standalone: true
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
   dataService = inject(DataService);
   private cd = inject(ChangeDetectorRef);
-  dialog = inject(MatDialog);
+  private ngbModal = inject(NgbModal);
   @ViewChild('orderPreviewModal') orderPreviewModal!: TemplateRef<any>;
-  orderPreviewRef?: MatDialogRef<any>;
+  orderPreviewRef?: NgbModalRef;
+  selectedOrder: any;
   dashBoardData: any = {};
   orderSummary: any = {
     completed: 0,
@@ -48,10 +51,11 @@ export class Dashboard {
 
   openOrderPreview(order: any): void {
     if (!this.orderPreviewModal) return;
-    this.orderPreviewRef = this.dialog.open(this.orderPreviewModal, {
-      width: '750px',
-      maxWidth: '95vw',
-      data: order,
+    this.selectedOrder = order;
+    this.orderPreviewRef = this.ngbModal.open(this.orderPreviewModal, {
+      size: 'lg',
+      centered: true,
+      scrollable: true,
     });
   }
 

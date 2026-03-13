@@ -54,7 +54,7 @@ newPage:any=
     this.dataService.get('pages/' + slug)
       .pipe(
         catchError(err => {
-          this.globalService.showMsgSnackBar(err);
+          this.globalService.showToast(err);
           console.error('Error:', err);
           return of(null);
         })
@@ -137,14 +137,14 @@ newPage:any=
         this.dataService.post(payload, 'pages')
           .pipe(
             catchError(err => {
-                this.globalService.showMsgSnackBar(err);
+                this.globalService.showToast(err);
               console.error('Error:', err);
               return of(null);
             })
           )
           .subscribe((res: any) => {
             //console.log('Response:', res);
-              this.globalService.showMsgSnackBar(res);
+              this.globalService.showToast(res);
               this.router.navigate(['/pages']);
           
          

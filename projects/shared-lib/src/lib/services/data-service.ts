@@ -3,7 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Commonresponseobject } from '../model/responsemodel';
 import { environment } from '../../../../../environments/environment';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom, of } from 'rxjs';
 import { Meta } from '@angular/platform-browser';
 
@@ -12,7 +12,7 @@ import { Meta } from '@angular/platform-browser';
 })
 export class DataService {
   private http = inject(HttpClient);
-  private snackBar = inject(MatSnackBar);
+  private toastr = inject(ToastrService);
   private platformId = inject(PLATFORM_ID);
   private meta = inject(Meta);
 
@@ -192,9 +192,7 @@ export class DataService {
         },
         error: (err) => {
           console.error('Download failed:', err);
-          this.snackBar.open('Download failed. Please try again.', 'OK', {
-            duration: 2000,
-          });
+          this.toastr.error('Download failed. Please try again.');
         },
       });
   }

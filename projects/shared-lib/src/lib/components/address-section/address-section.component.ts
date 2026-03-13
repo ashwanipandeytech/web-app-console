@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, effect, ElementRef, inject, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, ElementRef, inject, Inject, OnInit, PLATFORM_ID, ViewChild, TemplateRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 import { DataService } from '../../services/data-service';
@@ -8,7 +8,6 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NoDataComponent } from '../no-data/no-data.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AddAddressModal } from '../../model/add-address-modal/add-address-modal';
-declare var bootstrap: any;
 import { SignalService } from '../../services/signal-service';
 @Component({
   selector: 'app-address-section',
@@ -17,7 +16,8 @@ import { SignalService } from '../../services/signal-service';
   styleUrls: ['./address-section.component.scss']
 })
 export class AddressSectionComponent implements OnInit {
-  @ViewChild('removeAddressModal') removeAddressModal!: ElementRef;
+  @ViewChild('removeAddressModal') removeAddressModal!: TemplateRef<any>;
+  private modalRef?: NgbModalRef;
   data: any;
   addressListData: any = [];
   private dataService = inject(DataService);
@@ -95,23 +95,17 @@ export class AddressSectionComponent implements OnInit {
   }
   setDeleteId(id: any) {
     this.deleteAddressId = id;
+    this.modalRef = this.ngbModal.open(this.removeAddressModal, {
+      windowClass: 'mobile-modal',
+      centered: true
+    });
   }
   deleteAddress() {
-    //console.log('Deleting ID:', this.deleteAddressId);
-
     this.dataService.delete(`addresses/${this.deleteAddressId}`).subscribe((res: any) => {
-      // uncomment below 
-      // if (res.success) {
-      // this.globalService.showMsgSnackBar(res);
       this.getAddressList();
-      if (this.isBrowser) {
-        const modal = bootstrap.Modal.getInstance(
-          this.removeAddressModal.nativeElement
-        );
-        modal.hide();
+      if (this.modalRef) {
+        this.modalRef.close();
       }
-      // }
-
     });
   }
 

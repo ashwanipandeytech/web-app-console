@@ -1,33 +1,30 @@
 
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'app-confirmationPopup',
   templateUrl: './confirmationPopup.component.html',
-   imports: [ReactiveFormsModule, FormsModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+  imports: [ReactiveFormsModule, FormsModule],
   styleUrls: ['./confirmationPopup.component.scss'],
-  standalone:true
+  standalone: true,
 })
 export class ConfirmationPopupComponent implements OnInit {
+  activeModal = inject(NgbActiveModal);
+  @Input() data: any;
 
-  constructor(
-    private dialogRef: MatDialogRef<ConfirmationPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
+  constructor() {
     //console.log('popupData++++.',data);
-    
-   }
+  }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  close() {
+    this.activeModal.dismiss();
   }
- close() {
-    this.dialogRef.close();
-  }
-  deleteCategory(id:any){
-    this.dialogRef.close({action:'delete',id:id});
+
+  deleteCategory(id: any) {
+    this.activeModal.close({ action: 'delete', id: id });
   }
 }

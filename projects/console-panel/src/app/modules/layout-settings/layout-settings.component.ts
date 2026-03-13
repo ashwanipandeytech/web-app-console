@@ -6,6 +6,7 @@ import {
   ElementRef,
   inject,
   OnInit,
+  TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -13,16 +14,20 @@ import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { GlobalService } from '../../global.service';
-declare var bootstrap: any;
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'layout-settings',
   templateUrl: './layout-settings.component.html',
-  imports: [FormsModule, CommonModule, CdkDrag, CdkDropList,ReactiveFormsModule],
+  imports: [FormsModule, CommonModule, CdkDrag, CdkDropList, ReactiveFormsModule],
   styleUrls: ['./layout-settings.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutSettingsComponent implements OnInit {
+  private readonly ngbModal = inject(NgbModal);
+  private modalRef?: NgbModalRef;
+  @ViewChild('uploadPhotoModal') uploadPhotoModal!: TemplateRef<any>;
   settingsModel: any = {
     general: {
       logo: {
@@ -106,16 +111,27 @@ export class LayoutSettingsComponent implements OnInit {
 
   pageList: any;
   uploadedFile: any;
-  @ViewChild('uploadPhoto') uploadPhoto!: ElementRef;
   desktopLogoData: any = [];
   selectedImageobj: any = [];
   uploadIsFrom: any;
   isSelectedImage: boolean = false;
   selectedImageIndex: any;
-  homeSliderDataArr: any=[];
+  homeSliderDataArr: any = [];
   constructor(private cdr: ChangeDetectorRef) {
     this.getImageApi();
     // this.getDefaultImage();
+  }
+
+  openUploadModal(from: any) {
+    this.uploadIsFrom = from;
+    this.modalRef = this.ngbModal.open(this.uploadPhotoModal, {
+      windowClass: 'mobile-modal',
+      centered: true,
+      scrollable: true,
+      size: 'xl',
+      backdrop: 'static',
+      keyboard: false
+    });
   }
 
   ngOnInit() {
@@ -348,14 +364,14 @@ this.seoFormGroup();
       .pipe(
         catchError((err) => {
           console.error('Error:', err);
-          this.globalService.showMsgSnackBar(err);
+          this.globalService.showToast(err);
           return of(null);
         })
       )
       .subscribe((res: any) => {
         //console.log('Response:', res);
         if (res.success) {
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
           this.getGeneralSetting();
         }
       });
@@ -401,9 +417,6 @@ this.seoFormGroup();
   console.log('Link URL:', linkUrl);
 
   // ✅ you now have BOTH values
-  }
-  uploadFrom(from: any) {
-    this.uploadIsFrom = from;
   }
   async savedImage() {
     console.log('uploadisFrom', this.uploadIsFrom);
@@ -744,8 +757,9 @@ this.seoFormGroup();
       });
   }
   closePopup() {
-    const modal = bootstrap.Modal.getInstance(this.uploadPhoto.nativeElement);
-    modal.hide();
+    if (this.modalRef) {
+      this.modalRef.close();
+    }
     this.getImageApi();
   }
  toggleExternalLinkInput(footer: any) {

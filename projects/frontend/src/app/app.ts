@@ -101,7 +101,7 @@ export class App {
 
             if (res.success == true) {
               console.info('data', res)
-              this.globalService.showMsgSnackBar(res);
+              this.globalService.showToast(res);
 
               localStorage.removeItem("GUEST_TOKEN");
               // }

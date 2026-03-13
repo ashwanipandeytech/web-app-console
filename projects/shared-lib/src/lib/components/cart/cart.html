@@ -276,8 +276,7 @@
                 <button
                   type="button"
                   class="shop-btn sm-btn fs-12"
-                  data-bs-toggle="modal"
-                  data-bs-target="#couponModal"
+                  (click)="openCouponModal()"
                 >
                   Apply
                 </button>
@@ -404,21 +403,11 @@
 <!--------------- cart-section-end---------------->
 
 <!-- Modal -->
-<div
-  #couponModal
-  class="modal mobile-modal fade"
-  id="couponModal"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
-  tabindex="-1"
-  aria-labelledby="couponModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
+<ng-template #couponModal let-modal>
+    <div class="modal-content border-0">
       <div class="modal-header py-2">
         <h1 class="modal-title fs-5">Apply Coupon</h1>
-        <button type="button" class="close-btn" data-bs-dismiss="modal">
+        <button type="button" class="close-btn" (click)="modal.dismiss()">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -426,56 +415,34 @@
         <p class="fw-bold">Enter your coupon code here</p>
         <input
           type="text"
-          formControlName="productTitle"
           class="form-control"
           id="productTitle"
           placeholder="Enter coupon code"
           #couponInput
         />
-        <!-- <p class="position-relative bg-white rounded-circle mx-auto">
-            <img src="assets/images/svg/coupon.svg" alt="" style="filter: drop-shadow(0 11px 15px);">
-        </p> -->
-        <span>
-          <!-- <h4 class="text-primary">Coupon applied!</h4>
-            <p class="fs-12 text-muted">KDVND6565FDVDSDF</p>
-            <div class="alert alert-success mb-0" role="alert">
-              <p class="fw-semibold text-success mb-0">Saved ₹652</p>
-              <span class="fs-12">You have saved total ₹652 on this order!</span>
-            </div> -->
-        </span>
       </div>
       <div class="modal-footer border-0 py-2">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
         <button type="button" class="shop-btn ms-2" (click)="checkCoupon(couponInput.value)">
           Apply
         </button>
       </div>
     </div>
-  </div>
-</div>
+</ng-template>
 
 <!-- Delete product Modal -->
-<div
-  #deleteCart
-  class="modal mobile-modal fade"
-  id="removeProject"
-  tabindex="-1"
-  aria-labelledby="removeProjectLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
+<ng-template #deleteCart let-modal>
+    <div class="modal-content border-0">
       <div class="modal-header py-2">
         <h1 class="modal-title fs-5" id="removeProjectLabel">Remove product</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
       </div>
       <div class="modal-body">Remove product from your cart - sure?</div>
       <div class="modal-footer border-0">
-        <button type="button" class="btn btn-secondary fs-14" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary fs-14" (click)="modal.dismiss()">Close</button>
         <button type="button" class="shop-btn fs-14 py-2 px-3 my-0 ms-2" (click)="deleteItem()">
           Remove
         </button>
       </div>
     </div>
-  </div>
-</div>
+</ng-template>

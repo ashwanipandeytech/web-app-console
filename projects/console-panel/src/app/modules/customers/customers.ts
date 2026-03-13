@@ -41,7 +41,7 @@ getCustomerList(){
             this.cd.detectChanges();
           }
           if (res.error) {
-          this.globalService.showMsgSnackBar(res.error);
+          this.globalService.showToast(res.error);
           return;
           }
         })

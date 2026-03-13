@@ -41,12 +41,12 @@ this.dataService.post(this.contactForm.value,'contact-us').pipe(
       .subscribe((res: any) => {
     console.log(this.contactForm.value);
        if (res?.success == true) {
-          this.globalCommonService.showMsgSnackBar(res);
+          this.globalCommonService.showToast(res);
           this.contactForm.reset();
           this.cd.detectChanges();
        }
        else if(res.success == false){
-          this.globalCommonService.showMsgSnackBar(res);
+          this.globalCommonService.showToast(res);
        }
       })
     // API call yaha se kar sakte ho

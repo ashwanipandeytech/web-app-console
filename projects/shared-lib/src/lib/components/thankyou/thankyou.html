@@ -17,14 +17,12 @@
     </div>
 </div>
     
-<div #rateusModal class="modal mobile-modal fade" id="rateusModal" tabindex="-1" aria-labelledby="rateusModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
+<ng-template #rateusModal let-modal>
+    <div class="modal-content border-0">
       <!-- Header -->
-      <div class="modal-header py-2">
+      <div class="modal-header py-2 border-0">
         <h5 class="modal-title" id="rateusModalLabel">Rate Us</h5>
-        <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
+        <button type="button" class="close-btn" (click)="modal.dismiss()" aria-label="Close">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -60,12 +58,11 @@
 
         <!-- Footer -->
         <div class="modal-footer border-0">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Cancel</button>
           <button type="submit" class="shop-btn ms-2" [disabled]="rateUsForm.invalid">
             Submit
           </button>
         </div>
       </form>
     </div>
-  </div>
-</div>
+</ng-template>
