@@ -58,6 +58,7 @@ export class MyOrdersComponent implements OnInit {
 
     effect(() => {
       if (this.signalService.userLoggedIn()) {
+        this.isLoggedIn = true;
         this.orderList();
         this.cd.detectChanges();
       }
