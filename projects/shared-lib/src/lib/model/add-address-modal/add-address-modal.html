@@ -136,7 +136,9 @@
               <!-- PHONE -->
               <label class="form-label fw-semibold mb-1">Phone</label>
               <input
-                type="text"
+                type="tel"
+                inputmode="numeric"
+                maxlength="10"
                 class="form-control"
                 formControlName="phone"
                 placeholder="Phone"
@@ -221,7 +223,10 @@
               <label class="form-label fw-semibold mb-1">Pin Code</label>
               <input
                 type="text"
+                pattern="[0-9]*"
                 class="form-control"
+                maxlength="6"
+                inputmode="numeric"
                 formControlName="postal_code"
                 placeholder="Enter Pincode"
                 [class.is-invalid]="postal_code?.invalid && postal_code?.touched"
