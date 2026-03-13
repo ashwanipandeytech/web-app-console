@@ -11,6 +11,7 @@ import { DataService } from 'shared-lib';
 import { catchError, of } from 'rxjs';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Login } from 'shared-lib/components/auth/login/login';
+import { SetPassword } from 'shared-lib/components/auth/set-password/set-password';
 import { GlobaCommonlService } from '../../../shared-lib/src/lib/services/global-common.service';
 
 import { GlobalFunctionService } from '../../../shared-lib/src/lib/services/global-function.service';
@@ -106,9 +107,9 @@ export class App {
               // }
               //make a signal for emiting the user state
               if (this.isBrowser) {
-                let data={
-                  token:res.token,
-                  user:res.user
+                let data = {
+                  token: res.token,
+                  user: res.user
                 }
                 localStorage.setItem("user", JSON.stringify(res.data));
               }
@@ -118,21 +119,20 @@ export class App {
               }
               this.globalFunctionService.getCount();
               this.signalService.userLoggedIn.set(true);
-              
-               this.router.navigate([], {
-                  queryParams: { key: null },
-                  queryParamsHandling: 'merge',
-                  replaceUrl: true
-                });
 
-                 let user:any = null;
-              let forgotStep = 'reset-password';
-              if (this.isBrowser) {
-                user = localStorage.getItem('user');
-              }
-                  // setTimeout(() => {
-                  //   this.openForgotPopup('',res.data.user.email, forgotStep);
-                  // }, 0);
+              this.router.navigate([], {
+                queryParams: { key: null },
+                queryParamsHandling: 'merge',
+                replaceUrl: true
+              });
+
+
+              setTimeout(() => {
+                if (res.data.setPassword) {
+                  this.openSetPasswordPopup('', res.data.user.email);
+                }
+
+              }, 0);
               this.cd.detectChanges();
 
 
@@ -154,10 +154,24 @@ export class App {
     });
   }
 
-  openForgotPopup(token:any='', email: any, step: any) {
-    let user:any = localStorage.getItem('user');
-    console.log('enter===>',user);
-    
+  openSetPasswordPopup(token: any = '', email: any) {
+    let data = {
+      token: token,
+      email: email
+    }
+    const modalRef: NgbModalRef = this.ngbModal.open(SetPassword, {
+      windowClass: 'mobile-modal set-password-popup',
+      scrollable: true,
+      centered: true
+    });
+    modalRef.componentInstance.userData = data;
+    this.router.navigate(['']);
+  }
+
+  openForgotPopup(token: any = '', email: any, step: any) {
+    let user: any = localStorage.getItem('user');
+    console.log('enter===>', user);
+
     let data = {
       token: token,
       email: email,
