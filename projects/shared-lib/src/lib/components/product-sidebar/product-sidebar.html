@@ -210,7 +210,9 @@
                   title="No Product Found"
                   message="There are no data available right now."
                   [showAction]="false"
+                   [displayNoDataText]="productListData.length === 0"
                   actionText="Reload"
+                  [isLogin]="true"
                 >
                 </app-no-data>
               }
