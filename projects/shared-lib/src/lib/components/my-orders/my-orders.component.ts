@@ -48,6 +48,7 @@ export class MyOrdersComponent implements OnInit {
   orderDetailList: any = {};
   isLoading: boolean = false;
   rateUsForm!: FormGroup;
+  bankDetailsForm!: FormGroup;
   stars = [1, 2, 3, 4, 5];
   private platformId = inject(PLATFORM_ID);
   isBrowser: boolean;
@@ -70,6 +71,7 @@ export class MyOrdersComponent implements OnInit {
     console.info('hererer')
       this.orderList();
       this.addRateUsForm();
+      this.initBankDetailsForm();
       this.cd.detectChanges();
 
     if (this.isBrowser) {
@@ -92,6 +94,24 @@ export class MyOrdersComponent implements OnInit {
     this.rateUsForm = this.fb.group({
       rating: [null, Validators.required],
       comment: [''],
+    });
+  }
+  initBankDetailsForm() {
+    this.bankDetailsForm = this.fb.group({
+      account_holder_name: ['', [
+        Validators.required, 
+        Validators.minLength(3), 
+        Validators.pattern(/^[a-zA-Z ]+$/)
+      ]],
+      account_number: ['', [
+        Validators.required, 
+        Validators.pattern(/^[0-9]{9,18}$/)
+      ]],
+      ifsc_code: ['', [
+        Validators.required, 
+        Validators.pattern(/^[A-Z]{4}0[A-Z0-9]{6}$/)
+      ]],
+      bank_name: ['', [Validators.required, Validators.minLength(2)]],
     });
   }
   setRating(value: number): void {
@@ -249,17 +269,27 @@ export class MyOrdersComponent implements OnInit {
     }
   }
   cancelOrder() {
+    let payload: any = {};
+    if (this.orderDetailList?.payment_method === 'cod') {
+      if (this.bankDetailsForm.invalid) {
+        this.bankDetailsForm.markAllAsTouched();
+        return;
+      }
+      payload = this.bankDetailsForm.value;
+    }
+
     if (this.isBrowser) {
       const modal = bootstrap.Modal.getInstance(
         this.confirmCancelOrder.nativeElement
       );
-      modal.hide();
+      if (modal) {
+        modal.hide();
+      }
     }
 
 
-    this.orderId
     this.dataService
-      .post('', 'orders/' + this.orderId + '/cancel')
+      .post(payload, 'orders/' + this.orderId + '/cancel')
       .pipe(
         catchError((err) => {
           console.error('Error:', err);
@@ -271,6 +301,7 @@ export class MyOrdersComponent implements OnInit {
         if (res.success == true) {
           this.globalService.showMsgSnackBar(res);
           this.globalFunctionService.getCount();
+          this.orderList(); // Added orderList() to refresh the data
           this.cd.detectChanges();
 
         } else if (res.error && res.error.message) {
