@@ -130,9 +130,9 @@ export class App {
               if (this.isBrowser) {
                 user = localStorage.getItem('user');
               }
-                  setTimeout(() => {
-                    this.openForgotPopup('',res.data.user.email, forgotStep);
-                  }, 0);
+                  // setTimeout(() => {
+                  //   this.openForgotPopup('',res.data.user.email, forgotStep);
+                  // }, 0);
               this.cd.detectChanges();
 
 

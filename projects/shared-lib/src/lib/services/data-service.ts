@@ -46,9 +46,10 @@ export class DataService {
       if (endpoint == 'social/consume') {
 
         headers = new HttpHeaders({
-           Authorization: `Bearer ${this.authToken}`,
+         //  Authorization: `Bearer ${this.authToken}`,
           'X-Social-Login-Key': data['X-Social-Login-Key']
         });
+         endpoint = `${endpoint}?guest_token=${guestToken}`;
         httpOptions = { headers };
       } else {
         endpoint = `${endpoint}?guest_token=${guestToken}`;
