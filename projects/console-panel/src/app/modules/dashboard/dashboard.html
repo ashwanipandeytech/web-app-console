@@ -2,14 +2,14 @@
 <div class="main-content">
     <div class="breadcrumb mb-30">
         <h2>Dashboard</h2>
-        <div class="input-group filter">
+        <!-- <div class="input-group filter">
             <input type="text" class="form-control" name="basic" id="dashboardFilter" readonly>
             <label for="dashboardFilter" class="input-group-text"><i class="fa fa-calendar-days"></i></label>
-        </div>
+        </div> -->
     </div>
         <div class="row mb-30">
-        <div class="col-lg-3 col-6 col-xs-12">
-            <div class="top-box rounded-bottom panel-bg">
+        <div class="col-lg-4 col-6 col-xs-12">
+            <div class="top-box rounded-bottom panel-bg h-100">
                 <div class="left">
                     <h3>₹34,152</h3>
                     <p>Shipping fees are not</p>
@@ -23,41 +23,39 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-6 col-xs-12">
-            <div class="top-box rounded-bottom panel-bg">
+        <div class="col-lg-4 col-6 col-xs-12">
+            <div class="top-box rounded-bottom panel-bg h-100">
                 <div class="left">
                     <h3>{{ orderSummary.total }}</h3>
-                    <p class="mb-1">Total Orders</p>
-                    <div class="small">
-                        <div>Completed: {{ orderSummary.completed }}</div>
-                        <div>Pending: {{ orderSummary.pending }}</div>
-                        <div>Today: {{ orderSummary.today }}</div>
-                    </div>
+                    <p class="fw-bold mb-1">Total Orders</p>
                 </div>
                 <div class="right">
-                    <span class="text-primary">Order summary</span>
-                    <div class="part-icon rounded">
+                    <span class="text-primary mb-1">Order summary</span>
+                    <span>Completed: {{ orderSummary.completed }}</span>
+                    <span>Pending: {{ orderSummary.pending }}</span>
+                    <span>Today: {{ orderSummary.today }}</span>
+                    <div class="part-icon rounded mt-2">
                         <span><i class="fa fa-bag-shopping"></i></span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-6 col-xs-12">
-            <div class="top-box rounded-bottom panel-bg">
+        <div class="col-lg-4 col-6 col-xs-12">
+            <div class="top-box rounded-bottom panel-bg h-100">
                 <div class="left">
                     <h3>₹34,152</h3>
                     <p>Customers</p>
                     <a href="#">See details</a>
                 </div>
                 <div class="right">
-                    <span class="text-primary">+16.24%</span>
+                    <span class="text-primary opacity-0">+16.24%</span>
                     <div class="part-icon rounded">
                         <span><i class="fa fa-user"></i></span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-6 col-xs-12">
+        <!-- <div class="col-lg-3 col-6 col-xs-12">
             <div class="top-box rounded-bottom panel-bg">
                 <div class="left">
                     <h3>₹724,152</h3>
@@ -71,7 +69,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <div class="row">
         <div class="d-none col-xxl-8">
@@ -146,7 +144,7 @@
             </div>
         </div>
         <div class="col-xxl-8">
-            <div class="panel">
+            <div class="panel h-100">
                 <div class="panel-header">
                     <h5>Recent Orders</h5>
                     <div id="tableSearch"></div>
@@ -188,18 +186,18 @@
                                 }
                         </tbody>
                     </table>
-                    <div class="table-bottom-control"></div>
+                    <!-- <div class="table-bottom-control"></div> -->
                 </div>
             </div>
         </div>
         <div class="col-xxl-4 col-md-6">
-            <div class="panel">
+            <div class="panel h-100">
                 <div class="panel-header">
                     <h5>New Customers</h5>
                     <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-ellipsis-vertical"></i></button>
                 </div>
                 <div class="panel-body">
-                    <table class="table table-borderless new-customer-table">
+                    <table class="table table-dashed recent-order-table">
                         <tbody>
                             @for (item of dashBoardData.new_customers; track $index) {
 
@@ -210,7 +208,7 @@
                                                 <img src="../images/avatar.png" alt="Image">
                                             </div> -->
                                             <div class="part-txt">
-                                                <p class="customer-name">{{item.name}}</p>
+                                                <p class="customer-name mb-0">{{item.name}}</p>
                                                 <span>{{item.email}}</span>
                                             </div>
                                         </div>
