@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, effect, ElementRef, inject, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, ElementRef, inject, Inject, PLATFORM_ID, ViewChild, TemplateRef } from '@angular/core';
 import { DataService } from '../../../services/data-service';
 import { catchError, map, of } from 'rxjs';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
@@ -9,7 +9,7 @@ import { GlobaCommonlService } from '../../../services/global-common.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GlobalFunctionService } from '../../../services/global-function.service';
 import { SignalService } from '../../../services/signal-service';
-declare const bootstrap: any;
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'web-checkout',
@@ -18,9 +18,14 @@ declare const bootstrap: any;
   styleUrl: './checkout.scss'
 })
 export class Checkout {
-  @ViewChild('changedModal') changedModal!: ElementRef;
-  @ViewChild('deleteCart') deleteCart!: ElementRef;
-  @ViewChild('couponModal') couponModal!: ElementRef;
+  @ViewChild('changedModal') changedModal!: TemplateRef<any>;
+  @ViewChild('deleteCart') deleteCart!: TemplateRef<any>;
+  @ViewChild('couponModal') couponModal!: TemplateRef<any>;
+  
+  private ngbModal = inject(NgbModal);
+  private modalRef?: NgbModalRef;
+  private couponModalRef?: NgbModalRef;
+  private changedModalRef?: NgbModalRef;
   private dataService = inject(DataService);
   private globalFunctionService = inject(GlobalFunctionService);
   private router = inject(Router);
@@ -158,7 +163,7 @@ export class Checkout {
         catchError((err) => {
           console.error('Error:', err);
           setTimeout(() => {
-            this.globalService.showMsgSnackBar(err);
+            this.globalService.showToast(err);
           }, 100);
           return of(err);
         })
@@ -244,7 +249,7 @@ export class Checkout {
       .subscribe((res: any) => {
         if (res.success == true) {
           console.log('Response:', res);
-          // this.globalService.showMsgSnackBar(res);
+          // this.globalService.showToast(res);
           if (paymentMethod != 'cod') {
             // this.paymentUpdate(res, paymentResponse);
           }
@@ -305,7 +310,7 @@ export class Checkout {
         }
         else {
           if (res.err) {
-            this.globalService.showMsgSnackBar(res.err);
+            this.globalService.showToast(res.err);
           }
         }
       });
@@ -368,7 +373,7 @@ export class Checkout {
         }
         else {
           if (res.err) {
-            this.globalService.showMsgSnackBar(res.err);
+            this.globalService.showToast(res.err);
           }
         }
       });
@@ -417,7 +422,7 @@ export class Checkout {
     //               }
     //               else {
     //                 if (res.err) {
-    //                   this.globalService.showMsgSnackBar(res.err);
+    //                   this.globalService.showToast(res.err);
     //                 }
     //               }
     //             });
@@ -592,29 +597,40 @@ export class Checkout {
     this.addressListData = this.changedSelectedAddress;
     this.addressNotfound = false;
 
-    this.closeModal();
+    if (this.changedModalRef) {
+      this.changedModalRef.close();
+    }
     this.cd.detectChanges();
   }
+
+  openChangedModal() {
+    this.changedModalRef = this.ngbModal.open(this.changedModal, {
+      windowClass: 'mobile-modal',
+      centered: true,
+    });
+  }
+
   closeModal() {
-    if (this.isBrowser) {
-      const modal = bootstrap.Modal.getInstance(
-        this.changedModal.nativeElement
-      );
-      modal.hide();
+    if (this.changedModalRef) {
+      this.changedModalRef.close();
     }
   }
+
+  openCouponModal() {
+    this.couponModalRef = this.ngbModal.open(this.couponModal, {
+      windowClass: 'mobile-modal',
+      centered: true,
+    });
+  }
+
   checkCoupon(couponValue: any) {
-    //  console.log('Input value:', couponValue);
-    //  console.log('this.casrtListData====>',this.cartListData);
     const ids = this.cartListData.map((item: any) => {
       return item.id
-
     });
     this.appliedCoupon = couponValue;
     let payload: any = {
       coupon_code: couponValue,
       cart_ids: ids,
-
     }
     let isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
     if (isGuest != null) {
@@ -629,29 +645,51 @@ export class Checkout {
       )
       .subscribe((res: any) => {
         if (res.success == true) {
-          console.log('enter , re', res);
-          this.globalService.showMsgSnackBar(res);
-          const modal = bootstrap.Modal.getInstance(this.couponModal.nativeElement);
-          modal.hide();
+          this.globalService.showToast(res);
+          if (this.couponModalRef) {
+            this.couponModalRef.close();
+          }
           localStorage.setItem('appliedCoupon', this.appliedCoupon);
-          //  this.router.navigate(
-          //     [],
-          //     {
-          //       queryParams: { coupon: this.appliedCoupon },
-          //       queryParamsHandling: 'merge'
-          //     }
-          //   );
           this.calculateGstPrice(this.cartListData);
         }
         else if (res && res.error && res.error.message) {
-          //console.log('error  :', res.error.message);
-          this.globalService.showMsgSnackBar(res.error);
+          this.globalService.showToast(res.error);
         }
       })
   }
   deleteCartItem(id: any) {
     if (id) {
       this.cartItemId = id;
+      this.modalRef = this.ngbModal.open(this.deleteCart, {
+        windowClass: 'mobile-modal',
+        centered: true,
+      });
+    }
+  }
+
+  deleteItem() {
+    if (this.cartItemId) {
+      this.dataService
+        .delete(`cart/${this.cartItemId}`)
+        .pipe(
+          catchError((err) => {
+            console.error('Error:', err);
+            return of(err);
+          })
+        )
+        .subscribe((res: any) => {
+          if (res.success == true) {
+            this.globalService.showToast(res);
+            if (this.modalRef) {
+              this.modalRef.close();
+            }
+            this.carList();
+            this.globalFunctionService.getCount();
+            this.cd.detectChanges();
+          } else if (res.error && res.error.message) {
+            this.globalService.showToast(res.error);
+          }
+        });
     }
   }
   increase(quantity: any, index: any) {
@@ -665,40 +703,6 @@ export class Checkout {
       this.cartListData
     );
     this.updateCartList(productQuantity, id);
-  }
-  deleteItem() {
-    if (this.cartItemId) {
-      this.dataService
-        .delete(`cart/${this.cartItemId}`)
-        .pipe(
-          catchError((err) => {
-            console.error('Error:', err);
-            setTimeout(() => {
-              // this.globalService.showMsgSnackBar(err);
-            }, 100);
-            return of(err);
-          })
-        )
-        .subscribe((res: any) => {
-          //console.log('Response:', res);
-
-          if (res.success == true) {
-            this.globalService.showMsgSnackBar(res);
-            if (this.isBrowser) {
-              const modal = bootstrap.Modal.getInstance(this.deleteCart.nativeElement);
-              modal.hide();
-            }
-            this.carList();
-            this.globalFunctionService.getCount();
-            this.cd.detectChanges();
-          } else if (res.error && res.error.message) {
-            //console.log('error  :', res.error.message);
-            this.globalService.showMsgSnackBar(res.error);
-          }
-          // this.getCategoryList();
-          // this.categoryListData = res.data;
-        });
-    }
   }
   decrease(quantity: any, index: any) {
     if (quantity > 1) {
@@ -719,12 +723,12 @@ export class Checkout {
       quantity: quantity,
     };
     this.dataService
-      .patch(`cart${id}`, data)
+      .patch(`cart/${id}`, data)
       .pipe(
         catchError((err) => {
           console.error('Error:', err);
           setTimeout(() => {
-            this.globalService.showMsgSnackBar(err);
+            this.globalService.showToast(err);
           }, 100);
           return of(err);
         })
@@ -736,7 +740,7 @@ export class Checkout {
           this.grandTotal = this.globalService.calculateGrandTotal(this.cartListData);
         } else if (res && res.error && res.error.message) {
           //console.log('error  :', res.error.message);
-          this.globalService.showMsgSnackBar(res.error);
+          this.globalService.showToast(res.error);
         }
         this.cd.detectChanges();
         // this.categoryListData = res.data;
@@ -756,6 +760,6 @@ export class Checkout {
     this.calculateGstPrice(this.cartListData);
   }
   addItemAlert() {
-    this.globalService.showMsgSnackBar({ message: 'Your Cart Is Emply!' });
+    this.globalService.showToast({ message: 'Your Cart Is Emply!' });
   }
 }

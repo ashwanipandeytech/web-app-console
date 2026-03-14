@@ -71,7 +71,7 @@ export class PageList implements OnInit {
       .subscribe((res: any) => {
         //console.log('Response:', res);
         if (res.success) {
-         this.globalService.showMsgSnackBar(res);
+         this.globalService.showToast(res);
           this.pageList.splice(index, 1);
           this.cdr.detectChanges()
         }

@@ -1,6 +1,6 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, effect, ElementRef, inject, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, ElementRef, inject, Inject, PLATFORM_ID, ViewChild, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { catchError, of } from 'rxjs';
@@ -27,9 +27,12 @@ declare const bootstrap: any;
   styleUrl: './cart.scss',
 })
 export class CartCommon {
-  @ViewChild('deleteCart') deleteCart!: ElementRef;
-  @ViewChild('couponModal') couponModal!: ElementRef;
+  @ViewChild('deleteCart') deleteCart!: TemplateRef<any>;
+  @ViewChild('couponModal') couponModal!: TemplateRef<any>;
   @ViewChild('addressInput') addressInput!: ElementRef<HTMLInputElement>;
+  
+  private modalRef?: NgbModalRef;
+  private couponModalRef?: NgbModalRef;
   private dataService: any = inject(DataService);
   private globalService: any = inject(GlobaCommonlService);
   private globalFunctionService = inject(GlobalFunctionService);
@@ -325,7 +328,7 @@ export class CartCommon {
   //       catchError((err) => {
   //         console.error('Error:', err);
   //         setTimeout(() => {
-  //           this.globalService.showMsgSnackBar(err);
+  //           this.globalService.showToast(err);
   //         }, 100);
   //         return of(err);
   //       })
@@ -372,7 +375,7 @@ export class CartCommon {
         catchError((err) => {
           console.error('Error:', err);
           setTimeout(() => {
-            this.globalService.showMsgSnackBar(err);
+            this.globalService.showToast(err);
           }, 100);
           return of(err);
         })
@@ -386,7 +389,7 @@ export class CartCommon {
 
         } else if (res && res.error && res.error.message) {
           //console.log('error  :', res.error.message);
-          this.globalService.showMsgSnackBar(res.error);
+          this.globalService.showToast(res.error);
         }
         this.cd.detectChanges();
         // this.categoryListData = res.data;
@@ -420,6 +423,10 @@ export class CartCommon {
   deleteCartItem(id: any) {
     if (id) {
       this.cartItemId = id;
+      this.modalRef = this.ngbModal.open(this.deleteCart, {
+        windowClass: 'mobile-modal',
+        centered: true,
+      });
     }
   }
   // deleteItem(): void {
@@ -449,30 +456,21 @@ export class CartCommon {
         .pipe(
           catchError((err) => {
             console.error('Error:', err);
-            setTimeout(() => {
-              // this.globalService.showMsgSnackBar(err);
-            }, 100);
             return of(err);
           })
         )
         .subscribe((res: any) => {
-          //console.log('Response:', res);
-
           if (res.success == true) {
-            this.globalService.showMsgSnackBar(res);
-            if (this.isBrowser) {
-              const modal = bootstrap.Modal.getInstance(this.deleteCart.nativeElement);
-              modal.hide();
+            this.globalService.showToast(res);
+            if (this.modalRef) {
+              this.modalRef.close();
             }
             this.carList();
             this.globalFunctionService.getCount();
             this.cd.detectChanges();
           } else if (res.error && res.error.message) {
-            //console.log('error  :', res.error.message);
-            this.globalService.showMsgSnackBar(res.error);
+            this.globalService.showToast(res.error);
           }
-          // this.getCategoryList();
-          // this.categoryListData = res.data;
         });
     }
   }
@@ -552,7 +550,7 @@ export class CartCommon {
         catchError((err) => {
           console.error('Error:', err);
           setTimeout(() => {
-            this.globalService.showMsgSnackBar(err);
+            this.globalService.showToast(err);
           }, 100);
           return of(err);
         })
@@ -568,6 +566,13 @@ export class CartCommon {
       })
 
   }
+  openCouponModal() {
+    this.couponModalRef = this.ngbModal.open(this.couponModal, {
+      windowClass: 'mobile-modal',
+      centered: true,
+    });
+  }
+
   checkCoupon(couponValue: any) {
     console.log('Input value:', couponValue);
     const ids = this.cartListData.map((item: any) => {
@@ -592,22 +597,15 @@ export class CartCommon {
       .subscribe((res: any) => {
         if (res.success == true) {
           console.log('enter , re', res);
-          this.globalService.showMsgSnackBar(res);
-          const modal = bootstrap.Modal.getInstance(this.couponModal.nativeElement);
-          modal.hide();
+          this.globalService.showToast(res);
+          if (this.couponModalRef) {
+            this.couponModalRef.close();
+          }
           localStorage.setItem('appliedCoupon', this.appliedCoupon);
-          // this.route.navigate(
-          //     [],
-          //     {
-          //       queryParams: { coupon: this.appliedCoupon },
-          //       queryParamsHandling: 'merge'
-          //     }
-          //   );
           this.calculateGstPrice(this.cartListData);
         }
         else if (res && res.error && res.error.message) {
-          //console.log('error  :', res.error.message);
-          this.globalService.showMsgSnackBar(res.error);
+          this.globalService.showToast(res.error);
         }
       })
   }

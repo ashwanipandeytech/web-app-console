@@ -27,8 +27,6 @@
             </button>
             <button
               class="btn border ms-2 actionIcon"
-              data-bs-toggle="modal"
-              data-bs-target="#removeAddress"
               (click)="setDeleteId(item.id)"
               title="Delete your address"
             >
@@ -448,32 +446,23 @@
   </div>
   
   <!-- Delete address Modal -->
-  <div
-    #removeAddressModal
-    class="modal mobile-modal fade"
-    id="removeAddress"
-    tabindex="-1"
-    aria-labelledby="removeAddressLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header py-2">
-          <h1 class="modal-title fs-5" id="removeAddressLabel">Remove Address</h1>
-          <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
+  <ng-template #removeAddressModal let-modal>
+    <div class="modal-content border-0">
+      <div class="modal-header py-2">
+        <h1 class="modal-title fs-5" id="removeAddressLabel">Remove Address</h1>
+        <button type="button" class="close-btn" (click)="modal.dismiss()" aria-label="Close">
              <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-        <div class="modal-body fs-16">Remove address - sure?</div>
-        <div class="modal-footer border-0">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="shop-btn ms-2" (click)="deleteAddress()">
-            Remove
-          </button>
-        </div>
+        </button>
+      </div>
+      <div class="modal-body fs-16">Remove address - sure?</div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+        <button type="button" class="shop-btn ms-2" (click)="deleteAddress()">
+          Remove
+        </button>
       </div>
     </div>
-  </div>
+  </ng-template>
   </div>
 }
 

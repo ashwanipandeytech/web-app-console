@@ -161,16 +161,16 @@ export class ProductComponent implements OnInit {
         //   if (nonLoggedInUserToken) {
         //     localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
         //   }
-        //   this.globalService.showMsgSnackBar(res.body);
+        //   this.globalService.showToast(res.body);
         // }
         if (res.success == true) {
           // console.info('herer add to cart')
           // this.globalFunctionService.getCount();
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
           this.globalFunctionService.getCount();
           this.cd.detectChanges();
         } else if (res.error && res.error.message) {
-          this.globalService.showMsgSnackBar(res.error);
+          this.globalService.showToast(res.error);
         }
         // EMIT THE CART ADDED SIGNAL
       });

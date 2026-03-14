@@ -233,22 +233,24 @@
 </div>
 <!-- main content end -->
 
-<ng-template #orderPreviewModal let-data>
-    <div class="p-3 p-md-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="mb-0">Order Preview</h5>
-            <button type="button" class="btn-close" aria-label="Close" (click)="closeOrderPreview()"></button>
-        </div>
-
+<ng-template #orderPreviewModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Order Preview</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
         <div class="row g-2">
-            <div class="col-md-6"><strong>Order ID:</strong> {{ data?.id || '-' }}</div>
-            <div class="col-md-6"><strong>Status:</strong> {{ data?.status || '-' }}</div>
-            <div class="col-md-6"><strong>Customer:</strong> {{ data?.user?.name || '-' }}</div>
-            <div class="col-md-6"><strong>Email:</strong> {{ data?.user?.email || '-' }}</div>
-            <div class="col-md-6"><strong>Payment Method:</strong> {{ data?.payment_method || '-' }}</div>
-            <div class="col-md-6"><strong>Total Amount:</strong> ₹{{ data?.total_amount ?? 0 }}</div>
-            <div class="col-md-6"><strong>Created At:</strong> {{ data?.created_at ? (data?.created_at | date:'dd-MM-yyyy, hh:mm a') : '-' }}</div>
-            <div class="col-md-6"><strong>Updated At:</strong> {{ data?.updated_at ? (data?.updated_at | date:'dd-MM-yyyy, hh:mm a') : '-' }}</div>
+            <div class="col-md-6"><strong>Order ID:</strong> {{ selectedOrder?.id || '-' }}</div>
+            <div class="col-md-6"><strong>Status:</strong> {{ selectedOrder?.status || '-' }}</div>
+            <div class="col-md-6"><strong>Customer:</strong> {{ selectedOrder?.user?.name || '-' }}</div>
+            <div class="col-md-6"><strong>Email:</strong> {{ selectedOrder?.user?.email || '-' }}</div>
+            <div class="col-md-6"><strong>Payment Method:</strong> {{ selectedOrder?.payment_method || '-' }}</div>
+            <div class="col-md-6"><strong>Total Amount:</strong> ₹{{ selectedOrder?.total_amount ?? 0 }}</div>
+            <div class="col-md-6"><strong>Created At:</strong> {{ selectedOrder?.created_at ? (selectedOrder?.created_at | date:'dd-MM-yyyy, hh:mm a') : '-' }}</div>
+            <div class="col-md-6"><strong>Updated At:</strong> {{ selectedOrder?.updated_at ? (selectedOrder?.updated_at | date:'dd-MM-yyyy, hh:mm a') : '-' }}</div>
         </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
     </div>
 </ng-template>

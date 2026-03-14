@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, HostListener, inject, Optional, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, inject, Input, Optional, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CommonModule, NgClass } from '@angular/common';
 import { SpecialCharacterHelper } from 'shared-lib/services/special-character-helper'
 import {
@@ -54,7 +54,7 @@ export class AddProduct {
   @ViewChild('descriptionImageGallery') descriptionImageGallery!: ElementRef<HTMLInputElement>;
   @ViewChild('quillEditor') quillEditor!: QuillEditorComponent;
   @ViewChild('productDescriptionQuill') productDescriptionQuill!: QuillEditorComponent;
-  @Output() data: any = {
+  @Input() data: any = {
     price_data: {},
     shipping_info: {},
     shipping_config: {},
@@ -670,7 +670,7 @@ export class AddProduct {
         catchError((err) => {
           console.error('Error:', err);
           setTimeout(() => {
-            // this.globalService.showMsgSnackBar(err);
+            // this.globalService.showToast(err);
           }, 100);
           return of(err);
         })
@@ -1143,7 +1143,7 @@ export class AddProduct {
         catchError((err) => {
           console.error('Error:', err);
           setTimeout(() => {
-            // this.globalService.showMsgSnackBar(err);
+            // this.globalService.showToast(err);
           }, 100);
           return of(err);
         })
@@ -1151,13 +1151,13 @@ export class AddProduct {
       .subscribe((res: any) => {
         //console.log('Response:', res);
         if (res.error) {
-          this.globalService.showMsgSnackBar(res.error);
+          this.globalService.showToast(res.error);
           return;
         } else if (res.success == true) {
           let id = res.data.data.id;
           this.uploadProductMedia(id).finally(() => {
             setTimeout(() => {
-              this.globalService.showMsgSnackBar(res);
+              this.globalService.showToast(res);
               this.activeModal.close('success');
             }, 100);
           });
@@ -1236,7 +1236,7 @@ export class AddProduct {
         catchError((err) => {
           console.error('Error:', err);
           setTimeout(() => {
-            // this.globalService.showMsgSnackBar(err);
+            // this.globalService.showToast(err);
           }, 100);
           return of(err);
         })
@@ -1244,14 +1244,14 @@ export class AddProduct {
       .subscribe((res: any) => {
         //console.log('Response:', res);
         if (res.error) {
-          this.globalService.showMsgSnackBar(res.error);
+          this.globalService.showToast(res.error);
           return;
         } else if (res.success == true) {
           // let id = res.data.id;
           let id = res.data.data.id;
           this.uploadProductMedia(id).finally(() => {
             setTimeout(() => {
-              this.globalService.showMsgSnackBar(res);
+              this.globalService.showToast(res);
               this.resetProductForm();
               this.activeModal.close('success');
             }, 100);
@@ -1302,7 +1302,7 @@ export class AddProduct {
         catchError((err) => {
           console.error('Error:', err);
           //     setTimeout(() => {
-          //   this.globalService.showMsgSnackBar(err);
+          //   this.globalService.showToast(err);
           // }, 100);
           return of(null);
         })
@@ -1311,7 +1311,7 @@ export class AddProduct {
         console.log('Response:', res);
         // this.getCategoryList();
         // setTimeout(() => {
-        //   this.globalService.showMsgSnackBar(res);
+        //   this.globalService.showToast(res);
         // }, 100);
       });
   }

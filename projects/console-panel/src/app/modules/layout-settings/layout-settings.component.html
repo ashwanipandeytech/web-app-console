@@ -64,8 +64,8 @@
                         [(ngModel)]="settingsModel.general.logo.desktop.imgSrc"
                         placeholder="https://example.com/desktop-logo.png">
 
-                      <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto"
-                        (click)="uploadFrom('desktop')">Upload</button>
+                      <button class="btn btn-primary p-1 ms-2" (click)="openUploadModal('desktop')">
+Upload</button>
                     </div>
 
                     @if (settingsModel.general.logo.desktop.imgSrc) {
@@ -93,8 +93,8 @@
                         [(ngModel)]="settingsModel.general.logo.mobile.imgSrc"
                         placeholder="https://example.com/mobile-logo.png">
 
-                      <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto"
-                        (click)="uploadFrom('mobile')">Upload</button>
+                      <button class="btn btn-primary p-1 ms-2" (click)="openUploadModal('mobile')">
+Upload</button>
                     </div>
 
                     @if (settingsModel.general.logo.mobile.imgSrc) {
@@ -135,8 +135,8 @@
                       <input type="text" class="form-control" name="general.favico.desktop.imgSrc"
                         [(ngModel)]="settingsModel.general.favico.desktop.imgSrc"
                         placeholder="https://example.com/favicon.ico">
-                      <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto"
-                        (click)="uploadFrom('fav_desktop')">Upload</button>
+                      <button class="btn btn-primary p-1 ms-2" (click)="openUploadModal('fav_desktop')">
+Upload</button>
                     </div>
 
                     @if (settingsModel.general.favico.desktop.imgSrc) {
@@ -152,8 +152,8 @@
                         [(ngModel)]="settingsModel.general.favico.mobile.imgSrc"
                         placeholder="https://example.com/mobile-favicon.png">
 
-                      <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto"
-                        (click)="uploadFrom('fav_mobile')">Upload</button>
+                      <button class="btn btn-primary p-1 ms-2" (click)="openUploadModal('fav_mobile')">
+Upload</button>
                     </div>
 
                     @if (settingsModel.general.favico.mobile.imgSrc) {
@@ -200,8 +200,8 @@
                           <input type="text" class="form-control" [name]="'home_Banner_Slider[' + $index + '].imgSrc'"
                             [(ngModel)]="slide.imgSrc" placeholder="https://example.com/slide.jpg">
 
-                          <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto"
-                            (click)="uploadFrom('slider'+ $index)">Upload</button>
+                          <button class="btn btn-primary p-1 ms-2" (click)="openUploadModal('slider' + $index)">
+Upload</button>
                         </div>
 
                         @if (slide.imgSrc) {
@@ -266,8 +266,8 @@
                           <input type="text" class="form-control" [name]="'home_Promo_Slider[' + $index + '].imgSrc'"
                             [(ngModel)]="slide.imgSrc" placeholder="https://example.com/slide.jpg">
 
-                          <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto"
-                            (click)="uploadFrom('promoslider'+ $index)">Upload</button>
+                          <button class="btn btn-primary p-1 ms-2" (click)="openUploadModal('promoslider' + $index)">
+Upload</button>
                         </div>
 
                         @if (slide.imgSrc) {
@@ -333,8 +333,8 @@
                             [name]="'home_Promo_Slider_testimonials[' + $index + '].imgSrc'" [(ngModel)]="slide.imgSrc"
                             placeholder="https://example.com/slide.jpg">
 
-                          <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto"
-                            (click)="uploadFrom('promoslidertestimonial'+ $index)">Upload</button>
+                          <button class="btn btn-primary p-1 ms-2" (click)="openUploadModal('promoslidertestimonial' + $index)">
+Upload</button>
                         </div>
 
                         @if (slide.imgSrc) {
@@ -399,8 +399,8 @@
                             [name]="'home_Promo_Slider_bottom[' + $index + '].imgSrc'" [(ngModel)]="slide.imgSrc"
                             placeholder="https://example.com/slide.jpg">
 
-                          <button class="btn btn-primary p-1 ms-2" data-bs-toggle="modal" data-bs-target="#uploadPhoto"
-                            (click)="uploadFrom('homebottombanner'+ $index)">Upload</button>
+                          <button class="btn btn-primary p-1 ms-2" (click)="openUploadModal('homebottombanner' + $index)">
+Upload</button>
                         </div>
 
                         @if (slide.imgSrc) {
@@ -589,16 +589,13 @@
 </div>
 
 <!-- Modal -->
-<div #uploadPhoto class="modal mobile-modal fade" id="uploadPhoto" data-bs-backdrop="static" data-bs-keyboard="false"
-  tabindex="-1" aria-labelledby="uploadPhotoLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-    <div class="modal-content">
-      <div class="modal-header justify-content-center">
-        <h1 class="modal-title fs-5" id="uploadPhotoLabel">Gallery</h1>
-        <button type="button" class="btn-close position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal"
-          aria-label="Close"></button>
-      </div>
-      <div class="modal-body pt-0 px-0">
+<ng-template #uploadPhotoModal let-modal>
+  <div class="modal-header justify-content-center">
+    <h1 class="modal-title fs-5" id="uploadPhotoLabel">Gallery</h1>
+    <button type="button" class="btn-close position-absolute top-0 end-0 mt-2 me-2" (click)="modal.dismiss('Close')"
+      aria-label="Close"></button>
+  </div>
+  <div class="modal-body pt-0 px-0">
         <div class="position-sticky top-0 z-3 bg-light py-3 px-3">
           <div class="digi-dropdown dropdown text-end">
             <button class="btn btn-sm btn-outline-primary" data-bs-toggle="dropdown" data-bs-auto-close="outside"
@@ -723,9 +720,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cancel')">Cancel</button>
         <button type="button" class="btn btn-primary" (click)="savedImage()">Save image</button>
       </div>
-    </div>
-  </div>
-</div>
+      </ng-template>

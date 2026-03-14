@@ -7,6 +7,7 @@ import {
   Inject,
   PLATFORM_ID,
   ViewChild,
+  TemplateRef
 } from '@angular/core';
 import { DataService } from '../../../services/data-service';
 import { GlobaCommonlService } from '../../../services/global-common.service';
@@ -14,7 +15,7 @@ import { catchError, of } from 'rxjs';
 import { GlobalFunctionService } from '../../../services/global-function.service';
 import { NoDataComponent } from '../../no-data/no-data.component';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-declare var bootstrap: any;
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SignalService } from '../../../services/signal-service';
 @Component({
   selector: 'web-wishlist',
@@ -23,7 +24,9 @@ import { SignalService } from '../../../services/signal-service';
   styleUrl: './wishlist.scss',
 })
 export class Wishlist {
-  @ViewChild('removeProduct') removeProduct!: ElementRef;
+  @ViewChild('removeProduct') removeProduct!: TemplateRef<any>;
+  private ngbModal = inject(NgbModal);
+  private modalRef?: NgbModalRef;
   public dataService: any = inject(DataService);
   public signalService: any = inject(SignalService);
   public globalFunctionService: any = inject(GlobalFunctionService);
@@ -70,6 +73,10 @@ export class Wishlist {
   }
   removeWishlist(id: any) {
     this.WishListId = id;
+    this.modalRef = this.ngbModal.open(this.removeProduct, {
+      windowClass: 'mobile-modal',
+      centered: true,
+    });
   }
   remove() {
     this.dataService.delete(`wishlist/${this.WishListId}`).subscribe((res: any) => {
@@ -77,11 +84,10 @@ export class Wishlist {
         message: 'Item Removed from Wish List',
         success: true,
       };
-      if (this.isBrowser) {
-        const modal = bootstrap.Modal.getInstance(this.removeProduct.nativeElement);
-        modal.hide();
+      if (this.modalRef) {
+        this.modalRef.close();
       }
-      this.globalCommonService.showMsgSnackBar(response);
+      this.globalCommonService.showToast(response);
       this.getWishlistData();
       this.cd.markForCheck();
     });
@@ -117,13 +123,13 @@ export class Wishlist {
               localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
             }
           }
-          this.globalCommonService.showMsgSnackBar(res.body);
+          this.globalCommonService.showToast(res.body);
         }
         if (res.success == true) {
-          this.globalCommonService.showMsgSnackBar(res);
+          this.globalCommonService.showToast(res);
           this.globalFunctionService.getCount();
         } else if (res.error && res.error.message) {
-          this.globalCommonService.showMsgSnackBar(res.error);
+          this.globalCommonService.showToast(res.error);
         }
         // EMIT THE CART ADDED SIGNAL
       });

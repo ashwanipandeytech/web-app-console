@@ -199,12 +199,12 @@ setEditorContent(html: string) {
         //   if (nonLoggedInUserToken) {
         //     localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
         //   }
-        //   this.globalService.showMsgSnackBar(res.body);
+        //   this.globalService.showToast(res.body);
         // }
         if (res.success == true) {
           // console.info('herer add to cart')
           this.globalFunctionService.getCount();
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
           this.cd.detectChanges();
 
           //       effect(() => {
@@ -226,7 +226,7 @@ setEditorContent(html: string) {
           // this.globalFunctionService.getCount();
         }
         // if (res.success ==true) {
-        //   this.globalService.showMsgSnackBar(res);
+        //   this.globalService.showToast(res);
         //   // if (action == 'buy') {
         //   // this.router.navigate(['/checkout']);
         //   //   return;
@@ -235,7 +235,7 @@ setEditorContent(html: string) {
         // // window.location.reload();
         // }
         else if (res.error && res.error.message) {
-          this.globalService.showMsgSnackBar(res.error);
+          this.globalService.showToast(res.error);
         }
 
         if (res.success == true) {

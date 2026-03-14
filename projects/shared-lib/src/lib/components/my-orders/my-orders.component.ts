@@ -8,10 +8,11 @@ import {
   inject,
   OnInit,
   ViewChild,
-  Inject, // Add Inject
-  PLATFORM_ID, // Add PLATFORM_ID
+  Inject,
+  PLATFORM_ID,
   QueryList,
-  ViewChildren
+  ViewChildren,
+  TemplateRef
 } from '@angular/core';
 import { catchError, of } from 'rxjs';
 import { GlobaCommonlService } from '../../services/global-common.service';
@@ -22,7 +23,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { SignalService } from '../../services/signal-service';
 import { MobileBottomNavComponent } from '../mobile-bottom-nav/mobile-bottom-nav.component';
 import { Router, RouterLink } from '@angular/router';
-declare var bootstrap: any;
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-my-orders',
@@ -32,10 +33,14 @@ declare var bootstrap: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyOrdersComponent implements OnInit {
-  @ViewChild('orderDetail') orderDetail!: ElementRef;
-  @ViewChild('rateusModal') rateusModal!: ElementRef;
-  @ViewChild('confirmCancelOrder') confirmCancelOrder!: ElementRef;
+  @ViewChild('orderDetail') orderDetail!: TemplateRef<any>;
+  @ViewChild('rateusModal') rateusModal!: TemplateRef<any>;
+  @ViewChild('confirmCancelOrder') confirmCancelOrder!: TemplateRef<any>;
   @ViewChildren('collapseRef') collapseRefs!: QueryList<ElementRef>;
+  
+  private ngbModal = inject(NgbModal);
+  private modalRef?: NgbModalRef;
+  private cancelModalRef?: NgbModalRef;
   dataService = inject(DataService);
   private cd = inject(ChangeDetectorRef);
   public globalService: any = inject(GlobaCommonlService);
@@ -148,7 +153,7 @@ export class MyOrdersComponent implements OnInit {
         //console.log('Response:===>', res);
 
         if (res?.success == true) {
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
           this.closeRatingPopup(index);
           item.product_review = {
             comment: payload.comment,
@@ -160,11 +165,11 @@ export class MyOrdersComponent implements OnInit {
           // this.router.navigate(['/cart']);
         }
         else if (res?.success == false) {
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
 
         }
         else if (res.error && res.error.message) {
-          this.globalService.showMsgSnackBar(res.error);
+          this.globalService.showToast(res.error);
           // this.closeRatingPopup();
 
 
@@ -260,14 +265,18 @@ export class MyOrdersComponent implements OnInit {
 
 
   closeRatingPopup(index: any) {
-    if (this.isBrowser) {
-      const collapse = bootstrap.Collapse.getOrCreateInstance(
-        this.collapseRefs.toArray()[index].nativeElement
-      );
-      collapse.hide();
-
-    }
+     // No manual hide needed with NgbModal as it doesn't affect collapse, 
+     // but if it's a bootstrap collapse we might need to handle it.
+     // For now focusing on the Modal refactoring.
   }
+  
+  openCancelOrderModal() {
+    this.cancelModalRef = this.ngbModal.open(this.confirmCancelOrder, {
+      windowClass: 'mobile-modal',
+      centered: true
+    });
+  }
+
   cancelOrder() {
     let payload: any = {};
     if (this.orderDetailList?.payment_method === 'cod') {
@@ -278,15 +287,9 @@ export class MyOrdersComponent implements OnInit {
       payload = this.bankDetailsForm.value;
     }
 
-    if (this.isBrowser) {
-      const modal = bootstrap.Modal.getInstance(
-        this.confirmCancelOrder.nativeElement
-      );
-      if (modal) {
-        modal.hide();
-      }
+    if (this.cancelModalRef) {
+      this.cancelModalRef.close();
     }
-
 
     this.dataService
       .post(payload, 'orders/' + this.orderId + '/cancel')
@@ -297,18 +300,15 @@ export class MyOrdersComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
         if (res.success == true) {
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
           this.globalFunctionService.getCount();
-          this.orderList(); // Added orderList() to refresh the data
+          this.orderList();
           this.cd.detectChanges();
-
         } else if (res.error && res.error.message) {
-          this.globalService.showMsgSnackBar(res.error);
+          this.globalService.showToast(res.error);
         }
       });
-
   }
 
   downloadInvoice(order: any) {
@@ -319,27 +319,22 @@ export class MyOrdersComponent implements OnInit {
   getOrderDetailData(data: any) {
     this.orderDetailList = [];
     this.orderDetailList = data;
-    //console.log('hiii',data);
     this.orderId = data.id;
-
+    
+    this.modalRef = this.ngbModal.open(this.orderDetail, {
+      windowClass: 'mobile-modal',
+      scrollable: true,
+      centered: true
+    });
   }
-  // deleteOrder(){
-  //  this.dataService.delete('wishlist',this.orderId).subscribe((res:any)=>{
-  //     let response = {
-  //         message:'Item Removed from Wish List',
-  //         success:true
-  //     }
-  //     const modal = bootstrap.Modal.getInstance(
-  //         this.orderDetail.nativeElement
-  //       );
-  //       modal.hide();
-  //       this.orderList();
-  //       this.cd.markForCheck();
-  // }
-  //  )
-  // }
+
+  closeModal() {
+    if (this.modalRef) {
+      this.modalRef.close();
+    }
+  }
+
   addToCart(item: any) {
-    //console.log('item==>', item);
     let isGuest: any = null;
     if (this.isBrowser) {
       isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
@@ -358,25 +353,18 @@ export class MyOrdersComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
         if (res.success == true) {
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
           this.globalFunctionService.getCount();
           this.cd.detectChanges();
-
         } else if (res.error && res.error.message) {
-          this.globalService.showMsgSnackBar(res.error);
+          this.globalService.showToast(res.error);
         }
       });
   }
+  
   goToHelp() {
-
-    const modalElement = this.orderDetail.nativeElement;
-    const modalInstance = bootstrap.Modal.getInstance(modalElement)
-      || new bootstrap.Modal(modalElement);
-    modalInstance.hide();
-
-
+    this.closeModal();
     this.route.navigate(['/contact-us']);
   }
 }

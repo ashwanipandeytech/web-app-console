@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 import { GlobaCommonlService } from '../../services/global-common.service';
 import { DataService } from '../../services/data-service';
 import { ActivatedRoute, Router } from '@angular/router';
-declare var bootstrap: any;
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'web-thankyou',
   imports: [ReactiveFormsModule, CommonModule],
@@ -17,7 +18,9 @@ export class Thankyou {
   rateUsForm!: FormGroup;
   dataService = inject(DataService);
   fb = inject(FormBuilder);
-  @ViewChild('rateusModal') rateusModal!: ElementRef;
+  @ViewChild('rateusModal') rateusModal!: TemplateRef<any>;
+  private ngbModal = inject(NgbModal);
+  private modalRef?: NgbModalRef;
   public globalService: any = inject(GlobaCommonlService);
   private cd = inject(ChangeDetectorRef);
   private route = inject(ActivatedRoute);
@@ -38,8 +41,12 @@ export class Thankyou {
     }, 500);
   }
   openRateUsModal() {
-    const modal = new bootstrap.Modal(this.rateusModal.nativeElement);
-    modal.show();
+    this.modalRef = this.ngbModal.open(this.rateusModal, {
+      windowClass: 'mobile-modal',
+      centered: true,
+      backdrop: 'static',
+      keyboard: false
+    });
   }
   addRateUsForm() {
     this.rateUsForm = this.fb.group({
@@ -61,51 +68,40 @@ export class Thankyou {
         }),
       )
       .subscribe((res: any) => {
-        //console.log('Response:===>', res);
-
         if (res?.success == true) {
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
           this.rateUsForm.reset();
           this.cd.detectChanges();
-          const modalElement = this.rateusModal.nativeElement;
-          const modalInstance =
-            bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-          modalInstance.hide();
+          if (this.modalRef) {
+            this.modalRef.close();
+          }
           this.router.navigate(['/user-profile'], {
             queryParams: { section: 'Orders' },
             queryParamsHandling: 'merge',
             replaceUrl: true,
           });
-          // this.updateratingInorderList(productId);
-
-          // this.router.navigate(['/cart']);
         } else if (res?.success == false) {
-          this.globalService.showMsgSnackBar(res);
-          const modalElement = this.rateusModal.nativeElement;
-          const modalInstance =
-            bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-          modalInstance.hide();
+          this.globalService.showToast(res);
+          if (this.modalRef) {
+            this.modalRef.close();
+          }
           this.router.navigate(['/user-profile'], {
             queryParams: { section: 'Orders' },
             queryParamsHandling: 'merge',
             replaceUrl: true,
           });
         } else if (res.error && res.error.message) {
-          const modalElement = this.rateusModal.nativeElement;
-          const modalInstance =
-            bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+          if (this.modalRef) {
+            this.modalRef.close();
+          }
           this.router.navigate(['/user-profile'], {
             queryParams: { section: 'Orders' },
             queryParamsHandling: 'merge',
             replaceUrl: true,
           });
-          modalInstance.hide();
-          this.globalService.showMsgSnackBar(res.error);
-          // this.closeRatingPopup();
+          this.globalService.showToast(res.error);
         }
       });
-    // 🔹 API call example
-    // this.apiService.post('rate-us', payload).subscribe()
   }
   setRating(value: number): void {
     console.log("ratings", value)

@@ -6,24 +6,25 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { DataService } from 'shared-lib';
 import { catchError, of } from 'rxjs';
 import { environment } from 'environments/environment';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationPopupComponent } from '../../confirmationPopup/confirmationPopup.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { GlobalService } from '../../global.service';
 
 @Component({
   selector: 'app-category',
   templateUrl: './category.html',
   styleUrl: './category.scss',
-  standalone: false,
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [Sidebar, Header, FormsModule, ReactiveFormsModule],
 })
 export class Category {
   @ViewChild('fileInput') fileInput!: ElementRef;
   @ViewChild('categoryPreviewModal') categoryPreviewModal!: TemplateRef<any>;
   isEdit:boolean=false;
-  readonly dialog = inject(MatDialog);
-  previewDialogRef?: MatDialogRef<any>;
+  private readonly ngbModal = inject(NgbModal);
+  previewDialogRef?: NgbModalRef;
+  selectedCategory: any;
   public dataService: any = inject(DataService);
   addCategory!: FormGroup;
   imageFile: File | null = null;
@@ -105,7 +106,7 @@ unloadNotification($event: BeforeUnloadEvent) {
         catchError(err => {
           console.error('Error:', err);
             setTimeout(() => {
-          this.globalService.showMsgSnackBar(err);
+          this.globalService.showToast(err);
         }, 100);
           return of(null);
         })
@@ -120,7 +121,7 @@ unloadNotification($event: BeforeUnloadEvent) {
         this.imageFile = null;
         this.getCategoryList();
         setTimeout(() => {
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
         }, 100);
       });
   }
@@ -154,36 +155,33 @@ unloadNotification($event: BeforeUnloadEvent) {
         // this.categoryListData = res.data;
       });
   }
-
-  openDialog(id: any): void {
-    let popupData = {
-      title: 'Category',
-      description: 'Are you sure, you want to delete catrgory',
-      id: id
+openDialog(id: any): void {
+  let popupData = {
+    title: 'Category',
+    description: 'Are you sure, you want to delete category',
+    id: id
+  }
+  const modalRef = this.ngbModal.open(ConfirmationPopupComponent, {
+    size: 'sm',
+    centered: true
+  });
+  modalRef.componentInstance.data = popupData;
+  modalRef.result.then((result) => {
+    if (result && result.action === 'delete') {
+      this.deleteCategory(result.id);
     }
-    let dialogRef = this.dialog.open(ConfirmationPopupComponent, {
-      width: '250px',
-      data: popupData,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      //console.log('Dialog closed with:', result);
+  }).catch(() => {});
+}
 
-      if (result.action === 'delete') {
-        // Perform delete
-        this.deleteCategory(result.id);
-
-      }
-    })
-  }
-
-  openCategoryPreview(item: any): void {
-    if (!this.categoryPreviewModal) return;
-    this.previewDialogRef = this.dialog.open(this.categoryPreviewModal, {
-      width: '700px',
-      maxWidth: '95vw',
-      data: item
-    });
-  }
+openCategoryPreview(item: any): void {
+  if (!this.categoryPreviewModal) return;
+  this.selectedCategory = item;
+  this.previewDialogRef = this.ngbModal.open(this.categoryPreviewModal, {
+    size: 'lg',
+    centered: true,
+    scrollable: true
+  });
+}
 
   closeCategoryPreview(): void {
     this.previewDialogRef?.close();
@@ -257,7 +255,7 @@ unloadNotification($event: BeforeUnloadEvent) {
         catchError(err => {
           console.error('Error:', err);
            setTimeout(() => {
-          this.globalService.showMsgSnackBar(err);
+          this.globalService.showToast(err);
         }, 100);
           return of(err);
         })
@@ -268,7 +266,7 @@ unloadNotification($event: BeforeUnloadEvent) {
          this.isEdit = false;
          this.imagePreview = '';
         if (res.error) {
-          this.globalService.showMsgSnackBar(res.err);
+          this.globalService.showToast(res.err);
           
         }
 
@@ -276,7 +274,7 @@ else{
   
         this.getCategoryList();
         setTimeout(() => {
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
         }, 100);
         this.cd.detectChanges();
 }
@@ -291,7 +289,7 @@ else{
         catchError(err => {
           console.error('Error:', err);
            setTimeout(() => {
-          this.globalService.showMsgSnackBar(err);
+          this.globalService.showToast(err);
         }, 100);
           return of(null);
         })
@@ -300,7 +298,7 @@ else{
         //console.log('Response:', res);
         this.getCategoryList();
           setTimeout(() => {
-          this.globalService.showMsgSnackBar(res);
+          this.globalService.showToast(res);
         }, 100);
         this.cd.detectChanges();
         // this.categoryListData = res.data;
