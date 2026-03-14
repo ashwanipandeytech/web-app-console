@@ -206,12 +206,14 @@
                         Cancel Order
                       </button>
                     }
+                   @if (orderDetailList.status != 'delivered') {
                     <button
                       class="fs-14 btn btn-outline-primary"
                       (click)="downloadInvoice(orderDetailList)"
                     >
                       Download Invoice
                     </button>
+                  }
                   </div>
                   @if (!item?.product_review) {
                     <div class="collapse" [id]="'collapseProduct' + $index" #collapseRef>
