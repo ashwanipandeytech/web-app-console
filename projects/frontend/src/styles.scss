@@ -1090,6 +1090,7 @@ safure-root {
   td,
   tr {
     border-color: transparent;
+    vertical-align: sub;
   }
 }
 
@@ -1382,7 +1383,7 @@ input[type="number"] {
 
 .editor-text {
   & * {
-    font-size: 1rem;
+    font-size: 0.875rem;
   }
 
   .h1,
