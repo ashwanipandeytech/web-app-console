@@ -15,6 +15,7 @@ import { EditPage } from './modules/settings/edit';
 import { CouponsComponent } from './modules/coupons/coupons.component';
 import { CustomerReportsComponent } from './modules/customer-reports/customer-reports.component';
 import { EditorTestComponent } from './modules/editor-test/editor-test';
+import { CancelledPaymentList } from './modules/cancelled-payment-list/cancelled-payment-list';
 
 export const routes: Routes = [
     // {
@@ -74,6 +75,11 @@ export const routes: Routes = [
     {
         path: 'orders',
         component: Order,
+        canActivate: [authGuard]
+    },
+    {
+        path: 'cancelledPaymentCashOrders',
+        component: CancelledPaymentList,
         canActivate: [authGuard]
     },
     {
