@@ -37,20 +37,15 @@
 
 <section class="product-category product">
   <div class="container">
-    <div class="row d-flex gap-0">
+    <div class="row d-flex g-2">
       @for (item of categoryListData; track $index) {
         <div class="col-md-2 col-6">
           <a class="category-link" (click)="gotoCategory(item.id)">
-            <div class="product-wrapper">
+            <div class="product-wrapper border p-2 text-center rounded d-flex flex-column">
               <div class="wrapper-img">
                 <img [src]="imgUrl + '/' + item?.thumbnail" width="120" alt="" />
               </div>
-
-              <div class="wrapper-info">
-                <span class="wrapper-details">
-                  {{ item?.name }}
-                </span>
-              </div>
+              <span class="wrapper-details mt-auto pt-2">{{ item?.name }}</span>
             </div>
           </a>
         </div>
@@ -59,5 +54,3 @@
   </div>
 </section>
 
-<!-- Mobile Bottom Navigation -->
-<!-- <app-mobile-bottom-nav></app-mobile-bottom-nav> -->
