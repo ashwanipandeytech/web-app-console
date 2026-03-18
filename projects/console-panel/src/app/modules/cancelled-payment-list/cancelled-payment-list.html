@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="panel">
                 <div class="panel-header">
-                    <h5 class="fw-bold">All Order</h5>
+                    <h5 class="fw-bold">Refund Requests</h5>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -11,47 +11,45 @@
                             id="allProductTable">
                             <thead>
                                 <tr>
-                                    <th>Sr No</th>
-                                    <th>Payment ID</th>
-                                    <th>Date</th>
-                                    <th>Customer Name</th>
-                                    <th>Amount</th>
-                                    <th>Payment Mode</th>
-                                    <th>Cancelled By</th>
-                                    <th>Cancelled Date</th>
-                                    <th>Reason for Cancellation</th>
-                                    <th>Remarks</th>
+                                    <th>Request ID</th>
+                                    <th>User Details</th>
+                                    <th>Order ID</th>
+                                    <th>Refund Amount</th>
+                                    <th>Status</th>
+                                    <th>Created Date</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @for (item of refundRequests()?.data; track item.id) {
                                 <tr>
-                                    <td>1</td>
-                                    <td>PAY001</td>
-                                    <td>10-Mar-2026</td>
-                                    <td>Rahul Sharma</td>
-                                    <td>₹5,000</td>
-                                    <td>Cash</td>
-                                    <td>Admin</td>
-                                    <td>11-Mar-2026</td>
-                                    <td>Duplicate Entry</td>
-                                    <td>Verified</td>
+                                    <td>{{ item.id }}</td>
+                                    <td>
+                                        {{ item.user?.name }}<br>
+                                        <small>{{ item.user?.email }}</small>
+                                    </td>
+                                    <td>{{ item.order_id }}</td>
+                                    <td>₹{{ item.amount }}</td>
+                                    <td>
+                                        <span class="badge" [ngClass]="{
+                                            'bg-warning': item.status === 'Pending',
+                                            'bg-success': item.status === 'Approved',
+                                            'bg-danger': item.status === 'Rejected'
+                                        }">{{ item.status }}</span>
+                                    </td>
+                                    <td>{{ item.created_at | date: 'dd MMM yyyy' }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary">View Details</button>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>PAY002</td>
-                                    <td>12-Mar-2026</td>
-                                    <td>Neha Gupta</td>
-                                    <td>₹2,500</td>
-                                    <td>Cash</td>
-                                    <td>User</td>
-                                    <td>12-Mar-2026</td>
-                                    <td>Wrong Amount Entered</td>
-                                    <td>Corrected</td>
-                                </tr>
+                                } @empty {
+                                    <tr>
+                                        <td colspan="7" class="text-center">No refund requests found.</td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
-                    
                 </div>
             </div>
         </div>

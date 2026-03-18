@@ -78,7 +78,7 @@ export const routes: Routes = [
         canActivate: [authGuard]
     },
     {
-        path: 'cancelledPaymentCashOrders',
+        path: 'cod-refund-requests',
         component: CancelledPaymentList,
         canActivate: [authGuard]
     },
