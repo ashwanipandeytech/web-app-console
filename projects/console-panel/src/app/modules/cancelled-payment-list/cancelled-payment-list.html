@@ -50,6 +50,16 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="d-flex align-items-center justify-content-end gap-1 py-2">
+                        @for (page of refundRequests()?.links; track $index) {
+                            <button type="button" class="btn" 
+                                    [disabled]="!page.page || page.active"
+                                    [ngClass]="{'btn-primary': page.active}"
+                                    (click)="nextPage(page.page)">
+                                <span [innerHTML]="page.label"></span>
+                            </button>
+                        }
+                    </div>
                 </div>
             </div>
         </div>

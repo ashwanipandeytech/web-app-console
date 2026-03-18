@@ -14,13 +14,15 @@ export class CancelledPaymentList implements OnInit {
   private cd = inject(ChangeDetectorRef);
   
   refundRequests = signal<any>(null);
+  currentPage = 1;
 
   ngOnInit(): void {
     this.getRefundRequests();
   }
 
-  getRefundRequests() {
-    this.dataService.get('refund-requests').subscribe({
+  getRefundRequests(page: number = 1) {
+    this.currentPage = page;
+    this.dataService.get(`refund-requests?page=${this.currentPage}`).subscribe({
       next: (res: any) => {
         if (res.success) {
           this.refundRequests.set(res.data || []);
@@ -31,5 +33,10 @@ export class CancelledPaymentList implements OnInit {
         console.error('Error fetching refund requests', err);
       }
     });
+  }
+
+  nextPage(page: any) {
+    if (!page || page === this.currentPage) return;
+    this.getRefundRequests(page);
   }
 }
