@@ -26,9 +26,43 @@ export class Order {
   private fb = inject(FormBuilder);
   orderListData: any = [];
   defaultPage = 1;
+
+  readonly allStatuses = [
+    { value: 'pending', label: 'Pending' },
+    { value: 'confirmed', label: 'Confirmed' },
+    { value: 'processing', label: 'Processing' },
+    { value: 'dispatched', label: 'Dispatched' },
+    { value: 'shipped', label: 'Shipped' },
+    { value: 'out_for_delivery', label: 'Out for Delivery' },
+    { value: 'delivered', label: 'Delivered' },
+    { value: 'cancelled', label: 'Cancelled' },
+    { value: 'return_requested', label: 'Return Requested' },
+    { value: 'returned', label: 'Returned' },
+  ];
+
   constructor(private cd: ChangeDetectorRef) {
     this.createForm();
     this.getOrderList();
+  }
+
+  isStatusAllowed(currentStatus: string, targetStatus: string): boolean {
+    if (currentStatus === targetStatus) return true;
+
+    const flow: any = {
+      'pending': ['confirmed', 'cancelled'],
+      'confirmed': ['processing', 'cancelled'],
+      'processing': ['dispatched', 'cancelled'],
+      'dispatched': ['shipped', 'cancelled'],
+      'shipped': ['out_for_delivery', 'cancelled'],
+      'out_for_delivery': ['delivered', 'cancelled'],
+      'delivered': ['return_requested'],
+      'return_requested': ['returned'],
+      'cancelled': [],
+      'returned': []
+    };
+
+    const allowed = flow[currentStatus] || [];
+    return allowed.includes(targetStatus);
   }
 
   createForm() {
@@ -101,5 +135,21 @@ this.getOrderList();
         
         this.cd.detectChanges();
       });
+  }
+
+  updateStatus(order: any, newStatus: string) {
+    const payload = { status: newStatus };
+    this.dataService.patch(`orders/${order.id}/status`, payload).pipe(
+      catchError(err => {
+        this.globalService.showToast(err.error || err);
+        return of(null);
+      })
+    ).subscribe((res: any) => {
+      if (res && res.success) {
+        order.status = newStatus;
+        this.globalService.showToast(res);
+        this.cd.detectChanges();
+      }
+    });
   }
 }

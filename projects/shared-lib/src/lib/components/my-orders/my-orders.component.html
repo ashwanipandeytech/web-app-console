@@ -12,67 +12,95 @@
 
   <div class="order-container px-3 px-md-0">
     @for (item of orderListData; track $index) {
- <!-- <pre> {{item |json}}</pre> -->
-
       <div
-        class="border rounded mb-3 p-3 row wrapper cursor-pointer"
+        class="order-card mb-4 overflow-hidden bg-white border-0 shadow-sm cursor-pointer position-relative"
         (click)="getOrderDetailData(item)"
       >
-        <div class="col-12 col-sm-2">
-          <div class="wrapper-img bg-light p-2 rounded-2">
-            <img
-              [src]="item?.items[0]?.product?.media?.uploadedImages[0]?.url"
-              alt=""
-              class="object-fit-contain rounded-2 w-100"
-            />
+        <div class="row g-0">
+          <!-- Image Section -->
+          <div class="col-4 col-sm-2">
+            <div class="order-img-container bg-light d-flex align-items-center justify-content-center h-100">
+              @if (item?.summary?.image && item?.summary?.image !== 'null' && item?.summary?.image !== 'undefined' && !item.hasImageError) {
+                <img
+                  [src]="item?.summary?.image"
+                  alt="Product"
+                  class="img-fluid object-fit-contain h-100 w-100 p-2"
+                  (error)="item.hasImageError = true"
+                />
+              } @else {
+                <div class="placeholder-interactive d-flex flex-column align-items-center justify-content-center p-3 text-center w-100 h-100">
+                  <div class="icon-wrapper mb-2">
+                    <span class="fa-stack fs-56">
+                      <i class="fa-solid fa-image fa-stack-1x text-muted opacity-25"></i>
+                      <i class="fa-solid fa-slash fa-stack-1x text-danger opacity-50"></i>
+                    </span>
+                  </div>
+                  <span class="fs-10 text-muted fw-bold text-uppercase ls-1">No Preview</span>
+                </div>
+              }            </div>
           </div>
-        </div>
 
-        <div class="col-12 col-sm-10">
-          <div class="wrapper-content mt-2 mt-md-0">
-            <div class="d-flex align-items-center">
-              <h5 class="heading text-truncate text-capitalize">
-                {{ item?.items[0]?.product?.title }}
-              </h5>
-              <!-- <button class="lh-0 btn cancel-btn" data-bs-toggle="modal" data-bs-target="#removeProject">
-                                  <i class="fa-solid fa-trash fa-xl" (click)="deleteMyOrder(item.id)"></i>
-                              </button> -->
-            </div>
-            <ul>
-              <li class="my-2">
-                <span class="fw-semibold d-inline-block config-title">Price</span>
-                <span>₹{{ item.total_amount }}</span>
-              </li>
-            </ul>
+          <!-- Content Section -->
+          <div class="col-8 col-sm-10">
+            <div class="p-3">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <h5 class="order-title mb-1 pe-4">
+                    {{item?.summary?.title }}
+                  </h5>
+                  <div class="order-meta text-muted fs-12 d-flex align-items-center gap-2">
+                    <span>Order #{{ item?.summary?.order_number }}</span>
+                    <span class="vr" style="height: 12px; opacity: 0.2;"></span>
+                    <span class="fw-bold text-dark">{{ item?.summary?.total_items_count }} {{ item?.summary?.total_items_count > 1 ? 'Items' : 'Item' }}</span>
+                  </div>
+                </div>
+                
+                <span
+                  class="status-pill fs-11 fw-bold text-uppercase px-2 py-1 rounded-pill"
+                  [ngClass]="{
+                    'status-cancelled text-danger bg-danger-subtle': item.status === 'cancelled',
+                    'status-delivered text-primary bg-primary-subtle': item.status === 'delivered',
+                    'status-confirmed text-success bg-success-subtle': item.status === 'confirmed' || item.status === 'pending'
+                  }"
+                >
+                  {{ item.status | titlecase }}
+                </span>
+              </div>
 
-            <p class="text-muted fs-14 fw-bold mb-0">
-              @if (item.status !== 'cancelled' && item.status !== 'delivered') {
-                Delivery expected by {{ item.expected_delivery }} --
+              <!-- Rating -->
+              @if (item?.summary?.overall_rating != null && item?.summary?.overall_rating !== '') {
+                <div class="rating-stars mb-2">
+                  @for (star of stars; track $index) {
+                    <i
+                      class="fa-star fs-10"
+                      [ngClass]="{
+                        'fa-solid active': $index < item?.summary?.overall_rating,
+                        'fa-regular': $index >= item?.summary?.overall_rating,
+                      }"
+                    ></i>
+                  }
+                  <span class="ms-1 text-muted fs-11">({{ item?.summary?.overall_rating }})</span>
+                </div>
               }
 
-              <span
-                [ngClass]="{
-                  'text-danger': item.status === 'cancelled',
-                  'text-success': item.status === 'delivered',
-                  'text-warning': item.status === 'confirmed',
-                }"
-                >{{ item.status | titlecase }}</span
-              >
-            </p>
+              <div class="d-flex flex-wrap justify-content-between align-items-center mt-3 gap-2 border-top pt-2">
+                <div class="price-info">
+                  <span class="fs-12 text-muted me-1">Total:</span>
+                  <span class="fw-bold fs-16 text-dark">₹{{ item?.summary?.total_amount }}</span>
+                </div>
 
-            <button type="button" class="icon-link icon-link-hover text-primary mt-2">
-              Order detail
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="bi"
-                viewBox="0 0 16 16"
-                aria-hidden="true"
-              >
-                <path
-                  d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                />
-              </svg>
-            </button>
+                @if (item.status !== 'cancelled' && item.status !== 'delivered') {
+                  <div class="delivery-badge d-flex align-items-center gap-2 px-2 py-1 bg-success-subtle rounded">
+                    <span class="blinking-circle"></span>
+                    <span class="text-success fs-12 fw-semibold">Arrives by {{ item.expected_delivery }}</span>
+                  </div>
+                }
+
+                <div class="view-detail fs-12 fw-semibold text-primary d-none d-md-block">
+                  View Details <i class="fa-solid fa-chevron-right ms-1"></i>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -80,206 +108,201 @@
   </div>
 }
 
-<!-- Delete product Modal -->
-<!-- <div #deleteorder class="modal mobile-modal fade" id="removeProject" tabindex="-1" aria-labelledby="removeProjectLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header py-2">
-        <h1 class="modal-title " id="removeProjectLabel">Remove product</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Remove product from your order history - sure?
-      </div>
-      <div class="modal-footer border-0">
-        <button type="button" class="btn btn-secondary fs-4" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="shop-btn fs-4 py-2 px-3 my-0 ms-3" (click)="deleteOrder()">Remove</button>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<!-- Correct loop
- Grand total
- paymrnt method
- deliver date -->
-
 <!-- Order detail Modal -->
 <ng-template #orderDetail let-modal>
-    <div class="modal-content border-0">
-      <div class="modal-header py-2">
-        <h1 class="modal-title fs-5" id="orderDetailLabel">Order detail</h1>
-        <button type="button" class="close-btn" (click)="modal.dismiss('Cross click')" aria-label="Close">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+    <div class="modal-content border-0 bg-light">
+      <div class="modal-header py-3 bg-white border-bottom shadow-sm z-3 sticky-top">
+        <div class="me-auto">
+          <h1 class="modal-title fs-5 fw-bold mb-0" id="orderDetailLabel">Order Details</h1>
+          <span class="fs-12 text-muted">Order #{{ orderDetailList?.id }}</span>
+        </div>
+        
+        <!-- <div class="d-flex align-items-center gap-2 me-3">
+          @if (canCancelAnyItem) {
+            <button
+              class="btn btn-sm btn-outline-danger fw-bold fs-11 py-1 px-2 d-flex align-items-center gap-1"
+              (click)="openCancelOrderModal(false)"
+            >
+              <i class="fa-solid fa-ban"></i> Cancel Order
+            </button>
+          }
+          @if (canReturnAnyItem) {
+            <button
+              class="btn btn-sm btn-outline-danger fw-bold fs-11 py-1 px-2 d-flex align-items-center gap-1"
+              (click)="openCancelOrderModal(true)"
+            >
+              <i class="fa-solid fa-rotate-left"></i> Return Order
+            </button>
+          }
+        </div> -->
+
+        <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close"></button>
       </div>
-      <div class="modal-body px-lg-4">
-        <div class="order-container d-flex flex-column gap-3">
+      <div class="modal-body px-lg-4 py-4">
+        <div class="order-container d-flex flex-column gap-4">
           @for (item of orderDetailList.items; track $index) {
             @if (item.product != null) {
-              <div class="rounded p-3 wrapper shadow-sm">
-                <div class="row">
+              <div class="order-card shadow-sm border-0 mb-3 bg-white overflow-hidden">
+                <div class="row g-0">
                   <div class="col-4">
-                    <div class="wrapper-img bg-light p-2 rounded-2 h-100">
-                      <img
-                        [src]="item.product.media?.uploadedImages[0]?.url"
-                        alt=""
-                        class="object-fit-contain rounded-2 w-100 h-100"
-                      />
+                    <div class="order-img-container bg-light d-flex align-items-center justify-content-center h-100">
+                      @if ((item.product?.media?.uploadedImages?.[0]?.url || item.product?.images?.[0]?.url) && !item.hasDetailImageError) {
+                        <img
+                          [src]="item.product.media?.uploadedImages?.[0]?.url || item.product.images[0].url"
+                          alt=""
+                          class="img-fluid object-fit-contain p-2 w-100 h-100"
+                          (error)="item.hasDetailImageError = true"
+                        />
+                      } @else {
+                        <div class="placeholder-interactive d-flex flex-column align-items-center justify-content-center p-3 text-center w-100 h-100">
+                          <div class="icon-wrapper mb-2">
+                            <span class="fa-stack fs-32">
+                              <i class="fa-solid fa-image fa-stack-1x text-muted opacity-25"></i>
+                              <i class="fa-solid fa-slash fa-stack-1x text-danger opacity-50"></i>
+                            </span>
+                          </div>
+                          <span class="fs-10 text-muted fw-bold text-uppercase ls-1">No Preview</span>
+                        </div>
+                      }
                     </div>
                   </div>
 
                   <div class="col-8">
-                    <div class="wrapper-content">
-                      <div class="d-flex align-items-center">
-                        <h5 class="heading text-capitalize">{{ item?.product?.title }}</h5>
-                      </div>
-                      <ul>
-                        <li class="my-sm-2 my-1">
-                          <span class="fw-semibold d-inline-block config-title">price</span>
-                          <span>₹{{ item?.price }}</span>
-                        </li>
-                        <li class="">
-                          <span class="fw-semibold d-inline-block config-title">Status</span>
-                          <span
-                            class="text-capitalize"
-                            [ngClass]="{
-                              'text-danger': orderDetailList.status === 'cancelled',
-                              'text-success': orderDetailList.status === 'delivered',
-                              'text-warning': orderDetailList.status === 'confirmed',
-                            }"
-                            >{{ orderDetailList?.status }}</span
-                          >
-                        </li>
-                        <!-- <li class="mt-md-2 mt-0">
-                            <span class="fw-semibold d-inline-block config-title">Rating</span>
-                            <span>4/5</span>
-                          </li> -->
-                      </ul>
-                    </div>
-                  </div>
-                  @if (item?.product_review != null) {
-                    <div class="bg-light rounded-3 py-2 p-3 mt-2">
-                      <div class="rating-stars">
-                        <i
-                          *ngFor="let star of stars; let i = index"
-                          class="fa-star fs-14"
+                    <div class="p-3">
+                      <h5 class="order-title mb-2 text-capitalize">{{ item?.product?.title }}</h5>
+                      
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="fw-bold fs-16">₹{{ item?.price }}</span>
+                        <span
+                          class="status-pill fs-11 fw-bold text-uppercase px-2 py-1 rounded-pill"
                           [ngClass]="{
-                            'fa-solid active': i < item?.product_review?.rating,
-                            'fa-regular': i >= item?.product_review?.rating,
+                            'status-cancelled text-danger bg-danger-subtle': orderDetailList.status === 'cancelled',
+                            'status-delivered text-primary bg-primary-subtle': orderDetailList.status === 'delivered',
+                            'status-confirmed text-success bg-success-subtle': orderDetailList.status === 'confirmed' || orderDetailList.status === 'pending'
                           }"
-                        ></i>
-                        <strong class="h-5 ps-2">{{ item?.product_review?.rating }}</strong>
-                      </div>
-                      <hr class="my-2" *ngIf="item?.product_review?.comment" />
-                      <!-- <span class="fw-semibold">Your rating : <span class="text-success">{{item?.product_review?.rating}}
-                    star</span></span> -->
-                      <span class="fs-12 d-block">{{ item?.product_review?.comment }} </span>
-                    </div>
-                  }
-
-                  <hr class="my-3" />
-
-                    <div class="d-flex align-items-center gap-2 justify-content-center flex-wrap">
-                    @if (!item?.product_review) {
-                      <button
-                        class="fs-14 btn btn-outline-secondary"
-                        data-bs-toggle="collapse"
-                        [attr.data-bs-target]="'#collapseProduct' + $index"
-                        aria-expanded="false"
-                        [attr.aria-controls]="'collapseProduct' + $index"
-                      >
-                        Rate Product
-                      </button>
-                    }
-
-                    <button
-                      type="button"
-                      class="btn btn-outline-secondary fs-14"
-                      (click)="addToCart(item)"
-                    >
-                      Add to Cart
-                    </button>
-                    @if (orderDetailList.status != 'cancelled' && orderDetailList.status != 'delivered') {
-                      <button
-                        class="fs-14 btn btn-outline-danger"
-                        (click)="openCancelOrderModal(false, item)"
-                      >
-                        Cancel Item
-                      </button>
-                    }
-                    @if (orderDetailList.status === 'delivered') {
-                      <button
-                        class="fs-14 btn btn-outline-danger"
-                        (click)="openCancelOrderModal(true, item)"
-                      >
-                        Return Item
-                      </button>
-                    }
-                    <button
-                      class="fs-14 btn btn-outline-primary"
-                      (click)="downloadInvoice(orderDetailList)"
-                    >
-                      Download Invoice
-                    </button>
-                  </div>
-                  @if (!item?.product_review) {
-                    <div class="collapse" [id]="'collapseProduct' + $index" #collapseRef>
-                      <div class="card card-body border-primary p-2 mt-2">
-                        <form
-                          [formGroup]="rateUsForm"
-                          (ngSubmit)="submitRating(item, item.product.id, $index)"
                         >
-                          <p class="mb-0">
-                            How was your product?
-                            <button
-                              type="submit"
-                              class="shop-btn ms-3 fs-12 sm-btn"
-                              [disabled]="rateUsForm?.invalid"
-                            >
-                              Submit
-                            </button>
-                          </p>
+                          {{ orderDetailList?.status }}
+                        </span>
+                      </div>
 
-                          <!-- ⭐ Star Rating -->
-                          <div class="rating-stars">
-                            <i
-                              *ngFor="let star of stars; let i = index"
-                              class="fa-star fs-14 cursor-pointer"
-                              [ngClass]="{
-                                'fa-solid active': i < rateUsForm.value.rating,
-                                'fa-regular': i >= rateUsForm.value.rating,
-                              }"
-                              (click)="setRating(i + 1)"
-                            ></i>
+                      @if (item?.product_review != null) {
+                        <div class="bg-light border rounded-3 p-2 mt-2">
+                          <div class="rating-stars mb-1">
+                            @for (star of stars; track $index) {
+                              <i
+                                class="fa-star fs-12"
+                                [ngClass]="{
+                                  'fa-solid active': $index < item?.product_review?.rating,
+                                  'fa-regular': $index >= item?.product_review?.rating,
+                                }"
+                              ></i>
+                            }
+                            <span class="ms-1 text-muted fs-12 fw-bold">{{ item?.product_review?.rating }}</span>
                           </div>
+                          @if (item?.product_review?.comment) {
+                            <span class="fs-12 text-muted d-block fst-italic">"{{ item?.product_review?.comment }}"</span>
+                          }
+                        </div>
+                      }
 
-                          <div
-                            class="text-danger small"
-                            *ngIf="
-                              rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid
-                            "
+                      <div class="d-flex align-items-center gap-2 flex-wrap mt-3 pt-3 border-top">
+                        @if (!item?.product_review) {
+                          <button
+                            class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1"
+                            data-bs-toggle="collapse"
+                            [attr.data-bs-target]="'#collapseProduct' + $index"
+                            aria-expanded="false"
+                            [attr.aria-controls]="'collapseProduct' + $index"
                           >
-                            Please select a rating
-                          </div>
+                            <i class="fa-regular fa-star"></i> Rate
+                          </button>
+                        }
 
-                          <!-- Feedback -->
-                          <textarea
-                            class="form-control"
-                            rows="2"
-                            placeholder="Write your feedback (optional)"
-                            formControlName="comment"
-                          ></textarea>
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1"
+                          (click)="addToCart(item)"
+                        >
+                          <i class="fa-solid fa-cart-plus"></i> Reorder
+                        </button>
+                        
+                        @if (item.actions?.can_cancel) {
+                          <button
+                            class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1"
+                            (click)="openCancelOrderModal(false, item)"
+                          >
+                            <i class="fa-solid fa-ban"></i> Cancel
+                          </button>
+                        }
+                        @if (item.actions?.can_return) {
+                          <button
+                            class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1"
+                            (click)="openCancelOrderModal(true, item)"
+                          >
+                            <i class="fa-solid fa-rotate-left"></i> Return
+                          </button>
+                        }
 
-                          <!-- Footer -->
-                          <!-- <div class="modal-footer border-0">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        @if (orderDetailList?.status !== 'cancelled') {
+                          <button
+                            class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1"
+                            (click)="downloadInvoice(orderDetailList)"
+                          >
+                            <i class="fa-solid fa-file-invoice"></i> Invoice
+                          </button>
+                        }
+                      </div>
+                    </div>
+                  </div>
 
-                      <button type="submit" class="shop-btn ms-2" [disabled]="rateUsForm.invalid">
-                        Submit
-                      </button>
-                    </div> -->
-                        </form>
+                  @if (!item?.product_review) {
+                    <div class="col-12">
+                      <div class="collapse" [id]="'collapseProduct' + $index" #collapseRef>
+                        <div class="card card-body border-0 border-top rounded-0 p-3 bg-light">
+                          <form
+                            [formGroup]="rateUsForm"
+                            (ngSubmit)="submitRating(item, item.product.id, $index)"
+                          >
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                              <span class="fw-semibold fs-14">How was your product?</span>
+                              <button
+                                type="submit"
+                                class="btn btn-sm btn-primary px-3"
+                                [disabled]="rateUsForm?.invalid"
+                              >
+                                Submit
+                              </button>
+                            </div>
+
+                            <!-- ⭐ Star Rating -->
+                            <div class="rating-stars mb-3">
+                              @for (star of stars; track $index) {
+                                <i
+                                  class="fa-star fs-18 cursor-pointer"
+                                  [ngClass]="{
+                                    'fa-solid active': $index < rateUsForm.value.rating,
+                                    'fa-regular': $index >= rateUsForm.value.rating,
+                                  }"
+                                  (click)="setRating($index + 1)"
+                                ></i>
+                              }
+                            </div>
+
+                            @if (rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid) {
+                              <div class="text-danger small mb-2">
+                                Please select a rating
+                              </div>
+                            }
+
+                            <!-- Feedback -->
+                            <textarea
+                              class="form-control border-0 shadow-sm"
+                              rows="2"
+                              placeholder="Write your feedback (optional)..."
+                              formControlName="comment"
+                            ></textarea>
+                          </form>
+                        </div>
                       </div>
                     </div>
                   }
@@ -288,169 +311,282 @@
             }
           }
 
-          @if (orderDetailList.status != 'cancelled' && orderDetailList.status != 'delivered') {
-            <div class="card border-0 shadow-sm p-3">
-              <button
-                class="fs-16 btn btn-danger w-100 fw-bold py-2"
-                (click)="openCancelOrderModal(false)"
-              >
-                Cancel Full Order
-              </button>
-            </div>
-          }
-          @if (orderDetailList.status === 'delivered') {
-            <div class="card border-0 shadow-sm p-3">
-              <button
-                class="fs-16 btn btn-danger w-100 fw-bold py-2"
-                (click)="openCancelOrderModal(true)"
-              >
-                Return Full Order
-              </button>
-            </div>
-          }
-
-          <div class="card border-0 shadow-sm p-3">
-            <h6 class="fw-semibold mb-2 d-flex align-items-center">
-              Delivery Detail
-              <a
-                type="button"
-                href="javascript:void(0)"
-                (click)="goToHelp()"
-                class="shop-btn ms-3 fs-12 sm-btn help-btn"
-                >Help</a
-              >
+          <div class="card border-0 shadow-sm p-4 bg-white">
+            <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
+              <i class="fa-solid fa-receipt text-primary"></i> Bill Details
             </h6>
-
-            <div class="rounded-3 p-3" style="background-color: #f1f2f7">
-              <!-- Address -->
-              <div class="d-flex align-items-baseline mb-2">
-                <i class="fa-solid fa-location-dot me-2"></i>
-                <span class="fw-medium text-dark small text-capitalize fs-14">
-                
-                  @if (orderDetailList?.address?.address_line) {
-                    <span class="d-block">{{ orderDetailList?.address?.address_line }},</span>
-                  }
-
-                  <span class="d-block">Name: {{ orderDetailList?.address?.name }}, </span>
-                
-                  <span class="d-block">House No: {{ orderDetailList?.address?.house_no }}, </span>
-                  <span class="d-block">Street: {{ orderDetailList?.address?.street }}, </span>
-
-                  <span class="d-block">City: {{ orderDetailList?.address?.city }},</span>
-                  <span class="d-block">Pincode: {{ orderDetailList?.address?.pincode }},</span>
-                  <span class="d-block">state: {{ orderDetailList?.address?.state }},</span>
-                  <span class="d-block">Country: {{ orderDetailList?.address?.country }}</span>
-                  <!-- street:{{ orderDetailList?.address?.street }}, -->
-                </span>
+            
+            <div class="d-flex flex-column gap-2">
+              <div class="d-flex justify-content-between fs-14">
+                <span class="text-muted">Item Total</span>
+                <span class="text-dark fw-medium">₹{{ orderDetailList?.total_amount }}</span>
               </div>
 
-              <!-- User -->
-              <div class="d-flex align-items-center">
-                <i class="fa fa-phone "></i>
-                @if (orderDetailList?.addres?.name) {
-                  <span class="fw-medium text-dark small text-capitalize fs-14"
-                    >{{ orderDetailList?.addres?.name }},</span
-                  >
-                }
-                <span class="text-muted ms-1 fs-14">{{ orderDetailList?.address?.phone }}</span>
+              @if (orderDetailList?.coupon_code) {
+                <div class="d-flex justify-content-between fs-14 py-2 border-top border-bottom border-dashed my-1">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="bg-success bg-opacity-10 p-1 rounded">
+                      <i class="fa-solid fa-tag text-success fs-12"></i>
+                    </div>
+                    <div>
+                      <span class="fw-bold text-success fs-12 d-block">Coupon Applied</span>
+                      <span class="text-muted fs-11 text-uppercase">{{ orderDetailList.coupon_code }}</span>
+                    </div>
+                  </div>
+                  <span class="text-success fw-bold">- ₹{{ orderDetailList.coupon_discount }}</span>
+                </div>
+              }
+
+              <div class="d-flex justify-content-between fs-16 mt-2 pt-2 border-top">
+                <span class="fw-bold text-dark">Order Total</span>
+                <span class="fw-bold text-primary">₹{{ orderDetailList?.total_amount }}</span>
+              </div>
+
+              <div class="mt-2">
+                <span class="badge bg-light text-dark border fw-medium text-uppercase fs-10 px-2 py-1">
+                  @if (orderDetailList?.status === 'cancelled') {
+                    Was to be paid via {{ orderDetailList?.payment_method }}
+                  } @else if (orderDetailList?.status === 'delivered') {
+                    Paid via {{ orderDetailList?.payment_method }}
+                  } @else {
+                    @if (orderDetailList?.payment_method === 'cod') {
+                      Pay via {{ orderDetailList?.payment_method }} on delivery
+                    } @else {
+                      Paid via {{ orderDetailList?.payment_method }}
+                    }
+                  }
+                </span>
               </div>
             </div>
           </div>
 
-          <div class="card border-0 shadow-sm p-3">
-            <h6 class="fw-semibold mb-0 d-flex align-items-center">
-              Rate your experience
+          @if (orderDetailList?.status === 'cancelled') {
+            <div class="card border-0 shadow-sm p-4 bg-danger bg-opacity-10 border border-danger border-opacity-25">
+              <div class="d-flex align-items-center gap-3">
+                <div class="bg-danger p-2 rounded-circle">
+                  <i class="fa-solid fa-ban text-white fs-14"></i>
+                </div>
+                <div>
+                  <h6 class="fw-bold text-danger mb-1">Order Cancelled</h6>
+                  <p class="mb-0 fs-13 text-danger opacity-75">You have cancelled this order.</p>
+                </div>
+              </div>
+            </div>
+          } @else {
+            <div class="card border-0 shadow-sm p-4 bg-white">
+              <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                <i class="fa-solid fa-credit-card text-primary"></i> Payment Information
+              </h6>
+              
+              <div class="bg-light border rounded-3 p-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="text-muted fs-13">Method</span>
+                  <span class="badge bg-white text-dark border fw-bold text-uppercase fs-11 px-2 py-1">
+                    {{ orderDetailList?.payment_method }}
+                  </span>
+                </div>
+
+                @if (orderDetailList?.payment_details) {
+                  <div class="d-flex flex-column gap-2 pt-2 border-top mt-2">
+                    @if (orderDetailList.payment_details.transaction_id) {
+                      <div class="d-flex justify-content-between fs-13">
+                        <span class="text-muted">Transaction ID</span>
+                        <span class="text-dark fw-medium">{{ orderDetailList.payment_details.transaction_id }}</span>
+                      </div>
+                    }
+                    @if (orderDetailList.payment_details.payment_gateway) {
+                      <div class="d-flex justify-content-between fs-13">
+                        <span class="text-muted">Gateway</span>
+                        <span class="text-dark fw-medium text-capitalize">{{ orderDetailList.payment_details.payment_gateway }}</span>
+                      </div>
+                    }
+                    @if (orderDetailList.payment_details.paid_at) {
+                      <div class="d-flex justify-content-between fs-13">
+                        <span class="text-muted">Paid On</span>
+                        <span class="text-dark fw-medium">{{ orderDetailList.payment_details.paid_at | date:'dd MMM, yyyy' }}</span>
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <p class="mb-0 fs-12 text-muted italic">
+                    @if (orderDetailList?.payment_method === 'cod') {
+                      Payment will be collected upon delivery.
+                    } @else {
+                      Payment processing details unavailable.
+                    }
+                  </p>
+                }
+              </div>
+            </div>
+          }
+
+          @if (orderDetailList?.item_timeline?.length > 0) {
+            <div class="card border-0 shadow-sm p-4 bg-white">
+              <h6 class="fw-bold mb-4 d-flex align-items-center gap-2">
+                <i class="fa-solid fa-map-location-dot text-primary"></i> Order Tracking
+              </h6>
+              
+              <div class="vertical-stepper">
+                @for (event of orderDetailList.item_timeline; track $index) {
+                  <div class="step-item" [class.last]="$last">
+                    <div class="step-icon">
+                      <div class="dot" 
+                        [class.active]="true" 
+                        [class.blinking]="$first && orderDetailList?.status !== 'cancelled'"
+                        [class.is-cancelled]="event.status === 'cancelled' || event.message?.toLowerCase().includes('cancelled')"
+                      ></div>
+                      @if (!$last) { <div class="line"></div> }
+                    </div>
+                    <div class="step-content">
+                      <div class="d-flex justify-content-between align-items-start">
+                        <span class="fw-bold fs-14 text-dark text-capitalize">{{ event.message || event.status }}</span>
+                        <span class="fs-11 text-muted">{{ event.date || (event.created_at | date:'dd MMM, yyyy - hh:mm a') }}</span>
+                      </div>
+                      @if (event.comment) {
+                        <p class="fs-12 text-muted mb-0 mt-1">{{ event.comment }}</p>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          <div class="card border-0 shadow-sm p-4 bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
+                <i class="fa-solid fa-truck-fast text-primary"></i> Shipping Address
+              </h6>
+              <button
+                type="button"
+                (click)="goToHelp()"
+                class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1"
+                ><i class="fa-solid fa-headset"></i> Help</button
+              >
+            </div>
+
+            <div class="address-box border rounded-3 p-3 position-relative bg-light">
+              <div class="d-flex flex-column gap-2">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="bg-primary bg-opacity-10 p-2 rounded-circle">
+                    <i class="fa-solid fa-map-location-dot text-primary fs-14"></i>
+                  </div>
+                  <span class="fw-bold text-dark fs-15">{{ orderDetailList?.address?.name }}</span>
+                </div>
+              
+                <div class="address-content ps-4 ms-2 border-start py-1">
+                  @if (orderDetailList?.address?.address_line) {
+                    <p class="mb-2 fw-bold text-dark fs-14 lh-sm">{{ orderDetailList?.address?.address_line }}</p>
+                  }
+                
+                  <div class="text-muted fs-13 lh-base">
+                    @if(orderDetailList?.address?.house_no) { {{ orderDetailList?.address?.house_no }}, }
+                    @if(orderDetailList?.address?.street) { {{ orderDetailList?.address?.street }}, }
+                    <br>
+                    {{ orderDetailList?.address?.city }}, {{ orderDetailList?.address?.state }} - {{ orderDetailList?.address?.pincode }}
+                    <div class="fw-bold fs-11 text-uppercase mt-1 opacity-75 text-dark">{{ orderDetailList?.address?.country }}</div>
+                  </div>
+                </div>
+
+                <div class="mt-2 pt-2 border-top d-flex align-items-center gap-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-phone text-muted fs-12"></i>
+                    <span class="text-dark fw-semibold fs-14">{{ orderDetailList?.address?.phone }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card border-0 shadow-sm p-4 bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
+                <i class="fa-regular fa-star text-warning"></i> Rate your experience
+              </h6>
               @if (orderDetailList?.order_rating == null) {
                 <button
                   type="button"
-                  class="shop-btn ms-3 fs-12 sm-btn help-btn"
+                  class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1"
                   data-bs-toggle="collapse"
                   data-bs-target="#collapseRateUs"
                   aria-expanded="false"
                   aria-controls="collapseRate"
                 >
-                  Rate Us
+                  <i class="fa-solid fa-pen-to-square"></i> Write Review
                 </button>
               }
-            </h6>
+            </div>
 
             @if (orderDetailList?.order_rating != null) {
-              <div class="bg-light rounded-3 py-2 p-3 mt-2">
-                <div class="rating-stars rated" style="min-width: max-content">
-                  <i
-                    *ngFor="let star of stars; let i = index"
-                    class="fa-star fs-14"
-                    [ngClass]="{
-                      'fa-solid active': i < orderDetailList?.order_rating.rating,
-                      'fa-regular': i >= orderDetailList?.order_rating.rating,
-                    }"
-                  ></i>
+              <div class="bg-light border rounded-3 p-3">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <div class="rating-stars rated">
+                    @for (star of stars; track $index) {
+                      <i
+                        class="fa-star fs-14"
+                        [ngClass]="{
+                          'fa-solid active': $index < orderDetailList?.order_rating.rating,
+                          'fa-regular': $index >= orderDetailList?.order_rating.rating,
+                        }"
+                      ></i>
+                    }
+                  </div>
+                  <span class="fw-bold fs-14 text-dark">{{ orderDetailList?.order_rating.rating }} / 5</span>
                 </div>
-                <!-- {{orderDetailList?.order_rating.rating}} -->
 
-                <h6 class="flex-grow-1 fs-14 text-capitalize mt-1">
-                  {{ orderDetailList?.order_rating.comment }}
-                </h6>
+                @if (orderDetailList?.order_rating.comment) {
+                  <p class="mb-0 fs-14 text-muted fst-italic">"{{ orderDetailList?.order_rating.comment }}"</p>
+                }
               </div>
             }
 
             <div class="collapse" id="collapseRateUs">
-              <div class="card card-body border-primary p-2 my-2">
+              <div class="card card-body bg-light border-0 rounded-3 p-3 mt-2">
                 <form [formGroup]="rateUsForm" (ngSubmit)="submitRating()">
-                  <p class="mb-0">
-                    How was your experience?
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-semibold fs-14">How was your overall experience?</span>
                     <button
                       type="submit"
-                      class="shop-btn ms-3 fs-12 sm-btn"
+                      class="btn btn-sm btn-primary px-3"
                       [disabled]="rateUsForm.invalid"
                     >
                       Submit
                     </button>
-                  </p>
+                  </div>
 
                   <!-- ⭐ Star Rating -->
-                  <div class="rating-stars">
-                    <i
-                      *ngFor="let star of stars; let i = index"
-                      class="fa-star fs-14 cursor-pointer"
-                      [ngClass]="{
-                        'fa-solid active': i < rateUsForm.value.rating,
-                        'fa-regular': i >= rateUsForm.value.rating,
-                      }"
-                      (click)="setRating(i + 1)"
-                    ></i>
+                  <div class="rating-stars mb-3">
+                    @for (star of stars; track $index) {
+                      <i
+                        class="fa-star fs-20 cursor-pointer"
+                        [ngClass]="{
+                          'fa-solid active': $index < rateUsForm.value.rating,
+                          'fa-regular': $index >= rateUsForm.value.rating,
+                        }"
+                        (click)="setRating($index + 1)"
+                      ></i>
+                    }
                   </div>
 
-                  <div
-                    class="text-danger small"
-                    *ngIf="rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid"
-                  >
-                    Please select a rating
-                  </div>
+                  @if (rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid) {
+                    <div class="text-danger small mb-2">
+                      Please select a rating
+                    </div>
+                  }
 
                   <!-- Feedback -->
                   <textarea
-                    class="form-control"
-                    rows="2"
-                    placeholder="Write your feedback (optional)"
+                    class="form-control border-0 shadow-sm"
+                    rows="3"
+                    placeholder="Write your feedback (optional)..."
                     formControlName="comment"
                   ></textarea>
                 </form>
               </div>
             </div>
-
-            <!-- <div class="rounded-3 p-3" style="background-color: #f1f2f7">
-              <div class="d-flex align-items-start">
-                <i class="fa-solid fa-truck me-3"></i>
-                <span class="fw-medium text-dark small"> How was your experience </span>
-              </div>
-            </div> -->
           </div>
         </div>
       </div>
-      <!-- <div class="modal-footer border-0">
-        <button type="button" class="shop-btn" (click)="modal.close()">Close</button>
-      </div> -->
     </div>
 </ng-template>
 
@@ -458,16 +594,14 @@
     <div class="modal-content border-0">
       <div class="modal-header py-2">
         <h1 class="modal-title fs-5" id="removeAddressLabel">{{ isReturnAction ? 'Return' : 'Cancel' }} Order</h1>
-        <button type="button" class="close-btn" (click)="modal.dismiss('Cross click')" aria-label="Close">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+        <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close"></button>
       </div>
       <div class="modal-body fs-16">
         Are you sure - you want to {{ isReturnAction ? 'return' : 'cancel' }} the {{ selectedItems.length > 0 ? 'item' : 'order' }} ?
         
-        @if (orderDetailList?.payment_method === 'cod' && (isReturnAction || !isReturnAction)) {
+        @if (orderDetailList?.payment_method === 'cod' && isReturnAction) {
           <div class="mt-3 p-3 bg-light rounded shadow-sm">
-            <h6 class="fw-bold mb-3 border-bottom pb-2">Refund Bank Details</h6>
+            <h6 class="fw-bold mb-3 border-bottom pb-2 text-primary">Refund Bank Details</h6>
             <form [formGroup]="bankDetailsForm">
               <div class="mb-3">
                 <label class="form-label fs-14 fw-semibold mb-1">Account Holder Name</label>
@@ -547,9 +681,7 @@
       <!-- Header -->
       <div class="modal-header py-2">
         <h5 class="modal-title" id="rateusModalLabel">Rate Us</h5>
-        <button type="button" class="close-btn" (click)="modal.dismiss('Cross click')" aria-label="Close">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+        <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close"></button>
       </div>
 
       <!-- Body -->
@@ -559,23 +691,23 @@
 
           <!-- ⭐ Star Rating -->
           <div class="rating-stars mb-3">
-            <i
-              *ngFor="let star of stars; let i = index"
-              class="fa-star cursor-pointer"
-              [ngClass]="{
-                'fa-solid active': i < rateUsForm.value.rating,
-                'fa-regular': i >= rateUsForm.value.rating,
-              }"
-              (click)="setRating(i + 1)"
-            ></i>
+            @for (star of stars; track $index) {
+              <i
+                class="fa-star cursor-pointer"
+                [ngClass]="{
+                  'fa-solid active': $index < rateUsForm.value.rating,
+                  'fa-regular': $index >= rateUsForm.value.rating,
+                }"
+                (click)="setRating($index + 1)"
+              ></i>
+            }
           </div>
 
-          <div
-            class="text-danger small"
-            *ngIf="rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid"
-          >
-            Please select a rating
-          </div>
+          @if (rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid) {
+            <div class="text-danger small">
+              Please select a rating
+            </div>
+          }
 
           <!-- Feedback -->
           <textarea
@@ -609,5 +741,3 @@
   >
   </app-no-data>
 }
-
-<!-- <app-mobile-bottom-nav></app-mobile-bottom-nav> -->

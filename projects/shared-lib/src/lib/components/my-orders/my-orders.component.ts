@@ -61,6 +61,16 @@ export class MyOrdersComponent implements OnInit {
   isBrowser: boolean;
   isLoggedIn:boolean= false;
 
+  get canCancelAnyItem(): boolean {
+    return this.orderDetailList?.actions?.can_cancel || 
+           this.orderDetailList?.items?.some((item: any) => item.actions?.can_cancel);
+  }
+
+  get canReturnAnyItem(): boolean {
+    return this.orderDetailList?.actions?.can_return || 
+           this.orderDetailList?.items?.some((item: any) => item.actions?.can_return);
+  }
+
   constructor() {
     this.isBrowser = isPlatformBrowser(this.platformId);
 
@@ -289,26 +299,13 @@ export class MyOrdersComponent implements OnInit {
       payload.item_ids = this.selectedItems;
     }
 
-    if (this.orderDetailList?.payment_method === 'cod' && (this.isReturnAction || !this.isReturnAction)) {
-      // For both Cancel and Return on COD, we currently prompt for bank details if they are required.
-      // Based on requirements: 
-      // - Return COD (Full/Partial) NEEDS bank_details.
-      // - Return Online (Partial) DOES NOT NEED bank_details (only item_ids).
-      // - Cancel Full before delivery says blank payload, but existing code has bank details for COD.
-      // I will keep bank details for COD scenarios.
+    // Only require bank details for COD Returns (Refund needed)
+    if (this.orderDetailList?.payment_method === 'cod' && this.isReturnAction) {
       if (this.bankDetailsForm.invalid) {
         this.bankDetailsForm.markAllAsTouched();
         return;
       }
-      if (this.isReturnAction) {
-        payload.bank_details = this.bankDetailsForm.value;
-      } else {
-        // existing cancel logic for cod
-        payload = this.bankDetailsForm.value;
-        if (this.selectedItems.length > 0) {
-          payload.item_ids = this.selectedItems;
-        }
-      }
+      payload.bank_details = this.bankDetailsForm.value;
     }
 
     if (this.cancelModalRef) {
@@ -342,12 +339,23 @@ export class MyOrdersComponent implements OnInit {
   }
 
   getOrderDetailData(data: any) {
-    this.orderDetailList = [];
-    this.orderDetailList = data;
     this.orderId = data.id;
+    this.orderDetailList = data; // Set initial data from list
     
+    // Fetch fresh details for latest actions and timeline
+    this.dataService.get(`orders/${this.orderId}`).subscribe((res: any) => {
+      if (res.success) {
+        this.orderDetailList = res.data.data || res.data;
+        // Map order-level timeline if available
+        if (this.orderDetailList.timeline) {
+          this.orderDetailList.item_timeline = this.orderDetailList.timeline;
+        }
+        this.cd.detectChanges();
+      }
+    });
+
     this.modalRef = this.ngbModal.open(this.orderDetail, {
-      windowClass: 'mobile-modal',
+      size: 'lg',
       scrollable: true,
       centered: true
     });
