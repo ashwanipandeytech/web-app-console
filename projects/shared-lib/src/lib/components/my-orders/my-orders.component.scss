@@ -191,4 +191,50 @@
     }
 }
 
+.custom-tabs {
+  .nav-item {
+    .nav-link {
+      background: transparent;
+      color: #6c757d;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      min-width: 70px;
+
+      i {
+        font-size: 1.1rem;
+        opacity: 0.7;
+      }
+
+      &.active {
+        background: rgba($theme-color, 0.08);
+        color: $theme-color;
+        border-color: rgba($theme-color, 0.2);
+        
+        i {
+          opacity: 1;
+          color: $theme-color;
+        }
+      }
+
+      &:hover:not(.active) {
+        background: #f8f9fa;
+        color: #495057;
+      }
+    }
+  }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.custom-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.custom-tabs {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+
 

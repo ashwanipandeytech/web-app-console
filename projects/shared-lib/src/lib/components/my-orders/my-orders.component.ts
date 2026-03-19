@@ -51,6 +51,7 @@ export class MyOrdersComponent implements OnInit {
   orderListData: any = [];
   orderId: any;
   orderDetailList: any = {};
+  activeTab: string = 'items';
   isLoading: boolean = false;
   rateUsForm!: FormGroup;
   bankDetailsForm!: FormGroup;
@@ -167,9 +168,17 @@ export class MyOrdersComponent implements OnInit {
         if (res?.success == true) {
           this.globalService.showToast(res);
           this.closeRatingPopup(index);
-          item.product_review = {
-            comment: payload.comment,
-            rating: payload.rating
+          
+          if (productId && item) {
+            item.product_review = {
+              comment: payload.comment,
+              rating: payload.rating
+            };
+          } else {
+            this.orderDetailList.order_rating = {
+              comment: payload.comment,
+              rating: payload.rating
+            };
           }
           this.cd.detectChanges();
           // this.updateratingInorderList(productId);
@@ -341,6 +350,7 @@ export class MyOrdersComponent implements OnInit {
   getOrderDetailData(data: any) {
     this.orderId = data.id;
     this.orderDetailList = data; // Set initial data from list
+    this.activeTab = 'items';
     
     // Fetch fresh details for latest actions and timeline
     this.dataService.get(`orders/${this.orderId}`).subscribe((res: any) => {
@@ -359,6 +369,11 @@ export class MyOrdersComponent implements OnInit {
       scrollable: true,
       centered: true
     });
+  }
+
+  setActiveTab(tab: string) {
+    this.activeTab = tab;
+    this.cd.detectChanges();
   }
 
   closeModal() {
