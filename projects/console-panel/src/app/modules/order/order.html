@@ -206,7 +206,7 @@
                                     <td>{{order.created_at | date:'dd MMM yyyy, hh:mm a'}}</td>
                                     <td class="position-sticky end-0 z-3 bg-white shadow-sm">
                                         <div class="d-flex align-items-center gap-2">
-                                            <select class="form-select form-select-sm" style="width: 150px;" [value]="order.status" (change)="updateStatus(order, $any($event.target).value)">
+                                            <select class="form-select form-select-sm" style="width: 150px;" [value]="order.status"  (change)="updateStatus(order, $any($event.target).value)">
                                                 @for(status of allStatuses; track $index) {
                                                     <option [value]="status.value" [disabled]="!isStatusAllowed(order.status, status.value)">
                                                         {{status.label}}

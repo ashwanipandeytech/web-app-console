@@ -13,91 +13,112 @@
   <div class="order-container px-3 px-md-0">
     @for (item of orderListData; track $index) {
       <div
-        class="order-card mb-4 overflow-hidden bg-white border-0 shadow-sm cursor-pointer position-relative"
+        class="order-card mb-4 shadow-sm cursor-pointer position-relative"
+        [class.status-border-cancelled]="item.status === 'cancelled'"
+        [class.status-border-delivered]="item.status === 'delivered'"
+        [class.status-border-confirmed]="item.status === 'confirmed'"
+        [class.status-border-pending]="item.status === 'pending'"
         (click)="getOrderDetailData(item)"
       >
-        <div class="row g-0">
+        <div class="d-flex flex-column flex-sm-row">
           <!-- Image Section -->
-          <div class="col-4 col-sm-2">
-            <div class="order-img-container bg-light d-flex align-items-center justify-content-center h-100">
-              @if (item?.summary?.image && item?.summary?.image !== 'null' && item?.summary?.image !== 'undefined' && !item.hasImageError) {
-                <img
-                  [src]="item?.summary?.image"
-                  alt="Product"
-                  class="img-fluid object-fit-contain h-100 w-100 p-2"
-                  (error)="item.hasImageError = true"
-                />
-              } @else {
-                <div class="placeholder-interactive d-flex flex-column align-items-center justify-content-center p-3 text-center w-100 h-100">
-                  <div class="icon-wrapper mb-2">
-                    <span class="fa-stack fs-56">
-                      <i class="fa-solid fa-image fa-stack-1x text-muted opacity-25"></i>
-                      <i class="fa-solid fa-slash fa-stack-1x text-danger opacity-50"></i>
-                    </span>
-                  </div>
-                  <span class="fs-10 text-muted fw-bold text-uppercase ls-1">No Preview</span>
+          <div class="order-img-container">
+            @if (item?.summary?.image && item?.summary?.image !== 'null' && item?.summary?.image !== 'undefined' && !item.hasImageError) {
+              <img
+                [src]="item?.summary?.image"
+                alt="Product"
+                class="img-fluid object-fit-contain h-100 w-100 p-2"
+                (error)="item.hasImageError = true"
+              />
+            } @else {
+              <div class="placeholder-interactive d-flex flex-column align-items-center justify-content-center p-3 text-center w-100 h-100">
+                <div class="icon-wrapper mb-1">
+                  <i class="fa-solid fa-image text-muted opacity-25 fs-24"></i>
                 </div>
-              }            </div>
+                <span class="fs-9 text-muted fw-bold text-uppercase">No Preview</span>
+              </div>
+            }
           </div>
 
           <!-- Content Section -->
-          <div class="col-8 col-sm-10">
-            <div class="p-3">
-              <div class="d-flex justify-content-between align-items-start mb-2">
-                <div>
-                  <h5 class="order-title mb-1 pe-4">
+          <div class="flex-grow-1 p-3">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-2 mb-2">
+              <div class="w-100">
+                <div class="d-flex justify-content-between align-items-start gap-2">
+                  <h5 class="order-title mb-1 line-clamp-1 flex-grow-1">
                     {{item?.summary?.title }}
                   </h5>
-                  <div class="order-meta text-muted fs-12 d-flex align-items-center gap-2">
-                    <span>Order #{{ item?.summary?.order_number }}</span>
-                    <span class="vr" style="height: 12px; opacity: 0.2;"></span>
-                    <span class="fw-bold text-dark">{{ item?.summary?.total_items_count }} {{ item?.summary?.total_items_count > 1 ? 'Items' : 'Item' }}</span>
-                  </div>
+                  <!-- Status Pill for small screens (inline with title) -->
+                  <span
+                    class="status-pill fs-9 fw-bold text-uppercase px-2 py-1 rounded-pill d-md-none"
+                    [class.status-pulse]="item.status === 'confirmed' || item.status === 'pending'"
+                    [ngClass]="{
+                      'status-cancelled text-danger bg-danger-subtle': item.status === 'cancelled',
+                      'status-delivered text-primary bg-primary-subtle': item.status === 'delivered',
+                      'status-confirmed text-success bg-success-subtle': item.status === 'confirmed' || item.status === 'pending'
+                    }"
+                  >
+                    {{ item.status | titlecase }}
+                  </span>
                 </div>
-                
-                <span
-                  class="status-pill fs-11 fw-bold text-uppercase px-2 py-1 rounded-pill"
-                  [class.status-pulse]="item.status === 'confirmed' || item.status === 'pending'"
-                  [ngClass]="{
-                    'status-cancelled text-danger bg-danger-subtle': item.status === 'cancelled',
-                    'status-delivered text-primary bg-primary-subtle': item.status === 'delivered',
-                    'status-confirmed text-success bg-success-subtle': item.status === 'confirmed' || item.status === 'pending'
-                  }"
-                >                  {{ item.status | titlecase }}
-                </span>
+                <div class="order-meta text-muted fs-12 d-flex align-items-center gap-3">
+                  <span class="d-flex align-items-center gap-1">
+                    <i class="fa-solid fa-hashtag text-primary opacity-50"></i>
+                    {{ item?.summary?.order_number }}
+                  </span>
+                  <span class="d-flex align-items-center gap-1">
+                    <i class="fa-solid fa-box-open text-primary opacity-50"></i>
+                    {{ item?.summary?.total_items_count }} {{ item?.summary?.total_items_count > 1 ? 'Items' : 'Item' }}
+                  </span>
+                </div>
+              </div>
+              
+              <!-- Status Pill for larger screens -->
+              <span
+                class="status-pill fs-10 fw-bold text-uppercase px-3 py-1 rounded-pill d-none d-md-block"
+                [class.status-pulse]="item.status === 'confirmed' || item.status === 'pending'"
+                [ngClass]="{
+                  'status-cancelled text-danger bg-danger-subtle': item.status === 'cancelled',
+                  'status-delivered text-primary bg-primary-subtle': item.status === 'delivered',
+                  'status-confirmed text-success bg-success-subtle': item.status === 'confirmed' || item.status === 'pending'
+                }"
+              >
+                {{ item.status | titlecase }}
+              </span>
+            </div>
+
+            <!-- Rating -->
+            @if (item?.summary?.overall_rating != null && item?.summary?.overall_rating !== '') {
+              <div class="rating-stars mb-2 d-flex align-items-center gap-1">
+                @for (star of stars; track $index) {
+                  <i
+                    class="fa-star fs-10"
+                    [ngClass]="{
+                      'fa-solid active': $index < item?.summary?.overall_rating,
+                      'fa-regular': $index >= item?.summary?.overall_rating,
+                    }"
+                  ></i>
+                }
+                <span class="ms-1 text-muted fs-11 fw-bold">{{ item?.summary?.overall_rating }} / 5</span>
+              </div>
+            }
+
+            <div class="d-flex flex-wrap justify-content-between align-items-center mt-3 gap-2 border-top pt-2">
+              <div class="price-info">
+                <span class="fs-12 text-muted me-1">Total:</span>
+                <span class="fw-bold fs-16 text-primary">₹{{ item?.summary?.total_amount }}</span>
               </div>
 
-              <!-- Rating -->
-              @if (item?.summary?.overall_rating != null && item?.summary?.overall_rating !== '') {
-                <div class="rating-stars mb-2">
-                  @for (star of stars; track $index) {
-                    <i
-                      class="fa-star fs-10"
-                      [ngClass]="{
-                        'fa-solid active': $index < item?.summary?.overall_rating,
-                        'fa-regular': $index >= item?.summary?.overall_rating,
-                      }"
-                    ></i>
-                  }
-                  <span class="ms-1 text-muted fs-11">({{ item?.summary?.overall_rating }})</span>
-                </div>
-              }
-
-              <div class="d-flex flex-wrap justify-content-between align-items-center mt-3 gap-2 border-top pt-2">
-                <div class="price-info">
-                  <span class="fs-12 text-muted me-1">Total:</span>
-                  <span class="fw-bold fs-16 text-dark">₹{{ item?.summary?.total_amount }}</span>
-                </div>
-
+              <div class="d-flex align-items-center gap-2 gap-sm-3">
                 @if (item.status !== 'cancelled' && item.status !== 'delivered') {
-                  <div class="delivery-badge d-flex align-items-center gap-2 px-2 py-1 bg-success-subtle rounded">
+                  <div class="delivery-badge d-flex align-items-center gap-2 px-2 px-sm-3 py-1 bg-success bg-opacity-10 rounded-pill border border-success border-opacity-10">
                     <span class="blinking-circle"></span>
-                    <span class="text-success fs-12 fw-semibold">Arrives by {{ item.expected_delivery }}</span>
+                    <span class="text-success fs-10 fs-sm-11 fw-bold">Arrives {{ item.expected_delivery }}</span>
                   </div>
                 }
 
-                <div class="view-detail fs-12 fw-semibold text-primary d-none d-md-block">
-                  View Details <i class="fa-solid fa-chevron-right ms-1"></i>
+                <div class="view-detail fs-10 fs-sm-11 fw-bold text-primary text-uppercase">
+                  Details <i class="fa-solid fa-arrow-right-long ms-1"></i>
                 </div>
               </div>
             </div>
