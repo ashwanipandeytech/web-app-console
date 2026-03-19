@@ -376,6 +376,19 @@ export class MyOrdersComponent implements OnInit {
     this.cd.detectChanges();
   }
 
+  getOrderStep(status: string): number {
+    const steps: any = {
+      'pending': 1,
+      'confirmed': 2,
+      'processing': 2,
+      'dispatched': 3,
+      'shipped': 3,
+      'out_for_delivery': 4,
+      'delivered': 5
+    };
+    return steps[status?.toLowerCase()] || 1;
+  }
+
   closeModal() {
     if (this.modalRef) {
       this.modalRef.close();

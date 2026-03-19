@@ -57,13 +57,13 @@
                 
                 <span
                   class="status-pill fs-11 fw-bold text-uppercase px-2 py-1 rounded-pill"
+                  [class.status-pulse]="item.status === 'confirmed' || item.status === 'pending'"
                   [ngClass]="{
                     'status-cancelled text-danger bg-danger-subtle': item.status === 'cancelled',
                     'status-delivered text-primary bg-primary-subtle': item.status === 'delivered',
                     'status-confirmed text-success bg-success-subtle': item.status === 'confirmed' || item.status === 'pending'
                   }"
-                >
-                  {{ item.status | titlecase }}
+                >                  {{ item.status | titlecase }}
                 </span>
               </div>
 
@@ -110,205 +110,378 @@
 
 <!-- Order detail Modal -->
 <ng-template #orderDetail let-modal>
-    <div class="modal-content border-0 bg-light">
-      <div class="modal-header py-3 bg-white border-bottom shadow-sm z-3 sticky-top">
-        <div class="me-auto">
-          <h1 class="modal-title fs-5 fw-bold mb-0" id="orderDetailLabel">Order Details</h1>
-          <span class="fs-12 text-muted">Order #{{ orderDetailList?.id }}</span>
+    <div class="modal-content border-0 bg-light rounded-4 overflow-hidden">
+      <div class="modal-header py-2 bg-white border-0 z-3 sticky-top px-4 flex-column align-items-stretch gap-2">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <div class="me-auto">
+            <h1 class="modal-title fs-6 fw-bold mb-0 text-dark" id="orderDetailLabel">Order Overview</h1>
+            <span class="fs-11 text-muted fw-medium">Order ID: #{{ orderDetailList?.summary?.order_number || orderDetailList?.id }}</span>
+            </div>          <button type="button" class="btn-close shadow-none p-2" (click)="modal.dismiss('Cross click')" aria-label="Close"></button>
         </div>
-        <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close"></button>
+
+        <!-- Horizontal Progress Stepper -->
+        @if (orderDetailList?.status !== 'cancelled') {
+          <div class="order-progress-wrapper px-2">
+            <div class="horizontal-stepper-line">
+              <div class="progress-fill" [style.width.%]="(getOrderStep(orderDetailList.status) - 1) * 25"></div>
+              
+              <div class="progress-step" [class.active]="getOrderStep(orderDetailList.status) >= 1" [class.current]="getOrderStep(orderDetailList.status) === 1">
+                <div class="step-icon-circle"><i class="fa-solid fa-bag-shopping"></i></div>
+                <span class="step-label">Placed</span>
+              </div>
+              
+              <div class="progress-step" [class.active]="getOrderStep(orderDetailList.status) >= 2" [class.current]="getOrderStep(orderDetailList.status) === 2">
+                <div class="step-icon-circle"><i class="fa-solid fa-gears"></i></div>
+                <span class="step-label">Processing</span>
+              </div>
+              
+              <div class="progress-step" [class.active]="getOrderStep(orderDetailList.status) >= 3" [class.current]="getOrderStep(orderDetailList.status) === 3">
+                <div class="step-icon-circle"><i class="fa-solid fa-truck-fast"></i></div>
+                <span class="step-label">Shipped</span>
+              </div>
+
+              <div class="progress-step" [class.active]="getOrderStep(orderDetailList.status) >= 4" [class.current]="getOrderStep(orderDetailList.status) === 4">
+                <div class="step-icon-circle"><i class="fa-solid fa-location-crosshairs"></i></div>
+                <span class="step-label">Out</span>
+              </div>
+              
+              <div class="progress-step" [class.active]="getOrderStep(orderDetailList.status) >= 5" [class.current]="getOrderStep(orderDetailList.status) === 5">
+                <div class="step-icon-circle"><i class="fa-solid fa-circle-check"></i></div>
+                <span class="step-label">Delivered</span>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <div class="p-2 bg-danger-subtle rounded-3 border border-danger border-opacity-25 d-flex align-items-center gap-2">
+            <i class="fa-solid fa-circle-xmark text-danger fs-18"></i>
+            <div>
+              <div class="fw-bold text-danger fs-12">Order Cancelled</div>
+              <div class="text-danger opacity-75 fs-11">This order was cancelled and will not be processed.</div>
+            </div>
+          </div>
+        }
       </div>
 
       <!-- Tab Navigation -->
-      <div class="bg-white border-bottom sticky-top z-2" style="top: 70px;">
-        <ul class="nav nav-pills nav-justified p-2 gap-1 overflow-auto flex-nowrap custom-tabs">
+      <div class="bg-white border-bottom sticky-top z-2" style="top: 120px;">
+        <ul class="nav nav-pills nav-justified px-4 pb-2 gap-2 overflow-auto flex-nowrap custom-tabs">
           <li class="nav-item">
-            <button class="nav-link py-2 px-1 fs-13 fw-semibold d-flex flex-column align-items-center gap-1" 
+            <button class="nav-link d-flex flex-column align-items-center gap-1" 
                     [class.active]="activeTab === 'items'" (click)="setActiveTab('items')">
-              <i class="fa-solid fa-box"></i>
+              <i class="fa-solid fa-boxes-stacked"></i>
               <span>Items</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link py-2 px-1 fs-13 fw-semibold d-flex flex-column align-items-center gap-1" 
-                    [class.active]="activeTab === 'tracking'" (click)="setActiveTab('tracking')">
-              <i class="fa-solid fa-truck-fast"></i>
-              <span>Tracking</span>
+            <button class="nav-link d-flex flex-column align-items-center gap-1" 
+                    [class.active]="activeTab === 'shipping'" (click)="setActiveTab('shipping')">
+              <i class="fa-solid fa-location-dot"></i>
+              <span>Shipping</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link py-2 px-1 fs-13 fw-semibold d-flex flex-column align-items-center gap-1" 
+            <button class="nav-link d-flex flex-column align-items-center gap-1" 
                     [class.active]="activeTab === 'billing'" (click)="setActiveTab('billing')">
-              <i class="fa-solid fa-receipt"></i>
+              <i class="fa-solid fa-file-invoice-dollar"></i>
               <span>Billing</span>
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link py-2 px-1 fs-13 fw-semibold d-flex flex-column align-items-center gap-1" 
-                    [class.active]="activeTab === 'shipping'" (click)="setActiveTab('shipping')">
-              <i class="fa-solid fa-map-location-dot"></i>
-              <span>Shipping</span>
+            <button class="nav-link d-flex flex-column align-items-center gap-1" 
+                    [class.active]="activeTab === 'tracking'" (click)="setActiveTab('tracking')">
+              <i class="fa-solid fa-truck-ramp-box"></i>
+              <span>Tracking</span>
             </button>
           </li>
         </ul>
       </div>
 
-      <div class="modal-body px-lg-4 py-3">
+      <div class="modal-body p-4">
         <div class="tab-content">
           <!-- Items Tab -->
           @if (activeTab === 'items') {
-            <div class="order-container d-flex flex-column gap-3">
+            <div class="d-flex flex-column gap-3">
               @for (item of orderDetailList.items; track $index) {
                 @if (item.product != null) {
-                  <div class="order-card shadow-sm border-0 bg-white overflow-hidden rounded-3">
-                    <div class="row g-0">
-                      <div class="col-4">
-                        <div class="order-img-container bg-light d-flex align-items-center justify-content-center h-100">
-                          @if ((item.product?.media?.uploadedImages?.[0]?.url || item.product?.images?.[0]?.url) && !item.hasDetailImageError) {
-                            <img
-                              [src]="item.product.media?.uploadedImages?.[0]?.url || item.product.images[0].url"
-                              alt=""
-                              class="img-fluid object-fit-contain p-2 w-100 h-100"
-                              (error)="item.hasDetailImageError = true"
-                            />
-                          } @else {
-                            <div class="placeholder-interactive d-flex flex-column align-items-center justify-content-center p-3 text-center w-100 h-100">
-                              <div class="icon-wrapper mb-1">
-                                <span class="fa-stack fs-24">
-                                  <i class="fa-solid fa-image fa-stack-1x text-muted opacity-25"></i>
-                                  <i class="fa-solid fa-slash fa-stack-1x text-danger opacity-50"></i>
-                                </span>
-                              </div>
-                              <span class="fs-9 text-muted fw-bold text-uppercase ls-1">No Preview</span>
-                            </div>
-                          }
-                        </div>
-                      </div>
-
-                      <div class="col-8">
-                        <div class="p-3">
-                          <h6 class="order-title mb-1 text-capitalize fw-bold">{{ item?.product?.title }}</h6>
-                          
-                          <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="fw-bold text-primary fs-15">₹{{ item?.price }}</span>
-                            <span
-                              class="status-pill fs-10 fw-bold text-uppercase px-2 py-1 rounded-pill"
-                              [ngClass]="{
-                                'status-cancelled text-danger bg-danger-subtle': orderDetailList.status === 'cancelled',
-                                'status-delivered text-primary bg-primary-subtle': orderDetailList.status === 'delivered',
-                                'status-confirmed text-success bg-success-subtle': orderDetailList.status === 'confirmed' || orderDetailList.status === 'pending'
-                              }"
-                            >
-                              {{ orderDetailList?.status }}
-                            </span>
-                          </div>
-
-                          @if (item?.product_review != null) {
-                            <div class="bg-light border rounded-3 p-2 my-2">
-                              <div class="rating-stars mb-1">
-                                @for (star of stars; track $index) {
-                                  <i
-                                    class="fa-star fs-11"
-                                    [ngClass]="{
-                                      'fa-solid active': $index < item?.product_review?.rating,
-                                      'fa-regular': $index >= item?.product_review?.rating,
-                                    }"
-                                  ></i>
-                                }
-                                <span class="ms-1 text-muted fs-11 fw-bold">{{ item?.product_review?.rating }} / 5</span>
-                              </div>
-                              @if (item?.product_review?.comment) {
-                                <span class="fs-11 text-muted d-block fst-italic">"{{ item?.product_review?.comment }}"</span>
-                              }
-                            </div>
-                          }
-
-                          <div class="d-flex align-items-center gap-2 flex-wrap pt-2 border-top">
-                            @if (!item?.product_review) {
-                              <button
-                                class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1 fs-11"
-                                data-bs-toggle="collapse"
-                                [attr.data-bs-target]="'#collapseProduct' + $index"
-                                aria-expanded="false"
-                                [attr.aria-controls]="'collapseProduct' + $index"
-                              >
-                                <i class="fa-regular fa-star"></i> Rate
-                              </button>
-                            }
-
-                            <button
-                              type="button"
-                              class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 fs-11"
-                              (click)="addToCart(item)"
-                            >
-                              <i class="fa-solid fa-cart-plus"></i> Reorder
-                            </button>
-                            
-                            @if (item.actions?.can_cancel) {
-                              <button
-                                class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1 fs-11"
-                                (click)="openCancelOrderModal(false, item)"
-                              >
-                                <i class="fa-solid fa-ban"></i> Cancel
-                              </button>
-                            }
-                            @if (item.actions?.can_return) {
-                              <button
-                                class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1 fs-11"
-                                (click)="openCancelOrderModal(true, item)"
-                              >
-                                <i class="fa-solid fa-rotate-left"></i> Return
-                              </button>
-                            }
-                          </div>
-                        </div>
-                      </div>
-
-                      @if (!item?.product_review) {
-                        <div class="col-12">
-                          <div class="collapse" [id]="'collapseProduct' + $index" #collapseRef>
-                            <div class="card card-body border-0 border-top rounded-0 p-3 bg-light">
-                              <form
-                                [formGroup]="rateUsForm"
-                                (ngSubmit)="submitRating(item, item.product.id, $index)"
-                              >
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                  <span class="fw-semibold fs-13">How was your product?</span>
-                                  <button
-                                    type="submit"
-                                    class="btn btn-sm btn-primary px-3"
-                                    [disabled]="rateUsForm?.invalid"
-                                  >
-                                    Submit
-                                  </button>
-                                </div>
-                                <div class="rating-stars mb-2">
-                                  @for (star of stars; track $index) {
-                                    <i
-                                      class="fa-star fs-16 cursor-pointer"
-                                      [ngClass]="{
-                                        'fa-solid active': $index < rateUsForm.value.rating,
-                                        'fa-regular': $index >= rateUsForm.value.rating,
-                                      }"
-                                      (click)="setRating($index + 1)"
-                                    ></i>
-                                  }
-                                </div>
-                                <textarea
-                                  class="form-control border-0 shadow-sm fs-13"
-                                  rows="2"
-                                  placeholder="Feedback (optional)..."
-                                  formControlName="comment"
-                                ></textarea>
-                              </form>
-                            </div>
-                          </div>
+                  <div class="product-item-card shadow-sm border-0 d-flex">
+                    <div class="img-wrapper">
+                      @if ((item.product?.media?.uploadedImages?.[0]?.url || item.product?.images?.[0]?.url) && !item.hasDetailImageError) {
+                        <img
+                          [src]="item.product.media?.uploadedImages?.[0]?.url || item.product.images[0].url"
+                          alt=""
+                          class="img-fluid object-fit-contain w-100 h-100"
+                          (error)="item.hasDetailImageError = true"
+                        />
+                      } @else {
+                        <div class="text-center opacity-25">
+                          <i class="fa-solid fa-image fs-2 d-block mb-1"></i>
+                          <span class="fs-9 fw-bold">NO IMAGE</span>
                         </div>
                       }
                     </div>
+
+                    <div class="product-details d-flex flex-column justify-content-between">
+                      <div>
+                        <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+                          <h6 class="mb-0 text-capitalize fw-bold text-dark fs-13 line-clamp-2">{{ item?.product?.title }}</h6>
+                          <span class="badge rounded-pill fw-bold text-uppercase"
+                            [class.status-pulse]="orderDetailList.status === 'confirmed' || orderDetailList.status === 'pending'"
+                            [ngClass]="{
+                              'bg-danger-subtle text-danger': orderDetailList.status === 'cancelled',
+                              'bg-primary-subtle text-primary': orderDetailList.status === 'delivered',
+                              'bg-success-subtle text-success': orderDetailList.status === 'confirmed' || orderDetailList.status === 'pending'
+                            }" style="font-size: 9px; padding: 4px 8px;">
+                            {{ orderDetailList?.status }}
+                          </span>
+                        </div>
+                        
+                        <div class="d-flex align-items-center gap-3 mb-2">
+                          <div>
+                              <div class="info-label mb-0" style="font-size: 11px;">Price: <span class="info-value text-primary">₹{{ item?.price }}</span></div>
+                          </div>
+                          <div class="vr opacity-10" style="height: 12px;"></div>
+                          <div>
+                              <div class="info-label mb-0" style="font-size: 11px;">Qty: <span class="info-value">{{ item?.quantity || 1 }}</span></div>
+                          </div>
+                        </div>
+
+                        @if (item?.product_review != null) {
+                          <div class="bg-light rounded-3 px-2 py-1 mb-2 border border-dashed border-secondary border-opacity-25">
+                            <div class="rating-stars mb-0">
+                              @for (star of stars; track $index) {
+                                <i class="fa-star fs-9" [ngClass]="{'fa-solid active': $index < item?.product_review?.rating, 'fa-regular': $index >= item?.product_review?.rating}"></i>
+                              }
+                              <span class="ms-1 text-dark fw-bold" style="font-size: 10px;">{{ item?.product_review?.rating }} / 5</span>
+                            </div>
+                            @if (item?.product_review?.comment) {
+                              <span class="text-muted d-block fst-italic line-clamp-1" style="font-size: 10px;">"{{ item?.product_review?.comment }}"</span>
+                            }
+                          </div>
+                        }
+                      </div>
+
+                      <div class="d-flex align-items-center gap-2 flex-wrap pt-1 border-top mt-auto">
+                        @if (!item?.product_review) {
+                          <button class="btn btn-sm btn-light border d-inline-flex align-items-center gap-1 fs-10 fw-bold px-2 py-1 rounded-pill"
+                            data-bs-toggle="collapse" [attr.data-bs-target]="'#collapseProduct' + $index">
+                            <i class="fa-regular fa-star text-warning"></i> Rate
+                          </button>
+                        }
+
+                        <button type="button" class="btn btn-sm btn-primary d-inline-flex align-items-center gap-1 fs-10 fw-bold px-2 py-1 rounded-pill"
+                          (click)="addToCart(item)">
+                          <i class="fa-solid fa-cart-plus"></i> Reorder
+                        </button>
+                        
+                        @if (item.actions?.can_cancel) {
+                          <button class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1 fs-10 fw-bold px-2 py-1 rounded-pill"
+                            (click)="openCancelOrderModal(false, item)">
+                            <i class="fa-solid fa-xmark"></i> Cancel
+                          </button>
+                        }
+                        @if (item.actions?.can_return) {
+                          <button class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1 fs-10 fw-bold px-2 py-1 rounded-pill"
+                            (click)="openCancelOrderModal(true, item)">
+                            <i class="fa-solid fa-rotate-left"></i> Return
+                          </button>
+                        }
+                      </div>
+                    </div>
                   </div>
+
+                  @if (!item?.product_review) {
+                    <div class="collapse-wrapper">
+                      <div class="collapse" [id]="'collapseProduct' + $index" #collapseRef>
+                        <div class="p-3 bg-light border border-top-0 rounded-bottom-3 shadow-sm mx-2 mb-3">
+                          <form [formGroup]="rateUsForm" (ngSubmit)="submitRating(item, item.product.id, $index)">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                              <span class="fw-bold fs-12 text-dark">Share your feedback</span>
+                              <button type="submit" class="btn btn-sm btn-primary px-3 rounded-pill fs-11 fw-bold" [disabled]="rateUsForm?.invalid">Submit</button>
+                            </div>
+                            <div class="rating-stars mb-2">
+                              @for (star of stars; track $index) {
+                                <i class="fa-star fs-18 cursor-pointer" [ngClass]="{'fa-solid active': $index < rateUsForm.value.rating, 'fa-regular': $index >= rateUsForm.value.rating}" (click)="setRating($index + 1)"></i>
+                              }
+                            </div>
+                            <textarea class="form-control border-0 shadow-sm fs-12 rounded-3" rows="2" placeholder="Tell us more..." formControlName="comment"></textarea>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  }
                 }
               }
+            </div>
+          }
+
+          <!-- Shipping Tab -->
+          @if (activeTab === 'shipping') {
+            <div class="shipping-container d-flex flex-column gap-3">
+              <div class="order-detail-card bg-white p-4 shadow-sm border-0">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="card-header-icon"><i class="fa-solid fa-location-arrow"></i></div>
+                    <h6 class="fw-bold mb-0 text-dark">Delivery Address</h6>
+                  </div>
+                  <button type="button" (click)="goToHelp()" class="btn btn-sm btn-light border fw-bold px-3 rounded-pill fs-11">
+                    <i class="fa-solid fa-circle-question me-1 text-primary"></i> Help
+                  </button>
+                </div>
+
+                <div class="bg-light rounded-4 p-3 border border-light-subtle">
+                  <div class="d-flex flex-column gap-3">
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="bg-primary bg-opacity-10 p-2 rounded-circle">
+                        <i class="fa-solid fa-user text-primary fs-12"></i>
+                      </div>
+                      <span class="fw-bold text-dark fs-15">{{ orderDetailList?.address?.name }}</span>
+                    </div>
+                  
+                    <div class="ps-4 ms-2 border-start border-2 py-1">
+                      <div class="info-label mb-1">Full Address</div>
+                      <p class="mb-1 fw-bold text-dark fs-14 lh-sm">
+                        @if(orderDetailList?.address?.house_no) { {{ orderDetailList?.address?.house_no }}, }
+                        @if(orderDetailList?.address?.street) { {{ orderDetailList?.address?.street }}, }
+                        {{ orderDetailList?.address?.address_line }}
+                      </p>
+                      <div class="text-muted fs-13 fw-medium">
+                        {{ orderDetailList?.address?.city }}, {{ orderDetailList?.address?.state }} - {{ orderDetailList?.address?.pincode }}
+                        @if(orderDetailList?.address?.country) { <br> <span class="text-uppercase fw-bold text-primary opacity-75 mt-1 d-inline-block">{{ orderDetailList?.address?.country }}</span> }
+                      </div>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-3 pt-2 mt-1 border-top border-light-subtle">
+                      <div class="d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-phone text-muted fs-12"></i>
+                        <span class="text-dark fw-bold fs-14">{{ orderDetailList?.address?.phone }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-detail-card bg-white p-4 shadow-sm border-0">
+                <div class="d-flex align-items-center gap-2 mb-4">
+                  <div class="card-header-icon bg-warning bg-opacity-10 text-warning"><i class="fa-solid fa-star"></i></div>
+                  <h6 class="fw-bold mb-0 text-dark">Customer Review</h6>
+                </div>
+                
+                @if (orderDetailList?.order_rating != null) {
+                  <div class="bg-light rounded-4 p-3 border border-dashed">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                      <div class="rating-stars rated">
+                        @for (star of stars; track $index) {
+                          <i class="fa-star fs-14" [ngClass]="{'fa-solid active': $index < orderDetailList?.order_rating.rating, 'fa-regular': $index >= orderDetailList?.order_rating.rating}"></i>
+                        }
+                      </div>
+                      <span class="fw-bold fs-14 text-dark ms-1">{{ orderDetailList?.order_rating.rating }} / 5</span>
+                    </div>
+                    @if (orderDetailList?.order_rating.comment) {
+                      <div class="bg-white p-3 rounded-3 border border-light-subtle">
+                        <p class="mb-0 fs-13 text-dark fst-italic opacity-75">"{{ orderDetailList?.order_rating.comment }}"</p>
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <div class="text-center py-2">
+                    <button type="button" class="btn btn-outline-primary fw-bold rounded-pill px-4 fs-12" data-bs-toggle="collapse" data-bs-target="#collapseRateUs">
+                      <i class="fa-solid fa-pen-to-square me-1"></i> Write Review
+                    </button>
+                    <div class="collapse mt-4 text-start" id="collapseRateUs">
+                      <div class="bg-light rounded-4 p-4 border shadow-none">
+                        <form [formGroup]="rateUsForm" (ngSubmit)="submitRating()">
+                          <div class="info-label mb-3 fw-bold text-dark">How would you rate your overall experience?</div>
+                          <div class="rating-stars mb-4 d-flex gap-2">
+                            @for (star of stars; track $index) {
+                              <i class="fa-star fs-32 cursor-pointer transition" [ngClass]="{'fa-solid active': $index < rateUsForm.value.rating, 'fa-regular': $index >= rateUsForm.value.rating}" (click)="setRating($index + 1)"></i>
+                            }
+                          </div>
+                          <textarea class="form-control border-0 shadow-sm rounded-4 p-3 fs-13" rows="3" placeholder="Share your thoughts with us..." formControlName="comment"></textarea>
+                          <button type="submit" class="btn btn-primary mt-4 w-100 py-3 rounded-pill fw-bold" [disabled]="rateUsForm.invalid">Submit Review</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Billing Tab -->
+          @if (activeTab === 'billing') {
+            <div class="billing-container d-flex flex-column gap-3">
+              <div class="order-detail-card bg-white p-4 shadow-sm border-0">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                   <div class="d-flex align-items-center gap-2">
+                     <div class="card-header-icon"><i class="fa-solid fa-receipt"></i></div>
+                     <h6 class="fw-bold mb-0 text-dark">Order Summary</h6>
+                   </div>
+                  @if (orderDetailList?.status !== 'cancelled') {
+                    <button class="btn btn-sm btn-outline-success border-2 fw-bold rounded-pill fs-11 px-3 d-flex align-items-center gap-1"
+                      (click)="downloadInvoice(orderDetailList)">
+                      <i class="fa-solid fa-cloud-arrow-down"></i> Invoice
+                    </button>
+                  }
+                </div>
+                
+                <div class="d-flex flex-column gap-3">
+                  <div class="d-flex justify-content-between">
+                    <span class="text-muted fs-14">Subtotal</span>
+                    <span class="text-dark fw-bold">₹{{ orderDetailList?.total_amount }}</span>
+                  </div>
+
+                  @if (orderDetailList?.coupon_code) {
+                    <div class="p-3 bg-success bg-opacity-10 rounded-3 border border-success border-opacity-25 d-flex justify-content-between align-items-center">
+                      <div class="d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-tag text-success fs-14"></i>
+                        <div>
+                          <div class="fw-bold text-success fs-12">Coupon Applied</div>
+                          <div class="text-success fs-11 opacity-75 fw-bold text-uppercase">{{ orderDetailList.coupon_code }}</div>
+                        </div>
+                      </div>
+                      <span class="text-success fw-bold">- ₹{{ orderDetailList.coupon_discount }}</span>
+                    </div>
+                  }
+
+                  <div class="d-flex justify-content-between py-3 border-top mt-1">
+                    <span class="fw-bold text-dark fs-16">Total Amount</span>
+                    <span class="fw-bold text-primary fs-18">₹{{ orderDetailList?.total_amount }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-detail-card bg-white p-4 shadow-sm border-0">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                  <div class="card-header-icon"><i class="fa-solid fa-credit-card"></i></div>
+                  <h6 class="fw-bold mb-0 text-dark">Payment Details</h6>
+                </div>
+                
+                <div class="bg-light rounded-3 p-3">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="info-label mb-0">Method</span>
+                    <span class="badge bg-white text-dark border fw-bold text-uppercase px-3 py-2 rounded-pill fs-11">
+                      {{ orderDetailList?.payment_method }}
+                    </span>
+                  </div>
+
+                  @if (orderDetailList?.payment_details) {
+                    <div class="d-flex flex-column gap-2 pt-3 border-top">
+                      @if (orderDetailList.payment_details.transaction_id) {
+                        <div class="d-flex justify-content-between align-items-center">
+                          <span class="info-label mb-0">Transaction ID</span>
+                          <span class="info-value fs-13">{{ orderDetailList.payment_details.transaction_id }}</span>
+                        </div>
+                      }
+                      @if (orderDetailList.payment_details.payment_gateway) {
+                        <div class="d-flex justify-content-between align-items-center">
+                          <span class="info-label mb-0">Gateway</span>
+                          <span class="info-value fs-13 text-capitalize">{{ orderDetailList.payment_details.payment_gateway }}</span>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
             </div>
           }
 
@@ -316,29 +489,36 @@
           @if (activeTab === 'tracking') {
             <div class="tracking-container">
               @if (orderDetailList?.item_timeline?.length > 0) {
-                <div class="card border-0 shadow-sm p-4 bg-white rounded-3">
-                  <h6 class="fw-bold mb-4 d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-map-location-dot text-primary"></i> Order Tracking
-                  </h6>
+                <div class="order-detail-card bg-white p-4 shadow-sm border-0 mb-3">
+                  <div class="d-flex align-items-center gap-2 mb-4">
+                    <div class="card-header-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                    <h6 class="fw-bold mb-0 text-dark">Shipment Timeline</h6>
+                  </div>
                   
                   <div class="vertical-stepper">
                     @for (event of orderDetailList.item_timeline; track $index) {
-                      <div class="step-item" [class.last]="$last">
-                        <div class="step-icon">
-                          <div class="dot" 
-                            [class.active]="true" 
-                            [class.blinking]="$first && orderDetailList?.status !== 'cancelled'"
-                            [class.is-cancelled]="event.status === 'cancelled' || event.message?.toLowerCase().includes('cancelled')"
-                          ></div>
-                          @if (!$last) { <div class="line"></div> }
+                      <div class="step-item">
+                        <div class="step-dot" 
+                          [class.active]="!event.status?.toLowerCase().includes('cancelled')" 
+                          [class.is-cancelled]="event.status?.toLowerCase().includes('cancelled') || event.message?.toLowerCase().includes('cancelled')">
+                          @if (event.status?.toLowerCase().includes('cancelled') || event.message?.toLowerCase().includes('cancelled')) {
+                            <i class="fa-solid fa-xmark"></i>
+                          } @else {
+                            <i class="fa-solid fa-check"></i>
+                          }
                         </div>
-                        <div class="step-content">
+                        <div class="step-content shadow-none border-light-subtle" 
+                          [class.cancelled-content]="event.status?.toLowerCase().includes('cancelled') || event.message?.toLowerCase().includes('cancelled')">
                           <div class="d-flex justify-content-between align-items-start">
-                            <span class="fw-bold fs-14 text-dark text-capitalize">{{ event.message || event.status }}</span>
-                            <span class="fs-11 text-muted">{{ event.date || (event.created_at | date:'dd MMM, yyyy - hh:mm a') }}</span>
+                            <span class="fw-bold fs-14 text-capitalize" 
+                              [class.text-danger]="event.status?.toLowerCase().includes('cancelled') || event.message?.toLowerCase().includes('cancelled')"
+                              [class.text-dark]="!(event.status?.toLowerCase().includes('cancelled') || event.message?.toLowerCase().includes('cancelled'))">
+                              {{ event.message || event.status }}
+                            </span>
+                            <span class="fs-11 text-muted fw-bold">{{ event.date || (event.created_at | date:'dd MMM, yyyy - hh:mm a') }}</span>
                           </div>
                           @if (event.comment) {
-                            <p class="fs-12 text-muted mb-0 mt-1">{{ event.comment }}</p>
+                            <p class="fs-12 text-muted mb-0 mt-1 opacity-75">{{ event.comment }}</p>
                           }
                         </div>
                       </div>
@@ -347,172 +527,13 @@
                 </div>
               } @else {
                 <div class="text-center py-5">
-                  <i class="fa-solid fa-clock-rotate-left fs-1 text-muted opacity-25 mb-3"></i>
-                  <p class="text-muted">Tracking information will be available soon.</p>
+                  <div class="mb-3 opacity-25">
+                    <i class="fa-solid fa-box-open fs-1 text-primary"></i>
+                  </div>
+                  <h6 class="fw-bold text-dark">No updates yet</h6>
+                  <p class="text-muted fs-13">Tracking information will be visible once shipped.</p>
                 </div>
               }
-            </div>
-          }
-
-          <!-- Billing Tab -->
-          @if (activeTab === 'billing') {
-            <div class="billing-container d-flex flex-column gap-3">
-              <div class="card border-0 shadow-sm p-4 bg-white rounded-3">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-receipt text-primary"></i> Bill Details
-                  </h6>
-                  @if (orderDetailList?.status !== 'cancelled') {
-                    <button
-                      class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 fs-11"
-                      (click)="downloadInvoice(orderDetailList)"
-                    >
-                      <i class="fa-solid fa-file-invoice"></i> Download Invoice
-                    </button>
-                  }
-                </div>
-                
-                <div class="d-flex flex-column gap-2">
-                  <div class="d-flex justify-content-between fs-14">
-                    <span class="text-muted">Item Total</span>
-                    <span class="text-dark fw-medium">₹{{ orderDetailList?.total_amount }}</span>
-                  </div>
-
-                  @if (orderDetailList?.coupon_code) {
-                    <div class="d-flex justify-content-between fs-14 py-2 border-top border-bottom border-dashed my-1">
-                      <div class="d-flex align-items-center gap-2">
-                        <div class="bg-success bg-opacity-10 p-1 rounded">
-                          <i class="fa-solid fa-tag text-success fs-12"></i>
-                        </div>
-                        <div>
-                          <span class="fw-bold text-success fs-12 d-block">Coupon Applied</span>
-                          <span class="text-muted fs-11 text-uppercase">{{ orderDetailList.coupon_code }}</span>
-                        </div>
-                      </div>
-                      <span class="text-success fw-bold">- ₹{{ orderDetailList.coupon_discount }}</span>
-                    </div>
-                  }
-
-                  <div class="d-flex justify-content-between fs-16 mt-2 pt-2 border-top">
-                    <span class="fw-bold text-dark">Order Total</span>
-                    <span class="fw-bold text-primary">₹{{ orderDetailList?.total_amount }}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card border-0 shadow-sm p-4 bg-white rounded-3">
-                <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
-                  <i class="fa-solid fa-credit-card text-primary"></i> Payment Information
-                </h6>
-                
-                <div class="bg-light border rounded-3 p-3">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="text-muted fs-13">Method</span>
-                    <span class="badge bg-white text-dark border fw-bold text-uppercase fs-11 px-2 py-1">
-                      {{ orderDetailList?.payment_method }}
-                    </span>
-                  </div>
-
-                  @if (orderDetailList?.payment_details) {
-                    <div class="d-flex flex-column gap-2 pt-2 border-top mt-2">
-                      @if (orderDetailList.payment_details.transaction_id) {
-                        <div class="d-flex justify-content-between fs-13">
-                          <span class="text-muted">Transaction ID</span>
-                          <span class="text-dark fw-medium">{{ orderDetailList.payment_details.transaction_id }}</span>
-                        </div>
-                      }
-                      @if (orderDetailList.payment_details.payment_gateway) {
-                        <div class="d-flex justify-content-between fs-13">
-                          <span class="text-muted">Gateway</span>
-                          <span class="text-dark fw-medium text-capitalize">{{ orderDetailList.payment_details.payment_gateway }}</span>
-                        </div>
-                      }
-                    </div>
-                  }
-                </div>
-              </div>
-            </div>
-          }
-
-          <!-- Shipping Tab -->
-          @if (activeTab === 'shipping') {
-            <div class="shipping-container d-flex flex-column gap-3">
-              <div class="card border-0 shadow-sm p-4 bg-white rounded-3">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-truck-fast text-primary"></i> Shipping Address
-                  </h6>
-                  <button type="button" (click)="goToHelp()" class="btn btn-sm btn-outline-secondary fs-11">
-                    <i class="fa-solid fa-headset"></i> Help
-                  </button>
-                </div>
-
-                <div class="address-box border rounded-3 p-3 bg-light">
-                  <div class="d-flex flex-column gap-2">
-                    <div class="d-flex align-items-center gap-2">
-                      <div class="bg-primary bg-opacity-10 p-2 rounded-circle">
-                        <i class="fa-solid fa-map-location-dot text-primary fs-13"></i>
-                      </div>
-                      <span class="fw-bold text-dark fs-14">{{ orderDetailList?.address?.name }}</span>
-                    </div>
-                  
-                    <div class="ps-4 ms-2 border-start py-1">
-                      <p class="mb-1 fw-bold text-dark fs-13">
-                        @if(orderDetailList?.address?.house_no) { {{ orderDetailList?.address?.house_no }}, }
-                        @if(orderDetailList?.address?.street) { {{ orderDetailList?.address?.street }}, }
-                        {{ orderDetailList?.address?.address_line }}
-                      </p>
-                      <div class="text-muted fs-12">
-                        {{ orderDetailList?.address?.city }}, {{ orderDetailList?.address?.state }} - {{ orderDetailList?.address?.pincode }}
-                        @if(orderDetailList?.address?.country) { <br> <span class="text-uppercase fw-bold fs-10 opacity-75">{{ orderDetailList?.address?.country }}</span> }
-                      </div>
-                    </div>
-
-                    <div class="mt-2 pt-2 border-top">
-                      <span class="text-dark fw-semibold fs-13"><i class="fa-solid fa-phone text-muted me-2"></i>{{ orderDetailList?.address?.phone }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card border-0 shadow-sm p-4 bg-white rounded-3">
-                <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
-                  <i class="fa-regular fa-star text-warning"></i> Feedback
-                </h6>
-                
-                @if (orderDetailList?.order_rating != null) {
-                  <div class="bg-light border rounded-3 p-3">
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                      <div class="rating-stars rated">
-                        @for (star of stars; track $index) {
-                          <i class="fa-star fs-14" [ngClass]="{'fa-solid active': $index < orderDetailList?.order_rating.rating, 'fa-regular': $index >= orderDetailList?.order_rating.rating}"></i>
-                        }
-                      </div>
-                      <span class="fw-bold fs-13 text-dark">{{ orderDetailList?.order_rating.rating }} / 5</span>
-                    </div>
-                    @if (orderDetailList?.order_rating.comment) {
-                      <p class="mb-0 fs-13 text-muted fst-italic">"{{ orderDetailList?.order_rating.comment }}"</p>
-                    }
-                  </div>
-                } @else {
-                  <button type="button" class="btn btn-sm btn-primary w-100" data-bs-toggle="collapse" data-bs-target="#collapseRateUs">
-                    Write a Review
-                  </button>
-                  <div class="collapse mt-3" id="collapseRateUs">
-                    <div class="card card-body bg-light border-0 rounded-3 p-3">
-                      <form [formGroup]="rateUsForm" (ngSubmit)="submitRating()">
-                        <div class="rating-stars mb-3">
-                          @for (star of stars; track $index) {
-                            <i class="fa-star fs-20 cursor-pointer" [ngClass]="{'fa-solid active': $index < rateUsForm.value.rating, 'fa-regular': $index >= rateUsForm.value.rating}" (click)="setRating($index + 1)"></i>
-                          }
-                        </div>
-                        <textarea class="form-control fs-13" rows="3" placeholder="How was your experience?" formControlName="comment"></textarea>
-                        <button type="submit" class="btn btn-sm btn-primary mt-3 w-100" [disabled]="rateUsForm.invalid">Submit</button>
-                      </form>
-                    </div>
-                  </div>
-                }
-              </div>
             </div>
           }
         </div>
