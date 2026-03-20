@@ -2,417 +2,271 @@
 <section class="blog py-lg-4 py-2 d-block">
   <div class="container">
     <div class="blog-bradcrum text-start ms-3">
-
-      <span><a [routerLink]="['/cart']">Back to cart</a></span>
-      <span class="devider">/</span>
-      <span class="fw-semibold">Checkout</span>
+      <span><a [routerLink]="['/cart']" class="text-decoration-none text-muted">
+        <i class="fa-solid fa-arrow-left-long me-1"></i> Back to cart
+      </a></span>
+      <span class="devider mx-2">/</span>
+      <span class="fw-bold text-dark">Checkout</span>
     </div>
-    <!-- <div class="blog-heading about-heading">
-      <h1 class="heading">Checkout</h1>
-    </div> -->
   </div>
 </section>
-<!--------------- blog-tittle-section-end---------------->
-
-<!-- @if(isLoading){
-<div class="loader d-flex align-items-center justify-content-center position-absolute" style="inset-inline: 0;">
-  <div class="spinner-border spinner-border-lg text-primary" role="status"></div>
-</div>
-} -->
-<!--------------- checkout-section---------------->
 
 @if (!isLoading) {
-  <section class="checkout product w-1100 mx-auto box-shadows rounded-4 p-lg-4 mb-5">
-    <div class="container">
-      <div class="checkout-section">
-        <div class="row gy-5 gy-lg-0">
-          <div class="col-md-8 col-12">
-
-            <!-- <div class="d-flex align-items-center justify-content-between">
-              <h5 class="fs-14 fw-semibold">PRODUCT</h5>
-              <h5 class="fs-14 fw-semibold">PRICE</h5>
-            </div>
-            <hr class="my-2" /> -->
-            <div class="subtotal product-total">
-              <ul class="product-list gap-2 d-flex flex-column mb-3">
-                @for(item of cartListData; track $index; let i=$index){
-                    <li class="align-items-center d-flex border rounded-2 p-2">
-                      <div class="product-info d-flex flex-row align-items-center text-truncate" style="max-width: calc(100% - 150px);">
-                          <img
-                          [src]="item?.product?.media?.uploadedImages[0]?.url"
-                          alt="" width="60" height="40px" style="min-width: 60px;"
-                          class="object-fit-cover rounded-2"
-                        />
-                        <small class="ms-2 fs-14 fw-semibold w-100 text-truncate">{{ item.product.title }}</small>
-                      </div>
-
-                      <ul class="ms-auto">
-                        <li class="counter d-flex align-items-center">
-                          <!-- <span class="fw-semibold config-title pe-2">Quantity</span> -->
-                          <div class="rounded-2 counter d-flex align-items-center border">
-                            @if(item.quantity > 1){
-                            <button class="minus btn px-2 py-1 rounded-start rounded-end-0 opacity-75"
-                              (click)="decrease(item.quantity, i)">
-                              <i class="fa-solid fa-minus fa-sm"></i>
-                            </button>
-                            }
-                            @if(item.quantity == 1){
-                            <button class="btn px-2 py-1 rounded-start rounded-end-0 opacity-75" (click)="deleteCartItem(item.id)">
-                              <i class="fa-solid fa-trash text-danger fa-sm"></i>
-                            </button>
-                            }
-
-                            <span class="number fw-500 px-2">{{ item.quantity }}</span>
-
-                            <button class="plus btn px-2 py-1 rounded-end rounded-start-0 opacity-75"
-                              (click)="increase(item.quantity, i)">
-                              <i class="fa-solid fa-plus fa-sm"></i>
-                            </button>
-                          </div>
-                        </li>
-                       
-                      </ul>
-
-                      <div class="price ms-3">
-                        <small class="fs-14">₹{{ item.product.price_data.finalPrice }}</small>
-                      </div>
-                    </li>
-                  <!-- <hr class="my-1" /> -->
-                  }
-                <!-- @for (item of cartListData; track $index; let i=$index) {
-                <div class="cart-section mt-3 py-2 px-0 row">
-                  <div class="col-12 col-md-3">
-                    <div class="wrapper-img bg-light p-2 rounded-2">
-                      <img [src]="item?.product?.media?.uploadedImages[0]?.url" alt=""
-                        class="object-fit-cover rounded-2 w-100" />
-                    </div>
-                  </div>
-                  <div class="col-12 col-md-9">
-                    <div class="wrapper-content">
-                      <div class="d-flex align-items-center">
-                        <h5 class="heading text-truncate text-capitalize">{{ item.product.title }}</h5>
-
-                        <button (click)="deleteCartItem(item.id)" title="Remove"
-                          class="lh-0 btn cancel-btn p-2 d-flex align-items-center"
-                          [ngClass]="{'invisible': item.quantity <= 1}" data-bs-toggle="modal"
-                          data-bs-target="#removeProject">
-                          <i class="fa-solid fa-trash text-danger"></i>
-                        </button>
-
-                      </div>
-                      <ul>
-                        <li class="counter d-flex align-items-center">
-                          <span class="fw-semibold config-title">Quantity</span>
-                          <div class="rounded-2 counter d-flex align-items-center mt-1 border">
-                            @if(item.quantity > 1){
-                            <button class="minus btn px-2 py-1 rounded-start rounded-end-0 opacity-75"
-                              (click)="decrease(item.quantity, i)">
-                              <i class="fa-solid fa-minus fa-sm"></i>
-                            </button>
-                            }
-                            @if(item.quantity == 1){
-                            <button class="btn px-2 py-1 rounded-start rounded-end-0 opacity-75" (click)="deleteCartItem(item.id)">
-                              <i class="fa-solid fa-trash text-danger fa-sm"></i>
-                            </button>
-                            }
-
-                            <span class="number fw-500 px-2">{{ item.quantity }}</span>
-
-                            <button class="plus btn px-2 py-1 rounded-end rounded-start-0 opacity-75"
-                              (click)="increase(item.quantity, i)">
-                              <i class="fa-solid fa-plus fa-sm"></i>
-                            </button>
-                          </div>
-                        </li>
-                        <li class="mt-3">
-                          <span class="fw-semibold d-inline-block config-title">price</span>
-                          <span>₹{{ item.product.price_data.finalPrice }}</span>
-                        </li>
-                        @if (item.quantity > 1) {
-                        <li class="mt-3">
-                          <div class="price gap-0">
-                            <span class="d-inline-block fw-semibold config-title text-dark fs-14">Unit price</span>
-                            <span class="price-cut fs-12">₹{{ item.product.price_data.regularPrice }}</span>
-                            <span class="new-price ps-2 fs-14">₹{{ item.product.price_data.salePrice }}</span>
-                          </div>
-                        </li>
-                        }
-                      </ul>
-                    </div>
-                  </div>
+  <section class="checkout-container w-1100 mx-auto px-3 px-sm-0 mb-5">
+    <div class="row g-4">
+      <div class="col-md-8 col-12">
+        <!-- Product List Section -->
+        <div class="mb-4">
+          <h5 class="fw-800 text-dark mb-3 d-flex align-items-center gap-2">
+            <i class="fa-solid fa-basket-shopping text-primary opacity-75"></i>
+            Review Your Items
+          </h5>
+          <div class="d-flex flex-column gap-2">
+            @for(item of cartListData; track $index; let i=$index){
+              <div class="checkout-item-card d-flex align-items-center p-2 shadow-sm">
+                <div class="item-img-container">
+                  <img [src]="item?.product?.media?.uploadedImages[0]?.url" alt="Product" />
                 </div>
-                } -->
-              </ul>
-            </div>
+                
+                <div class="flex-grow-1 px-3">
+                  <h6 class="item-title mb-1 text-truncate">{{ item.product.title }}</h6>
+                  <div class="item-price fw-bold text-primary">₹{{ item.product.price_data.finalPrice }}</div>
+                </div>
 
-            <!-- ALL ADDRESSES -->
-            @if (AllAddressList?.length>1) {
-            <div class="card mb-3">
-              <div class="card-body d-flex justify-content-between align-items-center">
-                <strong class="text-uppercase text-secondary">Your Address</strong>
-                <a (click)="openChangedModal()"
-                  class="icon-link icon-link-hover cursor-pointer text-primary ms-auto fs-14 fw-normal"> Change Delivery Address
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true" class="bi">
-                    <path
-                      d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z">
-                    </path>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            }
-
-            <!-- DELIVERY ADDRESS STEP -->
-             @if(AllAddressList.length>0){
-               <div class="card border-primary">
-                 <div class="card-header bg-primary text-white fw-semibold">
-                   DELIVERY ADDRESS
-                   <span class="badge bg-white text-dark ms-2 fs-12">{{addressListData?.type.toUpperCase()}}</span>
-                 </div>
-   
-                 <div class="card-body">
-                   <div class="d-flex justify-content-between align-items-start">
-                     <div>
-   
-                       <div class="fw-semibold">
-                         <span class="d-block">Name: {{addressListData?.name}}</span>
-                         <span class="d-block">Street: {{addressListData?.street}}</span>
-                         <span class="d-block">state: {{addressListData?.state}}</span>
-                         <span class="">Mobile: {{addressListData?.phone}}</span>
-                         <span class="d-block">Email: {{email}}</span>
-                         <!-- <span class="text-muted d-block">Email: {{email}}</span> -->
-                       </div>
-   
-                       <div class="">
-                         {{addressListData?.city}} - <strong>{{addressListData?.postal_code}}</strong>
-                       </div>
-   
-                     </div>
-   
-                     <a (click)="editAddress(addressListData)"
-                       class="icon-link icon-link-hover cursor-pointer text-primary ms-auto fs-14 fw-normal"> Edit <svg
-                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true" class="bi">
-                         <path
-                           d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z">
-                         </path>
-                       </svg></a>
-   
-   
-                   </div>
-                 </div>
-               </div>
-             }
-
-
-            <!-- NEW ADDRESS -->
-            <div class="address-box d-flex align-items-center px-4 py-3 rounded mt-3 cursor-pointer"
-              (click)="addAddress()">
-              <span class="add-icon me-2 text-primary">+</span>
-              <span class="add-text fw-semibold fs-16 text-primary">Add New Address</span>
-            </div>
-
-            @if (addressNotfound) {
-            <small class="text-danger">Add or Select Address First</small>
-            }
-          </div>
-
-
-          <!-- Price section start from here -->
-          <div class="col-md-4 col-12">
-            <div class="checkout-wrapper rounded pt-2 px-2 shadow-sm bg-white">
-              <div class="account-section billing-section p-0">
-                <h3 class="wrapper-heading mb-3 ps-3 shadow-sm py-2 fs-18 text-center" style="background-color: #f1f2f7;">
-                  Order Summary</h3>
-                <div class="order-summery">
-                  <!-- Coupon -->
-                  @if (this.appliedCoupon == '' || this.appliedCoupon == undefined) {
-                  <div class="d-flex justify-content-between align-items-center bg-white px-3 pb-2">
-                    <span class="fw-semibold">Have a coupon?</span>
-                    <button type="button" class="shop-btn sm-btn fs-12 w-auto" (click)="openCouponModal()">
-                      Apply
+                <div class="d-flex align-items-center gap-3 pe-2">
+                  <div class="quantity-stepper d-flex align-items-center border shadow-none overflow-hidden">
+                    <button class="btn step-btn border-0 shadow-none" (click)="decrease(item.quantity, i)" [disabled]="item.quantity <= 1">
+                      <i class="fa-solid fa-minus fa-xs"></i>
+                    </button>
+                    <span class="qty-number">{{ item.quantity }}</span>
+                    <button class="btn step-btn border-0 shadow-none" (click)="increase(item.quantity, i)">
+                      <i class="fa-solid fa-plus fa-xs"></i>
                     </button>
                   </div>
-                  <hr class="mt-0">
-                  }
+                  <button class="btn btn-link text-danger p-0 border-0 shadow-none" (click)="deleteCartItem(item.id)">
+                    <i class="fa-solid fa-trash-can opacity-75"></i>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
 
-                  @if (this.appliedCoupon !='') {
-                  <!-- <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2"> -->
-                  <div class="alert alert-success d-flex align-items-center gap-2 shadow-sm p-2" role="alert">
-                    <span class="bg-primary text-white fw-semibold opacity-75 p-1">{{appliedCoupon}}</span><span class="text-success">20% Off Applied</span>
-                    <button type="button" class="btn btn-sm text-danger ms-auto" (click)="removeCoupon()">
-                      <i class="fa-solid fa-times"></i> </button>
-                  </div>
-                  }
-                  
-                  <div class="subtotal product-total px-3">
-                    <h5 class="wrapper-heading fw-semibold">Subtotal</h5>
-                    <h5 class="wrapper-heading">₹{{ gstSummary?.base_total | number:'1.2-2' }}</h5>
-                  </div>
-                  <div class="subtotal product-total px-3">
-                    <h5 class="wrapper-heading fw-semibold">Discount</h5>
-                    <h5 class="wrapper-heading">₹{{ gstSummary?.discount_total | number:'1.2-2' }}</h5>
-                  </div>
+        <!-- Address Section -->
+        <div class="mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-800 text-dark mb-0 d-flex align-items-center gap-2">
+              <i class="fa-solid fa-location-dot text-primary opacity-75"></i>
+              Delivery Address
+            </h5>
+            @if (AllAddressList?.length > 1) {
+              <button (click)="openChangedModal()" class="btn btn-sm btn-link text-primary fw-bold text-decoration-none p-0">
+                Change Address <i class="fa-solid fa-chevron-right fs-10 ms-1"></i>
+              </button>
+            }
+          </div>
 
-                  <div class="subtotal product-total px-3">
-                    <h5 class="wrapper-heading fw-semibold">CGST</h5>
-                    <h5 class="wrapper-heading">₹{{ gstSummary?.total_cgst | number:'1.2-2' }}</h5>
+          @if(AllAddressList.length > 0){
+            <div class="address-section-card shadow-sm">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="address-badge text-uppercase">{{addressListData?.type}}</span>
+                  <span class="fw-bold text-dark fs-14">Default Address</span>
+                </div>
+                <button (click)="editAddress(addressListData)" class="btn btn-sm btn-light border-0 rounded-pill px-3 fw-bold fs-11">
+                  <i class="fa-solid fa-pen-to-square me-1"></i> Edit
+                </button>
+              </div>
+              <div class="card-body p-4">
+                <div class="address-details">
+                  <div class="name mb-3">{{addressListData?.name}}</div>
+                  <div class="info-item d-flex align-items-start gap-2">
+                    <i class="fa-solid fa-map-location-dot mt-1"></i>
+                    <span>{{addressListData?.street}}, {{addressListData?.city}} - {{addressListData?.postal_code}}</span>
                   </div>
-
-                  <div class="subtotal product-total px-3">
-                    <h5 class="wrapper-heading fw-semibold">SGST</h5>
-                    <h5 class="wrapper-heading">₹{{ gstSummary?.total_sgst | number:'1.2-2' }}</h5>
+                  <div class="info-item d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>{{addressListData?.phone}}</span>
                   </div>
-
-                  <div class="subtotal product-total px-3">
-                    <h5 class="wrapper-heading fw-semibold">Total Tax</h5>
-                    <h5 class="wrapper-heading">₹{{ gstSummary?.total_tax | number:'1.2-2' }}</h5>
+                  <div class="info-item d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>{{email}}</span>
                   </div>
-
-                  <!-- <div class="subtotal product-total px-3">
-                    <h5 class="wrapper-heading fw-semibold">Grand Total</h5>
-                    <h5 class="wrapper-heading fw-bold text-success">
-                      ₹{{gstSummary?.final_total | number:'1.2-2' }}
-                    </h5>
-                  </div> -->
-
-                   <div class="subtotal product-total px-3">
-                    <h5 class="wrapper-heading fw-semibold">Item Total</h5>
-                    <h5 class="wrapper-heading">₹{{grandTotal}}</h5>
-                  </div>
-
-                  <!-- <div class="subtotal product-total px-3">
-                    <ul class="product-list">
-                      <li>
-                        <div class="product-info">
-                          <p class="paragraph fs-14">SHIPPING</p>
-                          <h5 class="wrapper-heading">Free Shipping</h5>
-                        </div>
-                        <div class="price">
-                          <h5 class="wrapper-heading">+₹0</h5>
-                        </div>
-                      </li>
-                    </ul>
-                  </div> -->
-                  <hr />
-                 
-                  <div class="subtotal total px-3">
-                    <h5 class="wrapper-heading  fw-bold fs-18">Total Payable</h5>
-                    <h5 class="wrapper-heading fw-bold fs-18">₹{{gstSummary?.final_total | number:'1.2-2' }}</h5>
-                  </div>
-                  <div class="subtotal payment-type px-3">
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" id="cash" name="bank"
-                        (change)="choosePaymentMethod('cod')" checked />
-                      <label class="form-check-label fw-semibold" for="cash">
-                        Cash on Delivery
-                      </label>
-                    </div>
-                    <div class="form-check mt-1">
-                      <input class="form-check-input" type="radio" id="credit" name="bank"
-                        (change)="choosePaymentMethod('online')" />
-                      <label class="form-check-label fw-semibold" for="credit">
-                        Credit/Debit Cards or Paypal
-                      </label>
-                    </div>
-
-                    @if (!isSelectPaymentMethodInput) {
-                    <small class="text-danger">Choose Payment Method First</small>
-                    }
-                  </div>
-
-                  <a (click)="cartListData.length>0?placeOrder():addItemAlert()" class="shop-btn w-100 oder-btn">Place Order Now</a>
                 </div>
               </div>
             </div>
-          </div>
-          <!-- Price section end  here -->
+          }
 
+          <div class="address-box-new d-flex align-items-center justify-content-center p-4 mt-3 cursor-pointer" (click)="addAddress()">
+            <div class="d-flex align-items-center gap-2 fw-800">
+              <i class="fa-solid fa-circle-plus fs-4"></i>
+              <span>Add New Delivery Address</span>
+            </div>
+          </div>
+
+          @if (addressNotfound) {
+            <div class="alert alert-danger border-0 rounded-3 mt-2 py-2 px-3 fs-13 fw-bold d-flex align-items-center gap-2">
+              <i class="fa-solid fa-circle-exclamation"></i> Please add or select a delivery address first
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Price/Summary Section -->
+      <div class="col-md-4 col-12">
+        <div class="summary-card p-4 shadow-sm">
+          <h3 class="summary-title mb-4">Order Summary</h3>
+          
+          <div class="mb-4">
+            @if (this.appliedCoupon == '' || this.appliedCoupon == undefined) {
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="fw-bold fs-14 text-dark">Apply Coupon</span>
+                <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 fs-11 fw-800" (click)="openCouponModal()">
+                  Enter Code
+                </button>
+              </div>
+            } @else {
+              <div class="alert alert-success d-flex align-items-center gap-2 border-0 p-2 mb-0 bg-success bg-opacity-10 rounded-3">
+                <span class="badge bg-success text-white fw-bold px-2 py-1 fs-10">{{appliedCoupon}}</span>
+                <span class="text-success fs-12 fw-bold">Coupon Applied!</span>
+                <button type="button" class="btn btn-sm text-danger ms-auto p-0 border-0" (click)="removeCoupon()">
+                  <i class="fa-solid fa-circle-xmark"></i>
+                </button>
+              </div>
+            }
+          </div>
+
+          <div class="summary-details d-flex flex-column gap-2 border-bottom pb-3 mb-3">
+            <div class="d-flex justify-content-between">
+              <span class="text-muted fs-14">Items Total</span>
+              <span class="text-dark fw-bold">₹{{grandTotal}}</span>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span class="text-muted fs-14">Discount</span>
+              <span class="text-danger fw-bold">- ₹{{ gstSummary?.discount_total | number:'1.2-2' }}</span>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span class="text-muted fs-14">GST/Tax</span>
+              <span class="text-dark fw-bold">₹{{ gstSummary?.total_tax | number:'1.2-2' }}</span>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <span class="fw-800 text-dark fs-16">Total Payable</span>
+            <span class="fw-800 text-primary fs-20">₹{{gstSummary?.final_total | number:'1.2-2' }}</span>
+          </div>
+
+          <!-- Payment Methods -->
+          <div class="mb-4">
+            <label class="fw-800 text-dark fs-12 text-uppercase mb-3 letter-spacing-1">Payment Method</label>
+            <div class="d-flex flex-column gap-2">
+              <div class="payment-option d-flex align-items-center" (click)="choosePaymentMethod('cod')">
+                <div class="form-check w-100 mb-0 ps-4">
+                  <input class="form-check-input mt-1" type="radio" id="cash" name="paymentGroup" checked />
+                  <label class="form-check-label w-100 cursor-pointer fs-14 fw-medium" for="cash">
+                    Cash on Delivery
+                  </label>
+                </div>
+              </div>
+              <div class="payment-option d-flex align-items-center" (click)="choosePaymentMethod('online')">
+                <div class="form-check w-100 mb-0 ps-4">
+                  <input class="form-check-input mt-1" type="radio" id="credit" name="paymentGroup" />
+                  <label class="form-check-label w-100 cursor-pointer fs-14 fw-medium" for="credit">
+                    Cards or Online Payment
+                  </label>
+                </div>
+              </div>
+            </div>
+            @if (!isSelectPaymentMethodInput) {
+              <div class="text-danger fs-11 mt-2 fw-bold">
+                <i class="fa-solid fa-triangle-exclamation me-1"></i> Please choose a payment method
+              </div>
+            }
+          </div>
+
+          <button (click)="cartListData.length>0?placeOrder():addItemAlert()" class="btn-place-order w-100">
+            <i class="fa-solid fa-lock me-2"></i> Place Order Now
+          </button>
         </div>
       </div>
     </div>
   </section>
-<!--------------- checkout-section-end---------------->
+}
 
-
-  <ng-template #changedModal let-modal>
-      <div class="modal-content border-0">
-        <div class="modal-header py-2">
-          <h1 class="modal-title fs-5" id="changeAddressLabel">Change Address</h1>
-          <button type="button" class="close-btn" (click)="modal.dismiss()" aria-label="Close">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row g-3">
-            @for(item of AllAddressList; track $index;let i= $index){
-            <div class="col-md-12">
-              <div class="seller-info ch border rounded py-2 px-3">
-                <div class="form-check mb-3 border-bottom pb-2 ps-4">
-                  <input class="form-check-input" type="radio" name="radioDefault" [id]="'radioDefault1'+ i"
-                    (change)="getSelectedAddress(item)">
-                  <label class="form-check-label fs-14 fw-semibold text-capitalize" [for]="'radioDefault1'+ i">
-                    {{item.type}}
-                  </label>
-                </div>
-                <div class="info-list">
-                  <ul class="d-flex flex-column gap-2">
-                    <li><span class="info-title d-inline-block fw-semibold">Name :</span> {{item.name}}</li>
-                    <li><span class="info-title d-inline-block fw-semibold">Email :</span>{{email}}</li>
-                    <li><span class="info-title d-inline-block fw-semibold">Phone :</span>{{item.phone}}</li>
-                    <li><span class="info-title d-inline-block fw-semibold">City :</span>{{item.city}}</li>
-                    <li><span class="info-title d-inline-block fw-semibold">Zip :</span>{{item.postal_code}}</li>
-                  </ul>
-                </div>
-              </div>
+<!-- Modals -->
+<ng-template #changedModal let-modal>
+  <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg">
+    <div class="modal-header border-0 bg-light py-3 px-4">
+      <h1 class="modal-title fs-5 fw-bold" id="changeAddressLabel">Select Delivery Address</h1>
+      <button type="button" class="btn-close shadow-none" (click)="modal.dismiss()" aria-label="Close"></button>
+    </div>
+    <div class="modal-body p-4">
+      <div class="d-flex flex-column gap-3">
+        @for(item of AllAddressList; track $index;let i= $index){
+          <div class="payment-option p-3 border rounded-4 transition-all" [class.border-primary]="item.id === addressListData?.id" (click)="getSelectedAddress(item)">
+            <div class="form-check ps-4 mb-3 border-bottom pb-2">
+              <input class="form-check-input" type="radio" name="addressRadio" [id]="'addr'+ i" [checked]="item.id === addressListData?.id">
+              <label class="form-check-label fs-14 fw-800 text-uppercase text-primary letter-spacing-1" [for]="'addr'+ i">
+                {{item.type}}
+              </label>
             </div>
-            }
+            <div class="address-details px-1">
+              <div class="fw-bold text-dark fs-15 mb-1">{{item.name}}</div>
+              <div class="text-muted fs-13 lh-sm mb-2">{{item.street}}, {{item.city}} - {{item.postal_code}}</div>
+              <div class="text-dark fs-13 fw-bold"><i class="fa-solid fa-phone me-2 opacity-50"></i>{{item.phone}}</div>
+            </div>
           </div>
-
-        </div>
-        <div class="modal-footer border-0">
-          <button type="button" class="btn btn-secondary fs-14" (click)="modal.dismiss()">Cancel</button>
-          <button type="button" class="shop-btn fs-14 py-2 px-3 my-0 ms-2" (click)="savedFinalAddress()">Save</button>
-        </div>
-      </div>
-  </ng-template>
-
-  <!-- Modal -->
-  <ng-template #couponModal let-modal>
-    <div class="modal-content border-0">
-      <div class="modal-header py-2">
-        <h1 class="modal-title fs-5">Apply Coupon</h1>
-        <button type="button" class="close-btn" (click)="modal.dismiss()">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="modal-body text-center">
-        <p class="fw-bold">Enter your coupon code here</p>
-        <input type="text" class="form-control" id="productTitle" placeholder="Enter coupon code" #couponInput>
-        <span>
-        </span>
-      </div>
-      <div class="modal-footer border-0 py-2">
-        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
-        <button type="button" class="shop-btn ms-2" (click)="checkCoupon(couponInput.value)">Apply</button>
+        }
       </div>
     </div>
+    <div class="modal-footer border-0 p-4 pt-0">
+      <button type="button" class="btn btn-light px-4 rounded-pill fw-bold" (click)="modal.dismiss()">Cancel</button>
+      <button type="button" class="btn btn-primary px-5 rounded-pill fw-bold shadow-sm" (click)="savedFinalAddress()">Confirm Selection</button>
+    </div>
+  </div>
 </ng-template>
 
-  <!-- Delete product Modal -->
-  <ng-template #deleteCart let-modal>
-      <div class="modal-content border-0">
-        <div class="modal-header py-2">
-          <h1 class="modal-title fs-5" id="removeProjectLabel">Remove product</h1>
-          <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">Remove product from your cart - sure?</div>
-        <div class="modal-footer border-0">
-          <button type="button" class="btn btn-secondary fs-14" (click)="modal.dismiss()">Close</button>
-          <button type="button" class="shop-btn fs-14 py-2 px-3 my-0 ms-2" (click)="deleteItem()">
-            Remove
-          </button>
-        </div>
+<ng-template #couponModal let-modal>
+  <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg">
+    <div class="modal-header border-0 bg-light py-3 px-4">
+      <h1 class="modal-title fs-5 fw-bold">Apply Promo Code</h1>
+      <button type="button" class="btn-close shadow-none" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body p-4 text-center">
+      <div class="alert-icon-wrapper mb-4" style="background: rgba(var(--primary-color-rgb, 13, 110, 253), 0.1); width: 64px; height: 64px; border-radius: 20px; display: inline-flex; align-items: center; justify-content: center;">
+        <i class="fa-solid fa-ticket text-primary fs-2"></i>
       </div>
-  </ng-template>
+      <h4 class="fw-800 text-dark mb-2">Have a Discount?</h4>
+      <p class="text-muted fs-14 mb-4">Enter your coupon code below to unlock special savings on your order.</p>
+      
+      <div class="text-start">
+        <label class="form-label fs-12 fw-bold text-uppercase text-muted px-1">Coupon Code</label>
+        <input type="text" class="form-control py-3 rounded-3 text-center fw-bold text-uppercase letter-spacing-2 fs-18" placeholder="e.g. SAVE20" #couponInput>
+      </div>
+    </div>
+    <div class="modal-footer border-0 p-4 pt-0 flex-column">
+      <button type="button" class="btn btn-primary w-100 py-3 rounded-3 fw-bold mb-2 shadow-sm" (click)="checkCoupon(couponInput.value)">Apply Coupon Now</button>
+      <button type="button" class="btn btn-link text-muted text-decoration-none fw-bold fs-13" (click)="modal.dismiss()">I'll do it later</button>
+    </div>
+  </div>
+</ng-template>
 
-}
+<ng-template #deleteCart let-modal>
+  <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg">
+    <div class="modal-header border-0 bg-light py-3 px-4">
+      <h1 class="modal-title fs-5 fw-bold">Remove Item</h1>
+      <button type="button" class="btn-close shadow-none" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body p-4 text-center">
+      <div class="mb-4 text-danger opacity-25">
+        <i class="fa-solid fa-trash-can" style="font-size: 4rem;"></i>
+      </div>
+      <h4 class="fw-800 text-dark mb-2">Are you sure?</h4>
+      <p class="text-muted fs-15">This product will be removed from your checkout list.</p>
+    </div>
+    <div class="modal-footer border-0 p-4 pt-0 justify-content-center">
+      <button type="button" class="btn btn-light px-4 py-2 rounded-3 fw-bold" (click)="modal.dismiss()">Keep Item</button>
+      <button type="button" class="btn btn-danger px-4 py-2 rounded-3 fw-bold shadow-sm" (click)="deleteItem()">Yes, Remove It</button>
+    </div>
+  </div>
+</ng-template>

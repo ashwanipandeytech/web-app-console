@@ -135,20 +135,24 @@
   <div class="container">
     <!-- Blank cart start -->
     @if (cartListData.length == 0 && isLoggedIn && !loading) {
-      <div class="blog-item">
-        <div class="cart-img">
+      <div class="empty-cart-container py-5 text-center">
+        <div class="empty-cart-icon mb-4">
           <img
             src="./images/homepage-one/empty-cart.webp"
-            alt=""
-            height="200"
-            class="object-fit-contain"
+            alt="Empty Cart"
+            height="220"
+            class="object-fit-contain img-fluid opacity-75"
           />
         </div>
-        <div class="cart-content gap-3">
-          <p class="content-title"><strong>Empty!</strong> You don’t have any Product in cart</p>
-           <!-- @if (isLoggedIn) { -->
-            <a href="/category-details/all" class="shop-btn">Back to Shop</a>
-          <!-- } -->
+        <div class="empty-cart-content">
+          <h2 class="fw-800 mb-2">Your cart is empty!</h2>
+          <p class="text-muted fs-15 mb-4 mx-auto" style="max-width: 400px;">
+            Looks like you haven't added anything to your cart yet. Explore our latest products and find something you love.
+          </p>
+          <a href="/category-details/all" class="btn btn-primary rounded-pill px-5 py-3 fw-bold shadow-sm transition-all hover-up">
+            <i class="fa-solid fa-bag-shopping me-2"></i>
+            Start Shopping
+          </a>
         </div>
       </div>
     }
@@ -174,84 +178,66 @@
         <!-- product config section start-->
         <div class="col-md-8 col-12">
           @for (item of cartListData; track $index; let i = $index) {
-            <div class="cart-section mt-3 py-2 px-0 row">
-              <div class="col-12 col-md-3">
-                <div class="wrapper-img bg-light p-2 rounded-2 text-center">
+            <div class="cart-item-card mb-3 shadow-sm">
+              <div class="d-flex flex-column flex-sm-row">
+                <!-- Image Section -->
+                <div class="cart-img-container bg-light">
                   <img
                     [src]="item?.product?.media?.uploadedImages[0]?.url"
-                    alt=""
-                    class="object-contain rounded-2 w-100"
+                    alt="Product"
+                    class="img-fluid object-fit-contain p-2"
                   />
                 </div>
-              </div>
-              <div class="col-12 col-md-9">
-                <div class="wrapper-content">
-                  <div class="d-flex align-items-center">
-                    <h5 class="heading text-truncate text-capitalize">{{ item.product.title }}</h5>
 
+                <!-- Content Section -->
+                <div class="flex-grow-1 p-3">
+                  <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                    <div>
+                      <h5 class="cart-product-title mb-1 text-capitalize">{{ item.product.title }}</h5>
+                      <div class="product-meta text-muted fs-12">
+                        <span class="d-inline-flex align-items-center gap-1">
+                          <i class="fa-solid fa-tag opacity-50"></i>
+                          Unit Price: ₹{{ item.product.price_data.salePrice || item.product.price_data.finalPrice }}
+                        </span>
+                      </div>
+                    </div>
                     <button
                       (click)="deleteCartItem(item.id)"
                       title="Remove"
-                      class="lh-0 btn cancel-btn p-2 d-flex align-items-center"
-                      [ngClass]="{ invisible: item.quantity <= 1 }"
-                      data-bs-toggle="modal"
-                      data-bs-target="#removeProject"
+                      class="btn btn-remove-item p-2"
                     >
-                      <i class="fa-solid fa-trash text-danger"></i>
+                      <i class="fa-solid fa-trash-can"></i>
                     </button>
                   </div>
-                  <ul>
-                    <li class="counter d-flex align-items-center">
-                      <span class="fw-semibold config-title">Quantity</span>
-                      <div class="rounded-2 counter d-flex align-items-center mt-1 border">
-                        @if (item.quantity > 1) {
-                          <button
-                            class="minus btn px-2 py-1 rounded-start rounded-end-0 opacity-75"
-                            (click)="decrease(item.quantity, i)"
-                          >
-                            <i class="fa-solid fa-minus fa-sm"></i>
-                          </button>
-                        }
-                        @if (item.quantity == 1) {
-                          <button
-                            class="btn px-2 py-1 rounded-start rounded-end-0 opacity-75"
-                            data-bs-toggle="modal"
-                            data-bs-target="#removeProject"
-                            (click)="deleteCartItem(item.id)"
-                          >
-                            <i class="fa-solid fa-trash text-danger fa-sm"></i>
-                          </button>
-                        }
 
-                        <span class="number fw-500 px-2">{{ item.quantity }}</span>
-
+                  <div class="d-flex flex-wrap justify-content-between align-items-center mt-3 pt-3 border-top gap-3">
+                    <!-- Quantity Stepper -->
+                    <div class="d-flex align-items-center gap-3">
+                      <span class="fs-13 fw-bold text-dark">Quantity</span>
+                      <div class="quantity-stepper d-flex align-items-center border rounded-pill overflow-hidden">
                         <button
-                          class="plus btn px-2 py-1 rounded-end rounded-start-0 opacity-75"
+                          class="btn step-btn px-3 py-1"
+                          (click)="decrease(item.quantity, i)"
+                          [disabled]="item.quantity <= 1"
+                        >
+                          <i class="fa-solid fa-minus fa-xs"></i>
+                        </button>
+                        <span class="qty-number px-3 fw-bold">{{ item.quantity }}</span>
+                        <button
+                          class="btn step-btn px-3 py-1"
                           (click)="increase(item.quantity, i)"
                         >
-                          <i class="fa-solid fa-plus fa-sm"></i>
+                          <i class="fa-solid fa-plus fa-xs"></i>
                         </button>
                       </div>
-                    </li>
-                    <li class="mt-3">
-                      <span class="fw-semibold d-inline-block config-title">price</span>
-                      <span>₹{{ item.product.price_data.finalPrice }}</span>
-                    </li>
-                    <li class="mt-3" *ngIf="item.quantity > 1">
-                      <!-- <span class="">₹{{item.product.price_data.regularPrice}}</span> -->
-                      <div class="price gap-0">
-                        <span class="d-inline-block fw-semibold config-title text-dark fs-14"
-                          >Unit price</span
-                        >
-                        <span class="price-cut fs-12"
-                          >₹{{ item.product.price_data.regularPrice }}</span
-                        >
-                        <span class="new-price ps-2 fs-14"
-                          >₹{{ item.product.price_data.salePrice }}</span
-                        >
-                      </div>
-                    </li>
-                  </ul>
+                    </div>
+
+                    <!-- Total Price for this item -->
+                    <div class="price-info text-end">
+                      <div class="fs-12 text-muted mb-0">Total</div>
+                      <div class="fw-bold fs-16 text-primary">₹{{ item.product.price_data.finalPrice }}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -261,138 +247,57 @@
 
         <!-- order summary section start -->
         <div class="col-md-4 col-12">
-          <div class="mt-3 rounded px-md-2 px-0 pt-2 shadow-sm bg-white">
-            <h3
-              class="wrapper-heading fs-12 mb-3 ps-3 shadow-sm py-2 fs-18 text-center"
-              style="background-color: #f1f2f7"
-            >
+          <div class="summary-card mt-3 rounded-4 p-4 shadow-sm bg-white border border-light">
+            <h3 class="summary-title text-center mb-4 pb-2 border-bottom">
               Order Summary
             </h3>
 
             <!-- Coupon -->
             @if (this.appliedCoupon == '') {
-              <div class="d-flex justify-content-between align-items-center bg-white px-3 pb-2">
-                <span class="fw-semibold">Have a coupon?</span>
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="fw-semibold fs-14">Have a coupon?</span>
                 <button
                   type="button"
-                  class="shop-btn sm-btn fs-12"
+                  class="btn btn-sm btn-outline-primary rounded-pill px-3 fs-12 fw-bold"
                   (click)="openCouponModal()"
                 >
                   Apply
                 </button>
               </div>
-              <hr class="mt-0" />
             }
             @if (this.appliedCoupon != '') {
-              <!-- <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2"> -->
-              <div
-                class="alert alert-success d-flex align-items-center gap-2 shadow-sm p-2"
-                role="alert"
-              >
-                <span class="bg-primary text-white fw-semibold opacity-75 p-1">{{
-                  appliedCoupon
-                }}</span
-                ><span class="text-success">20% Off Applied</span>
-                <button
-                  type="button"
-                  class="btn btn-sm text-danger ms-auto"
-                  (click)="removeCoupon()"
-                >
-                  <i class="fa-solid fa-times"></i>
+              <div class="alert alert-success d-flex align-items-center gap-2 shadow-none border-0 p-2 mb-3 bg-success bg-opacity-10 rounded-3" role="alert">
+                <span class="badge bg-success text-white fw-bold px-2 py-1">{{ appliedCoupon }}</span>
+                <span class="text-success fs-12 fw-bold">20% Off Applied</span>
+                <button type="button" class="btn btn-sm text-danger ms-auto p-0" (click)="removeCoupon()">
+                  <i class="fa-solid fa-circle-xmark"></i>
                 </button>
               </div>
             }
-            <div class="order-summery">
-              <div class="subtotal product-total px-3">
-                <div class="wrapper-heading fs-12 fw-semibold">Subtotal</div>
-                <div class="wrapper-heading fs-12">
-                  ₹{{ gstSummary?.base_total | number: '1.2-2' }}
-                </div>
-              </div>
-              <div class="subtotal product-total px-3">
-                <div class="wrapper-heading fs-12 fw-semibold">Discount</div>
-                <div class="wrapper-heading fs-12">
-                  ₹{{ gstSummary?.discount_total | number: '1.2-2' }}
-                </div>
-              </div>
-              <div class="subtotal product-total px-3">
-                <div class="wrapper-heading fs-12 fw-semibold">CGST</div>
-                <div class="wrapper-heading fs-12">
-                  ₹{{ gstSummary?.total_cgst | number: '1.2-2' }}
-                </div>
-              </div>
 
-              <div class="subtotal product-total px-3">
-                <div class="wrapper-heading fs-12 fw-semibold">SGST</div>
-                <div class="wrapper-heading fs-12">
-                  ₹{{ gstSummary?.total_sgst | number: '1.2-2' }}
-                </div>
+            <div class="summary-details d-flex flex-column gap-2 mb-4">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted fs-13">Subtotal</span>
+                <span class="text-dark fw-bold">₹{{ gstSummary?.base_total | number: '1.2-2' }}</span>
               </div>
-
-              <div class="subtotal product-total px-3">
-                <div class="wrapper-heading fs-12 fw-semibold">Total Tax</div>
-                <div class="wrapper-heading fs-12">
-                  ₹{{ gstSummary?.total_tax | number: '1.2-2' }}
-                </div>
+              <div class="d-flex justify-content-between">
+                <span class="text-muted fs-13">Discount</span>
+                <span class="text-danger fw-bold">- ₹{{ gstSummary?.discount_total | number: '1.2-2' }}</span>
               </div>
-
-              <div class="subtotal product-total px-3">
-                <div class="wrapper-heading fs-12 fw-semibold">Grand Total</div>
-                <div class="wrapper-heading fs-12 fw-bold text-success">
-                  ₹{{ gstSummary?.final_total | number: '1.2-2' }}
-                </div>
+              <div class="d-flex justify-content-between">
+                <span class="text-muted fs-13">Tax</span>
+                <span class="text-dark fw-bold">₹{{ gstSummary?.total_tax | number: '1.2-2' }}</span>
+              </div>
+              <div class="d-flex justify-content-between pt-2 border-top mt-2">
+                <span class="fw-bold text-dark fs-15">Grand Total</span>
+                <span class="fw-bold text-primary fs-18">₹{{ gstSummary?.final_total | number: '1.2-2' }}</span>
               </div>
             </div>
 
-            <!-- Coupon -->
-            <!-- <div class="d-flex justify-content-between align-items-center bg-white px-3 py-2 mt-2">
-            <span class="fw-semibold fs-14">Have a coupon?</span>
-            <button
-              type="button"
-              class="btn text-primary fw-semibold fs-14 p-0 hover-underline"
-              data-bs-toggle="modal"
-              data-bs-target="#couponModal"
-            >
-              Apply
+            <button (click)="proccedToCheckout()" class="btn-checkout w-100">
+              <i class="fa-solid fa-lock me-2"></i>
+              Proceed to Checkout
             </button>
-          </div> -->
-            <!-- <hr class=my-2 /> -->
-            <!-- Bill details -->
-            <div class="bg-white px-3 py-2 mt-2">
-              <p class="fw-semibold fs-14 text-dark mb-2">Bill details</p>
-              <div class="d-flex justify-content-between mb-1">
-                <span>Items total</span><span class="fw-bold">₹{{ grandTotal }}</span>
-              </div>
-              <!-- <div class="d-flex justify-content-between mb-1"><span>Delivery charge</span><span>₹40</span></div>
-                            <div class="d-flex justify-content-between mb-1"><span>Handling fees</span><span>₹16</span></div>
-                            <div class="d-flex justify-content-between border-bottom pb-2 mb-2"><span>GST total</span><span>₹9</span></div>
-                            <div class="d-flex justify-content-between fw-semibold mb-2"><span>Grand total</span><span>₹1458</span></div>
-                            <div class="summary-box text-center">Total savings on this order ₹236</div> -->
-            </div>
-
-            <hr class="my-2" />
-            <!-- Delivery -->
-            <!-- <div class="bg-white px-3 pt-2 pb-4 mt-3">
-            <div class="d-flex justify-content-between align-items-center">
-              <p class="fw-semibold fs-14 text-dark mb-0">Delivering to:</p>
-              <button
-                type="button"
-                class="btn text-primary fw-semibold p-0 fs-14"
-                (click)="openAddressPopup()"
-              >
-                Change
-              </button>
-            </div>
-          </div> -->
-
-            <!-- <div class="wishlist-btn cart-btn mb-2"> -->
-            <!-- <a href="empty-cart.html" class="clean-btn">Clear Cart</a> -->
-            <!-- <a href="#" class="shop-btn update-btn">Update Cart</a> -->
-            <!-- <a [routerLink]="isLoggedIn ? '/checkout' : 'openLogin()'" class="shop-btn w-100 mb-2"
-              >Proceed to Checkout</a
-            > -->
-            <a (click)="proccedToCheckout()" class="shop-btn w-100 oder-btn">Proceed to Checkout</a>
-            <!-- </div> -->
           </div>
           <!-- order summary section end -->
         </div>
@@ -404,27 +309,36 @@
 
 <!-- Modal -->
 <ng-template #couponModal let-modal>
-    <div class="modal-content border-0">
-      <div class="modal-header py-2">
+    <div class="modal-content border-0 overflow-hidden">
+      <div class="modal-header">
         <h1 class="modal-title fs-5">Apply Coupon</h1>
-        <button type="button" class="close-btn" (click)="modal.dismiss()">
-          <i class="fa-solid fa-xmark"></i>
+        <button type="button" class="btn-close shadow-none" (click)="modal.dismiss()">
         </button>
       </div>
-      <div class="modal-body text-center">
-        <p class="fw-bold">Enter your coupon code here</p>
-        <input
-          type="text"
-          class="form-control"
-          id="productTitle"
-          placeholder="Enter coupon code"
-          #couponInput
-        />
+      <div class="modal-body text-center p-4">
+        <div class="mb-4">
+            <div class="alert-icon-wrapper" style="background: rgba(var(--primary-color-rgb, 13, 110, 253), 0.1);">
+              <i class="fa-solid fa-ticket text-primary"></i>
+            </div>
+            <h4 class="alert-title">Have a Coupon?</h4>
+            <p class="alert-message">Enter your code below to get an amazing discount on your order!</p>
+        </div>
+        <div class="text-start">
+            <label class="form-label fs-12 fw-bold text-uppercase text-muted px-1">Coupon Code</label>
+            <input
+              type="text"
+              class="form-control"
+              id="productTitle"
+              placeholder="e.g. SUMMER50"
+              #couponInput
+              style="border-radius: 12px; text-transform: uppercase; letter-spacing: 1px;"
+            />
+        </div>
       </div>
-      <div class="modal-footer border-0 py-2">
-        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
-        <button type="button" class="shop-btn ms-2" (click)="checkCoupon(couponInput.value)">
-          Apply
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary px-4" (click)="modal.dismiss()">Cancel</button>
+        <button type="button" class="shop-btn px-5" (click)="checkCoupon(couponInput.value)">
+          Apply Now
         </button>
       </div>
     </div>
@@ -432,16 +346,22 @@
 
 <!-- Delete product Modal -->
 <ng-template #deleteCart let-modal>
-    <div class="modal-content border-0">
-      <div class="modal-header py-2">
-        <h1 class="modal-title fs-5" id="removeProjectLabel">Remove product</h1>
-        <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
+    <div class="modal-content modal-alert border-0">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="removeProjectLabel">Remove Product</h1>
+        <button type="button" class="btn-close shadow-none" (click)="modal.dismiss()" aria-label="Close"></button>
       </div>
-      <div class="modal-body">Remove product from your cart - sure?</div>
-      <div class="modal-footer border-0">
-        <button type="button" class="btn btn-secondary fs-14" (click)="modal.dismiss()">Close</button>
-        <button type="button" class="shop-btn fs-14 py-2 px-3 my-0 ms-2" (click)="deleteItem()">
-          Remove
+      <div class="modal-body p-4 text-center">
+          <div class="alert-icon-wrapper danger">
+            <i class="fa-solid fa-trash-can"></i>
+          </div>
+          <h4 class="alert-title">Remove from Cart</h4>
+          <p class="alert-message mb-0">Are you sure you want to remove this product from your cart?</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-secondary px-4" (click)="modal.dismiss()">Cancel</button>
+        <button type="button" class="btn btn-danger px-4" (click)="deleteItem()">
+          Yes, Remove
         </button>
       </div>
     </div>

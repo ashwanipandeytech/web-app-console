@@ -1,17 +1,164 @@
-// @use '../../../scss/variable' as *;
+@use '../../scss/variable' as *;
 
-.address-container{
-  .heading{
-    .btn{
-      &:hover{background-color: #f1f2f7;}
-        line-height: 0;
-        padding: 14px 10px;
+.address-container {
+  min-height: 400px;
+  padding-bottom: 2rem;
+
+  .address-card {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+      border-color: $theme-color;
+    }
+
+    .card-header-modern {
+      padding: 1.25rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      background: #fafbfc;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .type-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.85rem;
+        background: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #495057;
+
+        i {
+          color: $theme-color;
+          font-size: 0.85rem;
+        }
+
+        &.is-default {
+          background: rgba(40, 167, 69, 0.08);
+          border-color: rgba(40, 167, 69, 0.2);
+          color: #198754;
+
+          i {
+            color: #198754;
+          }
+        }
+      }
+
+      .action-btns {
+        display: flex;
+        gap: 0.5rem;
+
+        .btn-action {
+          width: 34px;
+          height: 34px;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #fff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: 8px;
+          transition: all 0.2s ease;
+          color: #6c757d;
+
+          &:hover {
+            color: $theme-color;
+            border-color: $theme-color;
+            background: rgba($theme-color, 0.05);
+          }
+
+          &.btn-delete:hover {
+            color: #dc3545;
+            border-color: #dc3545;
+            background: #fff5f5;
+          }
+        }
+      }
+    }
+
+    .card-body-modern {
+      padding: 1.25rem;
+
+      .address-info-list {
+        display: grid;
+        gap: 1rem;
+
+        .info-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 1rem;
+
+          .info-icon {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border-radius: 8px;
+            color: $theme-color;
+            font-size: 0.9rem;
+            opacity: 0.8;
+          }
+
+          .info-content {
+            .info-label {
+              display: block;
+              font-size: 0.7rem;
+              text-transform: uppercase;
+              font-weight: 700;
+              letter-spacing: 0.5px;
+              color: #adb5bd;
+              margin-bottom: 0.15rem;
+            }
+            .info-value {
+              display: block;
+              font-size: 0.9rem;
+              font-weight: 600;
+              color: #212529;
+            }
+          }
+        }
+      }
     }
   }
-  .info-title{width: 90px;}
-  .seller-info{
-      &:hover {
-          box-shadow: 0 1px 12px 2px #dbdbdb;
-      }
+
+  .btn-add-address {
+    padding: 0.6rem 1.25rem;
+    background: $theme-color;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &:hover {
+      background: darken($theme-color, 10%);
+      box-shadow: 0 4px 12px rgba($theme-color, 0.25);
+    }
   }
+}
+
+.fs-20 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
 }

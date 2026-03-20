@@ -1,307 +1,222 @@
 <!--------------- login-section --------------->
-<div class="modal-header justify-content-center border-0" id="loginOpened" #loginModal>
-  <div class="mb-2">
-    <div class="text-center mb-1">
-      <img [src]="this.dataService.getSpecificGeneralSettings('general').logo.desktop.imgSrc" alt="logo" class="img-fluid">
+<div class="modal-header justify-content-center border-0 position-relative pb-0" id="loginOpened" #loginModal>
+  <div class="mb-2 text-center pt-3">
+    <div class="brand-logo-container mb-3">
+      <img [src]="this.dataService.getSpecificGeneralSettings('general').logo.desktop.imgSrc" alt="logo" class="img-fluid" style="max-height: 50px;">
     </div>
-    <p class="text-muted mb-0">
-      @if(!isSignUp){
-        Welcome Back — Great Prices Await
-      }
-      @if(isSignUp){
-        Join Us & Enjoy Lower Prices Every Day
-      }
+    <h4 class="modal-title mb-1">
+      @if(!isSignUp){ Welcome Back }
+      @if(isSignUp){ Create Account }
+    </h4>
+    <p class="text-muted fs-14">
+      @if(!isSignUp){ Great Prices Await — Log in to continue }
+      @if(isSignUp){ Join us & enjoy exclusive deals every day }
     </p>
-      <!-- <h3 class="fw-bold title mb-3"> in 10 minutes*</h3> -->
   </div>
-  <button class="close-btn position-absolute top-0 end-0 mt-3 me-3" (click)="closePopup(false)">
-    <i class="fa-solid fa-xmark" aria-label="Close"></i>
-  </button>
+  <button class="btn-close shadow-none position-absolute top-0 end-0 mt-3 me-3" (click)="closePopup(false)"></button>
 </div>
-<section class="modal-body">
-  <!-- Login Credential<span (click)="loginWithGoogle()">s:</span><br/>
-    Email: demo-web@gmail.com <br/>
-    Password: Demo@12345 -->
-    @if(!isForgotPwd){
-  @if (!isSignUp) {
-    <ng-container [formGroup]="loginform">
 
-        <!-- Email -->
-        <div class="mb-3 position-relative">
-            <input formControlName="email" id="email" class="form-control" placeholder="Enter your email"/>
-            @if (submitted && f['email'].errors) {
-            <div class="text-danger fs-14 position-absolute lh-0 mt-1">
-              @if (f['email'].errors['required']) {
-              <small>Email is required.</small>
-              } @if (f['email'].errors['email']) {
-              <small>Please enter a valid email address.</small>
+<section class="modal-body p-4 pt-2">
+  @if(!isForgotPwd){
+    <div class="login-grid-container">
+      <!-- Left Side: Login/Signup Form -->
+      <div class="form-side">
+        @if (!isSignUp) {
+          <ng-container [formGroup]="loginform">
+            <div class="input-group-modern mb-3">
+              <label class="form-label fs-12 fw-bold text-uppercase text-muted px-1">Email Address</label>
+              <div class="input-wrapper position-relative">
+                <i class="fa-solid fa-envelope position-absolute" style="left: 1.25rem; top: 50%; transform: translateY(-50%); color: #adb5bd;"></i>
+                <input formControlName="email" id="email" class="form-control" placeholder="name@example.com" style="padding-left: 3rem;"/>
+              </div>
+              @if (submitted && f['email'].errors) {
+                <div class="text-danger fs-12 mt-1 fw-medium">
+                  <i class="fa-solid fa-circle-info me-1"></i>
+                  @if (f['email'].errors['required']) { Email is required }
+                  @if (f['email'].errors['email']) { Enter a valid email }
+                </div>
               }
             </div>
-            }
-        </div>
 
-        <!-- Password -->
-        <div class="mb-3 position-relative">
-          <input formControlName="password" [type]="showCurrentPassword?'text':'password'" id="password" class="form-control" placeholder="Enter your password"/>
-          @if (loginform.value.password.length>1) {
-          <span role="button" class="password-show position-absolute" (click)="passwordToggle('current')">
-            <i class="fa-solid" [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
-          </span>
-          }
-          @if (submitted && f['password'].errors) {
-          <div class="text-danger fs-14 position-absolute lh-0 mt-1">
-            @if (f['password'].errors['required']) {
-            <small>Password is required.</small>
-            } @if (f['password'].errors['minlength']) {
-            <small>Password must be at least 6 characters.</small>
-            }
-          </div>
-          }
-        </div>
-
-        <!-- Remember / Forgot -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="form-check" style="padding-left: 35px;">
-            <input class="form-check-input" type="checkbox" id="remember">
-            <label class="form-check-label small cursor-pointer fs-14" for="remember">Remember me</label>
+            <div class="input-group-modern mb-3">
+              <label class="form-label fs-12 fw-bold text-uppercase text-muted px-1">Password</label>
+              <div class="input-wrapper position-relative">
+                <i class="fa-solid fa-lock position-absolute" style="left: 1.25rem; top: 50%; transform: translateY(-50%); color: #adb5bd;"></i>
+                <input formControlName="password" [type]="showCurrentPassword?'text':'password'" id="password" class="form-control" placeholder="••••••••" style="padding-left: 3rem;"/>
+                @if (loginform.value.password.length>0) {
+                  <span role="button" class="password-show position-absolute end-0 top-50 translate-middle-y me-3 text-muted" (click)="passwordToggle('current')">
+                    <i class="fa-solid" [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                  </span>
+                }
+              </div>
+              @if (submitted && f['password'].errors) {
+                <div class="text-danger fs-12 mt-1 fw-medium">
+                  <i class="fa-solid fa-circle-info me-1"></i>
+                  @if (f['password'].errors['required']) { Password is required }
+                </div>
+              }
             </div>
-            <a (click)="forgotPaaword();forgotStep = 'select'" class="small text-primary fw-semibold cursor-pointer text-decoration-none hover-underline fs-14">Forgot password?</a>
-        </div>
 
-        <!-- Sign In Button -->
-        <button class="shop-btn w-100 mb-3" (click)="loginUser()">Log in</button>
-        <small class="fs-12 mb-3 d-block text-center fw-semibold">Or, Login With</small>
-        <div class="d-flex gap-3 justify-content-center">
-          <!-- Google Button -->
-          <button class="btn border border-light rounded-2 mb-2 icons" (click)="loginWithGoogle()">
-              <img
-              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-              width="20"
-              alt="Google"
-              />
-              <!-- Sign in with Google -->
-          </button>
-  
-          <!-- Google Button -->
-          <button class="btn border border-light rounded-2 mb-2 icons align-items-center d-flex" (click)="loginWithFacebook()">
-              <img
-              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/facebook.svg"
-              width="20"
-              alt="Facebook"
-              class="bg-primary"
-              />
-              <!-- Sign in with Facebook -->
-          </button>
-        </div>
-
-        <!-- Footer -->
-        <p class="text-center small text-muted mb-0 fs-16">
-            Don’t have an account?
-            <a class="text-primary fs-5 fw-semibold text-decoration-none cursor-pointer hover-underline" (click)="enableDisableSignUp()">
-            Sign up
-            </a>
-        </p>
-    </ng-container>
-  } 
-  @if (isSignUp) {
-   <ng-container [formGroup]="signupForm">
-        <!-- <div class="text-center mb-3">
-            <small class="text-muted">Please enter your details</small>
-            <h3 class="fw-bold title">Create your account </h3>
-        </div> -->
-        
-        <div class="mb-3 position-relative">
-          <input formControlName="name" id="name" class="form-control" placeholder="Enter your name" />
-
-          @if (submittedRegister && s['name'].errors) {
-          <div class="text-danger fs-14 position-absolute lh-0 mt-1">
-            @if (s['name'].errors['required']) {
-            <small>Name is required.</small>
-            }
-          </div>
-          }
-        </div>
-        
-        <div class="mb-3 position-relative">
-          <input formControlName="email" id="email" class="form-control" placeholder="Enter your email" />
-          @if (submittedRegister && s['email'].errors) {
-          <div class="text-danger fs-14 position-absolute lh-0 mt-1">
-            @if (s['email'].errors['required']) {
-            <small>Email is required.</small>
-            } @if (s['email'].errors['email']) {
-            <small>Please enter a valid email address.</small>
-            }
-          </div>
-          }
-        </div>
-
-        <div class="mb-3 position-relative">
-          <input formControlName="phone" id="phone" class="form-control" placeholder="Enter phone number" />
-
-          @if (submittedRegister && s['phone'].errors) {
-          <div class="text-danger fs-14 position-absolute lh-0 mt-1">
-            @if (s['phone'].errors['pattern']) {
-            <small>Phone number must be exactly 10 digits.</small>
-            }
-          </div>
-          }
-        </div>
-
-        <div class="mb-3 position-relative">
-          <input
-            formControlName="password"
-            type="password"
-            id="password"
-            class="form-control"
-            placeholder="Create a password"
-          />
-
-          @if (submittedRegister && s['password'].errors) {
-          <div class="text-danger fs-14 position-absolute lh-0 mt-1">
-            @if (s['password'].errors['required']) {
-            <small>Password is required.</small>
-            }
-          </div>
-          }
-        </div>
-
-        <div class="mb-3 position-relative">
-          <input
-            formControlName="password_confirmation"
-            type="password"
-            id="confirmPassword"
-            class="form-control"
-            placeholder="Re-enter your password"
-          />
-
-          
-          @if (submittedRegister && s['password_confirmation'].errors) {
-          <div class="text-danger fs-14 position-absolute lh-0 mt-1">
-            @if (s['password_confirmation'].errors['required']) {
-            <small>Confirm Password is required.</small>
-            }
-          </div>
-          }
-        </div>
-
-        <!-- Remember / Forgot -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="form-check" style="padding-left: 35px;">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div class="form-check custom-checkbox">
                 <input class="form-check-input" type="checkbox" id="remember">
-                <label class="form-check-label small cursor-pointer fs-14" for="remember">Remember me</label>
+                <label class="form-check-label small cursor-pointer fs-14 fw-medium text-muted" for="remember">Remember me</label>
+              </div>
+              <a (click)="forgotPaaword();forgotStep = 'select'" class="small text-primary fw-bold cursor-pointer text-decoration-none fs-14">Forgot password?</a>
             </div>
-        </div>
 
-        <!-- Sign In Button -->
-        <button class="shop-btn w-100 mb-3" (click)="register()">
-           Register
+            <button class="btn btn-primary w-100 py-3 rounded-4 mb-3 fw-bold" (click)="loginUser()">
+              <i class="fa-solid fa-right-to-bracket me-2"></i> Log In
+            </button>
+
+            <p class="text-center small text-muted mb-0 fs-14 fw-medium">
+              Don’t have an account?
+              <a class="text-primary fw-bold text-decoration-none cursor-pointer" (click)="enableDisableSignUp()">Sign up now</a>
+            </p>
+          </ng-container>
+        } 
+
+        @if (isSignUp) {
+          <ng-container [formGroup]="signupForm">
+            <div class="input-group-modern mb-3">
+              <label class="form-label fs-12 fw-bold text-uppercase text-muted px-1">Full Name</label>
+              <div class="input-wrapper position-relative">
+                <i class="fa-solid fa-user position-absolute" style="left: 1.25rem; top: 50%; transform: translateY(-50%); color: #adb5bd;"></i>
+                <input formControlName="name" id="name" class="form-control" placeholder="John Doe" style="padding-left: 3rem;"/>
+              </div>
+            </div>
+            
+            <div class="input-group-modern mb-3">
+              <label class="form-label fs-12 fw-bold text-uppercase text-muted px-1">Email Address</label>
+              <div class="input-wrapper position-relative">
+                <i class="fa-solid fa-envelope position-absolute" style="left: 1.25rem; top: 50%; transform: translateY(-50%); color: #adb5bd;"></i>
+                <input formControlName="email" id="email" class="form-control" placeholder="name@example.com" style="padding-left: 3rem;"/>
+              </div>
+            </div>
+
+            <div class="input-group-modern mb-3">
+              <label class="form-label fs-12 fw-bold text-uppercase text-muted px-1">Phone Number</label>
+              <div class="input-wrapper position-relative">
+                <i class="fa-solid fa-phone position-absolute" style="left: 1.25rem; top: 50%; transform: translateY(-50%); color: #adb5bd;"></i>
+                <input formControlName="phone" id="phone" class="form-control" placeholder="9876543210" style="padding-left: 3rem;"/>
+              </div>
+            </div>
+
+            <div class="input-group-modern mb-3">
+              <label class="form-label fs-12 fw-bold text-uppercase text-muted px-1">Create Password</label>
+              <div class="input-wrapper position-relative">
+                <i class="fa-solid fa-lock position-absolute" style="left: 1.25rem; top: 50%; transform: translateY(-50%); color: #adb5bd;"></i>
+                <input formControlName="password" type="password" id="password" class="form-control" placeholder="••••••••" style="padding-left: 3rem;"/>
+              </div>
+            </div>
+
+            <button class="btn btn-primary w-100 py-3 rounded-4 mb-3 fw-bold" (click)="register()">
+              <i class="fa-solid fa-user-plus me-2"></i> Create Account
+            </button>
+
+            <p class="text-center small text-muted mb-0 fs-14 fw-medium">
+              Already have an account?
+              <a class="text-primary fw-bold text-decoration-none cursor-pointer" (click)="enableDisableSignUp()">Log in here</a>
+            </p>
+          </ng-container>
+        }
+      </div>
+
+      <!-- Vertical Separator -->
+      <div class="v-separator"></div>
+
+      <!-- Right Side: Social Login -->
+      <div class="social-login-side text-center">
+        <div class="mb-4">
+          <span class="text-muted fs-12 fw-bold text-uppercase letter-spacing-1">Or Continue With</span>
+        </div>
+        
+        <button class="social-btn mb-3" (click)="loginWithGoogle()">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"/>
+          <span>Sign in with Google</span>
+        </button>
+        
+        <button class="social-btn" (click)="loginWithFacebook()">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/facebook.svg" alt="Facebook"/>
+          <span>Sign in with Facebook</span>
         </button>
 
-        <small class="fs-12 mb-3 d-block text-center fw-semibold">Or, SignUp With</small>
+        <div class="mt-4 pt-4 border-top">
+          <p class="fs-12 text-muted px-3">By continuing, you agree to our <a href="/terms" class="text-decoration-none text-primary fw-bold">Terms of Service</a> and <a href="/privacy" class="text-decoration-none text-primary fw-bold">Privacy Policy</a></p>
+        </div>
+      </div>
+    </div>
+  }
 
-        <!-- Google Button -->
-        <div class="d-flex gap-3 justify-content-center">
-          <!-- Google Button -->
-          <button class="btn border border-light rounded-2 mb-2 icons">
-              <img
-              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-              width="20"
-              alt="Google"
-              />
-              <!-- Sign up with Google -->
+  @if(isForgotPwd){
+    <div class="forgot-pwd-section">
+      <button class="btn btn-link text-muted text-decoration-none p-0 mb-4 fs-14 fw-bold" type="button" (click)="goBack()">
+        <i class="fa fa-arrow-left me-2"></i> Back to Login
+      </button>
+
+      @if (forgotStep === 'select') {
+        <div class="d-grid gap-3">
+          <button class="btn btn-light border p-3 rounded-4 d-flex align-items-center gap-3 text-start transition-all" (click)="resetVia('otp')">
+            <div class="icon-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; border-radius: 12px;">
+              <i class="fa-solid fa-mobile-screen"></i>
+            </div>
+            <div>
+              <div class="fw-bold text-dark">Reset via OTP</div>
+              <div class="fs-12 text-muted">Send a code to your phone</div>
+            </div>
           </button>
-  
-          <!-- Google Button -->
-          <button class="btn border border-light rounded-2 mb-2 icons align-items-center d-flex">
-              <img
-              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/facebook.svg"
-              width="20"
-              alt="Facebook"
-              class="bg-primary"
-              />
-              <!-- Sign up with Facebook -->
+          <button class="btn btn-light border p-3 rounded-4 d-flex align-items-center gap-3 text-start transition-all" (click)="resetVia('email')">
+            <div class="icon-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; border-radius: 12px;">
+              <i class="fa-solid fa-envelope"></i>
+            </div>
+            <div>
+              <div class="fw-bold text-dark">Reset via Email</div>
+              <div class="fs-12 text-muted">Send a link to your inbox</div>
+            </div>
           </button>
         </div>
+      }
 
-        <!-- Footer -->
-        <p class="text-center small text-muted mb-0 fs-16">
-            Already have an account?
-            <a class="text-primary fs-5 fw-semibold text-decoration-none cursor-pointer hover-underline" (click)="enableDisableSignUp()">
-            Log in
-            </a>
-        </p>
+      @if (forgotStep === 'otp') {
+        <div [formGroup]="otpForm">
+          <div class="input-group-modern mb-3">
+            <label class="form-label fs-12 fw-bold text-uppercase text-muted px-1">Verification Code</label>
+            <input class="form-control text-center fs-4 fw-bold tracking-widest" placeholder="0 0 0 0" formControlName="otp" maxlength="4" style="letter-spacing: 0.5rem;"/>
+          </div>
+          <div class="text-center mb-4">
+            <button class="btn btn-link text-primary fs-14 fw-bold text-decoration-none" (click)="!otpTimerRunning?resendOtp():''" [disabled]="otpTimerRunning">
+              {{ otpTimerRunning ? 'Resend code in ' + timer + 's' : 'Resend Code' }}
+            </button>
+          </div>
+          <button class="btn btn-primary w-100 py-3 rounded-4 fw-bold" (click)="verifyOtp()">Verify & Continue</button>
+        </div>
+      }
 
-  </ng-container>
+      @if (forgotStep === 'reset-password') {
+        <div [formGroup]="resetPasswordForm">
+          <div class="input-group-modern mb-3">
+            <label class="form-label fs-12 fw-bold text-uppercase text-muted px-1">New Password</label>
+            <input class="form-control" type="password" placeholder="••••••••" formControlName="password">
+          </div>
+          <div class="input-group-modern mb-4">
+            <label class="form-label fs-12 fw-bold text-uppercase text-muted px-1">Confirm New Password</label>
+            <input class="form-control" type="password" placeholder="••••••••" formControlName="confirmPassword">
+          </div>
+          <button class="btn btn-primary w-100 py-3 rounded-4 fw-bold" [disabled]="resetPasswordForm.invalid" (click)="setPassword()">Reset Password</button>
+        </div>
+      }
 
+      @if (forgotStep === 'email') {
+        <div [formGroup]="forgotEmailForm">
+          <div class="input-group-modern mb-4">
+            <label class="form-label fs-12 fw-bold text-uppercase text-muted px-1">Email Address</label>
+            <input class="form-control" placeholder="name@example.com" formControlName="email">
+          </div>
+          <button class="btn btn-primary w-100 py-3 rounded-4 fw-bold" (click)="sendOtp(resetPasswordVia)">
+            {{ resetPasswordVia == 'otp' ? 'Send OTP' : 'Send Reset Link' }}
+          </button>
+        </div>
+      }
+    </div>
   }
-      
-    }
-
-
-@if(isForgotPwd){
-  <button class="btn mb-3" type="button" (click)="goBack()">
-    <i class="fa fa-arrow-left cursor-pointer" aria-hidden="true"></i>
-    <span class="fs-12 ps-2 align-middle">Go Back</span>
-  </button>
-
-  <div *ngIf="forgotStep === 'select'">
-    <button class="shop-btn w-100 mb-2" (click)="resetVia('otp')">
-      Reset via Otp
-    </button>
-  
-    <button class="btn btn-outline-secondary w-100 py-2" (click)="resetVia('email')">
-      Reset via Email
-    </button>
-  </div>
-
-
-
-
-  <!-- <div *ngIf="forgotStep === 'phone'" [formGroup]="forgotPhoneForm">
-  <input class="form-control mb-2" placeholder="Enter phone number" formControlName="email">
-
-  <button class="shop-btn w-100"
-    [disabled]="forgotPhoneForm.invalid || otpTimerRunning"
-    (click)="sendOtp('otp')">
-    Get OTP
-  </button>
-</div> -->
-
-  <div *ngIf="forgotStep === 'otp'" [formGroup]="otpForm">
-  <input class="form-control mb-2" placeholder="Enter OTP" formControlName="otp">
-    <span (click)="!otpTimerRunning?resendOtp():''">
-
-      {{ otpTimerRunning ? 'Resend OTP in ' + timer : 'Resend OTP' }}
-    </span>
-
-  <button class="shop-btn w-100" (click)="verifyOtp()">
-    Submit OTP
-  </button>
-</div>
- <div *ngIf="forgotStep === 'reset-password'" [formGroup]="resetPasswordForm">
-  <input class="form-control mb-2" type="password" placeholder="New password" formControlName="password">
-  <input class="form-control mb-2" type="password" placeholder="Confirm password" formControlName="confirmPassword">
-
-  <small class="text-danger"  *ngIf="resetPasswordForm.errors?.['mismatch']">
-    Passwords do not match
-  </small>
-
-  <button class="shop-btn w-100" [disabled]="resetPasswordForm.invalid" (click)="setPassword()">
-    Set Password
-  </button>
-</div> 
-<div *ngIf="forgotStep === 'email'" [formGroup]="forgotEmailForm">
-  <input class="form-control mb-2" placeholder="Enter email" formControlName="email">
-
-    <button class="shop-btn w-100" (click)="sendOtp(resetPasswordVia)">
-    {{ resetPasswordVia == 'otp' ? ' Get Otp' : 'Get Link' }}
-
-    </button>
-</div>
-
-}
-
-
-
 </section>
-<!--------------- login-section-end --------------->

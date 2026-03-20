@@ -1,6 +1,31 @@
 @use 'scss/variable' as *;
 @use './scss/global' as *;
 
+/* Global Modernized Scrollbar */
+html, body {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 147, 221, 0.2) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 147, 221, 0.2);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 147, 221, 0.6);
+}
+
 :root {
   --bs-light-rgb: 240, 240, 240;
   --bs-body-font-size: 14px;
@@ -1147,6 +1172,225 @@ safure-root {
 
   @media screen and (max-width:576px) {
     box-shadow: none !important;
+  }
+}
+
+/* Modal Customizations */
+.modal-content {
+  border-radius: 16px !important;
+  border: none !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Login Popup Specific - Large Size */
+.login-popup {
+  .modal-dialog {
+    max-width: 800px !important;
+    
+    @media (max-width: 767.98px) {
+      max-width: 95% !important;
+      margin: 10px auto !important;
+    }
+  }
+
+  .login-grid-container {
+    display: grid;
+    grid-template-columns: 1.2fr 1px 0.8fr;
+    gap: 2rem;
+    align-items: center;
+
+    @media (max-width: 767.98px) {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .v-separator {
+    width: 1px;
+    height: 80%;
+    background: rgba(0, 0, 0, 0.08);
+    justify-self: center;
+
+    @media (max-width: 767.98px) {
+      height: 1px;
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+  }
+
+  .social-login-side {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    
+    .social-btn {
+      width: 100%;
+      padding: 0.75rem !important;
+      border: 1px solid #e9ecef !important;
+      border-radius: 12px !important;
+      background: #fff !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 0.75rem !important;
+      font-weight: 600 !important;
+      color: #495057 !important;
+      transition: all 0.2s ease !important;
+
+      img {
+        width: 20px;
+        height: 20px;
+      }
+
+      &:hover {
+        background: #f8f9fa !important;
+        border-color: $theme-color !important;
+        transform: translateY(-1px);
+      }
+    }
+  }
+}
+
+.modal-header {
+  padding: 1.25rem 1.5rem 0.75rem !important;
+  border-bottom: none !important;
+
+  .modal-title {
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    color: #1d1d1d !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  .btn-close {
+    font-size: 0.75rem !important;
+    padding: 1.25rem !important;
+    box-shadow: none !important;
+  }
+}
+
+.modal-body {
+  padding: 1rem 1.5rem !important;
+  overflow-y: auto !important;
+  max-height: calc(100vh - 200px);
+
+  /* Modernized Scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 20px;
+  }
+
+  &:hover {
+    scrollbar-color: rgba(0, 147, 221, 0.3) transparent;
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 147, 221, 0.3);
+      
+      &:hover {
+        background: rgba(0, 147, 221, 0.8);
+      }
+    }
+  }
+
+  .btn-primary,
+  .shop-btn {
+    background-color: $theme-color !important;
+    border-color: $theme-color !important;
+    color: #fff !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    padding: 0.6rem 1.5rem !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 12px rgba(0, 147, 221, 0.2) !important;
+    transition: all 0.2s ease !important;
+    width: auto !important;
+    min-width: 120px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: auto !important;
+
+    &:hover {
+      background-color: darken($theme-color, 8%) !important;
+      transform: translateY(-1px) !important;
+      box-shadow: 0 6px 15px rgba(0, 147, 221, 0.3) !important;
+    }
+    
+    &::after {
+      display: none !important;
+    }
+  }
+}
+
+.modal-footer {
+  padding: 1rem 1.5rem 1.5rem !important;
+  border-top: none !important;
+  justify-content: center !important;
+  gap: 0.75rem !important;
+  display: flex !important;
+
+  .btn,
+  .shop-btn {
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    padding: 0.6rem 1.5rem !important;
+    border-radius: 10px !important;
+    min-width: 120px !important;
+    margin: 0 !important;
+    height: auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+
+    &.btn-primary,
+    &.shop-btn {
+      background-color: $theme-color !important;
+      border-color: $theme-color !important;
+      color: #fff !important;
+      box-shadow: 0 4px 12px rgba(0, 147, 221, 0.2) !important;
+
+      &::after {
+        display: none !important;
+      }
+
+      &:hover {
+        background-color: darken($theme-color, 8%) !important;
+        transform: translateY(-1px) !important;
+      }
+    }
+
+    &.btn-secondary,
+    &.btn-light {
+      background-color: #f1f2f7 !important;
+      border: 1px solid #e9ecef !important;
+      color: #6c757d !important;
+
+      &:hover {
+        background-color: #e9ecef !important;
+      }
+    }
+
+    &.btn-danger {
+      background-color: #fff5f5 !important;
+      border: 1px solid #ffe3e3 !important;
+      color: #fa5252 !important;
+
+      &:hover {
+        background-color: #ffe3e3 !important;
+      }
+    }
   }
 }
 

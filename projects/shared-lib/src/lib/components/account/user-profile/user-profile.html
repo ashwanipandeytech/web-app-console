@@ -17,40 +17,38 @@
     <div class="w-1100 mx-auto box-shadows rounded">
         <div class="user-profile-section">
             <div class="user-dashboard">
-                <div class="nav nav-item nav-pills me-3 gap-4 d-none d-md-flex">
+                <div class="nav nav-item nav-pills">
 
-                    <button class="nav-link gap-2" [ngClass]="{'active' : activePage == 'account'}" (click)="openComponent('account')">
-                        <span><i class="fa-solid fa-lg fa-user-tie"></i></span>
-                        <span class="text fs-16">My Account</span>
+                    <button class="nav-link" [ngClass]="{'active' : activePage == 'account'}" (click)="openComponent('account')">
+                        <i class="fa-solid fa-user-tie"></i>
+                        <span class="text">My Account</span>
                     </button>
 
-                    <button class="nav-link gap-2"  [ngClass]="{ 'active': activePage == 'Orders' }" (click)="openComponent('Orders')">
-                        <span><i class="fa-solid fa-lg fa-bag-shopping"></i></span>
-                        <span class="text fs-16">Order</span>
+                    <button class="nav-link" [ngClass]="{ 'active': activePage == 'Orders' }" (click)="openComponent('Orders')">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                        <span class="text">My Orders</span>
                     </button>
 
-                    <button class="nav-link gap-2" [ngClass]="{'active' : activePage == 'wishlist'}" (click)="openComponent('wishlist')">
-                        <span><i class="fa-solid fa-lg fa-heart"></i></span>
-                        <span class="text fs-16">Wishlist</span>
+                    <button class="nav-link" [ngClass]="{'active' : activePage == 'wishlist'}" (click)="openComponent('wishlist')">
+                        <i class="fa-solid fa-heart"></i>
+                        <span class="text">Wishlist</span>
                     </button>
 
-                    <button class="nav-link gap-2" [ngClass]="{ 'active': activePage == 'address' }" (click)="openComponent('address')">
-                        <span><i class="fa-solid fa-lg fa-house"></i></span>
-                        <span class="text fs-16">Address</span>
+                    <button class="nav-link" [ngClass]="{ 'active': activePage == 'address' }" (click)="openComponent('address')">
+                        <i class="fa-solid fa-house"></i>
+                        <span class="text">Addresses</span>
                     </button>
 
-                    <button class="nav-link gap-2" [ngClass]="{ 'active': activePage == 'Change-Password' }" (click)="openComponent('Change-Password')">
-                        <span><i class="fa-solid fa-lg fa-lock"></i></span>
-                        <span class="text fs-16">Change Password</span>
+                    <button class="nav-link" [ngClass]="{ 'active': activePage == 'Change-Password' }" (click)="openComponent('Change-Password')">
+                        <i class="fa-solid fa-lock"></i>
+                        <span class="text">Security</span>
                     </button>
 
                     @if (isLoggedIn) {
-                        <div class="nav-link gap-2">
-                            <button class="nav-link gap-2" (click)="logout()">
-                                <span><i class="fa-solid fa-lg fa-arrow-right-from-bracket"></i></span>
-                                <span class="text fs-16">Logout</span>
-                            </button>
-                        </div>
+                        <button class="nav-link mt-auto text-danger" (click)="logout()">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            <span class="text">Logout</span>
+                        </button>
                     }
 
                 </div>

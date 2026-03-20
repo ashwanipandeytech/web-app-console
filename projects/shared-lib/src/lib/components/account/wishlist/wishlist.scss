@@ -1,31 +1,179 @@
+@use '../../../scss/variable' as *;
+
 .wishlist-container {
-    min-height: 400px;
+  min-height: 400px;
+  padding-bottom: 2rem;
 
-    .wrapper-img {
-        img {
-            height: 70px;
-        }
+  .wishlist-card {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+      border-color: $theme-color;
     }
 
-    .wrapper-content {
-        .heading {
-            width: calc(100% - 30px);
-            font-size: 14px;
+    .wishlist-img-container {
+      width: 100%;
+      height: 120px;
+      background: #f8f9fa;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      @media (min-width: 576px) {
+        width: 120px;
+        height: 120px;
+      }
+
+      img {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+        padding: 0.75rem;
+        transition: transform 0.5s ease;
+      }
+    }
+
+    &:hover .wishlist-img-container img {
+      transform: scale(1.05);
+    }
+
+    .placeholder-interactive {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      
+      .icon-wrapper {
+        i {
+          font-size: 2rem;
+          color: #adb5bd;
+        }
+      }
+    }
+
+    .wishlist-content {
+      flex: 1;
+
+      .category-badge {
+        font-size: 0.65rem;
+        font-weight: 800;
+        padding: 0.2rem 0.5rem;
+        background: #f1f2f7;
+        color: #6c757d;
+        border-radius: 4px;
+        letter-spacing: 0.5px;
+      }
+
+      .heading {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 0.25rem;
+        line-clamp: 2;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.4;
+      }
+
+      .rating-stars {
+        i {
+          color: #dee2e6;
+          &.active {
+            color: #ffc107;
+          }
+        }
+      }
+
+      .price-container {
+        .sale-price {
+          font-weight: 800;
+          font-size: 1.25rem;
+          color: $theme-color;
+        }
+        .regular-price-strikethrough {
+          text-decoration: line-through;
+          opacity: 0.6;
+          font-weight: 500;
+        }
+      }
+
+      .stock-badge {
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.35rem 0.75rem;
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+
+        &.in-stock {
+          background: #ecfdf5;
+          color: #10b981;
+        }
+        &.out-of-stock {
+          background: #fef2f2;
+          color: #ef4444;
+        }
+      }
+
+      .action-buttons {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        .btn-add-cart {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.6rem;
+          padding: 0.5rem 1.25rem;
+          background: $theme-color;
+          color: #fff;
+          border: none;
+          border-radius: 10px;
+          font-weight: 700;
+          font-size: 0.9rem;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+          &:hover:not(:disabled) {
+            background: darken($theme-color, 8%);
+            box-shadow: 0 8px 20px rgba($theme-color, 0.3);
+            transform: translateY(-1px);
+          }
+
+          &:disabled {
+            background: #e9ecef;
+            color: #adb5bd;
+            cursor: not-allowed;
+          }
+
+          i {
+            font-size: 1rem;
+          }
         }
 
-        .cancel-btn {
-            &:hover {
-                background-color: #dc35451f;
-            }
-        }
+        .btn-remove-small {
+          color: #adb5bd;
+          transition: all 0.2s ease;
+          font-size: 1.1rem;
 
-        .config-title {
-            width: 150px;
+          &:hover {
+            color: #dc3545;
+            transform: scale(1.1);
+          }
         }
+      }
     }
-    .wrapper {
-        &:hover {
-            box-shadow: 0 1px 12px 2px #dbdbdb;
-        }
-    }
+  }
+}
+
+.fs-20 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
 }

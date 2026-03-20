@@ -1,68 +1,77 @@
-<div class="d-flex justify-content-center align-items-center mt-5">
-    <div class="col-md-3 col-12">
-        <div class="border border-3 border-success"></div>
-        <div class="card bg-white shadow p-4 rounded-0">
-            <div class="mb-3 text-center">
-                <i class="fa-regular fa-circle-check fa-5x text-success"></i>
-            </div>
-            <div class="text-center">
-                <h1 class="fs-4">Thank You !</h1>
-                <p class="mb-4">Order Placed Successfully</p>
-                <a href="/" class="btn btn-outline-secondary">Back to home</a>
-                <a (click)="openRateUsModal()" class="btn btn-success fw-semibold ms-2">Rate Us</a>
-
-                <!-- <button class="shop-btn py-2 px-3 ms-3">Rate Us</button> -->
-            </div>
-        </div>
+<div class="thank-you-page">
+  <div class="thank-you-card shadow-sm">
+    <div class="success-icon-wrapper">
+      <i class="fa-solid fa-check"></i>
     </div>
-</div>
     
+    <h1 class="thank-you-title">Thank You!</h1>
+    <p class="thank-you-msg">Your order has been placed successfully.</p>
+    
+    @if (orderId) {
+      <div class="order-id-badge">
+        Order ID: #{{orderId}}
+      </div>
+    }
+
+    <div class="action-btns">
+      <a href="/" class="btn btn-home">
+        <i class="fa-solid fa-house me-2"></i> Back to Home
+      </a>
+      <button (click)="openRateUsModal()" class="btn btn-rate">
+        <i class="fa-solid fa-star me-2"></i> Rate Us
+      </button>
+    </div>
+  </div>
+</div>
+
 <ng-template #rateusModal let-modal>
-    <div class="modal-content border-0">
-      <!-- Header -->
-      <div class="modal-header py-2 border-0">
-        <h5 class="modal-title" id="rateusModalLabel">Rate Us</h5>
-        <button type="button" class="close-btn" (click)="modal.dismiss()" aria-label="Close">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+  <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg">
+    <div class="modal-header border-0 bg-light py-3 px-4">
+      <h1 class="modal-title fs-5 fw-bold">Share Your Experience</h1>
+      <button type="button" class="btn-close shadow-none" (click)="modal.dismiss()" aria-label="Close"></button>
+    </div>
+
+    <form [formGroup]="rateUsForm" (ngSubmit)="submitRating()">
+      <div class="modal-body p-4 rate-us-container">
+        <div class="text-center mb-4">
+          <div class="alert-icon-wrapper mb-3" style="background: rgba(var(--primary-color-rgb, 13, 110, 253), 0.1); width: 60px; height: 64px; border-radius: 20px; display: inline-flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-star text-primary fs-2"></i>
+          </div>
+          <h4 class="fw-800 text-dark mb-1">How did we do?</h4>
+          <p class="text-muted fs-14">Your feedback helps us improve our service.</p>
+        </div>
+
+        <div class="rating-stars-interactive">
+          @for (star of stars; track star; let i = $index) {
+            <i class="fa-star" 
+               [ngClass]="{
+                 'fa-solid active': i < rateUsForm.value.rating,
+                 'fa-regular': i >= rateUsForm.value.rating
+               }" 
+               (click)="setRating(i + 1)"></i>
+          }
+        </div>
+
+        @if (rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid) {
+          <div class="text-danger fs-12 text-center mb-3 fw-bold">
+            <i class="fa-solid fa-circle-info me-1"></i> Please select a star rating
+          </div>
+        }
+
+        <div class="text-start">
+          <label class="form-label fs-12 fw-bold text-uppercase text-muted px-1">Tell us more (Optional)</label>
+          <textarea class="form-control feedback-textarea" rows="4" 
+                    placeholder="What did you like or dislike?"
+                    formControlName="comment"></textarea>
+        </div>
       </div>
 
-      <!-- Body -->
-      <form [formGroup]="rateUsForm" (ngSubmit)="submitRating()">
-        <div class="modal-body text-center">
-          <p class="mb-1 fs-18">How was your experience?</p>
-          <strong class="fs-14 d-block">Order #{{orderId}}</strong>
-
-          <!-- ⭐ Star Rating -->
-          <div class="rating-stars my-3 d-flex gap-2 justify-content-center" 
-            [ngClass]="{
-                'poor': ratingValue == 1 || ratingValue == 2,
-                'good': ratingValue == 3,
-                'best': ratingValue == 4 || ratingValue == 5,
-              }">
-            <i *ngFor="let star of stars; let i = index" class="fa-star fa-2x cursor-pointer" 
-            [ngClass]="{
-                'fa-solid active': i < rateUsForm.value.rating,
-                'fa-regular': i >= rateUsForm.value.rating,
-              }" (click)="setRating(i + 1)"></i>
-          </div>
-
-          <div class="text-danger fs-12 small" *ngIf="rateUsForm.get('rating')?.touched && rateUsForm.get('rating')?.invalid">
-            Please select a rating
-          </div>
-
-          <!-- Feedback -->
-          <textarea class="form-control mt-3" rows="3" placeholder="Write your feedback (optional)"
-            formControlName="comment"></textarea>
-        </div>
-
-        <!-- Footer -->
-        <div class="modal-footer border-0">
-          <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Cancel</button>
-          <button type="submit" class="shop-btn ms-2" [disabled]="rateUsForm.invalid">
-            Submit
-          </button>
-        </div>
-      </form>
-    </div>
+      <div class="modal-footer border-0 p-4 pt-0">
+        <button type="button" class="btn btn-light px-4 rounded-3 fw-bold" (click)="modal.dismiss()">Not Now</button>
+        <button type="submit" class="btn btn-primary px-5 rounded-3 fw-bold shadow-sm" [disabled]="rateUsForm.invalid">
+          Submit Review
+        </button>
+      </div>
+    </form>
+  </div>
 </ng-template>

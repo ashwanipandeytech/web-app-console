@@ -1,20 +1,14 @@
-<!--------------- wishlist-section---------------->
-<!-- @if(isLoading){
-<div class="loader d-flex align-items-center justify-content-center">
-  <div class="spinner-border spinner-border-lg text-primary" role="status"></div>
-</div>
-} -->
-
 @if(isLoggedIn){
-<div class="top-section border-bottom pb-sm-2 mb-4 px-3 px-md-0 pt-sm-0 py-2">
-  <h3 class="fs-20">Wishlist Items</h3>
+<div class="top-section border-bottom pb-2 mb-4 px-3 px-md-0 pt-0 py-2">
+  <h3 class="fs-20 mb-0 d-flex align-items-center gap-2">
+    <i class="fa-solid fa-heart text-primary opacity-75"></i>
+    Wishlist Items
+  </h3>
 </div>
 }
 
-
 <section class="wishlist-container w-1100 mx-auto px-3 px-sm-0">
-
-   @if (wishListData?.length === 0 || !isLoggedIn) {
+  @if (wishListData?.length === 0 || !isLoggedIn) {
     <app-no-data
       title="No Wishlist Found"
       message="There are no data available right now."
@@ -25,78 +19,118 @@
     >
     </app-no-data>
   }
-  @if (!isLoading ) {
-    @for (item of wishListData; track $index) {
-      <div class="border rounded mt-3 p-3 row wrapper">
-        <div class="col-sm-2 col-12">
-          <div class="wrapper-img bg-light p-2 rounded-2">
-            <img
-              [src]="item?.product?.media?.uploadedImages[0]?.url"
-              alt=""
-              class="object-fit-contain rounded-2 w-100"
-            />
+
+  @if (!isLoading) {
+    <div class="wishlist-grid">
+      @for (item of wishListData; track item.id) {
+        <div class="wishlist-card rounded-4 mt-3 p-0 d-flex flex-column flex-sm-row">
+          <!-- Image Section -->
+          <div class="wishlist-img-container">
+            @if (item?.product?.media?.uploadedImages?.[0]?.url && !item.hasImageError) {
+              <img
+                [src]="item?.product?.media?.uploadedImages[0]?.url"
+                alt="Product"
+                class="img-fluid"
+                (error)="item.hasImageError = true"
+              />
+            } @else {
+              <div class="placeholder-interactive d-flex flex-column align-items-center justify-content-center w-100 h-100">
+                <div class="icon-wrapper">
+                  <i class="fa-solid fa-image"></i>
+                </div>
+                <span class="fs-10 text-muted fw-bold text-uppercase mt-2">No Preview</span>
+              </div>
+            }
           </div>
-        </div>
-        <div class="col-sm-10 col-12">
-          <div class="wrapper-content">
-            <div class="d-flex align-items-center">
-              <h5 class="heading text-truncate text-capitalize mb-0">{{ item?.product.title }}</h5>
+
+          <!-- Content Section -->
+          <div class="wishlist-content p-3 p-md-4 d-flex flex-column justify-content-between">
+            <div>
+              <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+                <div>
+                  @if (item?.product?.category?.name) {
+                    <span class="category-badge text-uppercase mb-1 d-inline-block">{{ item.product.category.name }}</span>
+                  }
+                  <h5 class="heading text-capitalize mb-1">
+                    {{ item?.product.title }}
+                  </h5>
+                </div>
+                <button
+                  class="btn btn-remove-small p-0"
+                  (click)="removeWishlist(item.id)"
+                  title="Remove from wishlist"
+                >
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+
+              <!-- Rating -->
+              <div class="rating-stars mb-3 d-flex align-items-center gap-1">
+                @for (star of ratingStars; track star) {
+                  <i class="fa-star fs-12" [ngClass]="{'fa-solid active': star <= item?.product?.rating?.average, 'fa-regular': star > item?.product?.rating?.average}"></i>
+                }
+                <span class="ms-1 text-muted fs-12">({{ item?.product?.rating?.total || 0 }})</span>
+              </div>
+
+              <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-3">
+                <div class="price-container">
+                  @if (item?.product?.price_data?.salePrice && item?.product?.price_data?.salePrice < item?.product?.price_data?.regularPrice) {
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="sale-price">₹{{ item.product.price_data.salePrice }}</span>
+                      <span class="regular-price-strikethrough text-muted small">₹{{ item.product.price_data.regularPrice }}</span>
+                    </div>
+                  } @else {
+                    <span class="sale-price">₹{{ item?.product?.price_data?.regularPrice }}</span>
+                  }
+                </div>
+
+                @if (item?.product?.inventory?.stockStatus) {
+                  <span class="stock-badge" [ngClass]="item.product.inventory.stockStatus === 'in_stock' ? 'in-stock' : 'out-of-stock'">
+                    <i class="fa-solid" [ngClass]="item.product.inventory.stockStatus === 'in_stock' ? 'fa-check-circle' : 'fa-circle-xmark'"></i>
+                    {{ item.product.inventory.stockStatus === 'in_stock' ? 'In Stock' : 'Out of Stock' }}
+                  </span>
+                }
+              </div>
+            </div>
+
+            <div class="action-buttons mt-auto">
               <button
-                class="lh-0 btn cancel-btn p-2 d-flex align-items-center"
-                (click)="removeWishlist(item.id)"
-                title="Remove from wishlist"
+                type="button"
+                class="btn-add-cart"
+                (click)="addToCart(item.product)"
+                [disabled]="item?.product?.inventory?.stockStatus !== 'in_stock'"
               >
-                <i class="fa-solid fa-trash text-danger"></i>
+                <i class="fa-solid fa-cart-plus"></i>
+                <span>Add to Cart</span>
               </button>
             </div>
-            <ul>
-              <li class="mt-md-1 mt-0">
-                <span class="fw-semibold d-inline-block config-title">price</span>
-                <span>₹{{ item.product.price_data.regularPrice }}</span>
-              </li>
-            </ul>
-
-            <button
-              type="button"
-              class="icon-link icon-link-hover text-primary mt-sm-3 mt-1"
-              (click)="addToCart(item.product)"
-            >
-              Add to cart
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="bi"
-                viewBox="0 0 16 16"
-                aria-hidden="true"
-              >
-                <path
-                  d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                />
-              </svg>
-            </button>
           </div>
         </div>
-      </div>
 
-      <!-- Delete product Modal -->
-      <ng-template #removeProduct let-modal>
-          <div class="modal-content border-0">
-            <div class="modal-header py-2">
-              <h1 class="modal-title fs-5" id="removeProjectLabel">Remove product</h1>
-              <button type="button" class="close-btn" (click)="modal.dismiss()" aria-label="Close">
-                <i class="fa-solid fa-xmark"></i>
-              </button>
+        <!-- Delete product Modal -->
+        <ng-template #removeProduct let-modal>
+          <div class="modal-content border-0 rounded-4 overflow-hidden">
+            <div class="modal-header py-3 px-4 border-0 bg-light">
+              <h1 class="modal-title fs-5 fw-bold" id="removeProjectLabel">Remove Product</h1>
+              <button type="button" class="btn-close shadow-none" (click)="modal.dismiss()" aria-label="Close"></button>
             </div>
-            <div class="modal-body">Remove product from your wishlist - sure?</div>
-            <div class="modal-footer border-0">
-              <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+            <div class="modal-body p-4 text-center">
+              <div class="mb-3">
+                <i class="fa-solid fa-circle-exclamation text-warning fs-1" style="font-size: 3rem !important;"></i>
+              </div>
+              <p class="fs-16 mb-0">Are you sure you want to remove this product from your wishlist?</p>
+            </div>
+            <div class="modal-footer border-0 p-4 pt-0 justify-content-center">
+              <button type="button" class="btn btn-light px-4 py-2 rounded-3 fw-semibold" (click)="modal.dismiss()">
                 Cancel
               </button>
-              <button type="button" class="shop-btn ms-2" (click)="remove()">Remove</button>
+              <button type="button" class="btn btn-danger px-4 py-2 rounded-3 fw-semibold ms-2" (click)="remove()">
+                Remove
+              </button>
             </div>
           </div>
-      </ng-template>
-    }
+        </ng-template>
+      }
+    </div>
   }
- 
 </section>
-<!--------------- wishlist-end---------------->
