@@ -8,11 +8,11 @@ import { environment } from 'environments/environment';
 import { Sidebar } from '../../layout/sidebar/sidebar';
 import { Header } from '../../layout/header/header';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-order',
-  imports: [Sidebar, Header, DatePipe, ReactiveFormsModule],
+  imports: [Sidebar, Header, DatePipe, ReactiveFormsModule, FormsModule],
   templateUrl: './order.html',
   styleUrl: './order.scss',
 })
@@ -131,6 +131,13 @@ this.getOrderList();
       )
       .subscribe((res: any) => {
         this.orderListData = res.data;
+        if (this.orderListData && this.orderListData.data) {
+          this.orderListData.data.forEach((order: any) => {
+            if (order.status) {
+              order.status = order.status.toLowerCase();
+            }
+          });
+        }
         console.log('this.orderListData===>',this.orderListData);
         
         this.cd.detectChanges();
