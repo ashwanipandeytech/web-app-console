@@ -14,10 +14,7 @@
     @for (item of orderListData; track $index) {
       <div
         class="order-card mb-4 shadow-sm cursor-pointer position-relative"
-        [class.status-border-cancelled]="item.status === 'cancelled'"
-        [class.status-border-delivered]="item.status === 'delivered'"
-        [class.status-border-confirmed]="item.status === 'confirmed'"
-        [class.status-border-pending]="item.status === 'pending'"
+        [ngClass]="getStatusBorderClass(item.status)"
         (click)="getOrderDetailData(item)"
       >
         <div class="d-flex flex-column flex-sm-row">
@@ -51,14 +48,10 @@
                   <!-- Status Pill for small screens (inline with title) -->
                   <span
                     class="status-pill fs-9 fw-bold text-uppercase px-2 py-1 rounded-pill d-md-none"
-                    [class.status-pulse]="item.status === 'confirmed' || item.status === 'pending'"
-                    [ngClass]="{
-                      'status-cancelled text-danger bg-danger-subtle': item.status === 'cancelled',
-                      'status-delivered text-primary bg-primary-subtle': item.status === 'delivered',
-                      'status-confirmed text-success bg-success-subtle': item.status === 'confirmed' || item.status === 'pending'
-                    }"
+                    [class.status-pulse]="isStatusPulse(item.status)"
+                    [ngClass]="getStatusClass(item.status)"
                   >
-                    {{ item.status | titlecase }}
+                    {{ getStatusLabel(item.status) }}
                   </span>
                 </div>
                 <div class="order-meta text-muted fs-12 d-flex align-items-center gap-3">
@@ -76,14 +69,10 @@
               <!-- Status Pill for larger screens -->
               <span
                 class="status-pill fs-10 fw-bold text-uppercase px-3 py-1 rounded-pill d-none d-md-block"
-                [class.status-pulse]="item.status === 'confirmed' || item.status === 'pending'"
-                [ngClass]="{
-                  'status-cancelled text-danger bg-danger-subtle': item.status === 'cancelled',
-                  'status-delivered text-primary bg-primary-subtle': item.status === 'delivered',
-                  'status-confirmed text-success bg-success-subtle': item.status === 'confirmed' || item.status === 'pending'
-                }"
+                [class.status-pulse]="isStatusPulse(item.status)"
+                [ngClass]="getStatusClass(item.status)"
               >
-                {{ item.status | titlecase }}
+                {{ getStatusLabel(item.status) }}
               </span>
             </div>
 
@@ -110,7 +99,7 @@
               </div>
 
               <div class="d-flex align-items-center gap-2 gap-sm-3">
-                @if (item.status !== 'cancelled' && item.status !== 'delivered') {
+                @if (!['cancelled', 'delivered', 'return_requested', 'returned'].includes(item.status)) {
                   <div class="delivery-badge d-flex align-items-center gap-2 px-2 px-sm-3 py-1 bg-success bg-opacity-10 rounded-pill border border-success border-opacity-10">
                     <span class="blinking-circle"></span>
                     <span class="text-success fs-10 fs-sm-11 fw-bold">Arrives {{ item.expected_delivery }}</span>
@@ -141,7 +130,7 @@
         </div>
 
         <!-- Horizontal Progress Stepper -->
-        @if (orderDetailList?.status !== 'cancelled') {
+        @if (!['cancelled', 'return_requested', 'returned'].includes(orderDetailList?.status)) {
           <div class="order-progress-wrapper px-2">
             <div class="horizontal-stepper-line">
               <div class="progress-fill" [style.width.%]="(getOrderStep(orderDetailList.status) - 1) * 25"></div>
@@ -176,8 +165,8 @@
           <div class="p-2 bg-danger-subtle rounded-3 border border-danger border-opacity-25 d-flex align-items-center gap-2">
             <i class="fa-solid fa-circle-xmark text-danger fs-18"></i>
             <div>
-              <div class="fw-bold text-danger fs-12">Order Cancelled</div>
-              <div class="text-danger opacity-75 fs-11">This order was cancelled and will not be processed.</div>
+              <div class="fw-bold text-danger fs-12">{{ getStatusLabel(orderDetailList.status) }}</div>
+              <div class="text-danger opacity-75 fs-11">This order status is {{ getStatusLabel(orderDetailList.status) | lowercase }}.</div>
             </div>
           </div>
         }
@@ -246,13 +235,10 @@
                         <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
                           <h6 class="mb-0 text-capitalize fw-bold text-dark fs-13 line-clamp-2">{{ item?.product?.title }}</h6>
                           <span class="badge rounded-pill fw-bold text-uppercase"
-                            [class.status-pulse]="orderDetailList.status === 'confirmed' || orderDetailList.status === 'pending'"
-                            [ngClass]="{
-                              'bg-danger-subtle text-danger': orderDetailList.status === 'cancelled',
-                              'bg-primary-subtle text-primary': orderDetailList.status === 'delivered',
-                              'bg-success-subtle text-success': orderDetailList.status === 'confirmed' || orderDetailList.status === 'pending'
-                            }" style="font-size: 9px; padding: 4px 8px;">
-                            {{ orderDetailList?.status }}
+                            [class.status-pulse]="isStatusPulse(orderDetailList.status)"
+                            [ngClass]="getStatusClass(orderDetailList.status)"
+                            style="font-size: 9px; padding: 4px 8px;">
+                            {{ getStatusLabel(orderDetailList?.status) }}
                           </span>
                         </div>
                         
@@ -437,7 +423,7 @@
                      <div class="card-header-icon"><i class="fa-solid fa-receipt"></i></div>
                      <h6 class="fw-bold mb-0 text-dark">Order Summary</h6>
                    </div>
-                  @if (orderDetailList?.status !== 'cancelled') {
+                  @if (orderDetailList?.status === 'delivered') {
                     <button class="btn btn-sm btn-outline-success border-2 fw-bold rounded-pill fs-11 px-3 d-flex align-items-center gap-1"
                       (click)="downloadInvoice(orderDetailList)">
                       <i class="fa-solid fa-cloud-arrow-down"></i> Invoice
@@ -534,7 +520,7 @@
                             <span class="fw-bold fs-14 text-capitalize" 
                               [class.text-danger]="event.status?.toLowerCase().includes('cancelled') || event.message?.toLowerCase().includes('cancelled')"
                               [class.text-dark]="!(event.status?.toLowerCase().includes('cancelled') || event.message?.toLowerCase().includes('cancelled'))">
-                              {{ event.message || event.status }}
+                              {{ getStatusLabel(event.status) || event.message }}
                             </span>
                             <span class="fs-11 text-muted fw-bold">{{ event.date || (event.created_at | date:'dd MMM, yyyy - hh:mm a') }}</span>
                           </div>
@@ -595,7 +581,7 @@
                   <div class="text-danger small mt-1 fw-medium">
                     <i class="fa-solid fa-circle-info me-1"></i>
                     @if (bankDetailsForm.get('account_name')?.errors?.['required']) { <span>Name is required</span> }
-                    @if (bankDetailsForm.get('account_name')?.errors?.['pattern']) { <span>Only letters allowed</span> }
+                    @if (bankDetailsForm.get('account_name')?.errors?.['minlength']) { <span>Minimum 3 characters required</span> }
                   </div>
                 }
               </div>
@@ -606,7 +592,8 @@
                 @if (bankDetailsForm.get('account_number')?.touched && bankDetailsForm.get('account_number')?.invalid) {
                   <div class="text-danger small mt-1 fw-medium">
                     <i class="fa-solid fa-circle-info me-1"></i>
-                    <span>Please enter a valid account number</span>
+                    @if (bankDetailsForm.get('account_number')?.errors?.['required']) { <span>Account number is required</span> }
+                    @if (bankDetailsForm.get('account_number')?.errors?.['pattern']) { <span>Enter a valid 9-18 digit account number</span> }
                   </div>
                 }
               </div>
@@ -615,10 +602,24 @@
                 <div class="col-md-6 mb-3">
                   <label class="form-label fs-12 fw-bold text-uppercase text-muted">IFSC Code</label>
                   <input type="text" class="form-control text-uppercase" formControlName="ifsc_code" placeholder="e.g. SBIN0001234" maxlength="11">
+                  @if (bankDetailsForm.get('ifsc_code')?.touched && bankDetailsForm.get('ifsc_code')?.invalid) {
+                    <div class="text-danger small mt-1 fw-medium">
+                      <i class="fa-solid fa-circle-info me-1"></i>
+                      @if (bankDetailsForm.get('ifsc_code')?.errors?.['required']) { <span>IFSC code is required</span> }
+                      @if (bankDetailsForm.get('ifsc_code')?.errors?.['pattern']) { <span>Invalid IFSC format (e.g. SBIN0001234)</span> }
+                    </div>
+                  }
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label fs-12 fw-bold text-uppercase text-muted">Bank Name</label>
                   <input type="text" class="form-control" formControlName="bank_name" placeholder="e.g. State Bank of India">
+                  @if (bankDetailsForm.get('bank_name')?.touched && bankDetailsForm.get('bank_name')?.invalid) {
+                    <div class="text-danger small mt-1 fw-medium">
+                      <i class="fa-solid fa-circle-info me-1"></i>
+                      @if (bankDetailsForm.get('bank_name')?.errors?.['required']) { <span>Bank name is required</span> }
+                      @if (bankDetailsForm.get('bank_name')?.errors?.['minlength']) { <span>Bank name too short</span> }
+                    </div>
+                  }
                 </div>
               </div>
             </form>

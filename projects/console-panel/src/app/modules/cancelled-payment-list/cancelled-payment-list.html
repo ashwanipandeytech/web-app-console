@@ -134,7 +134,18 @@
                                 @if (processForm.get('status')?.value === 'processed') {
                                 <div class="col-md-12">
                                     <label class="form-label">Transaction ID (Reference)</label>
-                                    <input type="text" class="form-control" formControlName="transaction_id" placeholder="e.g. SBI123456789XYZ">
+                                    <input type="text" class="form-control" formControlName="transaction_id" placeholder="e.g. SBI123456789XYZ"
+                                        [ngClass]="{'is-invalid': processForm.get('transaction_id')?.touched && processForm.get('transaction_id')?.invalid}">
+                                    @if (processForm.get('transaction_id')?.touched && processForm.get('transaction_id')?.invalid) {
+                                        <div class="text-danger small mt-1">
+                                            @if (processForm.get('transaction_id')?.errors?.['required']) {
+                                                Transaction ID is required for approved refunds.
+                                            }
+                                            @if (processForm.get('transaction_id')?.errors?.['pattern']) {
+                                                Enter a valid transaction ID (8-25 alphanumeric characters).
+                                            }
+                                        </div>
+                                    }
                                 </div>
                                 }
 

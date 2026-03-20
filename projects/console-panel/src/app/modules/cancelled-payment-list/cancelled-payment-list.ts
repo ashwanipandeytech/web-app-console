@@ -35,8 +35,18 @@ export class CancelledPaymentList implements OnInit {
   initProcessForm() {
     this.processForm = this.fb.group({
       status: ['processed', Validators.required],
-      transaction_id: [''],
+      transaction_id: ['', [Validators.pattern(/^[a-zA-Z0-9]{8,25}$/)]],
       admin_notes: ['', Validators.required]
+    });
+
+    this.processForm.get('status')?.valueChanges.subscribe(value => {
+      const transControl = this.processForm.get('transaction_id');
+      if (value === 'processed') {
+        transControl?.setValidators([Validators.required, Validators.pattern(/^[a-zA-Z0-9]{8,25}$/)]);
+      } else {
+        transControl?.clearValidators();
+      }
+      transControl?.updateValueAndValidity();
     });
   }
 
@@ -65,6 +75,12 @@ export class CancelledPaymentList implements OnInit {
             transaction_id: '',
             admin_notes: ''
           });
+          
+          // Re-set validation based on initial processed status
+          const transControl = this.processForm.get('transaction_id');
+          transControl?.setValidators([Validators.required, Validators.pattern(/^[a-zA-Z0-9]{8,25}$/)]);
+          transControl?.updateValueAndValidity();
+
           this.modalRef = this.ngbModal.open(this.detailsModal, { size: 'lg', centered: true });
           this.cd.detectChanges();
         }

@@ -124,6 +124,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+    "allowedHosts": [".ngrok-free.app"]
+  },
           "configurations": {
             "web-production-ssr": {
               "buildTarget": "frontend:build:web-production-ssr"
@@ -243,6 +246,9 @@
           "defaultConfiguration": "console-development"
         },
         "serve": {
+          "options": {
+    "allowedHosts": [".ngrok-free.app"]
+  },
           "builder": "@angular/build:dev-server",
           "configurations": {
             "console-production": {

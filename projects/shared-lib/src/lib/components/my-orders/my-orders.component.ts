@@ -118,8 +118,7 @@ export class MyOrdersComponent implements OnInit {
     this.bankDetailsForm = this.fb.group({
       account_name: ['', [
         Validators.required, 
-        Validators.minLength(3), 
-        Validators.pattern(/^[a-zA-Z ]+$/)
+        Validators.minLength(3)
       ]],
       account_number: ['', [
         Validators.required, 
@@ -127,7 +126,7 @@ export class MyOrdersComponent implements OnInit {
       ]],
       ifsc_code: ['', [
         Validators.required, 
-        Validators.pattern(/^[A-Z]{4}0[A-Z0-9]{6}$/)
+        Validators.pattern(/^[A-Z]{4}[0-9][A-Z0-9]{6}$/)
       ]],
       bank_name: ['', [Validators.required, Validators.minLength(2)]],
     });
@@ -311,7 +310,12 @@ export class MyOrdersComponent implements OnInit {
     // Only require bank details for COD Returns (Refund needed)
     if (this.orderDetailList?.payment_method === 'cod' && this.isReturnAction) {
       if (this.bankDetailsForm.invalid) {
+        this.globalService.showToast({ 
+          success: false, 
+          message: 'Please fill all bank details correctly for the refund.' 
+        });
         this.bankDetailsForm.markAllAsTouched();
+        this.cd.detectChanges();
         return;
       }
       payload.bank_details = this.bankDetailsForm.value;
@@ -387,6 +391,55 @@ export class MyOrdersComponent implements OnInit {
       'delivered': 5
     };
     return steps[status?.toLowerCase()] || 1;
+  }
+
+  getStatusClass(status: string): string {
+    const s = status?.toLowerCase();
+    if (['cancelled', 'return_requested', 'returned'].includes(s)) {
+      return 'status-cancelled text-danger bg-danger-subtle';
+    }
+    if (s === 'delivered') {
+      return 'status-delivered text-primary bg-primary-subtle';
+    }
+    return 'status-confirmed text-success bg-success-subtle';
+  }
+
+  getStatusBorderClass(status: string): string {
+    const s = status?.toLowerCase();
+    if (['cancelled', 'return_requested', 'returned'].includes(s)) {
+      return 'status-border-cancelled';
+    }
+    if (s === 'delivered') {
+      return 'status-border-delivered';
+    }
+    if (s === 'confirmed') {
+      return 'status-border-confirmed';
+    }
+    if (s === 'pending') {
+      return 'status-border-pending';
+    }
+    return 'status-border-confirmed'; // Default for processing, dispatched etc
+  }
+
+  isStatusPulse(status: string): boolean {
+    const s = status?.toLowerCase();
+    return ['pending', 'confirmed', 'processing', 'dispatched', 'shipped', 'out_for_delivery'].includes(s);
+  }
+
+  getStatusLabel(status: string): string {
+    const labels: any = {
+      'pending': 'Pending',
+      'confirmed': 'Confirmed',
+      'processing': 'Processing',
+      'dispatched': 'Dispatched',
+      'shipped': 'Shipped',
+      'out_for_delivery': 'Out for Delivery',
+      'delivered': 'Delivered',
+      'cancelled': 'Cancelled',
+      'return_requested': 'Return Requested',
+      'returned': 'Returned'
+    };
+    return labels[status?.toLowerCase()] || status;
   }
 
   closeModal() {

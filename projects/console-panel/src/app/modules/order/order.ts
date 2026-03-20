@@ -45,8 +45,14 @@ export class Order {
     this.getOrderList();
   }
 
-  isStatusAllowed(currentStatus: string, targetStatus: string): boolean {
+  isStatusAllowed(order: any, targetStatus: string): boolean {
+    const currentStatus = order.status;
     if (currentStatus === targetStatus) return true;
+
+    // COD orders cannot have 'return_requested' or 'returned' statuses in this console
+    if (order.payment_method?.toLowerCase() === 'cod' && ['return_requested', 'returned'].includes(targetStatus)) {
+      return false;
+    }
 
     const flow: any = {
       'pending': ['confirmed', 'cancelled'],
