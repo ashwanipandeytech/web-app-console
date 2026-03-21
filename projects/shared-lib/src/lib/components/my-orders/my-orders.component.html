@@ -59,10 +59,18 @@
                     <i class="fa-solid fa-hashtag text-primary opacity-50"></i>
                     {{ item?.summary?.order_number }}
                   </span>
-                  <span class="d-flex align-items-center gap-1">
-                    <i class="fa-solid fa-box-open text-primary opacity-50"></i>
-                    {{ item?.summary?.total_items_count }} {{ item?.summary?.total_items_count > 1 ? 'Items' : 'Item' }}
-                  </span>
+                  
+                  @if (item?.summary?.additional_items_text) {
+                    <span class="d-flex align-items-center gap-1 text-primary opacity-75 fw-bold">
+                      <i class="fa-solid fa-circle-plus opacity-50"></i>
+                      {{ item?.summary?.additional_items_text }}
+                    </span>
+                  } @else if (item?.summary?.total_items_count > 0) {
+                    <span class="d-flex align-items-center gap-1">
+                      <i class="fa-solid fa-box-open text-primary opacity-50"></i>
+                      {{ item?.summary?.total_items_count }} {{ item?.summary?.total_items_count > 1 ? 'Items' : 'Item' }}
+                    </span>
+                  }
                 </div>
               </div>
               
@@ -235,10 +243,10 @@
                         <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
                           <h6 class="mb-0 text-capitalize fw-bold text-dark fs-13 line-clamp-2">{{ item?.product?.title }}</h6>
                           <span class="badge rounded-pill fw-bold text-uppercase"
-                            [class.status-pulse]="isStatusPulse(orderDetailList.status)"
-                            [ngClass]="getStatusClass(orderDetailList.status)"
+                            [class.status-pulse]="isStatusPulse(item.status || orderDetailList.status)"
+                            [ngClass]="getStatusClass(item.status || orderDetailList.status)"
                             style="font-size: 9px; padding: 4px 8px;">
-                            {{ getStatusLabel(orderDetailList?.status) }}
+                            {{ getStatusLabel(item.status || orderDetailList?.status) }}
                           </span>
                         </div>
                         
@@ -495,11 +503,33 @@
           <!-- Tracking Tab -->
           @if (activeTab === 'tracking') {
             <div class="tracking-container">
+              @if (orderDetailList?.courier_name || orderDetailList?.tracking_id || orderDetailList?.tracking_number) {
+                <div class="order-detail-card bg-white p-3 shadow-sm border-0 mb-3 rounded-3">
+                  <h6 class="fw-bold mb-3 fs-13 text-dark border-bottom pb-2">
+                    <i class="fa-solid fa-truck-ramp-box me-2 text-primary"></i>Shipment Information
+                  </h6>
+                  <div class="row g-2">
+                    @if (orderDetailList?.courier_name) {
+                      <div class="col-6">
+                        <div class="info-label mb-0" style="font-size: 11px;">Courier</div>
+                        <div class="fw-bold fs-13">{{ orderDetailList.courier_name }}</div>
+                      </div>
+                    }
+                    @if (orderDetailList?.tracking_id || orderDetailList?.tracking_number) {
+                      <div class="col-6">
+                        <div class="info-label mb-0" style="font-size: 11px;">Tracking ID</div>
+                        <div class="fw-bold fs-13 text-primary">{{ orderDetailList.tracking_id || orderDetailList.tracking_number }}</div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+
               @if (orderDetailList?.item_timeline?.length > 0) {
                 <div class="order-detail-card bg-white p-4 shadow-sm border-0 mb-3">
                   <div class="d-flex align-items-center gap-2 mb-4">
-                    <div class="card-header-icon"><i class="fa-solid fa-truck-fast"></i></div>
-                    <h6 class="fw-bold mb-0 text-dark">Shipment Timeline</h6>
+                    <div class="card-header-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <h6 class="fw-bold mb-0 text-dark">Status Updates</h6>
                   </div>
                   
                   <div class="vertical-stepper">
@@ -516,16 +546,23 @@
                         </div>
                         <div class="step-content shadow-none border-light-subtle" 
                           [class.cancelled-content]="event.status?.toLowerCase().includes('cancelled') || event.message?.toLowerCase().includes('cancelled')">
-                          <div class="d-flex justify-content-between align-items-start">
-                            <span class="fw-bold fs-14 text-capitalize" 
-                              [class.text-danger]="event.status?.toLowerCase().includes('cancelled') || event.message?.toLowerCase().includes('cancelled')"
-                              [class.text-dark]="!(event.status?.toLowerCase().includes('cancelled') || event.message?.toLowerCase().includes('cancelled'))">
-                              {{ getStatusLabel(event.status) || event.message }}
-                            </span>
-                            <span class="fs-11 text-muted fw-bold">{{ event.date || (event.created_at | date:'dd MMM, yyyy - hh:mm a') }}</span>
+                          <div class="d-flex justify-content-between align-items-start gap-3">
+                            <div class="d-flex flex-column">
+                              <span class="fw-bold fs-14 text-capitalize" 
+                                [class.text-danger]="event.status?.toLowerCase().includes('cancelled') || event.message?.toLowerCase().includes('cancelled')"
+                                [class.text-dark]="!(event.status?.toLowerCase().includes('cancelled') || event.message?.toLowerCase().includes('cancelled'))">
+                                {{ getStatusLabel(event.status) }}
+                              </span>
+                              @if (event.message && getStatusLabel(event.status)?.toLowerCase() !== event.message?.toLowerCase()) {
+                                <span class="fs-12 text-muted fw-medium mt-1">{{ event.message }}</span>
+                              }
+                            </div>
+                            <span class="fs-11 text-muted fw-bold text-nowrap">{{ event.date || (event.created_at | date:'dd MMM, yyyy - hh:mm a') }}</span>
                           </div>
                           @if (event.comment) {
-                            <p class="fs-12 text-muted mb-0 mt-1 opacity-75">{{ event.comment }}</p>
+                            <p class="fs-12 text-muted mb-0 mt-2 p-2 bg-light rounded-2 border-start border-3 border-primary border-opacity-25" style="font-style: italic;">
+                              "{{ event.comment }}"
+                            </p>
                           }
                         </div>
                       </div>

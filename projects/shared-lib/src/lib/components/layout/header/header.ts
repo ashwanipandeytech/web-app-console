@@ -29,7 +29,7 @@ export class Header {
   public router = inject(Router);
   readonly dataService = inject(DataService);
   private globalFunctionService = inject(GlobalFunctionService);
-  private signalService = inject(SignalService);
+  public signalService = inject(SignalService);
   readonly ngbModal = inject(NgbModal);
   private cd = inject(ChangeDetectorRef);
 
@@ -94,6 +94,7 @@ export class Header {
       //console.log('fsgfdgvdfgdfgfdgf',this.signalService.user());
 
       if (this.signalService.user() != null) {
+      //  console.info('user data in header==>', this.signalService.user());
         this.userName = this.signalService.user().user.name;
         this.cd.detectChanges();
       }

@@ -1,21 +1,226 @@
 @use '../../../scss/variable' as *;
 
-.login-popup{
-    .modal-content {
-        box-shadow: var(--bs-box-shadow-lg);
-        border-radius: 16px;
-        .password-show{
-            right: 10px;
-            top: 13px;   
-        }
-        .title{
-            font-size: clamp(1rem, 0.1667rem + 2.6667vw, 2.5rem);
-        }
-        .icons{
-            &:hover{
-                border: 1px solid $theme-color!important;
-            }
-        }
+.login-popup {
+  .modal-content {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border-radius: 24px;
+    border: none;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .modal-header {
+    background: #ffffff;
+    padding: 1.25rem 1.25rem 0.5rem !important;
+    border-bottom: none !important;
+    
+    .brand-logo-container {
+      margin-bottom: 0.25rem !important;
+      img {
+        max-height: 40px !important;
+      }
     }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #1e293b;
+      letter-spacing: -0.025em;
+    }
+    
+    .text-muted {
+      font-size: 0.875rem !important;
+    }
+  }
+
+  .modal-body {
+    padding: 1.5rem 2rem 2rem !important;
+  }
+
+  .login-grid-container {
+    display: flex;
+    gap: 3rem;
+    align-items: stretch;
+
+    .form-side {
+      flex: 1.2;
+      min-width: 0;
+    }
+
+    .v-separator {
+      width: 1px;
+      background: #e2e8f0;
+      margin: 0.5rem 0;
+    }
+
+    .social-login-side {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding-top: 1.5rem;
+      min-width: 0;
+    }
+  }
+
+  .input-group-modern {
+    .input-wrapper {
+      .form-control {
+        height: 52px;
+        border-radius: 12px;
+        border: 1.5px solid #e2e8f0;
+        background: #ffffff;
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: #1e293b;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &:focus {
+          border-color: $theme-color;
+          box-shadow: 0 0 0 4px rgba($theme-color, 0.08);
+          background: #fff;
+        }
+
+        &::placeholder {
+          color: #94a3b8;
+          font-weight: 400;
+        }
+      }
+
+      i {
+        color: #64748b;
+        font-size: 1.1rem;
+        transition: all 0.2s ease;
+      }
+
+      &:focus-within i {
+        color: $theme-color !important;
+      }
+    }
+  }
+
+  .custom-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-left: 0;
+    margin-bottom: 0;
+
+    .form-check-input {
+      width: 1.25rem;
+      height: 1.25rem;
+      margin-top: 0;
+      border: 2px solid #cbd5e0;
+      border-radius: 6px;
+      cursor: pointer;
+      flex-shrink: 0;
+
+      &:checked {
+        background-color: $theme-color;
+        border-color: $theme-color;
+      }
+      
+      &:focus {
+        box-shadow: 0 0 0 4px rgba($theme-color, 0.1);
+        border-color: $theme-color;
+      }
+    }
+
+    .form-check-label {
+      line-height: 1;
+      padding-top: 1px;
+      margin-bottom: 0;
+    }
+  }
+
+  .social-btn {
+    width: 100%;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: #fff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #334155;
+    transition: all 0.2s ease;
+
+    img {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+    }
+
+    &:hover {
+      background: #f8fafc;
+      border-color: #cbd5e0;
+      color: #0f172a;
+    }
+  }
+
+  .btn-primary {
+    height: 52px;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba($theme-color, 0.2), 0 2px 4px -2px rgba($theme-color, 0.1);
+    
+    &:hover {
+      box-shadow: 0 10px 15px -3px rgba($theme-color, 0.3);
+      transform: translateY(-1px);
+    }
+  }
+
+  .footer-agreement {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 0.75rem;
+    margin-top: auto;
+
+    p {
+      margin-bottom: 0;
+      line-height: 1.5;
+      color: #64748b;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    a {
+      color: #334155;
+      font-weight: 700;
+      transition: color 0.2s ease;
+      &:hover { color: $theme-color; }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .modal-content {
+      border-radius: 0;
+      height: 100vh;
+    }
+
+    .login-grid-container {
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .v-separator { display: none; }
+      
+      .social-login-side {
+        padding-top: 1.5rem;
+        border-top: 1px solid #e2e8f0;
+      }
+    }
+    
+    .footer-agreement {
+      margin-top: 1.5rem;
+    }
+  }
 }
+
+.tracking-widest { letter-spacing: 0.5rem; }
+.transition-all { transition: all 0.2s ease; }
+.btn-light:hover { background: #f1f5f9 !important; transform: translateX(4px); }
 

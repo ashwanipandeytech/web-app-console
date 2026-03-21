@@ -13,7 +13,7 @@
                                 <tr>
                                     <th>Request ID</th>
                                     <th>User Details</th>
-                                    <th>Order ID</th>
+                                    <th>Order Number</th>
                                     <th>Refund Amount</th>
                                     <th>Status</th>
                                     <th>Created Date</th>
@@ -28,8 +28,8 @@
                                         {{ item.user?.name }}<br>
                                         <small>{{ item.user?.email }}</small>
                                     </td>
-                                    <td>{{ item.order_id }}</td>
-                                    <td>₹{{ item.amount }}</td>
+                                    <td>{{ item.order_number }}</td>
+                                    <td>₹{{ item.refund_amount }}</td>
                                     <td>
                                         <span class="badge" [ngClass]="{
                                             'bg-warning': item.status === 'pending',
@@ -86,8 +86,8 @@
             <div class="row g-4">
                 <div class="col-md-6">
                     <h6 class="fw-bold border-bottom pb-2 mb-3">Order Information</h6>
-                    <div class="mb-2"><strong>Order ID:</strong> #{{ selectedRequest()?.order_id }}</div>
-                    <div class="mb-2"><strong>Refund Amount:</strong> ₹{{ selectedRequest()?.amount }}</div>
+                    <div class="mb-2"><strong>Order Number:</strong> #{{ selectedRequest()?.order_number }}</div>
+                    <div class="mb-2"><strong>Refund Amount:</strong> ₹{{ selectedRequest()?.refund_amount }}</div>
                     <div class="mb-2"><strong>Request Status:</strong> 
                         <span class="badge" [ngClass]="{
                             'bg-warning': selectedRequest()?.status === 'pending',

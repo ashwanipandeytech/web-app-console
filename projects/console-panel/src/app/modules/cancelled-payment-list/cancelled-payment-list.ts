@@ -95,7 +95,10 @@ export class CancelledPaymentList implements OnInit {
     }
 
     const id = this.selectedRequest().id;
-    const payload = this.processForm.value;
+    const payload = {
+      ...this.processForm.value,
+      amount: this.selectedRequest().refund_amount
+    };
 
     this.dataService.post(payload, `refund-requests/${id}/process`).subscribe({
       next: (res: any) => {
