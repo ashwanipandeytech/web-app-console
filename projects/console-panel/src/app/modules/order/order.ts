@@ -37,6 +37,9 @@ export class Order {
     { value: 'delivered', label: 'Delivered' },
     { value: 'cancelled', label: 'Cancelled' },
     { value: 'return_requested', label: 'Return Requested' },
+    { value: 'return_approved', label: 'Return Approved' },
+    { value: 'return_picked_up', label: 'Return Picked Up' },
+    { value: 'return_rejected', label: 'Return Rejected' },
     { value: 'returned', label: 'Returned' },
   ];
 
@@ -49,8 +52,9 @@ export class Order {
     const currentStatus = order.status;
     if (currentStatus === targetStatus) return true;
 
-    // COD orders cannot have 'return_requested' or 'returned' statuses in this console
-    if (order.payment_method?.toLowerCase() === 'cod' && ['return_requested', 'returned'].includes(targetStatus)) {
+    // COD orders cannot have any return-related statuses in this console
+    const returnStatuses = ['return_requested', 'return_approved', 'return_picked_up', 'return_rejected', 'returned'];
+    if (order.payment_method?.toLowerCase() === 'cod' && returnStatuses.includes(targetStatus)) {
       return false;
     }
 
@@ -62,7 +66,10 @@ export class Order {
       'shipped': ['out_for_delivery', 'cancelled'],
       'out_for_delivery': ['delivered', 'cancelled'],
       'delivered': ['return_requested'],
-      'return_requested': ['returned'],
+      'return_requested': ['return_approved', 'return_rejected', 'returned'],
+      'return_approved': ['return_picked_up', 'returned', 'cancelled'],
+      'return_picked_up': ['returned'],
+      'return_rejected': [],
       'cancelled': [],
       'returned': []
     };

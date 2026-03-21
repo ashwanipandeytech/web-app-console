@@ -395,7 +395,7 @@ export class MyOrdersComponent implements OnInit {
 
   getStatusClass(status: string): string {
     const s = status?.toLowerCase();
-    if (['cancelled', 'return_requested', 'returned'].includes(s)) {
+    if (['cancelled', 'return_requested', 'returned', 'return_approved', 'return_picked_up', 'return_rejected'].includes(s)) {
       return 'status-cancelled text-danger bg-danger-subtle';
     }
     if (s === 'delivered') {
@@ -406,7 +406,7 @@ export class MyOrdersComponent implements OnInit {
 
   getStatusBorderClass(status: string): string {
     const s = status?.toLowerCase();
-    if (['cancelled', 'return_requested', 'returned'].includes(s)) {
+    if (['cancelled', 'return_requested', 'returned', 'return_approved', 'return_picked_up', 'return_rejected'].includes(s)) {
       return 'status-border-cancelled';
     }
     if (s === 'delivered') {
@@ -437,6 +437,9 @@ export class MyOrdersComponent implements OnInit {
       'delivered': 'Delivered',
       'cancelled': 'Cancelled',
       'return_requested': 'Return Requested',
+      'return_approved': 'Return Approved',
+      'return_picked_up': 'Return Picked Up',
+      'return_rejected': 'Return Rejected',
       'returned': 'Returned'
     };
     return labels[status?.toLowerCase()] || status;
