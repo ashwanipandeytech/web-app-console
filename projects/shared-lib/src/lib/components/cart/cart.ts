@@ -610,7 +610,7 @@ export class CartCommon {
       })
   }
   removeCoupon() {
-    this.appliedCoupon == '';
+    this.appliedCoupon = '';
     localStorage.removeItem('appliedCoupon');
     //     this.route.navigate(
     //   [],

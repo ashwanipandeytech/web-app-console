@@ -360,10 +360,6 @@ export class MyOrdersComponent implements OnInit {
     this.dataService.get(`orders/${this.orderId}`).subscribe((res: any) => {
       if (res.success) {
         this.orderDetailList = res.data.data || res.data;
-        // Map order-level timeline if available
-        if (this.orderDetailList.timeline) {
-          this.orderDetailList.item_timeline = this.orderDetailList.timeline;
-        }
         this.cd.detectChanges();
       }
     });

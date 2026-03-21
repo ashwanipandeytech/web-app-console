@@ -250,6 +250,8 @@ export class Checkout {
         if (res.success == true) {
           console.log('Response:', res);
           // this.globalService.showToast(res);
+          this.appliedCoupon = '';
+          localStorage.removeItem('appliedCoupon');
           if (paymentMethod != 'cod') {
             // this.paymentUpdate(res, paymentResponse);
           }

@@ -157,17 +157,25 @@ this.getOrderList();
       });
   }
 
-  updateStatus(order: any, newStatus: string) {
+  updateStatus(order: any, newStatus: string, previousStatus: string) {
     const payload = { status: newStatus };
     this.dataService.patch(`orders/${order.id}/status`, payload).pipe(
       catchError(err => {
         this.globalService.showToast(err.error || err);
+        order.status = previousStatus;
+        this.cd.detectChanges();
         return of(null);
       })
     ).subscribe((res: any) => {
       if (res && res.success) {
         order.status = newStatus;
         this.globalService.showToast(res);
+        this.cd.detectChanges();
+      } else {
+        if (res && !res.success) {
+          this.globalService.showToast(res.error || res);
+        }
+        order.status = previousStatus;
         this.cd.detectChanges();
       }
     });

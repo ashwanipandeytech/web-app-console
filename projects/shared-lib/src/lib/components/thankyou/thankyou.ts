@@ -42,11 +42,24 @@ export class Thankyou {
   }
   openRateUsModal() {
     this.modalRef = this.ngbModal.open(this.rateusModal, {
+      size: 'md',
       windowClass: 'mobile-modal',
       centered: true,
       backdrop: 'static',
       keyboard: false
     });
+
+    this.modalRef.result.then(
+      () => {},
+      () => {
+        // Handle dismissal (Skip for now / Cross click)
+        this.router.navigate(['/user-profile'], {
+          queryParams: { section: 'Orders' },
+          queryParamsHandling: 'merge',
+          replaceUrl: true,
+        });
+      }
+    );
   }
   addRateUsForm() {
     this.rateUsForm = this.fb.group({

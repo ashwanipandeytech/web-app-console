@@ -525,57 +525,67 @@
                 </div>
               }
 
-              @if (orderDetailList?.item_timeline?.length > 0) {
-                <div class="order-detail-card bg-white p-4 shadow-sm border-0 mb-3">
-                  <div class="d-flex align-items-center gap-2 mb-4">
-                    <div class="card-header-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                    <h6 class="fw-bold mb-0 text-dark">Status Updates</h6>
-                  </div>
-                  
-                  <div class="vertical-stepper">
-                    @for (event of orderDetailList.item_timeline; track $index) {
-                      <div class="step-item">
-                        <div class="step-dot" 
-                          [class.active]="!event.status?.toLowerCase().includes('cancelled')" 
-                          [class.is-cancelled]="event.status?.toLowerCase().includes('cancelled') || event.message?.toLowerCase().includes('cancelled')">
-                          @if (event.status?.toLowerCase().includes('cancelled') || event.message?.toLowerCase().includes('cancelled')) {
-                            <i class="fa-solid fa-xmark"></i>
-                          } @else {
-                            <i class="fa-solid fa-check"></i>
-                          }
-                        </div>
-                        <div class="step-content shadow-none border-light-subtle" 
-                          [class.cancelled-content]="event.status?.toLowerCase().includes('cancelled') || event.message?.toLowerCase().includes('cancelled')">
-                          <div class="d-flex justify-content-between align-items-start gap-3">
-                            <div class="d-flex flex-column">
-                              <span class="fw-bold fs-14 text-capitalize" 
-                                [class.text-danger]="event.status?.toLowerCase().includes('cancelled') || event.status?.toLowerCase().includes('rejected') || event.message?.toLowerCase().includes('cancelled')"
-                                [class.text-dark]="!(event.status?.toLowerCase().includes('cancelled') || event.message?.toLowerCase().includes('cancelled'))">
-                                {{ getStatusLabel(event.status) }}
-                              </span>
-                              @if (event.message && getStatusLabel(event.status)?.toLowerCase() !== event.message?.toLowerCase()) {
-                                <span class="fs-12 text-muted fw-medium mt-1">{{ event.message }}</span>
-                              }
-                            </div>
-                            <span class="fs-11 text-muted fw-bold text-nowrap">{{ event.date || (event.created_at | date:'dd MMM, yyyy - hh:mm a') }}</span>
-                          </div>
-                          @if (event.comment) {
-                            <p class="fs-12 text-muted mb-0 mt-2 p-2 bg-light rounded-2 border-start border-3 border-primary border-opacity-25" style="font-style: italic;">
-                              "{{ event.comment }}"
-                            </p>
-                          }
-                        </div>
+              @for (item of orderDetailList.items; track $index) {
+                @if (item.item_timeline?.length > 0) {
+                  <div class="order-detail-card bg-white p-4 shadow-sm border-0 mb-3 rounded-4">
+                    <div class="d-flex align-items-center gap-3 mb-4 border-bottom pb-3">
+                      <div class="img-wrapper-sm flex-shrink-0 bg-light rounded-3 p-1" style="width: 48px; height: 48px;">
+                        <img [src]="item.product?.media?.uploadedImages?.[0]?.url || item.product?.images?.[0]?.url" 
+                             class="img-fluid object-fit-contain w-100 h-100" alt="">
                       </div>
-                    }
+                      <div class="flex-grow-1 overflow-hidden">
+                        <h6 class="fw-bold mb-0 text-dark fs-13 text-truncate">{{ item.product?.title }}</h6>
+                        <span class="badge rounded-pill fw-bold text-uppercase mt-1"
+                          [class.status-pulse]="isStatusPulse(item.status)"
+                          [ngClass]="getStatusClass(item.status)"
+                          style="font-size: 9px; padding: 2px 8px;">
+                          {{ getStatusLabel(item.status) }}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div class="vertical-stepper">
+                      @for (event of item.item_timeline; track $index) {
+                        <div class="step-item">
+                          <div class="step-dot" 
+                            [class.active]="!event.status?.toLowerCase().includes('cancelled') && !event.status?.toLowerCase().includes('rejected')" 
+                            [class.is-cancelled]="event.status?.toLowerCase().includes('cancelled') || event.status?.toLowerCase().includes('rejected')">
+                            @if (event.status?.toLowerCase().includes('cancelled') || event.status?.toLowerCase().includes('rejected')) {
+                              <i class="fa-solid fa-xmark"></i>
+                            } @else {
+                              <i class="fa-solid fa-check"></i>
+                            }
+                          </div>
+                          <div class="step-content shadow-none border-light-subtle" 
+                            [class.cancelled-content]="event.status?.toLowerCase().includes('cancelled') || event.status?.toLowerCase().includes('rejected')">
+                            <div class="d-flex justify-content-between align-items-start gap-3">
+                              <div class="d-flex flex-column">
+                                <span class="fw-bold fs-14 text-capitalize" 
+                                  [class.text-danger]="event.status?.toLowerCase().includes('cancelled') || event.status?.toLowerCase().includes('rejected')"
+                                  [class.text-dark]="!(event.status?.toLowerCase().includes('cancelled') || event.status?.toLowerCase().includes('rejected'))">
+                                  {{ getStatusLabel(event.status) }}
+                                </span>
+                                @if (event.message && getStatusLabel(event.status)?.toLowerCase() !== event.message?.toLowerCase()) {
+                                  <span class="fs-12 text-muted fw-medium mt-1">{{ event.message }}</span>
+                                }
+                              </div>
+                              <span class="fs-11 text-muted fw-bold text-nowrap">{{ event.date || (event.created_at | date:'dd MMM, yyyy - hh:mm a') }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      }
+                    </div>
                   </div>
-                </div>
-              } @else {
+                }
+              }
+
+              @if (!orderDetailList?.items || orderDetailList.items.length === 0) {
                 <div class="text-center py-5">
                   <div class="mb-3 opacity-25">
                     <i class="fa-solid fa-box-open fs-1 text-primary"></i>
                   </div>
                   <h6 class="fw-bold text-dark">No updates yet</h6>
-                  <p class="text-muted fs-13">Tracking information will be visible once shipped.</p>
+                  <p class="text-muted fs-13">Tracking information will be visible once available.</p>
                 </div>
               }
             </div>
