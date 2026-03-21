@@ -365,6 +365,7 @@ export class MyOrdersComponent implements OnInit {
     });
 
     this.modalRef = this.ngbModal.open(this.orderDetail, {
+      windowClass:'mobile-modal',
       size: 'lg',
       scrollable: true,
       centered: true

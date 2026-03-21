@@ -6,6 +6,9 @@
   display: flex;
   gap: 2rem;
   align-items: flex-start;
+  @media screen and (max-width: 575.99px) {
+    flex-direction: column;
+  }
 
   .nav-item {
     width: 260px;
@@ -17,7 +20,9 @@
     flex-direction: column;
     gap: 0.75rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-
+    @media screen and (max-width: 575.99px) {
+      flex-wrap: nowrap;
+    }
     @media (max-width: 767.98px) {
       width: 100%;
       flex-direction: row;

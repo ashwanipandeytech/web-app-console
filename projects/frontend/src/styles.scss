@@ -63,9 +63,14 @@ html, body {
   padding: 10px;
 }
 
-@media screen and (max-width: 576px) {
-  .modal {
-    &.mobile-modal {
+.modal {
+  @media screen and (min-width: 576px) {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+  &.mobile-modal {
+    @media screen and (max-width: 576px) {
       --bs-modal-margin: 0;
 
       .modal-dialog {
@@ -1175,13 +1180,6 @@ safure-root {
   }
 }
 
-/* Modal Customizations */
-.modal-content {
-  border-radius: 16px !important;
-  border: none !important;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
-}
-
 /* Login Popup Specific - Large Size */
 .login-popup {
   font-family: $inter;
@@ -1195,9 +1193,9 @@ safure-root {
     }
   }
 
-  .modal-content {
-    border-radius: 24px !important;
-  }
+  // .modal-content {
+  //   border-radius: 24px !important;
+  // }
 
   .modal-title {
     font-family: $nunito !important;
@@ -1370,7 +1368,7 @@ safure-root {
 }
 
 .modal-header {
-  padding: 1.25rem 1.5rem 0.75rem !important;
+  // padding: 1.25rem 1.5rem 0.75rem !important;
   border-bottom: none !important;
 
   .modal-title {
@@ -1388,9 +1386,9 @@ safure-root {
 }
 
 .modal-body {
-  padding: 1rem 1.5rem !important;
-  overflow-y: auto !important;
-  max-height: calc(100vh - 200px);
+  // padding: 1rem 1.5rem !important;
+  // overflow-y: auto !important;
+  // max-height: calc(100vh - 200px);
 
   /* Modernized Scrollbar */
   scrollbar-width: thin;
@@ -1452,11 +1450,11 @@ safure-root {
 }
 
 .modal-footer {
-  padding: 1rem 1.5rem 1.5rem !important;
+  // padding: 1rem 1.5rem 1.5rem !important;
   border-top: none !important;
-  justify-content: center !important;
-  gap: 0.75rem !important;
-  display: flex !important;
+  // justify-content: center !important;
+  // gap: 0.75rem !important;
+  // display: flex !important;
 
   .btn,
   .shop-btn {
@@ -1821,4 +1819,8 @@ input[type="number"] {
     height: auto;
   }
 
+}
+
+web-header {
+  z-index: 999;
 }

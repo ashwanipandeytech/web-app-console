@@ -29,7 +29,7 @@
   ></button>
 </div>
 
-<div class="modal-body p-4 add-address-modal">
+<div class="modal-body add-address-modal">
   @if (isfrom == 'header') {
     <div class="search-section mb-4">
       <div class="input-group-modern">
@@ -165,14 +165,14 @@
 </div>
 
 @if ((isNewAddress && !this.data && isLogin) || isNewAddressCartPage) {
-  <div class="modal-footer p-4">
+  <div class="modal-footer">
     <button type="button" class="btn btn-primary w-100 py-2 rounded-3 fs-6" (click)="submitForm()">
       <i class="fa-solid fa-floppy-disk me-2"></i> Save Address
     </button>
   </div>
 }
 @if (this.data && !isNewAddressCartPage) {
-  <div class="modal-footer p-4">
+  <div class="modal-footer">
     <button type="button" class="btn btn-primary w-100 py-2 rounded-3 fs-6" (click)="updateAddress()">
       <i class="fa-solid fa-arrows-rotate me-2"></i> Update Address
     </button>
