@@ -207,7 +207,22 @@
                                         </td> -->
                                     <td>{{order.id}}</td>
                                     <td>{{order.user.name}}</td>
-                                    <td><span class="text-danger">{{order.status}}</span></td>
+                                    <td>
+                                        <select
+                                            class="form-select form-select-sm"
+                                            [value]="normalizeStatus(order.status)"
+                                            [disabled]="updatingOrderId === order.id"
+                                            (change)="onStatusChange(order, $event)">
+                                            @if (!isKnownStatus(order.status)) {
+                                                <option [value]="normalizeStatus(order.status)" disabled>
+                                                    {{ statusLabel(order.status) }}
+                                                </option>
+                                            }
+                                            @for (status of orderStatusOptions; track status.value) {
+                                                <option [value]="status.value">{{status.label}}</option>
+                                            }
+                                        </select>
+                                    </td>
                                     <td class="text-start">{{order?.items[0]?.product?.title}}</td>
                                     <td>{{order.total_amount}}</td>
                                     <td>{{order.payment_method}}</td>
