@@ -51,6 +51,7 @@ export class MyOrdersComponent implements OnInit {
   orderListData: any = [];
   orderId: any;
   orderDetailList: any = {};
+  activeTab: string = 'items';
   isLoading: boolean = false;
   rateUsForm!: FormGroup;
   bankDetailsForm!: FormGroup;
@@ -60,6 +61,16 @@ export class MyOrdersComponent implements OnInit {
   private platformId = inject(PLATFORM_ID);
   isBrowser: boolean;
   isLoggedIn:boolean= false;
+
+  get canCancelAnyItem(): boolean {
+    return this.orderDetailList?.actions?.can_cancel || 
+           this.orderDetailList?.items?.some((item: any) => item.actions?.can_cancel);
+  }
+
+  get canReturnAnyItem(): boolean {
+    return this.orderDetailList?.actions?.can_return || 
+           this.orderDetailList?.items?.some((item: any) => item.actions?.can_return);
+  }
 
   constructor() {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -107,8 +118,7 @@ export class MyOrdersComponent implements OnInit {
     this.bankDetailsForm = this.fb.group({
       account_name: ['', [
         Validators.required, 
-        Validators.minLength(3), 
-        Validators.pattern(/^[a-zA-Z ]+$/)
+        Validators.minLength(3)
       ]],
       account_number: ['', [
         Validators.required, 
@@ -116,7 +126,7 @@ export class MyOrdersComponent implements OnInit {
       ]],
       ifsc_code: ['', [
         Validators.required, 
-        Validators.pattern(/^[A-Z]{4}0[A-Z0-9]{6}$/)
+        Validators.pattern(/^[A-Z]{4}[0-9][A-Z0-9]{6}$/)
       ]],
       bank_name: ['', [Validators.required, Validators.minLength(2)]],
     });
@@ -157,9 +167,17 @@ export class MyOrdersComponent implements OnInit {
         if (res?.success == true) {
           this.globalService.showToast(res);
           this.closeRatingPopup(index);
-          item.product_review = {
-            comment: payload.comment,
-            rating: payload.rating
+          
+          if (productId && item) {
+            item.product_review = {
+              comment: payload.comment,
+              rating: payload.rating
+            };
+          } else {
+            this.orderDetailList.order_rating = {
+              comment: payload.comment,
+              rating: payload.rating
+            };
           }
           this.cd.detectChanges();
           // this.updateratingInorderList(productId);
@@ -289,26 +307,18 @@ export class MyOrdersComponent implements OnInit {
       payload.item_ids = this.selectedItems;
     }
 
-    if (this.orderDetailList?.payment_method === 'cod' && (this.isReturnAction || !this.isReturnAction)) {
-      // For both Cancel and Return on COD, we currently prompt for bank details if they are required.
-      // Based on requirements: 
-      // - Return COD (Full/Partial) NEEDS bank_details.
-      // - Return Online (Partial) DOES NOT NEED bank_details (only item_ids).
-      // - Cancel Full before delivery says blank payload, but existing code has bank details for COD.
-      // I will keep bank details for COD scenarios.
+    // Only require bank details for COD Returns (Refund needed)
+    if (this.orderDetailList?.payment_method === 'cod' && this.isReturnAction) {
       if (this.bankDetailsForm.invalid) {
+        this.globalService.showToast({ 
+          success: false, 
+          message: 'Please fill all bank details correctly for the refund.' 
+        });
         this.bankDetailsForm.markAllAsTouched();
+        this.cd.detectChanges();
         return;
       }
-      if (this.isReturnAction) {
-        payload.bank_details = this.bankDetailsForm.value;
-      } else {
-        // existing cancel logic for cod
-        payload = this.bankDetailsForm.value;
-        if (this.selectedItems.length > 0) {
-          payload.item_ids = this.selectedItems;
-        }
-      }
+      payload.bank_details = this.bankDetailsForm.value;
     }
 
     if (this.cancelModalRef) {
@@ -342,15 +352,93 @@ export class MyOrdersComponent implements OnInit {
   }
 
   getOrderDetailData(data: any) {
-    this.orderDetailList = [];
-    this.orderDetailList = data;
     this.orderId = data.id;
+    this.orderDetailList = data; // Set initial data from list
+    this.activeTab = 'items';
     
+    // Fetch fresh details for latest actions and timeline
+    this.dataService.get(`orders/${this.orderId}`).subscribe((res: any) => {
+      if (res.success) {
+        this.orderDetailList = res.data.data || res.data;
+        this.cd.detectChanges();
+      }
+    });
+
     this.modalRef = this.ngbModal.open(this.orderDetail, {
-      windowClass: 'mobile-modal',
+      size: 'lg',
       scrollable: true,
       centered: true
     });
+  }
+
+  setActiveTab(tab: string) {
+    this.activeTab = tab;
+    this.cd.detectChanges();
+  }
+
+  getOrderStep(status: string): number {
+    const steps: any = {
+      'pending': 1,
+      'confirmed': 2,
+      'processing': 2,
+      'dispatched': 3,
+      'shipped': 3,
+      'out_for_delivery': 4,
+      'delivered': 5
+    };
+    return steps[status?.toLowerCase()] || 1;
+  }
+
+  getStatusClass(status: string): string {
+    const s = status?.toLowerCase();
+    if (['cancelled', 'return_requested', 'returned', 'return_approved', 'return_picked_up', 'return_rejected'].includes(s)) {
+      return 'status-cancelled text-danger bg-danger-subtle';
+    }
+    if (s === 'delivered') {
+      return 'status-delivered text-primary bg-primary-subtle';
+    }
+    return 'status-confirmed text-success bg-success-subtle';
+  }
+
+  getStatusBorderClass(status: string): string {
+    const s = status?.toLowerCase();
+    if (['cancelled', 'return_requested', 'returned', 'return_approved', 'return_picked_up', 'return_rejected'].includes(s)) {
+      return 'status-border-cancelled';
+    }
+    if (s === 'delivered') {
+      return 'status-border-delivered';
+    }
+    if (s === 'confirmed') {
+      return 'status-border-confirmed';
+    }
+    if (s === 'pending') {
+      return 'status-border-pending';
+    }
+    return 'status-border-confirmed'; // Default for processing, dispatched etc
+  }
+
+  isStatusPulse(status: string): boolean {
+    const s = status?.toLowerCase();
+    return ['pending', 'confirmed', 'processing', 'dispatched', 'shipped', 'out_for_delivery'].includes(s);
+  }
+
+  getStatusLabel(status: string): string {
+    const labels: any = {
+      'pending': 'Pending',
+      'confirmed': 'Confirmed',
+      'processing': 'Processing',
+      'dispatched': 'Dispatched',
+      'shipped': 'Shipped',
+      'out_for_delivery': 'Out for Delivery',
+      'delivered': 'Delivered',
+      'cancelled': 'Cancelled',
+      'return_requested': 'Return Requested',
+      'return_approved': 'Return Approved',
+      'return_picked_up': 'Return Picked Up',
+      'return_rejected': 'Return Rejected',
+      'returned': 'Returned'
+    };
+    return labels[status?.toLowerCase()] || status;
   }
 
   closeModal() {

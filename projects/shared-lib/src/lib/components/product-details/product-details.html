@@ -229,31 +229,35 @@
               <div class="modal-wrapper action">
                 <div onclick="modalAction('.action')" class="anywhere-away"></div>
 
-                <!-- change this -->
-                <div class="login-section account-section modal-main">
-                  <div class="review-form">
-                    <div class="review-content">
-                      <h5 class="comment-title">Report Products</h5>
-                      <div class="close-btn">
-                        <img src="../images/homepage-one/close-btn.png" onclick="modalAction('.action')"
-                          alt="close-btn" />
+                <div class="modal-main rounded-4 overflow-hidden border-0 shadow-lg" style="max-width: 500px; width: 90%;">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Report Product</h5>
+                      <button type="button" class="btn-close shadow-none" onclick="modalAction('.action')"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                      <div class="mb-4 text-center">
+                        <div class="alert-icon-wrapper danger">
+                          <i class="fa-solid fa-flag"></i>
+                        </div>
+                        <h4 class="alert-title">Help us improve</h4>
+                        <p class="alert-message">Is there something wrong with this product? Let us know so we can fix it.</p>
+                      </div>
+                      <div class="input-group-modern mb-3">
+                        <label class="form-label fs-12 fw-bold text-uppercase text-muted px-1">Report Title</label>
+                        <input type="text" class="form-control" placeholder="Briefly describe the issue" style="border-radius: 12px;"/>
+                      </div>
+                      <div class="input-group-modern">
+                        <label class="form-label fs-12 fw-bold text-uppercase text-muted px-1">Detailed Note</label>
+                        <textarea class="form-control" rows="4" placeholder="Tell us what's wrong (incorrect info, suspicious, etc.)" style="border-radius: 12px;"></textarea>
                       </div>
                     </div>
-                    <div class="review-form-name address-form">
-                      <label for="reporttitle" class="form-label">Enter Report Ttile*</label>
-                      <input type="text" id="reporttitle" class="form-control" placeholder="Reports Headline here" />
-                    </div>
-                    <div class="review-form-name address-form">
-                      <label for="reportnote" class="form-label">Enter Report Note*</label>
-                      <textarea name="ticketmassage" id="reportnote" cols="40" rows="3" class="form-control"
-                        placeholder="Type Here"></textarea>
-                    </div>
-                    <div class="login-btn text-center">
-                      <a href="#" onclick="modalAction('.action')" class="shop-btn">Submit Report</a>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary px-4" onclick="modalAction('.action')">Cancel</button>
+                      <button type="button" class="btn btn-primary px-5" onclick="modalAction('.action')">Submit Report</button>
                     </div>
                   </div>
                 </div>
-                <!-- change this -->
               </div>
             </div>
 

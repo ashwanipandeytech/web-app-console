@@ -1,0 +1,219 @@
+@use './variable' as *;
+
+// Modern Modal Styles for Consistency and Interactivity
+.modal-content {
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: modalScaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: #ffffff;
+
+  .modal-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    padding: 1.25rem 1.5rem;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .modal-title {
+      font-weight: 700;
+      color: #111827;
+      letter-spacing: -0.01em;
+      margin-bottom: 0;
+      font-size: 1.1rem; // Reduced title size
+    }
+
+    .btn-close, .close-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f3f4f6;
+      border-radius: 10px;
+      padding: 0;
+      margin: 0;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid transparent;
+      opacity: 1;
+      color: #6b7280;
+
+      &:hover {
+        background: #fee2e2;
+        color: #ef4444;
+        transform: rotate(90deg);
+        border-color: #fecaca;
+      }
+
+      i { font-size: 0.9rem; }
+    }
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+    font-size: 0.95rem;
+    color: #374151;
+    line-height: 1.6;
+
+    p {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-bottom: 1.25rem;
+    }
+
+    .form-control, .form-select {
+      border-radius: 12px;
+      padding: 0.65rem 1rem;
+      border: 1.5px solid #e5e7eb;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      background: #f9fafb;
+      font-size: 0.9rem;
+
+      &:focus {
+        border-color: $theme-color;
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba($theme-color, 0.1);
+        outline: none;
+      }
+    }
+  }
+
+  .modal-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    padding: 1rem 1.5rem;
+    background: #f9fafb;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+
+    .btn {
+      padding: 0.6rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border: none;
+
+      &.btn-secondary {
+        background: #ffffff;
+        color: #374151;
+        border: 1px solid #e5e7eb;
+        &:hover { 
+          background: #f3f4f6;
+          border-color: #d1d5db;
+        }
+      }
+
+      &.btn-danger {
+        background: #fee2e2;
+        color: #ef4444;
+        &:hover { 
+          background: #fecaca;
+          transform: translateY(-1px);
+        }
+      }
+
+      &.shop-btn, &.btn-primary {
+        margin: 0;
+        background: $theme-color;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba($theme-color, 0.25); // Matching sidebar shadow style
+        
+        &::after { display: none; }
+        
+        &:hover {
+          background: darken($theme-color, 5%);
+          transform: translateY(-1px);
+          box-shadow: 0 6px 15px rgba($theme-color, 0.3);
+          color: #ffffff;
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+
+        &:disabled {
+          background: #d1d5db;
+          box-shadow: none;
+          transform: none;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
+
+// Interactive Animations
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+// Backdrop Polish
+.modal-backdrop {
+  background-color: rgba(17, 24, 39, 0.4);
+  backdrop-filter: blur(6px);
+  &.show { opacity: 1; }
+}
+
+// Alert specific styles
+.modal-alert {
+  .modal-body {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    
+    .alert-icon-wrapper {
+      width: 72px;
+      height: 72px;
+      background: rgba($theme-color, 0.1);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      
+      i {
+        font-size: 2.25rem;
+        color: $theme-color;
+      }
+      
+      &.danger {
+        background: #fee2e2;
+        i { color: #ef4444; }
+      }
+
+      &.warning {
+        background: #fff9db;
+        i { color: #fcc419; }
+      }
+    }
+    
+    .alert-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 0.5rem;
+    }
+    
+    .alert-message {
+      font-size: 0.9rem;
+      color: #6b7280;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}

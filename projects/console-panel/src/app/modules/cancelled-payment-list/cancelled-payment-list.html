@@ -13,7 +13,7 @@
                                 <tr>
                                     <th>Request ID</th>
                                     <th>User Details</th>
-                                    <th>Order ID</th>
+                                    <th>Order Number</th>
                                     <th>Refund Amount</th>
                                     <th>Status</th>
                                     <th>Created Date</th>
@@ -28,18 +28,18 @@
                                         {{ item.user?.name }}<br>
                                         <small>{{ item.user?.email }}</small>
                                     </td>
-                                    <td>{{ item.order_id }}</td>
-                                    <td>₹{{ item.amount }}</td>
+                                    <td>{{ item.order_number }}</td>
+                                    <td>₹{{ item.refund_amount }}</td>
                                     <td>
                                         <span class="badge" [ngClass]="{
-                                            'bg-warning': item.status === 'Pending',
-                                            'bg-success': item.status === 'Approved',
-                                            'bg-danger': item.status === 'Rejected'
-                                        }">{{ item.status }}</span>
+                                            'bg-warning': item.status === 'pending',
+                                            'bg-success': item.status === 'processed',
+                                            'bg-danger': item.status === 'rejected'
+                                        }">{{ item.status | titlecase }}</span>
                                     </td>
                                     <td>{{ item.created_at | date: 'dd MMM yyyy' }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-primary">View Details</button>
+                                        <button class="btn btn-sm btn-primary" (click)="viewDetails(item.id)">View Details</button>
                                     </td>
                                 </tr>
                                 } @empty {
@@ -74,3 +74,111 @@
     </div>
     <!-- footer end -->
 </div>
+
+<!-- Details Modal -->
+<ng-template #detailsModal let-modal>
+    <div class="modal-content border-0">
+        <div class="modal-header py-3 bg-light">
+            <h5 class="modal-title fw-bold">Refund Request Details #{{ selectedRequest()?.id }}</h5>
+            <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+        </div>
+        <div class="modal-body p-4">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <h6 class="fw-bold border-bottom pb-2 mb-3">Order Information</h6>
+                    <div class="mb-2"><strong>Order Number:</strong> #{{ selectedRequest()?.order_number }}</div>
+                    <div class="mb-2"><strong>Refund Amount:</strong> ₹{{ selectedRequest()?.refund_amount }}</div>
+                    <div class="mb-2"><strong>Request Status:</strong> 
+                        <span class="badge" [ngClass]="{
+                            'bg-warning': selectedRequest()?.status === 'pending',
+                            'bg-success': selectedRequest()?.status === 'processed',
+                            'bg-danger': selectedRequest()?.status === 'rejected'
+                        }">{{ selectedRequest()?.status | titlecase }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="fw-bold border-bottom pb-2 mb-3">User Information</h6>
+                    <div class="mb-2"><strong>Name:</strong> {{ selectedRequest()?.user?.name }}</div>
+                    <div class="mb-2"><strong>Email:</strong> {{ selectedRequest()?.user?.email }}</div>
+                    <div class="mb-2"><strong>Phone:</strong> {{ selectedRequest()?.user?.phone }}</div>
+                </div>
+
+                @if (selectedRequest()?.bank_details) {
+                <div class="col-12">
+                    <div class="card bg-light border-0 p-3">
+                        <h6 class="fw-bold border-bottom pb-2 mb-3"><i class="fa-solid fa-bank me-2"></i>Bank Details (For Refund)</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-2"><strong>Account Holder:</strong> {{ selectedRequest()?.bank_details?.account_name }}</div>
+                            <div class="col-md-6 mb-2"><strong>Account Number:</strong> {{ selectedRequest()?.bank_details?.account_number }}</div>
+                            <div class="col-md-6 mb-2"><strong>IFSC Code:</strong> {{ selectedRequest()?.bank_details?.ifsc_code }}</div>
+                            <div class="col-md-6 mb-2"><strong>Bank Name:</strong> {{ selectedRequest()?.bank_details?.bank_name }}</div>
+                        </div>
+                    </div>
+                </div>
+                }
+
+                @if (selectedRequest()?.status === 'pending') {
+                <div class="col-12 mt-4">
+                    <div class="card border-primary p-3">
+                        <h6 class="fw-bold text-primary mb-3">Process Refund</h6>
+                        <form [formGroup]="processForm">
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="form-label">Action</label>
+                                    <select class="form-select" formControlName="status">
+                                        <option value="processed">Approve & Process</option>
+                                        <option value="rejected">Reject Request</option>
+                                    </select>
+                                </div>
+                                
+                                @if (processForm.get('status')?.value === 'processed') {
+                                <div class="col-md-12">
+                                    <label class="form-label">Transaction ID (Reference)</label>
+                                    <input type="text" class="form-control" formControlName="transaction_id" placeholder="e.g. SBI123456789XYZ"
+                                        [ngClass]="{'is-invalid': processForm.get('transaction_id')?.touched && processForm.get('transaction_id')?.invalid}">
+                                    @if (processForm.get('transaction_id')?.touched && processForm.get('transaction_id')?.invalid) {
+                                        <div class="text-danger small mt-1">
+                                            @if (processForm.get('transaction_id')?.errors?.['required']) {
+                                                Transaction ID is required for approved refunds.
+                                            }
+                                            @if (processForm.get('transaction_id')?.errors?.['pattern']) {
+                                                Enter a valid transaction ID (8-25 alphanumeric characters).
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                                }
+
+                                <div class="col-md-12">
+                                    <label class="form-label">Admin Notes</label>
+                                    <textarea class="form-control" formControlName="admin_notes" rows="3" placeholder="Enter notes for the user..."></textarea>
+                                    @if (processForm.get('admin_notes')?.touched && processForm.get('admin_notes')?.invalid) {
+                                        <div class="text-danger small mt-1">Notes are required for processing.</div>
+                                    }
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                } @else {
+                    <div class="col-12 mt-4">
+                        <div class="card bg-white p-3 border-dashed">
+                            <h6 class="fw-bold mb-2">Processing History</h6>
+                            <div class="mb-2"><strong>Processed By Admin:</strong> {{ selectedRequest()?.processed_at | date: 'dd MMM yyyy hh:mm a' }}</div>
+                            @if (selectedRequest()?.transaction_id) {
+                                <div class="mb-2"><strong>Transaction ID:</strong> {{ selectedRequest()?.transaction_id }}</div>
+                            }
+                            <div class="mb-0"><strong>Admin Notes:</strong> {{ selectedRequest()?.admin_notes }}</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="modal-footer bg-light border-0">
+            <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+            @if (selectedRequest()?.status === 'pending') {
+                <button type="button" class="btn btn-primary px-4" (click)="processRefund()">Confirm Processing</button>
+            }
+        </div>
+    </div>
+</ng-template>

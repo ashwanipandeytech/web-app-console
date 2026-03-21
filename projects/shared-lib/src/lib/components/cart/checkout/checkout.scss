@@ -1,70 +1,166 @@
 @use '../../../scss/variable' as *;
 
+.checkout-container {
+  padding-bottom: 2rem;
+}
+
+/* Product Item Card */
+.checkout-item-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  overflow: hidden;
+
+  .item-img-container {
+    width: 80px;
+    height: 80px;
+    background: #f8fafc;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid rgba(0, 0, 0, 0.03);
+
+    img {
+      max-height: 60px;
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .item-title {
+    font-weight: 700;
+    color: #1a202c;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .quantity-stepper {
+    background: #f8fafc;
+    border-radius: 20px;
+    
+    .step-btn {
+      color: $theme-color;
+      padding: 2px 8px;
+      &:hover:not(:disabled) { background: rgba($theme-color, 0.05); }
+    }
+    
+    .qty-number {
+      min-width: 25px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+  }
+}
+
+/* Address Cards */
+.address-section-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  overflow: hidden;
+
+  .card-header {
+    background: rgba($theme-color, 0.03) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    color: #1a202c !important;
+    padding: 1rem 1.25rem;
+  }
+
+  .address-badge {
+    background: $theme-color;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  .address-details {
+    .name { font-weight: 800; color: #1a202c; font-size: 1.05rem; }
+    .info-item { font-size: 0.9rem; color: #4a5568; margin-bottom: 0.25rem; }
+    i { width: 20px; color: $theme-color; opacity: 0.6; }
+  }
+}
+
+.address-box-new {
+  border: 2px dashed #e2e8f0;
+  border-radius: 16px;
+  background: #f8fafc;
+  transition: all 0.3s ease;
+  color: $theme-color;
+  
+  &:hover {
+    border-color: $theme-color;
+    background: rgba($theme-color, 0.02);
+    transform: translateY(-2px);
+  }
+}
+
+/* Summary Card */
+.summary-card {
+  position: sticky;
+  top: 100px;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  
+  .summary-title {
+    font-weight: 800;
+    color: #1a202c;
+    font-size: 1.1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .payment-option {
+    border: 1px solid #edf2f7;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    &:hover { border-color: rgba($theme-color, 0.3); }
+    
+    .form-check-input:checked + .form-check-label {
+      color: $theme-color;
+      font-weight: 700;
+    }
+  }
+}
+
+.btn-place-order {
+  background: $theme-color;
+  color: #fff;
+  border: none;
+  padding: 1rem;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba($theme-color, 0.2);
+
+  &:hover {
+    background: darken($theme-color, 8%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba($theme-color, 0.3);
+  }
+
+  @media (max-width: 575px) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+    z-index: 1000;
+  }
+}
+
 .paragraph {
   white-space: normal !important;
   word-wrap: break-word;
   overflow-wrap: anywhere;
 }
-
-.seller-info {
-  .heading {
-    .btn {
-      &:hover {
-        background-color: #dee2e6;
-      }
-    }
-  }
-
-  .info-title {
-    width: 90px;
-  }
-
-  &.ch {
-    &:hover {
-      box-shadow: 0 1px 12px 2px #dbdbdb;
-    }
-  }
-}
-
-.address-box {
-  border: 2px dashed #e5e5e5;
-  transition: all 0.3s ease;
-
-  &:hover {
-    border-color: $theme-color;
-  }
-}
-
-.oder-btn {
-  @media screen and (max-width:575px) {
-    position: fixed;
-    bottom: 0;
-    inset-inline: 0;
-    border-radius: 0;
-  }
-}
-
-.counter .btn {
-  &:hover {
-    background-color: #f1f2f7;
-  }
-}
-
-// .cart-section{
-//   .wrapper-img{
-//     img{height: 120px;}
-//   }
-//   .wrapper-content{
-//     .heading{
-//       width: calc(100% - 30px);
-//       font-size: 14px;
-//     }
-//     .counter .btn{
-//       &:hover{background-color: #f1f2f7;}
-//     }
-//     .cancel-btn{
-//       &:hover{background-color: #dc35451f;}
-//     }
-//     .config-title{width: 150px;}
-//   }
-// }

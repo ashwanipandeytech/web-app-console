@@ -32,6 +32,7 @@ export class Wishlist {
   public globalFunctionService: any = inject(GlobalFunctionService);
   public globalCommonService: any = inject(GlobaCommonlService);
   public cd = inject(ChangeDetectorRef);
+  ratingStars = [1, 2, 3, 4, 5];
   wishListData: any = [];
   WishListId: any;
   isLoading: boolean = true;

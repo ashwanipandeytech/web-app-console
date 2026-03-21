@@ -1,9 +1,22 @@
-<h1 mat-dialog-title>{{data.title}}</h1>
-<mat-dialog-content>
-  <p>{{data.description}}</p>
-</mat-dialog-content>
-<mat-dialog-actions>
-      <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" (click)="closeWithData('ok')">Yes</button>
+<div class="modal-content modal-alert border-0 shadow-lg rounded-4 overflow-hidden">
+  <div class="modal-header bg-white border-0 pt-4 px-4 pb-2">
+    <h1 class="modal-title fs-5 fw-bold text-dark">{{data.title}}</h1>
+    <button type="button" class="btn-close shadow-none" mat-dialog-close aria-label="Close"></button>
+  </div>
+  
+  <div class="modal-body p-4 text-center">
+    <div class="alert-icon-wrapper warning mb-4 mx-auto">
+      <i class="fa-solid fa-circle-question"></i>
+    </div>
+    <p class="alert-message fs-16 text-muted mb-0">{{data.description}}</p>
+  </div>
 
-</mat-dialog-actions>
+  <div class="modal-footer bg-light border-0 p-4 gap-3 justify-content-center">
+    <button class="btn btn-secondary px-4 py-2 rounded-3 fw-bold flex-fill" mat-dialog-close>
+      <i class="fa-solid fa-xmark me-2"></i> Cancel
+    </button>
+    <button class="btn btn-primary px-4 py-2 rounded-3 fw-bold flex-fill" (click)="closeWithData('ok')">
+      <i class="fa-solid fa-check me-2"></i> Yes, Confirm
+    </button>
+  </div>
+</div>
