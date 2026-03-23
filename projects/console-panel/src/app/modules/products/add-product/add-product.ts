@@ -22,28 +22,19 @@ import { CategoryTreeComponent } from './category-tree/category-tree.component';
 import { PRODUCT_TYPE } from 'shared-lib/constants/app-constant';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomEditorComponent } from 'custom-editor';
+import { ElementorEditor } from './elementor-editor/elementor-editor';
 
-// import { QuillEditorComponent, QuillModule } from 'ngx-quill';
-// // import Quill from 'quill';
-// // import { ImageHandler, Options } from 'ngx-quill-upload';
-// import Quill from 'quill';
-// import HtmlEditButton from 'quill-html-edit-button';
 import { QuillEditorComponent, QuillModule } from 'ngx-quill';
 import Quill from 'quill';
-// import HtmlEditButton from 'quill-html-edit-button';
-// import htmlEditButton from 'quill-html-edit-button';
-// ../../../../../../../node_modules/@angular/common/common_module.d
-// import { CommonModule, NgClass } from "../../../../../../../node_modules/@angular/common/common_module.d";
-// Quill.register('modules/imageHandler', ImageHandler);
-// Quill.register('modules/htmlEditButton', htmlEditButton);
 
 interface FoodNode {
   name: string;
   children?: FoodNode[];
 }
+
 @Component({
   selector: 'app-add-customer',
-  imports: [ReactiveFormsModule, QuillModule, MatTreeModule, MatIconModule, CategoryTreeComponent, NgClass, CommonModule, FormsModule, CustomEditorComponent],
+  imports: [ReactiveFormsModule, QuillModule, MatTreeModule, MatIconModule, CategoryTreeComponent, NgClass, CommonModule, FormsModule, CustomEditorComponent, ElementorEditor],
   templateUrl: './add-product.html',
   styleUrl: './add-product.scss',
 })
@@ -54,6 +45,17 @@ export class AddProduct {
   @ViewChild('descriptionImageGallery') descriptionImageGallery!: ElementRef<HTMLInputElement>;
   @ViewChild('quillEditor') quillEditor!: QuillEditorComponent;
   @ViewChild('productDescriptionQuill') productDescriptionQuill!: QuillEditorComponent;
+  
+  elementorMode = {
+    shortDescription: false,
+    productDescription: false,
+    features: false,
+    productDescriptionImageGallery: false
+  };
+
+  toggleElementorMode(field: keyof typeof this.elementorMode) {
+    this.elementorMode[field] = !this.elementorMode[field];
+  }
   @Input() data: any = {
     price_data: {},
     shipping_info: {},
@@ -428,19 +430,19 @@ export class AddProduct {
     this.parentId = id;
   }
   ngOnInit() {
-    // const HtmlEditButtonClass =
-    //     (HtmlEditButton as any).default ?? HtmlEditButton;
-
-    //   (Quill as any).register(
-    //     'modules/htmlEditButton',
-    //     HtmlEditButtonClass,
-    //     true
-    //   );
     this.domain = window.location.origin;
     this.getCategoryList();
     this.initializeForms();
-    // this.initializeCategoryControls();
-
+    
+    // Auto-detect Elementor mode
+    if (this.data?.item) {
+        const details = this.data.item.product_details;
+        if (details) {
+            if (details.shortDescription?.includes('<!-- ELEMENTOR_BLOCKS:')) this.elementorMode.shortDescription = true;
+            if (details.productDescription?.includes('<!-- ELEMENTOR_BLOCKS:')) this.elementorMode.productDescription = true;
+            if (details.features?.includes('<!-- ELEMENTOR_BLOCKS:')) this.elementorMode.features = true;
+        }
+    }
   }
   isNotEmpty(obj: any): boolean {
     return obj && Object.keys(obj).length > 0;

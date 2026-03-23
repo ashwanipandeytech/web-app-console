@@ -58,41 +58,42 @@
           <div class="panel mb-30">
             <div class="panel-header">
               <h5>Short Description</h5>
-              <div class="btn-box d-flex gap-2">
+              <div class="btn-box d-flex gap-2 align-items-center">
+                <button type="button" class="btn btn-sm" 
+                  [ngClass]="elementorMode.shortDescription ? 'btn-primary' : 'btn-outline-primary'"
+                  (click)="toggleElementorMode('shortDescription')">
+                  <i class="fa fa-cubes me-1"></i> Elementor Mode
+                </button>
                 <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
                 <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
                     class="fa fa-angle-up"></i></button>
               </div>
             </div>
             <div class="panel-body">
-              <!-- <div class="d-flex justify-content-end mb-2">
-                <button
-                  type="button"
-                  class="btn btn-sm btn-outline-primary"
-                  (click)="openHtmlEditor('shortDescription')">
-                  Edit HTML
-                </button>
-              </div> -->
-
-              <div class="editor-container">
-                <ce-custom-editor
+              @if (elementorMode.shortDescription) {
+                <app-elementor-editor
                   formControlName="shortDescription"
                   [uploadFn]="handleImageUpload">
-                </ce-custom-editor>
-              </div>
-              <!-- <div class="editor-container__editor">
-                <div>
+                </app-elementor-editor>
+              } @else {
+                <div class="editor-container">
+                  <ce-custom-editor
+                    formControlName="shortDescription"
+                    [uploadFn]="handleImageUpload">
+                  </ce-custom-editor>
                 </div>
-              </div> -->
-              <!-- <div class="main-container">
-</div> -->
-              <!-- <quill-editor #quillEditor formControlName="shortDescription" rows="5" [modules]="modulesNoImage"></quill-editor> -->
+              }
             </div>
           </div>
           <div class="panel mb-30">
             <div class="panel-header">
               <h5>Product Description</h5>
-              <div class="btn-box d-flex gap-2">
+              <div class="btn-box d-flex gap-2 align-items-center">
+                <button type="button" class="btn btn-sm" 
+                  [ngClass]="elementorMode.productDescription ? 'btn-primary' : 'btn-outline-primary'"
+                  (click)="toggleElementorMode('productDescription')">
+                  <i class="fa fa-cubes me-1"></i> Elementor Mode
+                </button>
                 <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
                 <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
                     class="fa fa-angle-up"></i></button>
@@ -108,12 +109,19 @@
                 </button> -->
               </div>
 
-              <div class="editor-container">
-                <ce-custom-editor
+              @if (elementorMode.productDescription) {
+                <app-elementor-editor
                   formControlName="productDescription"
                   [uploadFn]="handleImageUpload">
-                </ce-custom-editor>
-              </div>
+                </app-elementor-editor>
+              } @else {
+                <div class="editor-container">
+                  <ce-custom-editor
+                    formControlName="productDescription"
+                    [uploadFn]="handleImageUpload">
+                  </ce-custom-editor>
+                </div>
+              }
 
 
 
@@ -124,32 +132,28 @@
           <div class="panel mb-30">
             <div class="panel-header">
               <h5>Features</h5>
-              <!-- <div class="btn-box d-flex gap-2">
-                <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
-                <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
-                    class="fa fa-angle-up"></i></button>
-              </div> -->
+              <div class="btn-box d-flex gap-2 align-items-center">
+                <button type="button" class="btn btn-sm" 
+                  [ngClass]="elementorMode.features ? 'btn-primary' : 'btn-outline-primary'"
+                  (click)="toggleElementorMode('features')">
+                  <i class="fa fa-cubes me-1"></i> Elementor Mode
+                </button>
+              </div>
             </div>
             <div class="panel-body">
-                <div class="d-flex justify-content-end mb-2">
-                <!-- <button
-                  type="button"
-                  class="btn btn-sm btn-outline-primary"
-                  (click)="openHtmlEditor('features')">
-                  Edit HTML
-                </button> -->
-              </div>
-
-
-
-              <div class="editor-container">
-                <ce-custom-editor
+              @if (elementorMode.features) {
+                <app-elementor-editor
                   formControlName="features"
                   [uploadFn]="handleImageUpload">
-                </ce-custom-editor>
-              </div>
-
-              <!-- <quill-editor formControlName="features" [modules]="modulesNoImage"></quill-editor> -->
+                </app-elementor-editor>
+              } @else {
+                <div class="editor-container">
+                  <ce-custom-editor
+                    formControlName="features"
+                    [uploadFn]="handleImageUpload">
+                  </ce-custom-editor>
+                </div>
+              }
             </div>
           </div>
 

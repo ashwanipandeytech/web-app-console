@@ -1,0 +1,279 @@
+<div class="elementor-container" [class.disabled]="disabled" cdkDropListGroup>
+  <!-- SIDEBAR -->
+  <div class="elementor-sidebar">
+    <div class="sidebar-header">
+      <h6>Widgets</h6>
+    </div>
+    <div id="widgetList"
+         class="widget-list" 
+         cdkDropList 
+         [cdkDropListData]="widgetTypes"
+         (cdkDropListDropped)="onDrop($event)">
+      @for (type of widgetTypes; track type) {
+        <div class="widget-item" 
+             cdkDrag 
+             [cdkDragData]="type"
+             (click)="addBlock(type)">
+          <i [class]="getWidgetIcon(type)"></i>
+          <span>{{ type | titlecase }}</span>
+          
+          <div *cdkDragPreview class="widget-drag-preview">
+            <i [class]="getWidgetIcon(type)"></i>
+            <span>{{ type | titlecase }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- CANVAS -->
+  <div id="canvasList"
+       class="elementor-canvas" 
+       cdkDropList 
+       [cdkDropListData]="blocks"
+       (cdkDropListDropped)="onDrop($event)"
+       [class.is-active]="activeBlocksArray === blocks"
+       (click)="selectTarget(blocks)">
+    
+    @if (activeBlocksArray === blocks && !showStructureChoice) {
+      <div class="active-indicator">Target: Canvas</div>
+    }
+
+    <ng-container *ngTemplateOutlet="blocksTemplate; context: { $implicit: blocks }"></ng-container>
+
+    <!-- ADD NEW SECTION UI -->
+    <div class="add-section-area" [class.initial]="showStructureChoice">
+      @if (showStructureChoice) {
+        <div class="structure-chooser" (click)="$event.stopPropagation()">
+          <p class="chooser-title">Select your Structure</p>
+          <div class="presets-grid">
+            @for (preset of layoutPresets; track preset.name) {
+              <button type="button" class="preset-btn" (click)="addSection(preset.cols)" [title]="preset.name">
+                <i class="fa {{preset.icon}}"></i>
+              </button>
+            }
+          </div>
+          <button type="button" class="btn btn-link btn-sm mt-3" (click)="showStructureChoice = false" *ngIf="blocks.length > 0">Cancel</button>
+        </div>
+      } @else {
+        <div class="add-section-trigger" (click)="showStructureChoice = true; $event.stopPropagation()">
+          <i class="fa fa-plus-circle"></i>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- RECURSIVE BLOCKS TEMPLATE -->
+<ng-template #blocksTemplate let-blocksArray>
+  @for (block of blocksArray; track block.id; let i = $index) {
+    <div class="block-wrapper new-block-pulse" 
+         cdkDrag 
+         [cdkDragData]="block"
+         [class.is-editing]="block.data.editing"
+         [class.type-row]="block.type === 'row'">
+      
+      <div class="block-actions" (click)="$event.stopPropagation()">
+        <div class="drag-handle" cdkDragHandle>
+          <i class="fa fa-grip-vertical"></i>
+        </div>
+        <button type="button" class="action-btn" (click)="toggleEdit(block, $event)" title="Edit">
+          <i class="fa" [ngClass]="block.data.editing ? 'fa-check text-warning' : 'fa-pen'"></i>
+        </button>
+        <button type="button" class="action-btn" (click)="duplicateBlock(i, blocksArray)" title="Duplicate">
+          <i class="fa fa-copy"></i>
+        </button>
+        <button type="button" class="action-btn delete" (click)="removeBlock(i, blocksArray)" title="Remove">
+          <i class="fa fa-trash"></i>
+        </button>
+      </div>
+
+      <div class="block-content">
+        @if (block.data.editing) {
+          <!-- EDIT MODE -->
+          <div class="block-editor-view" (click)="$event.stopPropagation()">
+            @switch (block.type) {
+              @case ('text') {
+                <ce-custom-editor 
+                  [(ngModel)]="block.data.content" 
+                  (ngModelChange)="updateValue()"
+                  [uploadFn]="uploadFn">
+                </ce-custom-editor>
+              }
+
+              @case ('image') {
+                <div class="image-editor">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="image-preview position-relative" [class.loading]="block.data.loading">
+                        @if (block.data.url) {
+                          <img [src]="block.data.url" alt="Preview">
+                        } @else if (!block.data.loading) {
+                          <div class="text-muted"><i class="fa fa-image fa-3x"></i></div>
+                        }
+                        @if (block.data.loading) {
+                          <div class="upload-spinner"><i class="fa fa-spinner fa-spin fa-2x"></i></div>
+                        }
+                      </div>
+                      <label class="btn btn-outline-primary btn-sm w-100 mt-2" [class.disabled]="block.data.loading">
+                        <i class="fa fa-upload me-1"></i> Upload Image
+                        <input type="file" (change)="onImageUpload(block, $event)" hidden [disabled]="block.data.loading" accept="image/*">
+                      </label>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label small">Image URL</label>
+                      <input type="text" [(ngModel)]="block.data.url" (ngModelChange)="updateValue()" placeholder="https://..." class="form-control mb-2">
+                      <label class="form-label small">Caption</label>
+                      <input type="text" [(ngModel)]="block.data.caption" (ngModelChange)="updateValue()" placeholder="Caption" class="form-control mb-2">
+                      <label class="form-label small">Width</label>
+                      <select [(ngModel)]="block.data.width" (ngModelChange)="updateValue()" class="form-control">
+                        <option value="25%">25%</option>
+                        <option value="50%">50%</option>
+                        <option value="75%">75%</option>
+                        <option value="100%">100%</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              }
+
+              @case ('video') {
+                <div class="video-editor">
+                  <label class="form-label small">Video URL (YouTube/Vimeo)</label>
+                  <input type="text" [(ngModel)]="block.data.url" (ngModelChange)="updateValue()" placeholder="Video URL" class="form-control">
+                </div>
+              }
+
+              @case ('button') {
+                <div class="button-editor">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label class="form-label small">Text</label>
+                      <input type="text" [(ngModel)]="block.data.text" (ngModelChange)="updateValue()" class="form-control mb-2">
+                      <label class="form-label small">Link</label>
+                      <input type="text" [(ngModel)]="block.data.link" (ngModelChange)="updateValue()" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label small">Color</label>
+                      <input type="color" [(ngModel)]="block.data.color" (ngModelChange)="updateValue()" class="form-control form-control-color mb-2">
+                      <label class="form-label small">Align</label>
+                      <select [(ngModel)]="block.data.align" (ngModelChange)="updateValue()" class="form-control">
+                        <option value="left">Left</option>
+                        <option value="center">Center</option>
+                        <option value="right">Right</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              }
+
+              @case ('spacer') {
+                <div class="spacer-editor">
+                  <label class="small">Height (px/rem):</label>
+                  <input type="text" [(ngModel)]="block.data.height" (ngModelChange)="updateValue()" class="form-control w-25 d-inline-block ms-2">
+                </div>
+              }
+
+              @case ('divider') {
+                <div class="divider-editor">
+                   <div class="row">
+                     <div class="col-md-4">
+                       <label class="small">Thickness</label>
+                       <input type="text" [(ngModel)]="block.data.thickness" (ngModelChange)="updateValue()" class="form-control">
+                     </div>
+                     <div class="col-md-4">
+                       <label class="small">Color</label>
+                       <input type="color" [(ngModel)]="block.data.color" (ngModelChange)="updateValue()" class="form-control form-control-color">
+                     </div>
+                     <div class="col-md-4">
+                       <label class="small">Margin</label>
+                       <input type="text" [(ngModel)]="block.data.margin" (ngModelChange)="updateValue()" class="form-control">
+                     </div>
+                   </div>
+                </div>
+              }
+
+              @case ('row') {
+                <div class="row-editor">
+                  <p class="small text-muted mb-2">Layout Configuration</p>
+                  <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="addRowColumn(block)">
+                      <i class="fa fa-plus me-1"></i> Add Column
+                    </button>
+                    <div class="ms-auto d-flex gap-1">
+                      @for (col of block.data.columns; track $index) {
+                        <div class="col-badge">
+                          {{col.width}}
+                          <i class="fa fa-times ms-1 cursor-pointer" (click)="removeRowColumn(block, $index)" *ngIf="block.data.columns.length > 1"></i>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            }
+            <div class="text-end mt-2">
+              <button type="button" class="btn btn-xs btn-primary" (click)="toggleEdit(block, $event)">Done</button>
+            </div>
+          </div>
+        } @else {
+          <!-- PREVIEW MODE -->
+          <div class="block-preview-view" [ngSwitch]="block.type" (click)="toggleEdit(block, $event)">
+            <div *ngSwitchCase="'text'" [innerHTML]="block.data.content || '<em>Click to edit text...</em>'"></div>
+            
+            <div *ngSwitchCase="'image'" class="text-center">
+              @if (block.data.url) {
+                <img [src]="block.data.url" [style.max-width]="block.data.width" class="img-fluid">
+                @if (block.data.caption) { <p class="small text-muted mt-1">{{block.data.caption}}</p> }
+              } @else {
+                <div class="placeholder-box"><i class="fa fa-image me-2"></i> Add Image</div>
+              }
+            </div>
+
+            <div *ngSwitchCase="'video'" class="text-center">
+              @if (block.data.url) {
+                <div [innerHTML]="getSafeVideoUrl(block)"></div>
+              } @else {
+                <div class="placeholder-box"><i class="fa fa-video me-2"></i> Add Video URL</div>
+              }
+            </div>
+
+            <div *ngSwitchCase="'button'" [style.text-align]="block.data.align">
+              <a class="btn" [style.background-color]="block.data.color" style="color:white; pointer-events: none;">{{block.data.text}}</a>
+            </div>
+
+            <div *ngSwitchCase="'spacer'" [style.height]="block.data.height"></div>
+
+            <div *ngSwitchCase="'divider'" [style.border-top]="block.data.thickness + ' solid ' + block.data.color" [style.margin]="block.data.margin"></div>
+
+            <div *ngSwitchCase="'row'" class="elementor-row-preview" style="display: flex; flex-wrap: wrap;">
+              @for (col of block.data.columns; track $index) {
+                <div class="elementor-column-preview" 
+                     [style.width]="col.width" 
+                     [style.flex]="'0 0 ' + col.width"
+                     [class.is-active]="activeBlocksArray === col.blocks"
+                     (click)="selectTarget(col.blocks, $event)"
+                     cdkDropList
+                     [cdkDropListData]="col.blocks"
+                     (cdkDropListDropped)="onDrop($event)">
+                  
+                  @if (activeBlocksArray === col.blocks) {
+                    <div class="active-indicator">Target</div>
+                  }
+
+                  <ng-container *ngTemplateOutlet="blocksTemplate; context: { $implicit: col.blocks }"></ng-container>
+                  
+                  @if (col.blocks.length === 0) {
+                    <div class="empty-column-placeholder">
+                      <i class="fa fa-plus small"></i>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</ng-template>
