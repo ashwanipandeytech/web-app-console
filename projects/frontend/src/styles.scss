@@ -1,5 +1,6 @@
 @use 'scss/variable' as *;
 @use './scss/global' as *;
+@import '../../shared-lib/src/lib/scss/elementor-blocks';
 
 /* Global Modernized Scrollbar */
 html, body {

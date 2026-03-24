@@ -73,10 +73,15 @@ export class ElementorEditor implements ControlValueAccessor, OnChanges {
 
   writeValue(value: any): void {
     if (value && typeof value === 'string') {
-        const match = value.match(/<!-- ELEMENTOR_BLOCKS:([A-Za-z0-9+/=]+) -->/);
-        if (match && match[1]) {
+        // Try to find the JSON meta in either a comment or a data-attribute
+        const commentMatch = value.match(/<!--\s*ELEMENTOR_BLOCKS:\s*([A-Za-z0-9+/=]+)\s*-->/i);
+        const attrMatch = value.match(/data-elementor-blocks="([A-Za-z0-9+/=]+)"/);
+        
+        const jsonMeta = commentMatch ? commentMatch[1] : (attrMatch ? attrMatch[1] : null);
+
+        if (jsonMeta) {
             try {
-                const jsonStr = decodeURIComponent(escape(atob(match[1])));
+                const jsonStr = decodeURIComponent(escape(atob(jsonMeta)));
                 this.blocks = JSON.parse(jsonStr);
                 this.resetEditingState(this.blocks);
                 this.showStructureChoice = this.blocks.length === 0;
@@ -90,6 +95,13 @@ export class ElementorEditor implements ControlValueAccessor, OnChanges {
     }
     
     if (value && typeof value === 'string' && value.trim()) {
+        // Fallback: If it's HTML but no meta found, check if it contains elementor classes
+        // to avoid double-wrapping if it's already a fallback block
+        if (value.includes('elementor-content-wrapper')) {
+           // It's likely elementor content but meta was lost. 
+           // We'll treat it as one text block to prevent further mangling.
+        }
+
         this.blocks = [{
             id: this.generateId(),
             type: 'text',
@@ -274,7 +286,8 @@ export class ElementorEditor implements ControlValueAccessor, OnChanges {
     if (blocks === this.blocks) {
         const cleanBlocks = this.getCleanBlocks(this.blocks);
         const jsonMeta = btoa(unescape(encodeURIComponent(JSON.stringify(cleanBlocks))));
-        html += `\n<!-- ELEMENTOR_BLOCKS:${jsonMeta} -->`;
+        // Wrap the HTML in a container with the blocks data as an attribute
+        html = `<div class="elementor-content-wrapper" data-elementor-blocks="${jsonMeta}">\n${html}\n<!-- ELEMENTOR_BLOCKS:${jsonMeta} -->\n</div>`;
     }
     
     return html;
@@ -295,38 +308,56 @@ export class ElementorEditor implements ControlValueAccessor, OnChanges {
   }
 
   private renderBlock(block: ElementorBlock): string {
+    const baseStyle = 'margin-bottom: 20px; box-sizing: border-box;';
+    
+    // Helper to ensure numeric values have units (defaults to px)
+    const ensureUnit = (val: any, unit = 'px') => {
+      if (!val) return '0' + unit;
+      if (/^[0-9.]+$/.test(String(val))) return val + unit;
+      return val;
+    };
+
     switch (block.type) {
       case 'text':
-        return `<div class="elementor-block-text">${block.data.content}</div>`;
+        return `<div class="elementor-block-text" style="${baseStyle} line-height: 1.6;">${block.data.content}</div>`;
+      
       case 'image':
-        return `<div class="elementor-block-image" style="text-align: center;">
-                  <img src="${block.data.url}" alt="${block.data.caption}" style="max-width: ${block.data.width}; height: auto;">
-                  ${block.data.caption ? `<p class="caption">${block.data.caption}</p>` : ''}
+        return `<div class="elementor-block-image" style="${baseStyle} text-align: center;">
+                  <img src="${block.data.url}" alt="${block.data.caption}" style="max-width: ${ensureUnit(block.data.width, '%')}; height: auto; border-radius: 4px; display: inline-block;">
+                  ${block.data.caption ? `<p class="caption" style="font-size: 0.9em; color: #666; margin-top: 5px;">${block.data.caption}</p>` : ''}
                 </div>`;
+      
       case 'video':
         const videoId = block.data.url.includes('vimeo.com') ? this.extractVimeoId(block.data.url) : this.extractYoutubeId(block.data.url);
         let videoEmbed = '';
         if (block.data.url.includes('vimeo.com')) {
-            videoEmbed = `<iframe src="https://player.vimeo.com/video/${videoId}" width="100%" height="315" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+            videoEmbed = `<iframe src="https://player.vimeo.com/video/${videoId}" width="100%" height="315" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="border-radius: 4px;"></iframe>`;
         } else {
-            videoEmbed = `<iframe width="100%" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+            videoEmbed = `<iframe width="100%" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen style="border-radius: 4px;"></iframe>`;
         }
-        return `<div class="elementor-block-video">${videoEmbed}</div>`;
-      case 'button':
-        return `<div class="elementor-block-button" style="text-align: ${block.data.align}; margin: 10px 0;">
-                  <a href="${block.data.link}" style="background-color: ${block.data.color}; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">${block.data.text}</a>
+        return `<div class="elementor-block-video" style="${baseStyle} position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+                  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">${videoEmbed}</div>
                 </div>`;
+      
+      case 'button':
+        return `<div class="elementor-block-button" style="${baseStyle} text-align: ${block.data.align};">
+                  <a href="${block.data.link}" style="background-color: ${block.data.color}; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block; font-weight: 600; transition: opacity 0.2s;">${block.data.text}</a>
+                </div>`;
+      
       case 'spacer':
-        return `<div class="elementor-block-spacer" style="height: ${block.data.height};"></div>`;
+        return `<div class="elementor-block-spacer" style="height: ${ensureUnit(block.data.height)}; width: 100%;"></div>`;
+      
       case 'divider':
-        return `<div class="elementor-block-divider" style="border-top: ${block.data.thickness} solid ${block.data.color}; margin: ${block.data.margin};"></div>`;
+        return `<div class="elementor-block-divider" style="${baseStyle} border-top: ${ensureUnit(block.data.thickness)} solid ${block.data.color}; width: 100%; margin: ${block.data.margin};"></div>`;
+      
       case 'row':
         const colsHtml = block.data.columns.map((col: any) => {
-            return `<div class="elementor-column" style="width: ${col.width}; flex: 0 0 ${col.width};">
+            return `<div class="elementor-column" style="width: ${ensureUnit(col.width, '%')}; flex: 0 0 ${ensureUnit(col.width, '%')}; padding: 0 10px; box-sizing: border-box;">
                         ${this.blocksToHtml(col.blocks)}
                     </div>`;
         }).join('');
-        return `<div class="elementor-row" style="display: flex; flex-wrap: wrap;">${colsHtml}</div>`;
+        return `<div class="elementor-row" style="display: flex; flex-wrap: wrap; margin-left: -10px; margin-right: -10px; margin-bottom: 20px;">${colsHtml}</div>`;
+      
       default:
         return '';
     }

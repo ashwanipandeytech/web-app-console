@@ -116,6 +116,9 @@ onMainAfterChange(event: any) {
   isPreview: any;
   isBrowser: boolean;
   safeContent!: SafeHtml;
+  safeShortDescription!: SafeHtml;
+  safeProductDescription!: SafeHtml;
+  safeFeatures!: SafeHtml;
   private platformId = inject(PLATFORM_ID);
   constructor(
     private cd: ChangeDetectorRef,
@@ -146,8 +149,15 @@ setEditorContent(html: string) {
         console.log('productId==>', res.data);
         this.productDetails = res.data.data;
         console.log('this.productDetails==>',this.productDetails);
-       let html = this.productDetails?.product_details?.productDescriptionImageGallery
-         this.setEditorContent(html) 
+        const details = this.productDetails?.product_details;
+        
+        if (details) {
+          this.safeShortDescription = this.sanitizer.bypassSecurityTrustHtml(details.shortDescription || '');
+          this.safeProductDescription = this.sanitizer.bypassSecurityTrustHtml(details.productDescription || '');
+          this.safeFeatures = this.sanitizer.bypassSecurityTrustHtml(details.features || '');
+          this.safeContent = this.sanitizer.bypassSecurityTrustHtml(details.productDescriptionImageGallery || '');
+        }
+
         let user;
         if (this.isBrowser) {
           user = JSON.parse(localStorage.getItem('user') || '{}');

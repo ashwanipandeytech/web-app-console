@@ -20,12 +20,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from '../../../shared.module';
 import { CategoryTreeComponent } from './category-tree/category-tree.component';
 import { PRODUCT_TYPE } from 'shared-lib/constants/app-constant';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomEditorComponent } from 'custom-editor';
 import { ElementorEditor } from './elementor-editor/elementor-editor';
 
 import { QuillEditorComponent, QuillModule } from 'ngx-quill';
 import Quill from 'quill';
+
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 interface FoodNode {
   name: string;
@@ -53,8 +55,37 @@ export class AddProduct {
     productDescriptionImageGallery: false
   };
 
+  currentEditingField: keyof typeof this.elementorMode | null = null;
+  tempElementorValue: string = '';
+  private modalService = inject(NgbModal);
+  private sanitizer = inject(DomSanitizer);
+
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html || '');
+  }
+
   toggleElementorMode(field: keyof typeof this.elementorMode) {
     this.elementorMode[field] = !this.elementorMode[field];
+  }
+
+  openElementorBuilder(field: keyof typeof this.elementorMode, modalTemplate: any) {
+    this.currentEditingField = field;
+    this.tempElementorValue = this.productDetails.get(field)?.value || '';
+    
+    this.modalService.open(modalTemplate, {
+      size: 'xl',
+      centered: true,
+      backdrop: 'static'
+    }).result.then((result) => {
+      if (result === 'save' && this.currentEditingField) {
+        this.elementorMode[this.currentEditingField] = true;
+        this.productDetails.get(this.currentEditingField)?.setValue(this.tempElementorValue);
+        this.productDetails.get(this.currentEditingField)?.markAsDirty();
+      }
+      this.cd.detectChanges();
+    }, () => {
+      this.cd.detectChanges();
+    });
   }
   @Input() data: any = {
     price_data: {},
@@ -433,16 +464,23 @@ export class AddProduct {
     this.domain = window.location.origin;
     this.getCategoryList();
     this.initializeForms();
-    
+
+    this.productDetails.valueChanges.subscribe(() => {
+      this.cd.detectChanges();
+    });
+
     // Auto-detect Elementor mode
     if (this.data?.item) {
         const details = this.data.item.product_details;
         if (details) {
-            if (details.shortDescription?.includes('<!-- ELEMENTOR_BLOCKS:')) this.elementorMode.shortDescription = true;
-            if (details.productDescription?.includes('<!-- ELEMENTOR_BLOCKS:')) this.elementorMode.productDescription = true;
-            if (details.features?.includes('<!-- ELEMENTOR_BLOCKS:')) this.elementorMode.features = true;
+            const isElementor = (val: string) => val?.includes('<!-- ELEMENTOR_BLOCKS:') || val?.includes('elementor-content-wrapper');
+
+            if (isElementor(details.shortDescription)) this.elementorMode.shortDescription = true;
+            if (isElementor(details.productDescription)) this.elementorMode.productDescription = true;
+            if (isElementor(details.features)) this.elementorMode.features = true;
         }
     }
+
   }
   isNotEmpty(obj: any): boolean {
     return obj && Object.keys(obj).length > 0;

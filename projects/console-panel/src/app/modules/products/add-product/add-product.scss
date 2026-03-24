@@ -97,3 +97,40 @@
   color: #ffffff;
 }
 
+.elementor-preview-container {
+  min-height: 100px;
+  max-height: 300px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #0093dd !important;
+    
+    .elementor-edit-overlay {
+      opacity: 1;
+    }
+  }
+
+  .elementor-content-preview {
+    pointer-events: none;
+    opacity: 0.8;
+    zoom: 0.8; /* Slight zoom out for preview */
+  }
+
+  .elementor-edit-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 2;
+  }
+}
+

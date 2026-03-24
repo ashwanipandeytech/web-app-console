@@ -61,8 +61,8 @@
               <div class="btn-box d-flex gap-2 align-items-center">
                 <button type="button" class="btn btn-sm" 
                   [ngClass]="elementorMode.shortDescription ? 'btn-primary' : 'btn-outline-primary'"
-                  (click)="toggleElementorMode('shortDescription')">
-                  <i class="fa fa-cubes me-1"></i> Elementor Mode
+                  (click)="openElementorBuilder('shortDescription', elementorModal)">
+                  <i class="fa fa-cubes me-1"></i> Visual Builder
                 </button>
                 <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
                 <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
@@ -71,10 +71,19 @@
             </div>
             <div class="panel-body">
               @if (elementorMode.shortDescription) {
-                <app-elementor-editor
-                  formControlName="shortDescription"
-                  [uploadFn]="handleImageUpload">
-                </app-elementor-editor>
+                <div class="elementor-preview-container position-relative border rounded bg-light p-3 mb-2" (click)="openElementorBuilder('shortDescription', elementorModal)">
+                  <div [innerHTML]="getSafeHtml(productDetails.get('shortDescription')?.value)" class="elementor-content-preview"></div>
+                  <div class="elementor-edit-overlay">
+                    <button type="button" class="btn btn-primary btn-sm">
+                      <i class="fa fa-cubes me-1"></i> Edit with Visual Builder
+                    </button>
+                  </div>
+                </div>
+                <div class="text-end">
+                  <button type="button" class="btn btn-link btn-sm text-muted p-0" (click)="elementorMode.shortDescription = false">
+                    Switch to Standard Editor
+                  </button>
+                </div>
               } @else {
                 <div class="editor-container">
                   <ce-custom-editor
@@ -91,8 +100,8 @@
               <div class="btn-box d-flex gap-2 align-items-center">
                 <button type="button" class="btn btn-sm" 
                   [ngClass]="elementorMode.productDescription ? 'btn-primary' : 'btn-outline-primary'"
-                  (click)="toggleElementorMode('productDescription')">
-                  <i class="fa fa-cubes me-1"></i> Elementor Mode
+                  (click)="openElementorBuilder('productDescription', elementorModal)">
+                  <i class="fa fa-cubes me-1"></i> Visual Builder
                 </button>
                 <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
                 <button class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
@@ -110,10 +119,19 @@
               </div>
 
               @if (elementorMode.productDescription) {
-                <app-elementor-editor
-                  formControlName="productDescription"
-                  [uploadFn]="handleImageUpload">
-                </app-elementor-editor>
+                <div class="elementor-preview-container position-relative border rounded bg-light p-3 mb-2" (click)="openElementorBuilder('productDescription', elementorModal)">
+                  <div [innerHTML]="getSafeHtml(productDetails.get('productDescription')?.value)" class="elementor-content-preview"></div>
+                  <div class="elementor-edit-overlay">
+                    <button type="button" class="btn btn-primary btn-sm">
+                      <i class="fa fa-cubes me-1"></i> Edit with Visual Builder
+                    </button>
+                  </div>
+                </div>
+                <div class="text-end">
+                  <button type="button" class="btn btn-link btn-sm text-muted p-0" (click)="elementorMode.productDescription = false">
+                    Switch to Standard Editor
+                  </button>
+                </div>
               } @else {
                 <div class="editor-container">
                   <ce-custom-editor
@@ -135,17 +153,26 @@
               <div class="btn-box d-flex gap-2 align-items-center">
                 <button type="button" class="btn btn-sm" 
                   [ngClass]="elementorMode.features ? 'btn-primary' : 'btn-outline-primary'"
-                  (click)="toggleElementorMode('features')">
-                  <i class="fa fa-cubes me-1"></i> Elementor Mode
+                  (click)="openElementorBuilder('features', elementorModal)">
+                  <i class="fa fa-cubes me-1"></i> Visual Builder
                 </button>
               </div>
             </div>
             <div class="panel-body">
               @if (elementorMode.features) {
-                <app-elementor-editor
-                  formControlName="features"
-                  [uploadFn]="handleImageUpload">
-                </app-elementor-editor>
+                <div class="elementor-preview-container position-relative border rounded bg-light p-3 mb-2" (click)="openElementorBuilder('features', elementorModal)">
+                  <div [innerHTML]="getSafeHtml(productDetails.get('features')?.value)" class="elementor-content-preview"></div>
+                  <div class="elementor-edit-overlay">
+                    <button type="button" class="btn btn-primary btn-sm">
+                      <i class="fa fa-cubes me-1"></i> Edit with Visual Builder
+                    </button>
+                  </div>
+                </div>
+                <div class="text-end">
+                  <button type="button" class="btn btn-link btn-sm text-muted p-0" (click)="elementorMode.features = false">
+                    Switch to Standard Editor
+                  </button>
+                </div>
               } @else {
                 <div class="editor-container">
                   <ce-custom-editor
@@ -1091,3 +1118,22 @@
   </form>
 </div>
 <!-- main content end -->
+
+<ng-template #elementorModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Visual Builder - {{ currentEditingField }}</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body p-0">
+    @if (currentEditingField) {
+      <app-elementor-editor
+        [(ngModel)]="tempElementorValue"
+        [uploadFn]="handleImageUpload">
+      </app-elementor-editor>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close('save')">Done</button>
+  </div>
+</ng-template>
