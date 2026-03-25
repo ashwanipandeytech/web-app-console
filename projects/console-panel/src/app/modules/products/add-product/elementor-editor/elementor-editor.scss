@@ -320,6 +320,7 @@
   transition: all 0.2s;
   position: relative;
   padding: 5px;
+  z-index: 1;
 
   &:hover {
     border-color: #ddd;
@@ -328,7 +329,7 @@
 
   &.is-active {
     box-shadow: inset 0 0 0 2px #007bff;
-    background: #f0f7ff !important;
+    background-color: rgba(240, 247, 255, 0.7) !important;
     border-color: transparent;
     z-index: 5;
   }
@@ -341,7 +342,14 @@
     color: #ccc;
     border: 1px dashed #eee;
     border-radius: 4px;
+    position: relative;
+    z-index: 0;
   }
+}
+
+.elementor-row-preview {
+  position: relative;
+  z-index: 0;
 }
 
 .cdk-drop-list-dragging .elementor-column-preview {

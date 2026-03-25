@@ -11,6 +11,7 @@ import { environment } from 'environments/environment';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ElementorEditor } from '../products/add-product/elementor-editor/elementor-editor';
+import { SpecialCharacterHelper } from 'shared-lib/services/special-character-helper';
 
 @Component({
   selector: 'app-addpage',
@@ -26,6 +27,7 @@ export class AddPage implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private modalService = inject(NgbModal);
   private sanitizer = inject(DomSanitizer);
+  private specialCharacterHelper = inject(SpecialCharacterHelper);
 
   @Input() data: any;
 
@@ -83,6 +85,28 @@ export class AddPage implements OnInit {
 
   getSafeHtml(html: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(html || '');
+  }
+
+  onSlugChange() {
+    if (this.newPage.slug) {
+      this.newPage.slug = this.newPage.slug
+        .toLowerCase()
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^a-z0-9-]/g, '')     // Remove all non-alphanumeric except -
+        .replace(/-+/g, '-')            // Replace multiple - with single -
+        .replace(/^-+|-+$/g, '');       // Trim - from start and end
+    }
+  }
+
+  createSlugFromTitle() {
+    if (!this.isEdit && this.newPage.title) {
+      this.newPage.slug = this.newPage.title
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9-]/g, '')
+        .replace(/-+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
   }
 
   private loadPage(slug: string) {
@@ -187,10 +211,8 @@ export class AddPage implements OnInit {
       settings_name:this.newPage.slug,
       settings:this.newPage
     }
-    const method = this.isEdit ? 'put' : 'post';
-    const endpoint = this.isEdit ? `pages/${this.newPage.slug}` : 'pages';
-
-    this.dataService[method](payload, endpoint)
+    
+    this.dataService.post(payload, 'pages')
       .pipe(
         catchError(err => {
           this.globalService.showToast(err);

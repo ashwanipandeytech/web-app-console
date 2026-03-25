@@ -5,15 +5,21 @@
   flex-wrap: wrap;
   margin-left: -10px;
   margin-right: -10px;
+  position: relative;
+  z-index: 0;
 }
 
 .elementor-column {
   padding: 0 10px;
   box-sizing: border-box;
+  position: relative;
+  z-index: 1;
 }
 
 .elementor-block-image {
   margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
   img {
     max-width: 100%;
     height: auto;
@@ -29,10 +35,14 @@
 .elementor-block-text {
   margin-bottom: 15px;
   line-height: 1.6;
+  position: relative;
+  z-index: 2;
 }
 
 .elementor-block-button {
   margin: 15px 0;
+  position: relative;
+  z-index: 2;
   a {
     display: inline-block;
     padding: 10px 20px;
@@ -52,6 +62,7 @@
   padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
   height: 0;
   overflow: hidden;
+  z-index: 1;
   iframe {
     position: absolute;
     top: 0;
@@ -64,11 +75,15 @@
 
 .elementor-block-spacer {
   width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .elementor-block-divider {
   width: 100%;
   clear: both;
+  position: relative;
+  z-index: 1;
 }
 
 /* Responsive adjustments */
