@@ -75,6 +75,7 @@ export class AddProduct {
     this.modalService.open(modalTemplate, {
       size: 'xl',
       centered: true,
+      scrollable: true,
       backdrop: 'static'
     }).result.then((result) => {
       if (result === 'save' && this.currentEditingField) {

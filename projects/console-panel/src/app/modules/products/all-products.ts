@@ -240,7 +240,7 @@ editoProduct(item:any){
     windowClass: 'mobile-modal product-edit-popup',
     scrollable: true,
     centered: true,
-    size:'xl',
+    fullscreen: true,
     backdrop: 'static' // optional
   });
   // dialogRef.componentInstance.data = item;

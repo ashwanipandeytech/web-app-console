@@ -94,6 +94,44 @@
               }
             </div>
           </div>
+
+          <div class="panel mb-30">
+            <div class="panel-header">
+              <h5>Features</h5>
+              <div class="btn-box d-flex gap-2 align-items-center">
+                <button type="button" class="btn btn-sm" 
+                  [ngClass]="elementorMode.features ? 'btn-primary' : 'btn-outline-primary'"
+                  (click)="openElementorBuilder('features', elementorModal)">
+                  <i class="fa fa-cubes me-1"></i> Visual Builder
+                </button>
+              </div>
+            </div>
+            <div class="panel-body">
+              @if (elementorMode.features) {
+                <div class="elementor-preview-container position-relative border rounded bg-light p-3 mb-2" (click)="openElementorBuilder('features', elementorModal)">
+                  <div [innerHTML]="getSafeHtml(productDetails.get('features')?.value)" class="elementor-content-preview"></div>
+                  <div class="elementor-edit-overlay">
+                    <button type="button" class="btn btn-primary btn-sm">
+                      <i class="fa fa-cubes me-1"></i> Edit with Visual Builder
+                    </button>
+                  </div>
+                </div>
+                <div class="text-end">
+                  <button type="button" class="btn btn-link btn-sm text-muted p-0" (click)="elementorMode.features = false">
+                    Switch to Standard Editor
+                  </button>
+                </div>
+              } @else {
+                <div class="editor-container">
+                  <ce-custom-editor
+                    formControlName="features"
+                    [uploadFn]="handleImageUpload">
+                  </ce-custom-editor>
+                </div>
+              }
+            </div>
+          </div>
+
           <div class="panel mb-30">
             <div class="panel-header">
               <h5>Product Description</h5>
@@ -146,44 +184,6 @@
               <!-- <quill-editor #productDescriptionQuill formControlName="productDescription" [modules]="modulesNoImage"></quill-editor> -->
             </div>
           </div>
-
-          <div class="panel mb-30">
-            <div class="panel-header">
-              <h5>Features</h5>
-              <div class="btn-box d-flex gap-2 align-items-center">
-                <button type="button" class="btn btn-sm" 
-                  [ngClass]="elementorMode.features ? 'btn-primary' : 'btn-outline-primary'"
-                  (click)="openElementorBuilder('features', elementorModal)">
-                  <i class="fa fa-cubes me-1"></i> Visual Builder
-                </button>
-              </div>
-            </div>
-            <div class="panel-body">
-              @if (elementorMode.features) {
-                <div class="elementor-preview-container position-relative border rounded bg-light p-3 mb-2" (click)="openElementorBuilder('features', elementorModal)">
-                  <div [innerHTML]="getSafeHtml(productDetails.get('features')?.value)" class="elementor-content-preview"></div>
-                  <div class="elementor-edit-overlay">
-                    <button type="button" class="btn btn-primary btn-sm">
-                      <i class="fa fa-cubes me-1"></i> Edit with Visual Builder
-                    </button>
-                  </div>
-                </div>
-                <div class="text-end">
-                  <button type="button" class="btn btn-link btn-sm text-muted p-0" (click)="elementorMode.features = false">
-                    Switch to Standard Editor
-                  </button>
-                </div>
-              } @else {
-                <div class="editor-container">
-                  <ce-custom-editor
-                    formControlName="features"
-                    [uploadFn]="handleImageUpload">
-                  </ce-custom-editor>
-                </div>
-              }
-            </div>
-          </div>
-
 
           <div class="panel mb-30">
             <div class="panel-body">
@@ -365,29 +365,32 @@
                       </div>
                     </div>
 
-                    <hr>
+                    <ng-container *ngIf="false">
+                      <hr>
+  
+                      <h5>Product Description Images <span>(jpeg/png)</span></h5>
+                      <form [formGroup]="productDetails">
+                        <div class="d-flex justify-content-end mb-2">
+                  <!-- <button
+                    type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    (click)="openHtmlEditor('productDescriptionImageGallery')">
+                    Edit HTML
+                  </button> -->
+                </div>
+  
+                <div class="editor-container">
+                  <ce-custom-editor
+                    formControlName="productDescriptionImageGallery"
+                    [uploadFn]="handleImageUpload">
+                  </ce-custom-editor>
+                </div>
+  
+                        <!-- <quill-editor #descriptionImageGallery formControlName="productDescriptionImageGallery"
+                          [modules]="modulesWithImage"></quill-editor> -->
+                      </form>
+                    </ng-container>
 
-                    <h5>Product Description Images <span>(jpeg/png)</span></h5>
-                    <form [formGroup]="productDetails">
-                      <div class="d-flex justify-content-end mb-2">
-                <!-- <button
-                  type="button"
-                  class="btn btn-sm btn-outline-primary"
-                  (click)="openHtmlEditor('productDescriptionImageGallery')">
-                  Edit HTML
-                </button> -->
-              </div>
-
-              <div class="editor-container">
-                <ce-custom-editor
-                  formControlName="productDescriptionImageGallery"
-                  [uploadFn]="handleImageUpload">
-                </ce-custom-editor>
-              </div>
-
-                      <!-- <quill-editor #descriptionImageGallery formControlName="productDescriptionImageGallery"
-                        [modules]="modulesWithImage"></quill-editor> -->
-                    </form>
                     <!-- <div class="panel mb-30">
                       <div class="panel-header">
                         <div class="btn-box d-flex gap-2">
