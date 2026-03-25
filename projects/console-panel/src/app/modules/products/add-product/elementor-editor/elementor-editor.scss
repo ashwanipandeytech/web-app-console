@@ -376,6 +376,81 @@
   }
 }
 
+.bg-settings-box {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.bg-preview-small {
+  width: 60px;
+  height: 60px;
+  border-radius: 4px;
+  background-size: cover;
+  background-position: center;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+
+  &.empty {
+    border-style: dashed;
+  }
+  
+  i {
+    font-size: 20px;
+    color: #ccc;
+  }
+}
+
+.bg-settings-accordion {
+  border: 1px solid #eee;
+  border-radius: 6px;
+  overflow: hidden;
+  
+  .accordion-item {
+    border-bottom: 1px solid #eee;
+    &:last-child { border-bottom: none; }
+  }
+
+  .accordion-button {
+    background-color: #fcfcfc;
+    &:not(.collapsed) {
+      background-color: #f0f7ff;
+      color: #007bff;
+      box-shadow: none;
+    }
+    &:focus {
+      box-shadow: none;
+      border-color: rgba(0,0,0,0.125);
+    }
+    &::after {
+      width: 0.8rem;
+      height: 0.8rem;
+      background-size: 0.8rem;
+    }
+  }
+}
+
+.xx-small {
+  font-size: 9px;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.form-select-xs {
+  padding: 2px 20px 2px 8px;
+  font-size: 11px;
+  min-height: 24px;
+}
+
 .image-editor, .video-editor, .button-editor, .spacer-editor, .divider-editor {
   padding: 15px;
   background: #fff;

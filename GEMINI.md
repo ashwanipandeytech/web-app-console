@@ -18,7 +18,22 @@ This is a modern Angular monorepo (v20.3.0) consisting of multiple applications 
 
 ## Key Project Conventions & "The New Angular Way"
 
-### 1. Standalone Components
+### 1. Visual Builder (Elementor-like Editor)
+A custom block-based visual editor has been implemented for rich content management in the `console-panel`.
+
+- **Location:** `projects/console-panel/src/app/modules/products/add-product/elementor-editor/`
+- **Block Types:** `text`, `image`, `video`, `button`, `spacer`, `divider`, and `row` (for multi-column layouts).
+- **Architecture:** 
+  - Uses `@angular/cdk/drag-drop` for block reordering and layout management.
+  - Implements `ControlValueAccessor` for seamless integration with Angular Reactive Forms.
+- **Data Serialization:**
+  - Content is saved as standard HTML for maximum compatibility.
+  - Re-editability is preserved by embedding a base64-encoded JSON metadata string within a comment (`<!-- ELEMENTOR_BLOCKS:... -->`) or a `data-elementor-blocks` attribute in the wrapper `div.elementor-content-wrapper`.
+- **Frontend Rendering:**
+  - The `frontend` application renders this content using `DomSanitizer.bypassSecurityTrustHtml()`.
+  - Shared styles for these blocks are located in `projects/shared-lib/src/lib/scss/_elementor-blocks.scss`.
+
+### 2. Standalone Components
 All components are **standalone**. Avoid creating `NgModules`.
 ```typescript
 @Component({

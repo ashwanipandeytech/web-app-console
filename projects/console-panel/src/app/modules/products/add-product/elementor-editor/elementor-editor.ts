@@ -144,10 +144,22 @@ export class ElementorEditor implements ControlValueAccessor, OnChanges {
       id: this.generateId(),
       type: 'row',
       data: {
-        editing: false,
-        columns: cols.map(w => ({ width: w, blocks: [] }))
+        editing: true,
+        backgroundImage: '',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        columns: cols.map(w => ({ 
+            width: w, 
+            blocks: [],
+            backgroundImage: '',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+        }))
       }
     };
+    this.closeAllEditors();
     this.blocks.push(newBlock);
     this.showStructureChoice = false;
     this.activeBlocksArray = newBlock.data.columns[0].blocks;
@@ -269,9 +281,27 @@ export class ElementorEditor implements ControlValueAccessor, OnChanges {
       case 'divider': return { thickness: '1px', color: '#eeeeee', margin: '20px 0', editing: true };
       case 'row': return { 
         editing: false,
+        backgroundImage: '',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         columns: [
-          { width: '50%', blocks: [] },
-          { width: '50%', blocks: [] }
+          { 
+            width: '50%', 
+            blocks: [], 
+            backgroundImage: '',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          },
+          { 
+            width: '50%', 
+            blocks: [],
+            backgroundImage: '',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }
         ]
       };
       default: return { editing: true };
@@ -317,6 +347,11 @@ export class ElementorEditor implements ControlValueAccessor, OnChanges {
       return val;
     };
 
+    const getBackgroundStyle = (data: any) => {
+      if (!data.backgroundImage) return '';
+      return `background-image: url('${data.backgroundImage}'); background-size: ${data.backgroundSize || 'cover'}; background-position: ${data.backgroundPosition || 'center'}; background-repeat: ${data.backgroundRepeat || 'no-repeat'};`;
+    };
+
     switch (block.type) {
       case 'text':
         return `<div class="elementor-block-text" style="${baseStyle} line-height: 1.6;">${block.data.content}</div>`;
@@ -351,12 +386,14 @@ export class ElementorEditor implements ControlValueAccessor, OnChanges {
         return `<div class="elementor-block-divider" style="${baseStyle} border-top: ${ensureUnit(block.data.thickness)} solid ${block.data.color}; width: 100%; margin: ${block.data.margin};"></div>`;
       
       case 'row':
+        const rowBgStyle = getBackgroundStyle(block.data);
         const colsHtml = block.data.columns.map((col: any) => {
-            return `<div class="elementor-column" style="width: ${ensureUnit(col.width, '%')}; flex: 0 0 ${ensureUnit(col.width, '%')}; padding: 0 10px; box-sizing: border-box;">
+            const colBgStyle = getBackgroundStyle(col);
+            return `<div class="elementor-column" style="width: ${ensureUnit(col.width, '%')}; flex: 0 0 ${ensureUnit(col.width, '%')}; padding: 20px 10px; box-sizing: border-box; ${colBgStyle}">
                         ${this.blocksToHtml(col.blocks)}
                     </div>`;
         }).join('');
-        return `<div class="elementor-row" style="display: flex; flex-wrap: wrap; margin-left: -10px; margin-right: -10px; margin-bottom: 20px;">${colsHtml}</div>`;
+        return `<div class="elementor-row" style="display: flex; flex-wrap: wrap; margin-left: -10px; margin-right: -10px; margin-bottom: 20px; ${rowBgStyle}">${colsHtml}</div>`;
       
       default:
         return '';
@@ -417,6 +454,39 @@ export class ElementorEditor implements ControlValueAccessor, OnChanges {
     }
   }
 
+  async onBackgroundImageUpload(target: any, event: any) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!['image/jpeg', 'image/png', 'image/jpg', 'image/webp'].includes(file.type)) {
+        alert('Unsupported file type.');
+        return;
+    }
+
+    if (this.uploadFn) {
+        try {
+            target.loading = true;
+            this.cd.detectChanges();
+            
+            const url = await this.uploadFn(file);
+            target.backgroundImage = url;
+            target.loading = false;
+            this.updateValue();
+            this.cd.detectChanges();
+        } catch (e: any) {
+            target.loading = false;
+            this.cd.detectChanges();
+            alert(e.message || 'Upload failed.');
+        }
+    }
+  }
+
+  removeBackgroundImage(target: any) {
+    target.backgroundImage = '';
+    this.updateValue();
+    this.cd.detectChanges();
+  }
+
   toggleEdit(block: ElementorBlock, event?: Event) {
     if (event) {
         event.stopPropagation();
@@ -428,7 +498,14 @@ export class ElementorEditor implements ControlValueAccessor, OnChanges {
   }
 
   addRowColumn(block: ElementorBlock) {
-    block.data.columns.push({ width: '50%', blocks: [] });
+    block.data.columns.push({ 
+        width: '50%', 
+        blocks: [],
+        backgroundImage: '',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+    });
     this.recalculateColumnWidths(block);
     this.updateValue();
   }

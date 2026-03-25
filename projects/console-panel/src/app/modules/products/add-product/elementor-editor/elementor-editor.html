@@ -196,7 +196,7 @@
               @case ('row') {
                 <div class="row-editor">
                   <p class="small text-muted mb-2">Layout Configuration</p>
-                  <div class="d-flex gap-2">
+                  <div class="d-flex gap-2 mb-3">
                     <button type="button" class="btn btn-outline-secondary btn-sm" (click)="addRowColumn(block)">
                       <i class="fa fa-plus me-1"></i> Add Column
                     </button>
@@ -208,6 +208,102 @@
                         </div>
                       }
                     </div>
+                  </div>
+
+                  <!-- ROW BACKGROUND -->
+                  <div class="bg-settings-box mb-3">
+                    <p class="small fw-bold mb-2">Row Background</p>
+                    <div class="d-flex gap-3 align-items-start">
+                      <div class="bg-preview-small" [style.background-image]="'url(' + block.data.backgroundImage + ')'" [class.empty]="!block.data.backgroundImage">
+                        @if (!block.data.backgroundImage) { <i class="fa fa-image opacity-25"></i> }
+                        @if (block.data.loading) { <i class="fa fa-spinner fa-spin"></i> }
+                      </div>
+                      <div class="flex-grow-1">
+                        <div class="d-flex gap-2 mb-2">
+                          <label class="btn btn-xs btn-outline-primary m-0">
+                            {{ block.data.backgroundImage ? 'Change' : 'Upload' }}
+                            <input type="file" (change)="onBackgroundImageUpload(block.data, $event)" hidden accept="image/*">
+                          </label>
+                          <button type="button" class="btn btn-xs btn-outline-danger" *ngIf="block.data.backgroundImage" (click)="removeBackgroundImage(block.data)">Remove</button>
+                        </div>
+                        @if (block.data.backgroundImage) {
+                          <div class="row g-2">
+                            <div class="col-6">
+                              <label class="xx-small text-muted d-block">Size</label>
+                              <select [(ngModel)]="block.data.backgroundSize" (ngModelChange)="updateValue()" class="form-select form-select-xs">
+                                <option value="cover">Cover</option>
+                                <option value="contain">Contain</option>
+                                <option value="auto">Auto</option>
+                              </select>
+                            </div>
+                            <div class="col-6">
+                              <label class="xx-small text-muted d-block">Position</label>
+                              <select [(ngModel)]="block.data.backgroundPosition" (ngModelChange)="updateValue()" class="form-select form-select-xs">
+                                <option value="center">Center</option>
+                                <option value="top">Top</option>
+                                <option value="bottom">Bottom</option>
+                                <option value="left">Left</option>
+                                <option value="right">Right</option>
+                              </select>
+                            </div>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- COLUMNS BACKGROUNDS -->
+                  <div class="accordion accordion-flush bg-settings-accordion" id="colBgAccordion">
+                    @for (col of block.data.columns; track $index) {
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button class="accordion-button collapsed py-2 small" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#col-bg-' + block.id + '-' + $index">
+                            Column {{ $index + 1 }} Background ({{ col.width }})
+                          </button>
+                        </h2>
+                        <div [id]="'col-bg-' + block.id + '-' + $index" class="accordion-collapse collapse" data-bs-parent="#colBgAccordion">
+                          <div class="accordion-body p-2">
+                            <div class="d-flex gap-3 align-items-start">
+                              <div class="bg-preview-small" [style.background-image]="'url(' + col.backgroundImage + ')'" [class.empty]="!col.backgroundImage">
+                                @if (!col.backgroundImage) { <i class="fa fa-image opacity-25"></i> }
+                                @if (col.loading) { <i class="fa fa-spinner fa-spin"></i> }
+                              </div>
+                              <div class="flex-grow-1">
+                                <div class="d-flex gap-2 mb-2">
+                                  <label class="btn btn-xs btn-outline-primary m-0">
+                                    {{ col.backgroundImage ? 'Change' : 'Upload' }}
+                                    <input type="file" (change)="onBackgroundImageUpload(col, $event)" hidden accept="image/*">
+                                  </label>
+                                  <button type="button" class="btn btn-xs btn-outline-danger" *ngIf="col.backgroundImage" (click)="removeBackgroundImage(col)">Remove</button>
+                                </div>
+                                @if (col.backgroundImage) {
+                                  <div class="row g-2">
+                                    <div class="col-6">
+                                      <label class="xx-small text-muted d-block">Size</label>
+                                      <select [(ngModel)]="col.backgroundSize" (ngModelChange)="updateValue()" class="form-select form-select-xs">
+                                        <option value="cover">Cover</option>
+                                        <option value="contain">Contain</option>
+                                        <option value="auto">Auto</option>
+                                      </select>
+                                    </div>
+                                    <div class="col-6">
+                                      <label class="xx-small text-muted d-block">Position</label>
+                                      <select [(ngModel)]="col.backgroundPosition" (ngModelChange)="updateValue()" class="form-select form-select-xs">
+                                        <option value="center">Center</option>
+                                        <option value="top">Top</option>
+                                        <option value="bottom">Bottom</option>
+                                        <option value="left">Left</option>
+                                        <option value="right">Right</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                }
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    }
                   </div>
                 </div>
               }
@@ -246,7 +342,12 @@
 
             <div *ngSwitchCase="'divider'" [style.border-top]="block.data.thickness + ' solid ' + block.data.color" [style.margin]="block.data.margin"></div>
 
-            <div *ngSwitchCase="'row'" class="elementor-row-preview" style="display: flex; flex-wrap: wrap;">
+            <div *ngSwitchCase="'row'" class="elementor-row-preview" 
+                 style="display: flex; flex-wrap: wrap;"
+                 [style.background-image]="block.data.backgroundImage ? 'url(' + block.data.backgroundImage + ')' : null"
+                 [style.background-size]="block.data.backgroundSize"
+                 [style.background-position]="block.data.backgroundPosition"
+                 [style.background-repeat]="block.data.backgroundRepeat">
               @for (col of block.data.columns; track $index) {
                 <div class="elementor-column-preview" 
                      [style.width]="col.width" 
@@ -255,7 +356,12 @@
                      (click)="selectTarget(col.blocks, $event)"
                      cdkDropList
                      [cdkDropListData]="col.blocks"
-                     (cdkDropListDropped)="onDrop($event)">
+                     (cdkDropListDropped)="onDrop($event)"
+                     [style.background-image]="col.backgroundImage ? 'url(' + col.backgroundImage + ')' : null"
+                     [style.background-size]="col.backgroundSize"
+                     [style.background-position]="col.backgroundPosition"
+                     [style.background-repeat]="col.backgroundRepeat"
+                     style="padding: 20px 10px; min-height: 50px;">
                   
                   @if (activeBlocksArray === col.blocks) {
                     <div class="active-indicator">Target</div>
@@ -273,6 +379,7 @@
             </div>
           </div>
         }
+
       </div>
     </div>
   }

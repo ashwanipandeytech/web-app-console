@@ -7,6 +7,9 @@ import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
 import { GlobalService } from '../../global.service';
 import { environment } from 'environments/environment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AddPage } from './add';
+
 @Component({
   selector: 'app-pages',
   templateUrl: './pages.component.html',
@@ -17,6 +20,7 @@ import { environment } from 'environments/environment';
 export class PageList implements OnInit {
   settings: any = FormGroup;
   public dataService: any = inject(DataService);
+  private ngbModal = inject(NgbModal);
   pageList: any = [
 
   ]
@@ -50,11 +54,17 @@ export class PageList implements OnInit {
   }
 
   editPage(page: any) {
-    //console.log('Edit Page:', page);
-    // open add page and bind data for editing
-    this.router.navigate(['/add-page'], {
-      queryParams: { slug: page.slug, mode: 'edit' }
+    const dialogRef = this.ngbModal.open(AddPage, {
+      size: 'xl',
+      centered: true,
+      backdrop: 'static'
     });
+    dialogRef.componentInstance.data = { mode: 'edit', item: page, slug: page.slug };
+    dialogRef.result.then((result) => {
+      if (result === 'success') {
+        this.ngOnInit();
+      }
+    }, () => {});
   }
 
   deletePage(index: number) {
@@ -80,7 +90,17 @@ export class PageList implements OnInit {
     }
   }
   addPage() {
-    this.router.navigate(['/add-page']);
+    const dialogRef = this.ngbModal.open(AddPage, {
+      size: 'xl',
+      centered: true,
+      backdrop: 'static'
+    });
+    dialogRef.componentInstance.data = { mode: 'new' };
+    dialogRef.result.then((result) => {
+      if (result === 'success') {
+        this.ngOnInit();
+      }
+    }, () => {});
   }
 
   getDescriptionPreview(value: any, maxLength: number = 120): string {

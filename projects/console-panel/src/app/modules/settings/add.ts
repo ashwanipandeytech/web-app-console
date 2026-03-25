@@ -1,6 +1,5 @@
-
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild, TemplateRef, Input, Optional } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
@@ -9,45 +8,81 @@ import { GlobalService } from '../../global.service';
 import { CustomEditorComponent } from 'custom-editor';
 import { firstValueFrom } from 'rxjs';
 import { environment } from 'environments/environment';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { ElementorEditor } from '../products/add-product/elementor-editor/elementor-editor';
+
 @Component({
   selector: 'app-addpage',
   templateUrl: './add.html',
-  imports: [FormsModule, CommonModule, CustomEditorComponent],
+  imports: [FormsModule, CommonModule, CustomEditorComponent, ElementorEditor],
   styleUrls: ['./add.scss'],
   standalone:true
 })
 export class AddPage implements OnInit {
- public dataService: any = inject(DataService);
-    private router: Router = inject(Router);
-    private route: ActivatedRoute = inject(ActivatedRoute);
-    private cdr = inject(ChangeDetectorRef);
-    isEdit = false;
-newPage:any=
-  {
-    
-   "title":"",
-   "description":"",
-   "slug":"",
-   "pageContent":"",
-   "seoData":{
-    "keywords":"",
-    "metaTitle":"",
-    "metaDescription":""
-   
-    
-   }
+  public dataService: any = inject(DataService);
+  private router: Router = inject(Router);
+  private route: ActivatedRoute = inject(ActivatedRoute);
+  private cdr = inject(ChangeDetectorRef);
+  private modalService = inject(NgbModal);
+  private sanitizer = inject(DomSanitizer);
 
-}
-  constructor(private globalService:GlobalService) {
+  @Input() data: any;
+
+  isEdit = false;
+  elementorMode = {
+    description: false,
+    pageContent: false
+  };
   
-   }
+  currentEditingField: 'description' | 'pageContent' | null = null;
+  tempElementorValue = '';
+  
+  newPage:any= {
+    "title":"",
+    "description":"",
+    "slug":"",
+    "pageContent":"",
+    "seoData":{
+      "keywords":"",
+      "metaTitle":"",
+      "metaDescription":""
+    }
+  }
+
+  constructor(
+    private globalService: GlobalService,
+    @Optional() public activeModal: NgbActiveModal
+  ) { }
 
   ngOnInit() {
-    const slug = this.route.snapshot.queryParamMap.get('slug');
-    if (slug) {
-      this.isEdit = true;
-      this.loadPage(slug);
+    if (this.data) {
+      if (this.data.mode === 'edit') {
+        this.isEdit = true;
+        if (this.data.slug) {
+          this.loadPage(this.data.slug);
+        } else if (this.data.item) {
+          this.newPage = { ...this.data.item };
+          this.detectElementorMode();
+        }
+      }
+    } else {
+      const slug = this.route.snapshot.queryParamMap.get('slug');
+      if (slug) {
+        this.isEdit = true;
+        this.loadPage(slug);
+      }
     }
+  }
+
+  private detectElementorMode() {
+    const isElementor = (val: string) => val?.includes('<!-- ELEMENTOR_BLOCKS:') || val?.includes('elementor-content-wrapper');
+    if (isElementor(this.newPage.description)) this.elementorMode.description = true;
+    if (isElementor(this.newPage.pageContent)) this.elementorMode.pageContent = true;
+  }
+
+  getSafeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html || '');
   }
 
   private loadPage(slug: string) {
@@ -62,19 +97,37 @@ newPage:any=
       .subscribe((res: any) => {
         if (res?.success && res?.data?.settings) {
           this.newPage = res.data.settings;
+          this.detectElementorMode();
           this.cdr.detectChanges();
         }
       });
   }
 
+  openVisualEditor(field: 'description' | 'pageContent', modalTemplate: any) {
+    this.currentEditingField = field;
+    this.tempElementorValue = this.newPage[field] || '';
+    
+    this.modalService.open(modalTemplate, {
+      size: 'xl',
+      centered: true,
+      scrollable: true,
+      backdrop: 'static'
+    }).result.then((result) => {
+      if (result === 'save' && this.currentEditingField) {
+        this.elementorMode[this.currentEditingField] = true;
+        this.newPage[this.currentEditingField] = this.tempElementorValue;
+      }
+      this.cdr.detectChanges();
+    }, () => {
+      this.cdr.detectChanges();
+    });
+  }
+
   handleImageUpload = async (file: File): Promise<string> => {
-    if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
+    if (!['image/jpeg', 'image/png', 'image/jpg', 'image/webp'].includes(file.type)) {
       throw new Error('Unsupported file type');
     }
-    if (file.size > 1_000_000) {
-      throw new Error('File size too large');
-    }
-
+    
     const formData = new FormData();
     formData.append('files', file);
     formData.append('type', 'pages');
@@ -129,28 +182,39 @@ newPage:any=
     return normalizeUrl(imageUrl);
   };
 
- addPage(){
+  addPage() {
     let payload= {
-          settings_name:this.newPage.slug,
-          settings:this.newPage
+      settings_name:this.newPage.slug,
+      settings:this.newPage
+    }
+    const method = this.isEdit ? 'put' : 'post';
+    const endpoint = this.isEdit ? `pages/${this.newPage.slug}` : 'pages';
+
+    this.dataService[method](payload, endpoint)
+      .pipe(
+        catchError(err => {
+          this.globalService.showToast(err);
+          console.error('Error:', err);
+          return of(null);
+        })
+      )
+      .subscribe((res: any) => {
+        if (res?.success) {
+          this.globalService.showToast(res);
+          if (this.activeModal) {
+            this.activeModal.close('success');
+          } else {
+            this.router.navigate(['/pages']);
+          }
         }
-        this.dataService.post(payload, 'pages')
-          .pipe(
-            catchError(err => {
-                this.globalService.showToast(err);
-              console.error('Error:', err);
-              return of(null);
-            })
-          )
-          .subscribe((res: any) => {
-            //console.log('Response:', res);
-              this.globalService.showToast(res);
-              this.router.navigate(['/pages']);
-          
-         
-          });
-}
+      });
+  }
 
-
-
+  closeModal() {
+    if (this.activeModal) {
+      this.activeModal.dismiss();
+    } else {
+      this.router.navigate(['/pages']);
+    }
+  }
 }

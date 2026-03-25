@@ -1,0 +1,68 @@
+:host {
+  .elementor-preview-container {
+    min-height: 150px;
+    max-height: 500px;
+    overflow: hidden;
+    cursor: pointer !important;
+    transition: border-color 0.2s ease;
+    position: relative !important;
+    display: block !important;
+    border: 2px solid #dee2e6;
+    background-color: #f8f9fa;
+    margin-bottom: 10px;
+
+    .elementor-content-preview {
+      pointer-events: none !important;
+      opacity: 0.8;
+      zoom: 0.8;
+      display: block !important;
+      min-height: 100px;
+    }
+
+    .elementor-edit-overlay {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      background: rgba(0, 147, 221, 0.4) !important;
+      display: none !important; // Hide by default
+      align-items: center !important;
+      justify-content: center !important;
+      z-index: 999 !important;
+      pointer-events: none !important;
+
+      .btn {
+          background-color: #0093dd !important;
+          color: #fff !important;
+          border: none !important;
+          padding: 10px 24px !important;
+          border-radius: 4px !important;
+          font-weight: 600 !important;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          gap: 8px !important;
+          pointer-events: none !important;
+      }
+    }
+
+    &:hover {
+      border-color: #0093dd !important;
+      box-shadow: 0 0 15px rgba(0, 147, 221, 0.2) !important;
+      
+      .elementor-edit-overlay {
+        display: flex !important; // Show on hover
+      }
+    }
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.btn-xs {
+  padding: 2px 8px;
+  font-size: 11px;
+}
