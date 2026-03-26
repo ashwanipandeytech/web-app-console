@@ -72,9 +72,26 @@
               </ngx-slick-carousel>
 
               <div class="cart-btn d-flex justify-content-center gap-2 cta-actions mt-2">
-                <button (click)="addToCart()" class="shop-btn w-100">Add to Cart</button>
-                <button (click)="addToCart('buy')" class="shop-btn w-100 shop-btn-warning">Buy now</button>
+                <button
+                  (click)="addToCart()"
+                  class="shop-btn w-100"
+                  [disabled]="shouldDisableCartActions"
+                >
+                  Add to Cart
+                </button>
+                <button
+                  (click)="addToCart('buy')"
+                  class="shop-btn w-100 shop-btn-warning"
+                  [disabled]="shouldDisableCartActions"
+                >
+                  Buy now
+                </button>
               </div>
+              @if (isVariableProduct && !selectedVariantId) {
+                <small class="text-muted d-block mt-2 px-2">
+                  Select all variant options to enable purchase.
+                </small>
+              }
 
             </div>
           </div>
@@ -85,14 +102,40 @@
             <div class="product-info-content-price rounded-3 mb-3">
               <span class="wrapper-subtitle">{{ productDetails?.category?.name }}</span>
               <h3 class="wrapper-heading fs-20 mt-2">{{ productDetails?.title }}</h3>
-
               <div class="d-flex justify-content-between mt-2">
                 <div class="price my-0 gap-2">
-                  <span class="price-cut">₹{{ productDetails?.price_data?.regularPrice }}</span>
-                  <span class="new-price">₹{{ productDetails?.price_data?.salePrice }}</span>
+                  @if (displayRegularPrice !== null && displayRegularPrice !== undefined) {
+                    <span class="price-cut">&#8377;{{ displayRegularPrice }}</span>
+                  }
+                  <span class="new-price">&#8377;{{ displaySalePrice ?? productDetails?.price_data?.salePrice }}</span>
                 </div>
               </div>
 
+              @if (isVariableProduct && configurableOptions.length > 0) {
+                <div class="variant-selector-wrap mt-3 mb-1">
+                  @for (option of configurableOptions; track option.key) {
+                    <div class="variant-option-group mb-2">
+                      <div class="variant-option-title">{{ getOptionName(option) }}</div>
+                      <div class="d-flex flex-wrap gap-2 mt-1">
+                        @for (value of getOptionValues(option); track value.id) {
+                          <button
+                            type="button"
+                            class="btn btn-sm variant-option-btn"
+                            [class.active]="isVariantOptionSelected(option, value)"
+                            [disabled]="isVariantOptionDisabled(option, value)"
+                            (click)="onVariantOptionSelect(option, value)">
+                            {{ getOptionValueLabel(value) }}
+                          </button>
+                        }
+                      </div>
+                    </div>
+                  }
+
+                  @if (variantSelectionError) {
+                    <small class="text-danger d-block mt-1">{{ variantSelectionError }}</small>
+                  }
+                </div>
+              }
               <div class="product-quantity align-items-start justify-content-start mt-2">
 
 
@@ -164,8 +207,7 @@
             <div class="d-sm-flex align-items-center">
               <div class="fs-16">
                 <span>Availabillity : </span>
-                <strong class="inner-text text-black fw-semibold">{{ productDetails?.inventory?.manageStock }} Products
-                  Available</strong>
+                <strong class="inner-text text-black fw-semibold">{{ availabilityText }}</strong>
               </div>
 
               <div class="product-share mt-2 mt-sm-0 gap-2 ms-auto">

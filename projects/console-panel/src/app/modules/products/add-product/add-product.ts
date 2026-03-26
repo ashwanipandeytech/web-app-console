@@ -409,6 +409,7 @@ export class AddProduct {
   priceSection!: FormGroup;
   shippingInfoSection!: FormGroup;
   productAttributesForm!: FormGroup;
+  variantsReactiveForm!: FormGroup;
 
   categoryListData: any = {
     isSelectedCategory: {},
@@ -479,33 +480,239 @@ export class AddProduct {
       } else {
         this.allAttributes = res || [];
       }
+      this.syncSelectedAttributesFromExistingVariants();
       this.cd.detectChanges();
     });
   }
 
+  private buildSelectedVariationAttribute(attr: any, existingAttr?: any) {
+    const validValueIds = new Set((attr.values || []).map((value: any) => String(value.id)));
+    const existingValueIds = Array.isArray(existingAttr?.value_ids) ? existingAttr.value_ids : [];
+    const valueIds = existingValueIds.filter((id: any) => validValueIds.has(String(id)));
+
+    return {
+      attribute_id: attr.id,
+      name: attr.name,
+      type: attr.type,
+      value_ids: valueIds,
+      values: attr.values || []
+    };
+  }
+
+  private initializeVariantsReactiveForm() {
+    this.variantsReactiveForm = this.fb.group({
+      variants: this.fb.array([])
+    });
+  }
+
+  get variantsFormArray(): FormArray {
+    return this.variantsReactiveForm.get('variants') as FormArray;
+  }
+
+  private rebuildVariantsFormArray(variants: any[]) {
+    if (!this.variantsReactiveForm) {
+      return;
+    }
+
+    const formArray = this.variantsFormArray;
+    formArray.clear();
+
+    (variants || []).forEach((variant: any) => {
+      formArray.push(
+        this.fb.group({
+          sku_suffix: [variant?.sku_suffix || ''],
+          attribute_value_ids: [this.normalizeAttributeValueIds(variant?.attribute_value_ids)],
+          price: [variant?.price ?? ''],
+          stock: [variant?.stock ?? 0],
+          is_active: [variant?.is_active ?? true]
+        })
+      );
+    });
+  }
+
+  private parseVariantsCandidate(candidate: any): any[] {
+    if (Array.isArray(candidate)) {
+      return candidate;
+    }
+    if (candidate && Array.isArray(candidate.data)) {
+      return candidate.data;
+    }
+    if (candidate && candidate.data !== undefined) {
+      const nestedData = this.parseVariantsCandidate(candidate.data);
+      if (nestedData.length > 0) {
+        return nestedData;
+      }
+    }
+    if (typeof candidate === 'string') {
+      try {
+        const parsed = JSON.parse(candidate);
+        return this.parseVariantsCandidate(parsed);
+      } catch (error) {
+        return [];
+      }
+    }
+    return [];
+  }
+
+  private extractVariantsFromItem(item: any): any[] {
+    const candidates = [
+      item?.variants,
+      item?.variant,
+      item?.product_details?.variants,
+      item?.attributes?.variants
+    ];
+
+    for (const candidate of candidates) {
+      const parsed = this.parseVariantsCandidate(candidate);
+      if (parsed.length > 0) {
+        return parsed;
+      }
+    }
+    return [];
+  }
+
+  private normalizeAttributeValueIds(rawValue: any): any[] {
+    const toNormalizedId = (value: any) => {
+      if (typeof value === 'number') {
+        return value;
+      }
+
+      const text = String(value ?? '').trim();
+      if (text === '') {
+        return null;
+      }
+
+      const parsedNumber = Number(text);
+      return Number.isNaN(parsedNumber) ? text : parsedNumber;
+    };
+
+    if (Array.isArray(rawValue)) {
+      return rawValue
+        .map((value) => toNormalizedId(value))
+        .filter((value) => value !== null);
+    }
+
+    if (typeof rawValue === 'string') {
+      const trimmed = rawValue.trim();
+      if (trimmed === '') {
+        return [];
+      }
+
+      try {
+        const parsed = JSON.parse(trimmed);
+        if (Array.isArray(parsed)) {
+          return parsed
+            .map((value) => toNormalizedId(value))
+            .filter((value) => value !== null);
+        }
+      } catch (error) {
+        // Falls back to comma-separated parsing below.
+      }
+
+      return trimmed
+        .split(',')
+        .map((value) => toNormalizedId(value))
+        .filter((value) => value !== null);
+    }
+
+    const singleValue = toNormalizedId(rawValue);
+    return singleValue === null ? [] : [singleValue];
+  }
+
+  private normalizeVariantCombinations(rows: any[]) {
+    if (!Array.isArray(rows)) {
+      return [];
+    }
+
+    return rows.map((row: any) => {
+      const attributeValueIds = this.normalizeAttributeValueIds(row?.attribute_value_ids);
+      const nameFromDetails = Array.isArray(row?.attributes_detail)
+        ? row.attributes_detail
+            .map((detail: any) => detail?.value_name)
+            .filter((name: any) => typeof name === 'string' && name.trim() !== '')
+            .join(' - ')
+        : '';
+
+      return {
+        sku_suffix: row?.sku_suffix || '',
+        variant_name: row?.variant_name || nameFromDetails || row?.sku_suffix || '',
+        attribute_value_ids: attributeValueIds,
+        attributes_detail: Array.isArray(row?.attributes_detail) ? row.attributes_detail : [],
+        price: row?.price ?? '',
+        stock: row?.stock ?? 0,
+        is_active: row?.is_active ?? true
+      };
+    });
+  }
+
+  private syncSelectedAttributesFromExistingVariants() {
+    if (!Array.isArray(this.allAttributes) || this.allAttributes.length === 0) {
+      return;
+    }
+
+    const selectedValueIds = new Set<string>();
+    (this.variableCombinations || []).forEach((variant: any) => {
+      const ids = Array.isArray(variant?.attribute_value_ids) ? variant.attribute_value_ids : [];
+      ids.forEach((id: any) => selectedValueIds.add(String(id)));
+    });
+
+    if (selectedValueIds.size === 0) {
+      this.selectedAttributesForVariations = [];
+      return;
+    }
+
+    this.selectedAttributesForVariations = this.allAttributes
+      .map((attr: any) => {
+        const values = Array.isArray(attr?.values) ? attr.values : [];
+        const selectedIds = values
+          .filter((value: any) => selectedValueIds.has(String(value.id)))
+          .map((value: any) => value.id);
+
+        if (selectedIds.length === 0) {
+          return null;
+        }
+
+        return this.buildSelectedVariationAttribute(attr, { value_ids: Array.from(new Set(selectedIds)) });
+      })
+      .filter((attr: any) => attr !== null);
+  }
+
   toggleAttributeSelection(attr: any) {
-    const index = this.selectedAttributesForVariations.findIndex(a => a.attribute_id === attr.id);
+    const index = this.selectedAttributesForVariations.findIndex(
+      (a) => String(a.attribute_id) === String(attr.id)
+    );
     if (index > -1) {
       this.selectedAttributesForVariations.splice(index, 1);
     } else {
-      this.selectedAttributesForVariations.push({
-        attribute_id: attr.id,
-        name: attr.name,
-        value_ids: [],
-        values: attr.values || []
-      });
+      this.selectedAttributesForVariations.push(this.buildSelectedVariationAttribute(attr));
     }
   }
 
-  isAttributeSelected(attrId: number) {
-    return this.selectedAttributesForVariations.some(a => a.attribute_id === attrId);
+  isAttributeSelected(attrId: number | string) {
+    return this.selectedAttributesForVariations.some(
+      (a) => String(a.attribute_id) === String(attrId)
+    );
   }
 
-  toggleValueSelection(attrId: number, valueId: number) {
-    const attr = this.selectedAttributesForVariations.find(a => a.attribute_id === attrId);
-    if (!attr) return;
+  toggleValueSelection(attrId: number | string, valueId: number | string) {
+    const normalizedAttrId = String(attrId);
+    let attr = this.selectedAttributesForVariations.find(
+      (a) => String(a.attribute_id) === normalizedAttrId
+    );
 
-    const vIndex = attr.value_ids.indexOf(valueId);
+    if (!attr) {
+      const sourceAttr = this.allAttributes.find(
+        (attribute) => String(attribute.id) === normalizedAttrId
+      );
+      if (!sourceAttr) {
+        return;
+      }
+      attr = this.buildSelectedVariationAttribute(sourceAttr);
+      this.selectedAttributesForVariations.push(attr);
+    }
+
+    const normalizedValueId = String(valueId);
+    const vIndex = attr.value_ids.findIndex((id: any) => String(id) === normalizedValueId);
     if (vIndex > -1) {
       attr.value_ids.splice(vIndex, 1);
     } else {
@@ -513,9 +720,17 @@ export class AddProduct {
     }
   }
 
-  isValueSelected(attrId: number, valueId: number) {
-    const attr = this.selectedAttributesForVariations.find(a => a.attribute_id === attrId);
-    return attr ? attr.value_ids.includes(valueId) : false;
+  isValueSelected(attrId: number | string, valueId: number | string) {
+    const normalizedAttrId = String(attrId);
+    const normalizedValueId = String(valueId);
+    const attr = this.selectedAttributesForVariations.find(
+      (a) => String(a.attribute_id) === normalizedAttrId
+    );
+    return attr ? attr.value_ids.some((id: any) => String(id) === normalizedValueId) : false;
+  }
+
+  hasSelectedVariationValues() {
+    return this.selectedAttributesForVariations.some((attr) => attr.value_ids?.length > 0);
   }
 
   generateVariations() {
@@ -525,7 +740,7 @@ export class AddProduct {
       .map(a => a.value_ids);
 
     if (attributeValues.length === 0) {
-        this.globalService.showToast({ success: false, message: 'Please select at least one value for each attribute' });
+        this.globalService.showToast({ success: false, message: 'Please select at least one value to preview combinations' });
         return;
     }
 
@@ -535,15 +750,16 @@ export class AddProduct {
 
     this.dataService.post(payload, 'attributes/generate-preview').subscribe((res: any) => {
       if (res.success) {
-        // Map the preview combinations to the format expected by our table
-        this.variableCombinations = (res.combinations || []).map((combo: any) => ({
-          variant_name: combo.variant_name,
-          attribute_value_ids: combo.attribute_value_ids,
-          sku_suffix: combo.sku_suffix || '',
-          price: combo.price || this.priceSection.value.regularPrice || 0,
-          stock: combo.stock || 0,
-          is_active: true
-        }));
+        const previewRows = Array.isArray(res?.data)
+          ? res.data
+          : Array.isArray(res?.data?.data)
+            ? res.data.data
+            : Array.isArray(res?.combinations)
+              ? res.combinations
+              : [];
+
+        this.variableCombinations = this.normalizeVariantCombinations(previewRows);
+        this.rebuildVariantsFormArray(this.variableCombinations);
         this.globalService.showToast({ success: true, message: 'Variants generated' });
         this.cd.detectChanges();
       }
@@ -571,8 +787,12 @@ export class AddProduct {
 
     if (this.data?.item) {
         this.productType = this.data.item.product_type || 'simple';
-        if (this.productType === 'variable' && this.data.item.variants) {
-            this.variableCombinations = this.data.item.variants;
+        const existingVariants = this.extractVariantsFromItem(this.data.item);
+        if (existingVariants.length > 0) {
+            this.productType = 'variable';
+            this.variableCombinations = this.normalizeVariantCombinations(existingVariants);
+            this.rebuildVariantsFormArray(this.variableCombinations);
+            this.syncSelectedAttributesFromExistingVariants();
         }
         const details = this.data.item.product_details;
         if (details) {
@@ -592,6 +812,7 @@ export class AddProduct {
     // console.log('data',this.data);
     // console.log('this.data.category.length ===>',this.data.images );
     console.log('log==>', this.data?.item);
+    this.initializeVariantsReactiveForm();
     //    Object.keys(this.data.flags || {}).length ||
     // Object.keys(this.data.images || {}).length ||
 
@@ -1240,6 +1461,66 @@ export class AddProduct {
     }
   }
 
+  private getCustomAttributesPayload() {
+    const rawAttributes = this.productAttributesForm?.get('attributes')?.value;
+    if (!Array.isArray(rawAttributes)) {
+      return [];
+    }
+
+    return rawAttributes
+      .map((item: any) => ({
+        name: String(item?.name ?? '').trim(),
+        value: String(item?.value ?? '').trim()
+      }))
+      .filter((item: any) => item.name !== '' && item.value !== '');
+  }
+
+  private getVariantsPayloadForPublish() {
+    const variantsSource = Array.isArray(this.variableCombinations) ? this.variableCombinations : [];
+    if (variantsSource.length === 0) {
+      return { hasError: false, variants: [] as any[] };
+    }
+
+    const mappedVariants = [];
+
+    for (let index = 0; index < variantsSource.length; index++) {
+      const row = variantsSource[index] || {};
+
+      const rawPrice = row.price;
+      let normalizedPrice: number | null = null;
+      if (rawPrice !== '' && rawPrice !== null && rawPrice !== undefined) {
+        const parsedPrice = Number(rawPrice);
+        if (Number.isNaN(parsedPrice) || parsedPrice < 0) {
+          this.globalService.showToast({
+            success: false,
+            message: `Variant ${index + 1}: price must be a valid number`
+          });
+          return { hasError: true, variants: [] as any[] };
+        }
+        normalizedPrice = parsedPrice;
+      }
+
+      const parsedStock = Number(row.stock ?? 0);
+      if (Number.isNaN(parsedStock) || parsedStock < 0) {
+        this.globalService.showToast({
+          success: false,
+          message: `Variant ${index + 1}: stock must be 0 or greater`
+        });
+        return { hasError: true, variants: [] as any[] };
+      }
+
+      mappedVariants.push({
+        sku_suffix: row.sku_suffix || '',
+        attribute_value_ids: this.normalizeAttributeValueIds(row.attribute_value_ids),
+        price: normalizedPrice,
+        stock: parsedStock,
+        is_active: row.is_active ?? true
+      });
+    }
+
+    return { hasError: false, variants: mappedVariants };
+  }
+
   updateProduct() {
     console.log('this.data?.id===>', this.data?.item?.id);
 
@@ -1252,10 +1533,15 @@ export class AddProduct {
       thumbFile: this.thumbFile,
       galleryFiles: this.galleryFiles,
     };
+    const variantsResult = this.getVariantsPayloadForPublish();
+    if (variantsResult.hasError) {
+      return;
+    }
+    const customAttributes = this.getCustomAttributesPayload();
     let finalData: any = {
       category_id: this.parentId,
       product_type: this.productType,
-      variants: this.productType === 'variable' ? this.variableCombinations : [],
+      ...(variantsResult.variants.length > 0 ? { variants: variantsResult.variants } : {}),
       media: mediaSectionPayload,
       title: this.productDetails.value.productTitle,
       description: this.productDetails.value.productDescription,
@@ -1275,8 +1561,7 @@ export class AddProduct {
         publishDate: this.productMultipleOptionForm.value.publishDate,
         visibility: this.productMultipleOptionForm.value.visibility,
       },
-      attributes: {
-      }
+      attributes: customAttributes
     };
     console.log('this.permaLink==>', this.permaLink);
 
@@ -1337,10 +1622,15 @@ export class AddProduct {
       thumbFile: this.thumbFile,
       galleryFiles: this.galleryFiles,
     };
+    const variantsResult = this.getVariantsPayloadForPublish();
+    if (variantsResult.hasError) {
+      return;
+    }
+    const customAttributes = this.getCustomAttributesPayload();
     let finalData: any = {
       category_id: this.parentId,
       product_type: this.productType,
-      variants: this.productType === 'variable' ? this.variableCombinations : [],
+      ...(variantsResult.variants.length > 0 ? { variants: variantsResult.variants } : {}),
       media: mediaSectionPayload,
       title: this.productDetails.value.productTitle,
       description: this.productDetails.value.productDescription,
@@ -1362,17 +1652,7 @@ export class AddProduct {
         publishDate: this.productMultipleOptionForm.value.publishDate,
         visibility: this.productMultipleOptionForm.value.visibility,
       },
-      attributes: {
-        // product_details: this.productDetails.value
-
-        //      productDetailsObj : {
-        //   productDetails :this.productDetails.value.productTitle,
-        //   shortDescription:this.productDetails.value.shortDescription,
-        //   productDescription: this.productDetails.value.description,
-        //   features:this.productDetails.value.features,
-        //   productStatus: [[]],
-        // }
-      }
+      attributes: customAttributes
     };
     console.log('this.permaLink===>', this.permaLink);
 
@@ -1713,6 +1993,9 @@ export class AddProduct {
     this.productType = 'simple';
     this.variableCombinations = [];
     this.selectedAttributesForVariations = [];
+    if (this.variantsReactiveForm) {
+      this.variantsFormArray.clear();
+    }
     this.thumbGallery = '';
     this.onGetId(removeCategory);
     this.cd.detectChanges();

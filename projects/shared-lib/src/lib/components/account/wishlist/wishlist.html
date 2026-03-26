@@ -54,6 +54,13 @@
                   <h5 class="heading text-capitalize mb-1">
                     {{ item?.product.title }}
                   </h5>
+                  @if (getWishlistVariantAttributes(item).length > 0) {
+                    <div class="text-muted fs-12 d-flex flex-column gap-1 mt-1">
+                      @for (attribute of getWishlistVariantAttributes(item); track $index) {
+                        <span>{{ attribute.name }}: {{ attribute.value }}</span>
+                      }
+                    </div>
+                  }
                 </div>
                 <button
                   class="btn btn-remove-small p-0"
@@ -97,12 +104,17 @@
               <button
                 type="button"
                 class="btn-add-cart"
-                (click)="addToCart(item.product)"
-                [disabled]="item?.product?.inventory?.stockStatus !== 'in_stock'"
+                (click)="addToCart(item)"
+                [disabled]="!canAddWishlistItemToCart(item)"
               >
                 <i class="fa-solid fa-cart-plus"></i>
                 <span>Add to Cart</span>
               </button>
+              @if (isLoggedIn && item?.product?.product_type === 'variable' && !getWishlistVariantId(item)) {
+                <small class="text-danger d-block mt-2">
+                  Variant selection missing for this wishlist item.
+                </small>
+              }
             </div>
           </div>
         </div>

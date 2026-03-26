@@ -106,6 +106,78 @@ export class Checkout {
     this.getAddressList();
   }
 
+  private toNumber(value: any): number | null {
+    if (value === null || value === undefined || value === '') {
+      return null;
+    }
+    const parsed = Number(value);
+    return Number.isNaN(parsed) ? null : parsed;
+  }
+
+  private isVariableProductItem(item: any): boolean {
+    const productType = String(item?.product?.product_type || item?.product_type || '').toLowerCase();
+    return (
+      productType === 'variable' ||
+      item?.variant_id !== undefined ||
+      item?.variant !== undefined ||
+      item?.variant_details !== undefined
+    );
+  }
+
+  getCartItemVariantId(item: any): number | string | null {
+    const candidates = [
+      item?.variant_id,
+      item?.variant?.id,
+      item?.variant?.variant_id,
+      item?.variant_details?.id,
+      item?.variant_details?.variant_id,
+    ];
+
+    for (const candidate of candidates) {
+      if (candidate !== null && candidate !== undefined && candidate !== '') {
+        return candidate;
+      }
+    }
+
+    return null;
+  }
+
+  getCartItemUnitPrice(item: any): number {
+    const candidates = [
+      item?.price,
+      item?.variant_details?.price,
+      item?.variant?.price,
+      item?.product?.price_data?.salePrice,
+      item?.product?.price_data?.finalPrice,
+      item?.product?.price_data?.regularPrice,
+    ];
+
+    for (const candidate of candidates) {
+      const parsed = this.toNumber(candidate);
+      if (parsed !== null) {
+        return parsed;
+      }
+    }
+
+    return 0;
+  }
+
+  getCartItemVariantAttributes(item: any): Array<{ name: string; value: string }> {
+    const variantDetails = item?.variant_details || item?.variant || {};
+    const rawAttributes = Array.isArray(variantDetails?.attributes)
+      ? variantDetails.attributes
+      : Array.isArray(item?.attributes_detail)
+        ? item.attributes_detail
+        : [];
+
+    return rawAttributes
+      .map((attribute: any) => ({
+        name: String(attribute?.name ?? attribute?.attribute_name ?? '').trim(),
+        value: String(attribute?.value ?? attribute?.value_name ?? '').trim(),
+      }))
+      .filter((attribute: any) => attribute.name && attribute.value);
+  }
+
   carList() {
     this.dataService.get('cart').pipe(
       catchError((error) => {
@@ -125,11 +197,8 @@ export class Checkout {
         this.calculateGstPrice(response.data.data);
         for (let i = 0; i < this.cartListData.length; i++) {
           const element = this.cartListData[i];
-          // if (element.) {
-          this.globalService.calculatePrice(element.quantity, i, element.product.price_data.salePrice, this.cartListData);
-          // }
-          //  element.product.price_data['finalPrice'] = element?.product.price_data?.salePrice;
-          //    this.calculatePrice(element.quantity,i,element.product.price_data.regularPrice);
+          const unitPrice = this.getCartItemUnitPrice(element);
+          this.globalService.calculatePrice(element.quantity, i, unitPrice, this.cartListData);
 
         }
         this.calculateSubTotal();
@@ -151,12 +220,17 @@ export class Checkout {
     payload.coupon_code = this.appliedCoupon;
     for (let i = 0; i < data.length; i++) {
       const element = data[i];
-      payload.items.push({
+      const itemPayload: any = {
         quantity: element?.quantity,
         product_id: element?.product.id,
-        salePrice: element?.product?.price_data?.salePrice,
+        salePrice: this.getCartItemUnitPrice(element),
         gstPercent: element?.product?.price_data?.caclulatedObj?.gstPercent
-      })
+      };
+      const variantId = this.getCartItemVariantId(element);
+      if (variantId !== null && variantId !== undefined && variantId !== '') {
+        itemPayload.variant_id = variantId;
+      }
+      payload.items.push(itemPayload);
     }
     this.dataService.postCommonApi(payload, 'calculate-prices')
       .pipe(
@@ -222,13 +296,33 @@ export class Checkout {
   orderSubmit(addressId: any, paymentMethod: any, paymentResponse: any = '', checkoutPaymentData: any = false) {
 
 
-    const payload = this.cartListData.map((cartItem: any, index: any) => (
-      {
+    const missingVariantItem = this.cartListData.find(
+      (cartItem: any) => this.isVariableProductItem(cartItem) && !this.getCartItemVariantId(cartItem)
+    );
+
+    if (missingVariantItem) {
+      this.globalService.showToast({
+        success: false,
+        message: 'Please re-select variant options for all variable products before placing the order.',
+      });
+      return;
+    }
+
+    const payload = this.cartListData.map((cartItem: any) => {
+      const itemPayload: any = {
         product_id: cartItem.product.id,
         quantity: cartItem.quantity,
-        price: cartItem.product.price_data.salePrice,
+        price: this.getCartItemUnitPrice(cartItem),
+      };
+
+      const variantId = this.getCartItemVariantId(cartItem);
+      if (variantId !== null && variantId !== undefined && variantId !== '') {
+        itemPayload.variant_id = variantId;
       }
-    ));
+
+      return itemPayload;
+    });
+
     let OrderSubmitPayload = {
       items: payload.map((item: any, index: any) => ({
         ...item,
@@ -701,7 +795,7 @@ export class Checkout {
     this.globalService.calculatePrice(
       productQuantity,
       index,
-      this.cartListData[index].product.price_data.salePrice,
+      this.getCartItemUnitPrice(this.cartListData[index]),
       this.cartListData
     );
     this.updateCartList(productQuantity, id);
@@ -714,7 +808,7 @@ export class Checkout {
       this.globalService.calculatePrice(
         productQuantity,
         index,
-        this.cartListData[index].product.price_data.salePrice,
+        this.getCartItemUnitPrice(this.cartListData[index]),
         this.cartListData
       );
       this.updateCartList(productQuantity, id);

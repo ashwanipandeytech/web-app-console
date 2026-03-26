@@ -88,28 +88,34 @@ export class ProductComponent implements OnInit {
 );
   }
   toggleHeart(item: any) {
-    console.info('item', item);
+    const productType = String(item?.product_type || '').toLowerCase();
+    if (productType === 'variable') {
+      this.globalService.showToast({
+        success: false,
+        message: 'Please choose variants on the product details page before adding to wishlist.',
+      });
+      this.openProduct(item);
+      return;
+    }
+
     this.isWishlisted = !this.isWishlisted;
-    let data = {
+    const data: any = {
       product_id: item.id,
     };
-    if (item.is_wishlisted) {
-      item.is_wishlisted = !item.is_wishlisted;
-      this.dataService.delete(`wishlist/product/${data.product_id}`).subscribe((res: any) => {
-        //console.log('wishlist==>', res);
+    const previousState = !!item.is_wishlisted;
+    item.is_wishlisted = !previousState;
+
+    this.dataService.post(data, 'wishlist/toggle').subscribe((res: any) => {
+      if (res?.success) {
+        if (typeof res?.data?.is_wishlisted === 'boolean') {
+          item.is_wishlisted = res.data.is_wishlisted;
+        }
         this.globalFunctionService.getCount();
-        this.cd.detectChanges();
-      });
-    } else {
-      item.is_wishlisted = !item.is_wishlisted;
-      this.dataService.post(data, 'wishlist').subscribe((res: any) => {
-        //console.log('wishlist==>', res);
-        this.globalFunctionService.getCount();
-        this.cd.detectChanges();
-      });
-    }
-    this.globalFunctionService.getCount();
-    this.cd.detectChanges();
+      } else {
+        item.is_wishlisted = previousState;
+      }
+      this.cd.detectChanges();
+    });
   }
   callAllProductList() {
     this.dataService
@@ -133,6 +139,15 @@ export class ProductComponent implements OnInit {
   }
 
   addToCart(data: any) {
+      if (String(data?.product_type || '').toLowerCase() === 'variable') {
+        this.globalService.showToast({
+          success: false,
+          message: 'Please select variant options from product details before adding to cart.',
+        });
+        this.openProduct(data);
+        return;
+      }
+
       let isGuest: any = null;
       if (this.isBrowser) {
         isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');

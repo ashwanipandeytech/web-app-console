@@ -318,7 +318,7 @@
                   data-bs-target="#nav-price" type="button" role="tab" aria-controls="nav-price"
                   aria-selected="false">Price</button>
                 <button class="btn btn-sm btn-outline-primary" id="nav-attribute-tab" data-bs-toggle="tab" 
-                  data-bs-target="#nav-attribute" type="button" role="tab" aria-controls="nav-attribute" 
+                  data-bs-target="#nav-attribute" type="button" role="tab" aria-controls="nav-attribute" (click)="productType = 'variable'"
                   aria-selected="false">Attributes</button>
                 <button class="btn btn-sm btn-outline-primary" id="nav-shipping-info-tab" data-bs-toggle="tab"
                   data-bs-target="#nav-shipping-info" type="button" role="tab" aria-controls="nav-shipping-info"
@@ -702,68 +702,133 @@
               <!-- Other Tabs (Unmodified for brevity) -->
               <div class="tab-pane fade" id="nav-attribute" role="tabpanel" aria-labelledby="nav-attribute-tab"
                 tabindex="0">
-                <div class="product-type-selector mb-4 p-3 bg-light rounded border">
+                <!-- <div class="product-type-selector mb-4 p-3 bg-light rounded border">
                   <label class="form-label fw-bold mb-2">Product Type</label>
                   <div class="d-flex gap-3">
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="productType" id="typeSimple" value="simple" [(ngModel)]="productType">
+                      <input class="form-check-input" type="radio" name="productType" id="typeSimple" value="simple" [(ngModel)]="productType" [ngModelOptions]="{standalone: true}">
                       <label class="form-check-label" for="typeSimple">Simple Product</label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="productType" id="typeVariable" value="variable" [(ngModel)]="productType">
+                      <input class="form-check-input" type="radio" name="productType" id="typeVariable" value="variable" [(ngModel)]="productType" [ngModelOptions]="{standalone: true}">
                       <label class="form-check-label" for="typeVariable">Variable Product</label>
                     </div>
                   </div>
-                </div>
+                </div> -->
 
                 @if (productType === 'variable') {
                   <!-- STEP 1: Select Attributes & Values -->
                   <div class="attribute-selection-container p-4 border rounded mb-4 bg-white shadow-sm">
                     <h6 class="border-bottom pb-2 mb-3"><span class="badge bg-primary me-2">STEP 1</span> Select Attributes & Values</h6>
                     
-                    <div class="attributes-master-list">
-                      @for (attr of allAttributes; track attr.id) {
-                        <div class="attribute-row mb-4 p-3 border rounded-3 bg-light-subtle">
-                          <div class="d-flex align-items-center mb-3">
-                            <div class="form-check form-switch">
-                              <input class="form-check-input" type="checkbox" [id]="'attr-' + attr.id" 
-                                     [checked]="isAttributeSelected(attr.id)" (change)="toggleAttributeSelection(attr)">
-                              <label class="form-check-label fw-bold" [for]="'attr-' + attr.id">{{ attr.name }}</label>
-                            </div>
+                    <div class="mb-3">
+                      <label class="form-label fw-semibold">Select Variant Attributes</label>
+                      <div class="d-flex flex-wrap gap-3 attribute-checkbox-list">
+                        @for (attr of allAttributes; track attr.id) {
+                          <div class="form-check attribute-checkbox-item">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              [id]="'attr-top-' + attr.id"
+                              [checked]="isAttributeSelected(attr.id)"
+                              (change)="toggleAttributeSelection(attr)">
+                            <label class="form-check-label fw-medium" [for]="'attr-top-' + attr.id">
+                              {{ attr.name }}
+                            </label>
                           </div>
+                        }
+                      </div>
+                    </div>
 
-                          @if (isAttributeSelected(attr.id)) {
-                            <div class="values-grid d-flex flex-wrap gap-3 ps-4">
-                              @for (val of attr.values; track val.id) {
-                                <div class="value-item">
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" [id]="'val-' + val.id"
-                                           [checked]="isValueSelected(attr.id, val.id)" 
-                                           (change)="toggleValueSelection(attr.id, val.id)">
-                                    <label class="form-check-label" [for]="'val-' + val.id">
-                                      {{ val.value }}
-                                      @if (attr.type === 'color' || attr.type === 'color_swatch') {
-                                        <span class="ms-1 border rounded-circle d-inline-block" 
-                                              [style.background-color]="val.meta" style="width: 12px; height: 12px;"></span>
-                                      }
-                                    </label>
-                                  </div>
+                    @if (selectedAttributesForVariations.length > 0) {
+                      <div class="attributes-master-list">
+                        @for (attr of selectedAttributesForVariations; track attr.attribute_id) {
+                          <div class="attribute-row mb-3 p-3 border rounded-3 bg-light-subtle">
+                            <div class="fw-bold mb-2">{{ attr.name }}</div>
+                            <div class="values-grid d-flex flex-wrap gap-3">
+                              @for (val of (attr.values || []); track val.id) {
+                                <div class="form-check value-item">
+                                  <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    [id]="'val-' + attr.attribute_id + '-' + val.id"
+                                    [checked]="isValueSelected(attr.attribute_id, val.id)"
+                                    (change)="toggleValueSelection(attr.attribute_id, val.id)">
+                                  <label class="form-check-label" [for]="'val-' + attr.attribute_id + '-' + val.id">
+                                    {{ val.value }}
+                                    @if (attr.type === 'color' || attr.type === 'color_swatch') {
+                                      <span class="ms-1 border rounded-circle d-inline-block"
+                                            [style.background-color]="val.meta" style="width: 12px; height: 12px;"></span>
+                                    }
+                                  </label>
                                 </div>
                               }
                             </div>
-                          }
-                        </div>
-                      }
-                    </div>
+                          </div>
+                        }
+                      </div>
+                    } @else {
+                      <p class="text-muted mb-0">Select at least one attribute to view its values.</p>
+                    }
 
-                    <div class="text-center mt-4 pt-3 border-top">
-                      <button type="button" class="btn btn-primary px-5 py-2 shadow-sm" (click)="generateVariations()">
-                        <i class="fa fa-magic me-2"></i> GENERATE COMBINATIONS 🚀
-                      </button>
-                    </div>
+                    @if (hasSelectedVariationValues()) {
+                      <div class="text-center mt-4 pt-3 border-top">
+                        <button type="button" class="btn btn-primary px-5 py-2 shadow-sm" (click)="generateVariations()">
+                          Preview Combinations
+                        </button>
+                      </div>
+                    }
+
+                    @if (variableCombinations.length > 0) {
+                      <div class="variants-preview-container mt-4 pt-3 border-top">
+                        <h6 class="mb-3">Preview Combinations</h6>
+                        <div class="table-responsive">
+                          <table class="table table-hover align-middle">
+                            <thead class="bg-light">
+                              <tr>
+                                <th>Variant (SKU)</th>
+                                <th style="width: 180px;">Override Price</th>
+                                <th style="width: 120px;">Stock</th>
+                                <th style="width: 120px;">Status</th>
+                                <th style="width: 50px;">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @for (row of variableCombinations; track $index) {
+                                <tr>
+                                  <td>
+                                    <div class="fw-bold">{{ row.variant_name || row.sku_suffix }}</div>
+                                    @if (row.variant_name && row.sku_suffix) {
+                                      <small class="text-muted">({{ row.sku_suffix }})</small>
+                                    }
+                                  </td>
+                                  <td>
+                                    <input type="number" class="form-control" [(ngModel)]="row.price" [ngModelOptions]="{standalone: true}">
+                                  </td>
+                                  <td>
+                                    <input type="number" class="form-control" [(ngModel)]="row.stock" [ngModelOptions]="{standalone: true}">
+                                  </td>
+                                  <td>
+                                    <div class="form-check form-switch">
+                                      <input class="form-check-input" type="checkbox" [(ngModel)]="row.is_active" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                  </td>
+                                  <td class="text-center">
+                                    <button type="button" class="btn btn-link text-danger p-0" (click)="variableCombinations.splice($index, 1)">
+                                      <i class="fa fa-trash"></i>
+                                    </button>
+                                  </td>
+                                </tr>
+                              }
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    }
                   </div>
 
-                  <!-- STEP 2: Manage Generated Variants -->
+                  @if (false) {
+                  <!-- STEP 2: Manage Generated Variants (Legacy - kept hidden for future use) -->
                   @if (variableCombinations.length > 0) {
                     <div class="variants-management-container p-4 border rounded bg-white shadow-sm">
                       <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
@@ -841,6 +906,7 @@
                       <i class="fa fa-layer-group fa-3x text-muted mb-3"></i>
                       <p class="text-muted">Select attributes above and click "Generate" to manage variants.</p>
                     </div>
+                  }
                   }
                 } @else {
                   <div class="text-center py-5 bg-light rounded border border-dashed">
@@ -1247,6 +1313,7 @@
     @if (currentEditingField) {
       <app-elementor-editor
         [(ngModel)]="tempElementorValue"
+        [ngModelOptions]="{standalone: true}"
         [uploadFn]="handleImageUpload">
       </app-elementor-editor>
     }

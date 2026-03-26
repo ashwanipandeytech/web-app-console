@@ -270,6 +270,69 @@ export class CartCommon {
   ngOnInit() {
     // this.getCookie();
   }
+
+  private toNumber(value: any): number | null {
+    if (value === null || value === undefined || value === '') {
+      return null;
+    }
+    const parsed = Number(value);
+    return Number.isNaN(parsed) ? null : parsed;
+  }
+
+  getCartItemVariantId(item: any): number | string | null {
+    const candidates = [
+      item?.variant_id,
+      item?.variant?.id,
+      item?.variant?.variant_id,
+      item?.variant_details?.id,
+      item?.variant_details?.variant_id,
+    ];
+
+    for (const candidate of candidates) {
+      if (candidate !== null && candidate !== undefined && candidate !== '') {
+        return candidate;
+      }
+    }
+
+    return null;
+  }
+
+  getCartItemUnitPrice(item: any): number {
+    const candidates = [
+      item?.price,
+      item?.variant_details?.price,
+      item?.variant?.price,
+      item?.product?.price_data?.salePrice,
+      item?.product?.price_data?.finalPrice,
+      item?.product?.price_data?.regularPrice,
+    ];
+
+    for (const candidate of candidates) {
+      const parsed = this.toNumber(candidate);
+      if (parsed !== null) {
+        return parsed;
+      }
+    }
+
+    return 0;
+  }
+
+  getCartItemVariantAttributes(item: any): Array<{ name: string; value: string }> {
+    const variantDetails = item?.variant_details || item?.variant || {};
+    const rawAttributes = Array.isArray(variantDetails?.attributes)
+      ? variantDetails.attributes
+      : Array.isArray(item?.attributes_detail)
+        ? item.attributes_detail
+        : [];
+
+    return rawAttributes
+      .map((attribute: any) => ({
+        name: String(attribute?.name ?? attribute?.attribute_name ?? '').trim(),
+        value: String(attribute?.value ?? attribute?.value_name ?? '').trim(),
+      }))
+      .filter((attribute: any) => attribute.name && attribute.value);
+  }
+
   carList() {
     this.loading = true;
     this.dataService
@@ -290,14 +353,12 @@ export class CartCommon {
           this.calculateGstPrice(this.cartListData);
           for (let i = 0; i < this.cartListData.length; i++) {
             const element = this.cartListData[i];
-            // if (element.) {
-
-            // }
-            element.product.price_data['finalPrice'] = element?.product.price_data?.salePrice;
+            const unitPrice = this.getCartItemUnitPrice(element);
+            element.product.price_data['finalPrice'] = unitPrice;
             this.globalService.calculatePrice(
               element.quantity,
               i,
-              element.product.price_data.salePrice,
+              unitPrice,
               this.cartListData
             );
           }
@@ -345,7 +406,7 @@ export class CartCommon {
     this.globalService.calculatePrice(
       productQuantity,
       index,
-      this.cartListData[index].product.price_data.salePrice,
+      this.getCartItemUnitPrice(this.cartListData[index]),
       this.cartListData
     );
     this.updateCartList(productQuantity, id);
@@ -359,7 +420,7 @@ export class CartCommon {
       this.globalService.calculatePrice(
         productQuantity,
         index,
-        this.cartListData[index].product.price_data.salePrice,
+        this.getCartItemUnitPrice(this.cartListData[index]),
         this.cartListData
       );
       this.updateCartList(productQuantity, id);
@@ -538,12 +599,17 @@ export class CartCommon {
     payload.coupon_code = this.appliedCoupon;
     for (let i = 0; i < data.length; i++) {
       const element = data[i];
-      payload.items.push({
+      const itemPayload: any = {
         quantity: element?.quantity,
         product_id: element?.product.id,
-        salePrice: element?.product?.price_data?.salePrice,
+        salePrice: this.getCartItemUnitPrice(element),
         gstPercent: element?.product?.price_data?.caclulatedObj?.gstPercent
-      })
+      };
+      const variantId = this.getCartItemVariantId(element);
+      if (variantId !== null && variantId !== undefined && variantId !== '') {
+        itemPayload.variant_id = variantId;
+      }
+      payload.items.push(itemPayload);
     }
     this.dataService.postCommonApi(payload, 'calculate-prices')
       .pipe(

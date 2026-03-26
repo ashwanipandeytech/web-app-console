@@ -448,16 +448,74 @@ export class MyOrdersComponent implements OnInit {
     }
   }
 
+  getOrderItemVariantAttributes(item: any): Array<{ name: string; value: string }> {
+    const variantDetails = item?.variant_details || item?.variant || {};
+    const rawAttributes = Array.isArray(variantDetails?.attributes)
+      ? variantDetails.attributes
+      : Array.isArray(item?.attributes_detail)
+        ? item.attributes_detail
+        : [];
+
+    return rawAttributes
+      .map((attribute: any) => ({
+        name: String(attribute?.name ?? attribute?.attribute_name ?? '').trim(),
+        value: String(attribute?.value ?? attribute?.value_name ?? '').trim(),
+      }))
+      .filter((attribute: any) => attribute.name && attribute.value);
+  }
+
+  private getOrderItemVariantId(item: any): number | string | null {
+    const candidates = [
+      item?.variant_id,
+      item?.variant?.id,
+      item?.variant?.variant_id,
+      item?.variant_details?.id,
+      item?.variant_details?.variant_id,
+    ];
+
+    for (const candidate of candidates) {
+      if (candidate !== null && candidate !== undefined && candidate !== '') {
+        return candidate;
+      }
+    }
+
+    return null;
+  }
+
+  private isVariableOrderItem(item: any): boolean {
+    const productType = String(item?.product?.product_type || item?.product_type || '').toLowerCase();
+    return (
+      productType === 'variable' ||
+      item?.variant_id !== undefined ||
+      item?.variant !== undefined ||
+      item?.variant_details !== undefined
+    );
+  }
+
   addToCart(item: any) {
     let isGuest: any = null;
     if (this.isBrowser) {
       isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
     }
-    let cartPayload = {
+
+    const variantId = this.getOrderItemVariantId(item);
+    if (this.isVariableOrderItem(item) && !variantId) {
+      this.globalService.showToast({
+        success: false,
+        message: 'Variant information is missing for this item. Please add it from product details.',
+      });
+      return;
+    }
+
+    const cartPayload: any = {
       product_id: item.product.id,
       quantity: item.quantity,
       guest_token: isGuest
     };
+    if (variantId !== null && variantId !== undefined && variantId !== '') {
+      cartPayload.variant_id = variantId;
+    }
+
     this.dataService
       .post(cartPayload, 'cart')
       .pipe(

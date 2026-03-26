@@ -27,10 +27,16 @@
                 <div class="item-img-container">
                   <img [src]="item?.product?.media?.uploadedImages[0]?.url" alt="Product" />
                 </div>
-                
                 <div class="flex-grow-1 px-3">
                   <h6 class="item-title mb-1">{{ item.product.title }}</h6>
-                  <div class="item-price fw-bold text-primary">₹{{ item.product.price_data.finalPrice }}</div>
+                  <div class="item-price fw-bold text-primary">&#8377;{{ item.product.price_data.finalPrice }}</div>
+                  @if (getCartItemVariantAttributes(item).length > 0) {
+                    <div class="text-muted fs-12 mt-1 d-flex flex-column gap-1">
+                      @for (attribute of getCartItemVariantAttributes(item); track $index) {
+                        <span>{{ attribute.name }}: {{ attribute.value }}</span>
+                      }
+                    </div>
+                  }
                 </div>
 
                 <div class="d-flex align-items-center gap-3 pe-2">

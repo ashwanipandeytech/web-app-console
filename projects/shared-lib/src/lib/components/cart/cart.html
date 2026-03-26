@@ -197,9 +197,16 @@
                       <div class="product-meta text-muted fs-12">
                         <span class="d-inline-flex align-items-center gap-1">
                           <i class="fa-solid fa-tag opacity-50"></i>
-                          Unit Price: ₹{{ item.product.price_data.salePrice || item.product.price_data.finalPrice }}
+                          Unit Price: &#8377;{{ getCartItemUnitPrice(item) }}
                         </span>
                       </div>
+                      @if (getCartItemVariantAttributes(item).length > 0) {
+                        <div class="product-meta text-muted fs-12 mt-1 d-flex flex-column gap-1">
+                          @for (attribute of getCartItemVariantAttributes(item); track $index) {
+                            <span>{{ attribute.name }}: {{ attribute.value }}</span>
+                          }
+                        </div>
+                      }
                     </div>
                     <button
                       (click)="deleteCartItem(item.id)"

@@ -63,10 +63,72 @@ export class Wishlist {
     this.getWishlistData();
   }
 
+  private isVariableWishlistItem(item: any): boolean {
+    const productType = String(item?.product?.product_type || item?.product_type || '').toLowerCase();
+    return (
+      productType === 'variable' ||
+      item?.variant_id !== undefined ||
+      item?.variant !== undefined ||
+      item?.variant_details !== undefined
+    );
+  }
+
+  getWishlistVariantId(item: any): number | string | null {
+    const candidates = [
+      item?.variant_id,
+      item?.variant?.id,
+      item?.variant?.variant_id,
+      item?.variant_details?.id,
+      item?.variant_details?.variant_id,
+      item?.product_variant_id,
+    ];
+
+    for (const candidate of candidates) {
+      if (candidate !== null && candidate !== undefined && candidate !== '') {
+        return candidate;
+      }
+    }
+
+    return null;
+  }
+
+  getWishlistVariantAttributes(item: any): Array<{ name: string; value: string }> {
+    const variantDetails = item?.variant_details || item?.variant || {};
+    const rawAttributes = Array.isArray(variantDetails?.attributes)
+      ? variantDetails.attributes
+      : Array.isArray(item?.attributes_detail)
+        ? item.attributes_detail
+        : [];
+
+    return rawAttributes
+      .map((attribute: any) => ({
+        name: String(attribute?.name ?? attribute?.attribute_name ?? '').trim(),
+        value: String(attribute?.value ?? attribute?.value_name ?? '').trim(),
+      }))
+      .filter((attribute: any) => attribute.name && attribute.value);
+  }
+
+  canAddWishlistItemToCart(item: any): boolean {
+    const stockStatus = item?.product?.inventory?.stockStatus;
+    if (stockStatus && stockStatus !== 'in_stock') {
+      return false;
+    }
+
+    if (this.isVariableWishlistItem(item) && !this.getWishlistVariantId(item)) {
+      return false;
+    }
+
+    return true;
+  }
+
   getWishlistData() {
     this.isLoading = true;
     this.dataService.get('wishlist').subscribe((res: any) => {
-      this.wishListData = res.data;
+      this.wishListData = Array.isArray(res?.data?.data)
+        ? res.data.data
+        : Array.isArray(res?.data)
+          ? res.data
+          : [];
       this.isLoading = false;
       this.globalFunctionService.getCount();
       this.cd.markForCheck();
@@ -93,19 +155,31 @@ export class Wishlist {
       this.cd.markForCheck();
     });
   }
-  addToCart(data: any) {
+  addToCart(item: any) {
     let isGuest: any = null;
     if (this.isBrowser) {
       isGuest = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
     }
 
-    let finalData = {
-      product_id: data.id,
-      quantity: '1',
+    const product = item?.product || item;
+    const variantId = this.getWishlistVariantId(item);
+    if (this.isVariableWishlistItem(item) && !variantId) {
+      this.globalCommonService.showToast({
+        success: false,
+        message: 'Please select this variable product from product details before adding to cart.',
+      });
+      return;
+    }
+
+    const finalData: any = {
+      product_id: product?.id,
+      quantity: 1,
       guest_token: isGuest,
     };
-    // //console.log('finalData==.',finalData);
-    // return;
+    if (variantId !== null && variantId !== undefined && variantId !== '') {
+      finalData.variant_id = variantId;
+    }
+
     this.dataService
       .post(finalData, 'cart')
       .pipe(

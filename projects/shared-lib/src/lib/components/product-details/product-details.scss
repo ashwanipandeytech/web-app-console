@@ -516,3 +516,40 @@ hr {
   }
 }
 
+.variant-selector-wrap {
+  .variant-option-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #30343b;
+  }
+
+  .variant-option-btn {
+    border: 1px solid #d6dce5;
+    background: #ffffff;
+    color: #2a2f37;
+    border-radius: 999px;
+    font-size: 12px;
+    line-height: 1;
+    padding: 0.42rem 0.7rem;
+    transition: all 0.2s ease;
+  }
+
+  .variant-option-btn:hover:not(:disabled) {
+    border-color: var(--bs-primary);
+    color: var(--bs-primary);
+  }
+
+  .variant-option-btn.active {
+    border-color: var(--bs-primary);
+    background-color: rgba(var(--primary-color-rgb, 13, 110, 253), 0.1);
+    color: var(--bs-primary);
+    font-weight: 700;
+  }
+
+  .variant-option-btn:disabled {
+    opacity: 0.45;
+    text-decoration: line-through;
+    cursor: not-allowed;
+  }
+}
+
