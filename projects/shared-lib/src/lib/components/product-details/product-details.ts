@@ -162,15 +162,11 @@ setEditorContent(html: string) {
   }
 
   get shouldDisableCartActions(): boolean {
-    if (!this.isVariableProduct) {
-      return false;
-    }
-
-    if (!this.selectedVariantId) {
+    if (this.isVariableProduct && !this.selectedVariantId) {
       return true;
     }
 
-    return this.displayStock !== null && this.displayStock <= 0;
+    return this.isCurrentSelectionOutOfStock();
   }
 
   get availabilityText(): string {
@@ -178,12 +174,12 @@ setEditorContent(html: string) {
       return 'Select options to check stock';
     }
 
-    if (this.displayStock === null || this.displayStock === undefined) {
-      return 'Stock information unavailable';
+    if (this.isCurrentSelectionOutOfStock()) {
+      return 'Out of stock';
     }
 
-    if (this.displayStock <= 0) {
-      return 'Out of stock';
+    if (this.displayStock === null || this.displayStock === undefined) {
+      return 'Stock information unavailable';
     }
 
     return `${this.displayStock} Products Available`;
@@ -254,6 +250,14 @@ setEditorContent(html: string) {
       this.globalService.showToast({
         success: false,
         message: 'Unable to add this product to cart right now.',
+      });
+      return;
+    }
+
+    if (this.isCurrentSelectionOutOfStock()) {
+      this.globalService.showToast({
+        success: false,
+        message: 'This product is currently out of stock.',
       });
       return;
     }
@@ -672,6 +676,38 @@ setEditorContent(html: string) {
       return isActive;
     }
     return isActive && stock > 0;
+  }
+
+  private isCurrentSelectionOutOfStock(): boolean {
+    if (this.isVariableProduct) {
+      if (this.selectedVariant && !this.isVariantAvailable(this.selectedVariant)) {
+        return true;
+      }
+      return this.displayStock !== null && this.displayStock <= 0;
+    }
+
+    if (this.displayStock !== null && this.displayStock <= 0) {
+      return true;
+    }
+
+    const stockStatus =
+      this.productDetails?.inventory?.stockStatus ??
+      this.productDetails?.inventory?.stock_status ??
+      this.productDetails?.stockStatus ??
+      this.productDetails?.stock_status;
+    return this.isOutOfStockStatus(stockStatus);
+  }
+
+  private isOutOfStockStatus(status: any): boolean {
+    const normalized = this.normalizeLookup(status);
+    return (
+      normalized === 'out_of_stock' ||
+      normalized === 'out of stock' ||
+      normalized === 'outofstock' ||
+      normalized === 'sold_out' ||
+      normalized === 'sold out' ||
+      normalized === 'oos'
+    );
   }
 
   private extractConfigurableOptions(product: any): any[] {
