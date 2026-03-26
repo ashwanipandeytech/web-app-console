@@ -41,6 +41,7 @@ interface FoodNode {
   styleUrl: './add-product.scss',
 })
 export class AddProduct {
+   public dataService:any= inject(DataService);
   specialCharacterHelper = inject(SpecialCharacterHelper)
   childrenAccessor = (node: FoodNode) => node.children ?? [];
   @ViewChild('galleryInput') galleryInput!: ElementRef<HTMLInputElement>;
@@ -408,7 +409,7 @@ export class AddProduct {
   priceSection!: FormGroup;
   shippingInfoSection!: FormGroup;
   productAttributesForm!: FormGroup;
-  public dataService: any = inject(DataService);
+
   categoryListData: any = {
     isSelectedCategory: {},
     categories: []
@@ -429,6 +430,13 @@ export class AddProduct {
   finalpriceObj: any;
   showHtmlEditor = false;
   htmlControl = new FormControl('');
+
+  // Variable Products
+  allAttributes: any[] = [];
+  selectedAttributesForVariations: any[] = [];
+  variableCombinations: any[] = [];
+  productType: 'simple' | 'variable' = 'simple';
+
   constructor(
     private fb: FormBuilder,
     private globalService: GlobalService,
@@ -461,17 +469,101 @@ export class AddProduct {
   onGetId(id: number) {
     this.parentId = id;
   }
+
+  loadAllAttributes() {
+    this.dataService.get('attributes').subscribe((res: any) => {
+      if (res.data && Array.isArray(res.data.data)) {
+        this.allAttributes = res.data.data;
+      } else if (Array.isArray(res.data)) {
+        this.allAttributes = res.data;
+      } else {
+        this.allAttributes = res || [];
+      }
+      this.cd.detectChanges();
+    });
+  }
+
+  toggleAttributeSelection(attr: any) {
+    const index = this.selectedAttributesForVariations.findIndex(a => a.attribute_id === attr.id);
+    if (index > -1) {
+      this.selectedAttributesForVariations.splice(index, 1);
+    } else {
+      this.selectedAttributesForVariations.push({
+        attribute_id: attr.id,
+        name: attr.name,
+        value_ids: [],
+        values: attr.values || []
+      });
+    }
+  }
+
+  isAttributeSelected(attrId: number) {
+    return this.selectedAttributesForVariations.some(a => a.attribute_id === attrId);
+  }
+
+  toggleValueSelection(attrId: number, valueId: number) {
+    const attr = this.selectedAttributesForVariations.find(a => a.attribute_id === attrId);
+    if (!attr) return;
+
+    const vIndex = attr.value_ids.indexOf(valueId);
+    if (vIndex > -1) {
+      attr.value_ids.splice(vIndex, 1);
+    } else {
+      attr.value_ids.push(valueId);
+    }
+  }
+
+  isValueSelected(attrId: number, valueId: number) {
+    const attr = this.selectedAttributesForVariations.find(a => a.attribute_id === attrId);
+    return attr ? attr.value_ids.includes(valueId) : false;
+  }
+
+  generateVariations() {
+    const payload = {
+      attributes: this.selectedAttributesForVariations.map(a => ({
+        attribute_id: a.attribute_id,
+        value_ids: a.value_ids
+      }))
+    };
+
+    if (payload.attributes.some(a => a.value_ids.length === 0)) {
+        this.globalService.showToast({ success: false, message: 'Please select at least one value for each attribute' });
+        return;
+    }
+
+    this.dataService.post(payload, 'products/generate-variants').subscribe((res: any) => {
+      if (res.success) {
+        this.variableCombinations = res.combinations || [];
+        this.globalService.showToast({ success: true, message: 'Variants generated' });
+        this.cd.detectChanges();
+      }
+    });
+  }
+
+  openVariantGenerator(modalTemplate: any) {
+    this.modalService.open(modalTemplate, {
+      size: 'xl',
+      centered: true,
+      scrollable: true,
+      backdrop: 'static'
+    });
+  }
+
   ngOnInit() {
     this.domain = window.location.origin;
     this.getCategoryList();
+    this.loadAllAttributes();
     this.initializeForms();
 
     this.productDetails.valueChanges.subscribe(() => {
       this.cd.detectChanges();
     });
 
-    // Auto-detect Elementor mode
     if (this.data?.item) {
+        this.productType = this.data.item.product_type || 'simple';
+        if (this.productType === 'variable' && this.data.item.variations) {
+            this.variableCombinations = this.data.item.variations;
+        }
         const details = this.data.item.product_details;
         if (details) {
             const isElementor = (val: string) => val?.includes('<!-- ELEMENTOR_BLOCKS:') || val?.includes('elementor-content-wrapper');
@@ -1152,6 +1244,8 @@ export class AddProduct {
     };
     let finalData: any = {
       category_id: this.parentId,
+      product_type: this.productType,
+      variations: this.productType === 'variable' ? this.variableCombinations : [],
       media: mediaSectionPayload,
       title: this.productDetails.value.productTitle,
       description: this.productDetails.value.productDescription,
@@ -1235,6 +1329,8 @@ export class AddProduct {
     };
     let finalData: any = {
       category_id: this.parentId,
+      product_type: this.productType,
+      variations: this.productType === 'variable' ? this.variableCombinations : [],
       media: mediaSectionPayload,
       title: this.productDetails.value.productTitle,
       description: this.productDetails.value.productDescription,
@@ -1604,6 +1700,9 @@ export class AddProduct {
     this.seoForm.reset();
     this.permaLink = '';
     this.thumbPreview = '';
+    this.productType = 'simple';
+    this.variableCombinations = [];
+    this.selectedAttributesForVariations = [];
     this.thumbGallery = '';
     this.onGetId(removeCategory);
     this.cd.detectChanges();

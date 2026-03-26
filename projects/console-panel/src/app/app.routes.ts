@@ -7,6 +7,7 @@ import { AddProduct } from './modules/products/add-product/add-product';
 import { AllProducts } from './modules/products/all-products';
 import { Order } from './modules/order/order';
 import { Category } from './modules/category/category';
+import { Attributes } from './modules/attributes/attributes';
 import { authGuard } from './app.guard';
 import { LayoutSettingsComponent } from './modules/layout-settings/layout-settings.component';
 import { PageList } from './modules/settings/pages.component';
@@ -85,6 +86,11 @@ export const routes: Routes = [
     {
         path: 'category',
         component: Category,
+        canActivate: [authGuard]
+    },
+    {
+        path: 'attributes',
+        component: Attributes,
         canActivate: [authGuard]
     },
       {

@@ -1,0 +1,118 @@
+<div class="main-content">
+  <div class="row">
+    <div class="col-12">
+      <div class="panel">
+        <div class="panel-header">
+          <h5>Attribute Management</h5>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <!-- Left Side: Add Attribute -->
+            <div class="col-md-4">
+              <h6>Create New Attribute</h6>
+              <form [formGroup]="attributeForm" (ngSubmit)="createAttribute()">
+                <div class="mb-3">
+                  <label class="form-label">Attribute Name</label>
+                  <input type="text" formControlName="name" class="form-control" placeholder="e.g., Color, Size">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Type</label>
+                  <select formControlName="type" class="form-select">
+                    <option value="text">Text</option>
+                    <option value="color">Color</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary" [disabled]="attributeForm.invalid">Add Attribute</button>
+              </form>
+
+              <hr>
+
+              <div class="attribute-list mt-4">
+                <h6>Existing Attributes</h6>
+                @if (isLoading) {
+                  <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                }
+                <div class="list-group">
+                  @for (attr of attributes; track attr.id) {
+                    <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                         [class.active]="selectedAttribute?.id === attr.id"
+                         (click)="selectAttribute(attr)">
+                      {{ attr.name }} ({{ attr.type }})
+                      <button class="btn btn-link btn-sm text-danger" (click)="deleteAttribute(attr.id); $event.stopPropagation()">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Side: Attribute Values -->
+            <div class="col-md-8">
+              @if (selectedAttribute) {
+                <div class="card border-0">
+                  <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">Values for: {{ selectedAttribute.name }}</h6>
+                    <button class="btn btn-sm btn-outline-primary" (click)="showAddValueForm = !showAddValueForm">
+                      <i class="fa" [ngClass]="showAddValueForm ? 'fa-minus' : 'fa-plus'"></i> Add Value
+                    </button>
+                  </div>
+                  <div class="card-body">
+                    @if (showAddValueForm) {
+                      <form [formGroup]="valueForm" (ngSubmit)="addValue()" class="mb-4 bg-light p-3 rounded">
+                        <div class="row g-3">
+                          <div class="col-md-8">
+                            <label class="form-label">Value</label>
+                            <input type="text" formControlName="value" class="form-control" placeholder="e.g., Red, Blue, XL, 64GB">
+                          </div>
+                          <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100" [disabled]="valueForm.invalid">Save Value</button>
+                          </div>
+                        </div>
+                      </form>
+                    }
+
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>ID</th>
+                            <th>Value</th>
+                            <th>Meta</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @for (v of selectedAttribute.values; track v.id) {
+                            <tr>
+                              <td>{{ v.id }}</td>
+                              <td>{{ v.value }}</td>
+                              <td>{{ v.meta || '-' }}</td>
+                              <td>
+                                <button class="btn btn-sm text-danger"><i class="fa fa-trash"></i></button>
+                              </td>
+                            </tr>
+                          }
+                          @if (!selectedAttribute.values?.length) {
+                            <tr>
+                              <td colspan="4" class="text-center text-muted">No values found. Add one above.</td>
+                            </tr>
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              } @else {
+                <div class="text-center py-5 bg-light rounded">
+                  <i class="fa fa-arrow-left fa-3x text-muted mb-3"></i>
+                  <p>Select an attribute from the left to manage its values.</p>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

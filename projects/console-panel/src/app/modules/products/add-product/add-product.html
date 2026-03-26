@@ -29,11 +29,22 @@
         <form [formGroup]="productDetails" (ngSubmit)="addProductDetails()">
           <div class="panel mb-30">
             <div class="panel-body product-title-input">
-              <label class="form-label">Product Title</label>
-              <input type="text" formControlName="productTitle" class="form-control" id="productTitle"
-                placeholder="Title for product"
-                [class.is-invalid]="addProductDetailsValidation['productTitle'].touched && addProductDetailsValidation['productTitle'].invalid"
-                 (change)="createPermalink()">
+              <div class="row g-3 mb-3">
+                <div class="col-md-8">
+                  <label class="form-label">Product Title</label>
+                  <input type="text" formControlName="productTitle" class="form-control" id="productTitle"
+                    placeholder="Title for product"
+                    [class.is-invalid]="addProductDetailsValidation['productTitle'].touched && addProductDetailsValidation['productTitle'].invalid"
+                     (change)="createPermalink()">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Product Type</label>
+                  <select class="form-select" [(ngModel)]="productType" [ngModelOptions]="{standalone: true}">
+                    <option value="simple">Simple Product</option>
+                    <option value="variable">Variable Product</option>
+                  </select>
+                </div>
+              </div>
               @if (addProductDetailsValidation['productTitle'].touched &&
               addProductDetailsValidation['productTitle'].errors?.['required']) {
               <div class="text-danger fs-12 mt-1">
@@ -306,7 +317,9 @@
                 <button class="btn btn-sm btn-outline-primary" id="nav-price-tab" data-bs-toggle="tab"
                   data-bs-target="#nav-price" type="button" role="tab" aria-controls="nav-price"
                   aria-selected="false">Price</button>
-                <!-- <button class="btn btn-sm btn-outline-primary" id="nav-attribute-tab" data-bs-toggle="tab" data-bs-target="#nav-attribute" type="button" role="tab" aria-controls="nav-attribute" aria-selected="false">Attribute</button> -->
+                <button class="btn btn-sm btn-outline-primary" id="nav-attribute-tab" data-bs-toggle="tab" 
+                  data-bs-target="#nav-attribute" type="button" role="tab" aria-controls="nav-attribute" 
+                  aria-selected="false">Attributes</button>
                 <button class="btn btn-sm btn-outline-primary" id="nav-shipping-info-tab" data-bs-toggle="tab"
                   data-bs-target="#nav-shipping-info" type="button" role="tab" aria-controls="nav-shipping-info"
                   aria-selected="false">Shipping info</button>
@@ -318,6 +331,7 @@
                   data-bs-target="#nav-offer" type="button" role="tab" aria-controls="nav-offer"
                   aria-selected="false">Offer</button>
               </div>
+              
             </nav>
 
             <div class="tab-content product-data-tab" id="nav-tabContent">
@@ -688,15 +702,36 @@
               <!-- Other Tabs (Unmodified for brevity) -->
               <div class="tab-pane fade" id="nav-attribute" role="tabpanel" aria-labelledby="nav-attribute-tab"
                 tabindex="0">
+                @if (productType === 'variable') {
+                  <div class="text-center py-4 bg-light rounded border border-dashed mb-4">
+                    <i class="fa fa-boxes-stacked fa-3x text-primary mb-3"></i>
+                    <h5>Variable Product Configuration</h5>
+                    <p class="text-muted">Generate combinations (Size, Color, etc.) and manage their price/stock.</p>
+                    <button type="button" class="btn btn-primary" (click)="openVariantGenerator(variantModal)">
+                      <i class="fa fa-magic me-1"></i> Generate Variants Engine
+                    </button>
+                    @if (variableCombinations.length > 0) {
+                      <div class="mt-3">
+                        <span class="badge bg-success">{{ variableCombinations.length }} Variants Active</span>
+                        <button type="button" class="btn btn-link btn-sm ms-2" (click)="openVariantGenerator(variantModal)">Edit Variants</button>
+                      </div>
+                    }
+                  </div>
+                }
+
                 <form [formGroup]="productAttributesForm">
                   <div class="add-product-attribute">
+                    <div class="part-txt mb-2">
+                      <h6>Custom Product Attribute</h6>
+                      <p class="text-muted small">Standard attributes that describe the product (doesn't create variations).</p>
+                    </div>
                     <!-- Dropdown + Add button -->
                     <div class="form-group d-flex align-items-center gap-2">
                       <select class="form-control form-control-sm" formControlName="selectedAttribute">
                         <option value="">Custom Product Attribute</option>
-                        <option value="brand">Brand</option>
-                        <option value="color">Color</option>
-                        <option value="size">Size</option>
+                        @for (attr of allAttributes; track attr.id) {
+                          <option [value]="attr.name">{{ attr.name }}</option>
+                        }
                       </select>
 
                       <button type="button" class="btn btn-sm btn-icon btn-primary" (click)="addAttribute()">
@@ -849,51 +884,48 @@
 
             </div>
           </div>
-        </div>
 
-        <div class="panel">
-          <form [formGroup]="seoForm">
-            <div class="panel-header">
-              <h5>SEO Data</h5>
-              <div class="btn-box d-flex gap-2">
-                <button type="button" class="btn btn-sm btn-icon btn-outline-primary"><i
-                    class="fa fa-arrows-rotate"></i></button>
-                <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close"><i
-                    class="fa fa-angle-up"></i></button>
-              </div>
-            </div>
-            <div class="panel-body">
-              <div class="row g-3 mb-3">
-                <label class="col-xxl-2 col-md-3 col-form-label col-form-label-sm pe-0">Focus keyphrase <span
-                    class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip"
-                    data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."><i
-                      class="fa-solid fa-circle-question"></i></span></label>
-                <div class="col-xxl-10 col-md-9">
-                  <input type="text" class="form-control form-control-sm" id="focusKeyphrase"
-                    formControlName="focusKeyphrase">
+          <div class="panel">
+            <form [formGroup]="seoForm">
+              <div class="panel-header">
+                <h5>SEO Data</h5>
+                <div class="btn-box d-flex gap-2">
+                  <button type="button" class="btn btn-sm btn-icon btn-outline-primary">
+                    <i class="fa fa-arrows-rotate"></i>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-icon btn-outline-primary panel-close">
+                    <i class="fa fa-angle-up"></i>
+                  </button>
                 </div>
               </div>
-              <div class="row g-3 mb-3">
-                <label for="metaTitle" class="col-xxl-2 col-md-3 col-form-label col-form-label-sm">Meta Title</label>
-                <div class="col-xxl-10 col-md-9">
-                  <input type="text" class="form-control form-control-sm" id="metaTitle" formControlName="metaTitle">
+              <div class="panel-body">
+                <div class="row g-3 mb-3">
+                  <label class="col-xxl-2 col-md-3 col-form-label col-form-label-sm pe-0">Focus keyphrase <span
+                      class="btn-flush fs-14" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip"
+                      data-bs-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry.">
+                      <i class="fa-solid fa-circle-question"></i>
+                    </span></label>
+                  <div class="col-xxl-10 col-md-9">
+                    <input type="text" class="form-control form-control-sm" id="focusKeyphrase"
+                      formControlName="focusKeyphrase">
+                  </div>
+                </div>
+                <div class="row g-3 mb-3">
+                  <label for="metaTitle" class="col-xxl-2 col-md-3 col-form-label col-form-label-sm">Meta Title</label>
+                  <div class="col-xxl-10 col-md-9">
+                    <input type="text" class="form-control form-control-sm" id="metaTitle" formControlName="metaTitle">
+                  </div>
+                </div>
+                <div class="row g-3">
+                  <label for="metaDscr" class="col-xxl-2 col-md-3 col-form-label col-form-label-sm">Meta
+                    Description</label>
+                  <div class="col-xxl-10 col-md-9">
+                    <textarea class="form-control" rows="5" id="metaDscr" formControlName="metaDscr"></textarea>
+                  </div>
                 </div>
               </div>
-              <!-- <div class="row g-3 mb-3">
-                <label for="slugText" class="col-xxl-2 col-md-3 col-form-label col-form-label-sm">Slug</label>
-                <div class="col-xxl-10 col-md-9">
-                  <input type="text" class="form-control form-control-sm" id="slugText" formControlName="slugText">
-                </div>
-              </div> -->
-              <div class="row g-3">
-                <label for="metaDscr" class="col-xxl-2 col-md-3 col-form-label col-form-label-sm">Meta
-                  Description</label>
-                <div class="col-xxl-10 col-md-9">
-                  <textarea class="form-control" rows="5" id="metaDscr" formControlName="metaDscr"></textarea>
-                </div>
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
 
@@ -1138,5 +1170,106 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
     <button type="button" class="btn btn-primary" (click)="modal.close('save')">Done</button>
+  </div>
+</ng-template>
+
+<!-- VARIANT GENERATOR MODAL -->
+<ng-template #variantModal let-modal>
+  <div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">Variant Generator Engine</h5>
+    <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body bg-light">
+    <div class="variation-generator-engine">
+      <div class="panel p-3 mb-4 shadow-sm border-0">
+        <h6 class="border-bottom pb-2 mb-3">1. Select Attributes & Values</h6>
+        <div class="row g-3">
+          @for (attr of allAttributes; track attr.id) {
+            <div class="col-md-4">
+              <div class="card h-100 border-0 shadow-sm">
+                <div class="card-header py-2 d-flex justify-content-between align-items-center bg-white border-bottom-0">
+                  <span class="fw-bold">{{ attr.name }}</span>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" [checked]="isAttributeSelected(attr.id)" (change)="toggleAttributeSelection(attr)">
+                  </div>
+                </div>
+                @if (isAttributeSelected(attr.id)) {
+                  <div class="card-body py-2">
+                    <div class="d-flex flex-wrap gap-2">
+                      @for (val of attr.values; track val.id) {
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" 
+                            [checked]="isValueSelected(attr.id, val.id)" 
+                            (change)="toggleValueSelection(attr.id, val.id)"
+                            id="val-{{val.id}}">
+                          <label class="form-check-label fs-12" for="val-{{val.id}}">{{ val.value }}</label>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+        <div class="mt-4 text-center">
+          <button type="button" class="btn btn-primary px-4" (click)="generateVariations()">
+            <i class="fa fa-magic me-2"></i> Generate Combinations Matrix
+          </button>
+        </div>
+      </div>
+
+      @if (variableCombinations.length > 0) {
+        <div class="variations-table-container mt-4 bg-white p-3 rounded shadow-sm">
+          <h6 class="border-bottom pb-2 mb-3">2. Manage Variants Matrix</h6>
+          <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+            <table class="table table-bordered table-sm align-middle mb-0">
+              <thead class="bg-light sticky-top">
+                <tr>
+                  <th>Variant Name</th>
+                  <th>SKU Suffix</th>
+                  <th style="width: 150px;">Price (₹)</th>
+                  <th style="width: 150px;">Stock</th>
+                  <th style="width: 50px;">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of variableCombinations; track $index) {
+                  <tr>
+                    <td class="fw-medium">{{ row.variant_name }}</td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm" [(ngModel)]="row.sku_suffix" [ngModelOptions]="{standalone: true}">
+                    </td>
+                    <td>
+                      <div class="input-group input-group-sm">
+                        <span class="input-group-text">₹</span>
+                        <input type="number" class="form-control" [(ngModel)]="row.price" [ngModelOptions]="{standalone: true}">
+                      </div>
+                    </td>
+                    <td>
+                      <input type="number" class="form-control form-control-sm" [(ngModel)]="row.stock" [ngModelOptions]="{standalone: true}">
+                    </td>
+                    <td class="text-center">
+                      <button type="button" class="btn btn-link text-danger p-0" (click)="variableCombinations.splice($index, 1)">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      } @else {
+        <div class="text-center py-5 bg-white rounded shadow-sm mt-4">
+          <i class="fa fa-table-list fa-3x text-muted mb-3"></i>
+          <p class="text-muted">No variations generated yet. Select attributes above and click "Generate".</p>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Close & Save Progress</button>
+    <button type="button" class="btn btn-success" (click)="modal.close()">Done</button>
   </div>
 </ng-template>

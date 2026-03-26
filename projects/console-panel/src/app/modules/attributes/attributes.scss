@@ -1,0 +1,12 @@
+.list-group-item {
+  cursor: pointer;
+  &.active {
+    background-color: #0093dd;
+    border-color: #0093dd;
+  }
+}
+
+.btn-xs {
+  padding: 2px 5px;
+  font-size: 10px;
+}
