@@ -124,6 +124,73 @@ this.getOrderList();
     this.dataService.downloadReport(`orders/${order.id}/invoice`, `${order.downloadInvoceName}`);
   }
 
+  // hasPaySlip(order: any): boolean {
+  //   return this.getPaySlipLink(order) !== '';
+  // }
+
+  downloadPaySlip(order: any) {
+    this.dataService.downloadReport(`orders/${order.id}/shipping-label`, `${order.downloadInvoceName}`);
+    // const paySlipLink = this.getPaySlipLink(order);
+    // if (!paySlipLink) {
+    //   this.globalService.showToast({
+    //     success: false,
+    //     message: 'Payslip link is not available for this order.',
+    //   });
+    //   return;
+    // }
+
+    // if (typeof window === 'undefined' || typeof document === 'undefined') {
+    //   return;
+    // }
+
+    // const anchor = document.createElement('a');
+    // anchor.href = paySlipLink;
+    // anchor.target = '_blank';
+    // anchor.rel = 'noopener noreferrer';
+    // anchor.download = this.getPaySlipFileName(paySlipLink, order);
+    // document.body.appendChild(anchor);
+    // anchor.click();
+    // document.body.removeChild(anchor);
+  }
+
+  // private getPaySlipLink(order: any): string {
+  //   const candidates = [
+  //     order?.pay_slip,
+  //     order?.pay_slip?.url,
+  //     order?.pay_slip?.download_link,
+  //     order?.paySlip,
+  //   ];
+
+  //   for (const candidate of candidates) {
+  //     if (typeof candidate === 'string' && candidate.trim() !== '') {
+  //       return candidate.trim();
+  //     }
+  //   }
+
+  //   return '';
+  // }
+
+  // private getPaySlipFileName(url: string, order: any): string {
+  //   const explicitName = String(
+  //     order?.pay_slip_file_name || order?.payslip_file_name || ''
+  //   ).trim();
+  //   if (explicitName) {
+  //     return explicitName;
+  //   }
+
+  //   try {
+  //     const parsedUrl = new URL(url, window.location.origin);
+  //     const nameFromPath = parsedUrl.pathname.split('/').pop();
+  //     if (nameFromPath) {
+  //       return nameFromPath;
+  //     }
+  //   } catch (error) {
+  //     // Falls back to default name below.
+  //   }
+
+  //   return `payslip-order-${order?.id || 'file'}.pdf`;
+  // }
+
   onStatusChange(order: any, event: Event) {
     const selectElement = event.target as HTMLSelectElement | null;
     const nextStatus = this.normalizeStatus(selectElement?.value);

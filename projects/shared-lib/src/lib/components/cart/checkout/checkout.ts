@@ -144,12 +144,12 @@ export class Checkout {
 
   getCartItemUnitPrice(item: any): number {
     const candidates = [
-      item?.price,
       item?.variant_details?.price,
       item?.variant?.price,
       item?.product?.price_data?.salePrice,
       item?.product?.price_data?.finalPrice,
       item?.product?.price_data?.regularPrice,
+      item?.price,
     ];
 
     for (const candidate of candidates) {
@@ -166,6 +166,8 @@ export class Checkout {
     const variantDetails = item?.variant_details || item?.variant || {};
     const rawAttributes = Array.isArray(variantDetails?.attributes)
       ? variantDetails.attributes
+      : Array.isArray(variantDetails?.attributes_detail)
+        ? variantDetails.attributes_detail
       : Array.isArray(item?.attributes_detail)
         ? item.attributes_detail
         : [];

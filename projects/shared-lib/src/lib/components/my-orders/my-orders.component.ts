@@ -452,6 +452,8 @@ export class MyOrdersComponent implements OnInit {
     const variantDetails = item?.variant_details || item?.variant || {};
     const rawAttributes = Array.isArray(variantDetails?.attributes)
       ? variantDetails.attributes
+      : Array.isArray(variantDetails?.attributes_detail)
+        ? variantDetails.attributes_detail
       : Array.isArray(item?.attributes_detail)
         ? item.attributes_detail
         : [];

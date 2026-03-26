@@ -235,6 +235,11 @@
                                             <button type="button" class="btn text-primary p-0" title="Download Invoice" (click)="downloadInvoice(order)">
                                                 <i class="fa fa-file-invoice"></i>
                                             </button>
+                                            <!-- @if (hasPaySlip(order)) { -->
+                                            <button type="button" class="btn text-success p-0" title="Download Payslip" (click)="downloadPaySlip(order)">
+                                                <i class="fa fa-download"></i>
+                                            </button>
+                                            <!-- } -->
                                         </div>
                                     </td>
                                 </tr>

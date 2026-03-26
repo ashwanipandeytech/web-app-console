@@ -447,12 +447,94 @@ setEditorContent(html: string) {
     this.selectedVariantId = null;
     this.variantSelectionError = '';
 
-    this.isVariableProduct =
-      String(this.productDetails?.product_type || '').toLowerCase() === 'variable' ||
-      this.configurableOptions.length > 0 ||
-      this.productVariants.length > 0;
+    const hasVariantsFlagDefined =
+      this.productDetails?.has_variants !== undefined &&
+      this.productDetails?.has_variants !== null;
+    const hasVariantsFlag = this.toBoolean(this.productDetails?.has_variants);
+
+    if (hasVariantsFlagDefined) {
+      this.isVariableProduct = hasVariantsFlag && this.productVariants.length > 0;
+    } else {
+      this.isVariableProduct =
+        String(this.productDetails?.product_type || '').toLowerCase() === 'variable' ||
+        this.configurableOptions.length > 0 ||
+        this.productVariants.length > 0;
+    }
+
+    if (this.isVariableProduct && this.productVariants.length > 0) {
+      this.applyDefaultVariantSelection();
+      return;
+    }
 
     this.updateDisplayPriceAndStock();
+  }
+
+  private applyDefaultVariantSelection() {
+    const defaultVariant =
+      this.productVariants.find((variant: any) => this.isVariantAvailable(variant)) ||
+      this.productVariants[0] ||
+      null;
+
+    if (!defaultVariant) {
+      this.updateDisplayPriceAndStock();
+      return;
+    }
+
+    this.selectedVariant = defaultVariant;
+    this.selectedVariantId = defaultVariant?.id ?? defaultVariant?.variant_id ?? null;
+    this.selectedVariantOptions = this.buildSelectionFromVariant(defaultVariant);
+    this.variantSelectionError = '';
+    this.updateDisplayPriceAndStock();
+  }
+
+  private buildSelectionFromVariant(variant: any): Record<string, string> {
+    const selectedOptions: Record<string, string> = {};
+    if (!variant) {
+      return selectedOptions;
+    }
+
+    const selectedIds = this.normalizeAttributeValueIds(variant?.attribute_value_ids).map((id) =>
+      this.normalizeId(id)
+    );
+
+    if (selectedIds.length > 0) {
+      this.configurableOptions.forEach((option: any) => {
+        const optionKey = this.getOptionKey(option);
+        const matchedValue = this.getOptionValues(option).find((value: any) =>
+          selectedIds.includes(this.getOptionValueId(value))
+        );
+        if (matchedValue) {
+          selectedOptions[optionKey] = this.getOptionValueId(matchedValue);
+        }
+      });
+    }
+
+    if (Object.keys(selectedOptions).length === 0 && Array.isArray(variant?.attributes_detail)) {
+      variant.attributes_detail.forEach((detail: any) => {
+        const attributeName = this.normalizeLookup(detail?.attribute_name ?? detail?.name);
+        const valueName = this.normalizeLookup(detail?.value_name ?? detail?.value);
+        if (attributeName === '' || valueName === '') {
+          return;
+        }
+
+        const option = this.configurableOptions.find(
+          (candidate: any) => this.normalizeLookup(this.getOptionName(candidate)) === attributeName
+        );
+        if (!option) {
+          return;
+        }
+
+        const optionKey = this.getOptionKey(option);
+        const matchedValue = this.getOptionValues(option).find(
+          (value: any) => this.normalizeLookup(this.getOptionValueLabel(value)) === valueName
+        );
+        if (matchedValue) {
+          selectedOptions[optionKey] = this.getOptionValueId(matchedValue);
+        }
+      });
+    }
+
+    return selectedOptions;
   }
 
   private updateLoginState() {
@@ -752,11 +834,26 @@ setEditorContent(html: string) {
     return Number.isNaN(parsed) ? null : parsed;
   }
 
+  private toBoolean(value: any): boolean {
+    if (typeof value === 'boolean') {
+      return value;
+    }
+    if (typeof value === 'number') {
+      return value === 1;
+    }
+    const normalized = String(value ?? '').trim().toLowerCase();
+    return normalized === 'true' || normalized === '1' || normalized === 'yes';
+  }
+
   private normalizeId(value: any): string {
     if (value === null || value === undefined) {
       return '';
     }
     return String(value).trim();
+  }
+
+  private normalizeLookup(value: any): string {
+    return String(value ?? '').trim().toLowerCase();
   }
 
   private getOptionKey(option: any): string {
