@@ -1603,6 +1603,11 @@ input[type=radio] {
     }
   }
 }
+.fresh-section{
+    .slick-track {
+      margin-left: unset;
+  }
+}
 
 .slick-carousel {
   .slick-arrow {

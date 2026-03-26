@@ -236,7 +236,7 @@ export class Login {
       });
   }
   register() {
-    //console.log('this.signupForm==>', this.signupForm.invalid);
+    // console.log('this.signupForm==>', this.signupForm);
     this.submittedRegister = true;
     if (this.signupForm.invalid) {
       // this.signupForm.markAllAsTouched();

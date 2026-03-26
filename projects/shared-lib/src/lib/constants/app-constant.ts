@@ -29,7 +29,7 @@ export const  promoBannerSlideConfig = {
     infinite: false,
     autoplaySpeed: 2000,
     dots: false,
-    // centerMode: true,
+    centerMode: false,
     lazyLoad: 'ondemand',
     centerPadding: '12px',
     responsive: [
