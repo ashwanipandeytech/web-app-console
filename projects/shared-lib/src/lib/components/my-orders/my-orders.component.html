@@ -283,7 +283,7 @@
                           </button>
                         }
 
-                        <button type="button" class="btn btn-sm btn-primary d-inline-flex align-items-center gap-1 fs-10 fw-bold px-2 py-1 rounded-pill"
+                        <button type="button" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 fs-10 fw-bold px-2 py-1 rounded-pill"
                           (click)="addToCart(item)">
                           <i class="fa-solid fa-cart-plus"></i> Reorder
                         </button>
@@ -673,7 +673,7 @@
           </div>
         }
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer gap-2">
         <button type="button" class="btn btn-secondary px-4" (click)="modal.dismiss('No click')">No, Keep it</button>
         <button type="button" class="btn btn-danger px-4" (click)="cancelOrder()">Yes, Confirm</button>
       </div>
@@ -730,7 +730,7 @@
           </div>
         </div>
 
-        <div class="modal-footer">
+        <div class="modal-footer gap-2">
           <button type="button" class="btn btn-secondary px-4" (click)="modal.dismiss('Cancel click')">Cancel</button>
           <button type="submit" class="shop-btn px-5" [disabled]="rateUsForm.invalid">
             Submit Review
