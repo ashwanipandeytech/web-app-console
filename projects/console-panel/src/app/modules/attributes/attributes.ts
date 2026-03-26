@@ -20,11 +20,14 @@ export class Attributes implements OnInit {
 
   attributes: any[] = [];
   attributeForm!: FormGroup;
-  valueForm!: FormGroup;
   
   selectedAttribute: any = null;
-  showAddValueForm = false;
+  isEditMode = false;
   isLoading = false;
+  
+  // Local list of values for the current attribute being created/edited
+  attributeValues: any[] = [];
+  newValue = { value: '', meta: '' };
 
   ngOnInit() {
     this.initForms();
@@ -36,17 +39,11 @@ export class Attributes implements OnInit {
       name: ['', Validators.required],
       type: ['text', Validators.required]
     });
-
-    this.valueForm = this.fb.group({
-      value: ['', Validators.required],
-      meta: [null]
-    });
   }
 
   loadAttributes() {
     this.isLoading = true;
     this.dataService.get('attributes').subscribe((res: any) => {
-      // Handle nested structure: res.data.data
       if (res.data && Array.isArray(res.data.data)) {
         this.attributes = res.data.data;
       } else if (Array.isArray(res.data)) {
@@ -62,39 +59,69 @@ export class Attributes implements OnInit {
     });
   }
 
-  createAttribute() {
+  resetForm() {
+    this.isEditMode = false;
+    this.selectedAttribute = null;
+    this.attributeForm.reset({ type: 'text' });
+    this.attributeValues = [];
+    this.newValue = { value: '', meta: '' };
+  }
+
+  addValueToLocalList() {
+    if (!this.newValue.value.trim()) return;
+    
+    this.attributeValues.push({
+      value: this.newValue.value,
+      meta: this.newValue.meta || null
+    });
+    
+    this.newValue = { value: '', meta: '' };
+  }
+
+  removeValueFromLocalList(index: number) {
+    this.attributeValues.splice(index, 1);
+  }
+
+  saveAttribute() {
     if (this.attributeForm.invalid) return;
 
-    this.dataService.post(this.attributeForm.value, 'attributes').subscribe((res: any) => {
-      if (res.success) {
-        this.globalService.showToast({ success: true, message: 'Attribute created successfully' });
-        this.attributeForm.reset({ type: 'text' });
-        this.loadAttributes();
-      }
-    });
-  }
+    const payload = {
+      ...this.attributeForm.value,
+      values: this.attributeValues
+    };
 
-  selectAttribute(attr: any) {
-    this.selectedAttribute = { ...attr, values: Array.isArray(attr.values) ? attr.values : [] };
-    this.showAddValueForm = false;
-  }
-
-  addValue() {
-    if (this.valueForm.invalid || !this.selectedAttribute) return;
-
-    this.dataService.post(this.valueForm.value, `attributes/${this.selectedAttribute.id}/values`).subscribe((res: any) => {
-      if (res.success) {
-        this.globalService.showToast({ success: true, message: 'Value added successfully' });
-        this.valueForm.reset();
-        this.loadAttributes(); // Reload to get updated values
-        // Update selectedAttribute reference with safe values array
-        const updated = this.attributes.find(a => a.id === this.selectedAttribute.id);
-        if (updated) {
-          this.selectedAttribute = { ...updated, values: Array.isArray(updated.values) ? updated.values : [] };
+    if (this.isEditMode && this.selectedAttribute) {
+      this.dataService.put(payload, `attributes/${this.selectedAttribute.id}`).subscribe((res: any) => {
+        if (res.success) {
+          this.globalService.showToast({ success: true, message: 'Attribute updated successfully' });
+          this.resetForm();
+          this.loadAttributes();
         }
-        this.cd.detectChanges();
-      }
+      });
+    } else {
+      this.dataService.post(payload, 'attributes').subscribe((res: any) => {
+        if (res.success) {
+          this.globalService.showToast({ success: true, message: 'Attribute created successfully' });
+          this.resetForm();
+          this.loadAttributes();
+        }
+      });
+    }
+  }
+
+  editAttribute(attr: any) {
+    this.isEditMode = true;
+    this.selectedAttribute = attr;
+    this.attributeForm.patchValue({
+      name: attr.name,
+      type: attr.type
     });
+    // For edit mode, we keep the existing IDs
+    this.attributeValues = Array.isArray(attr.values) ? attr.values.map((v: any) => ({
+      id: v.id,
+      value: v.value,
+      meta: v.meta
+    })) : [];
   }
 
   deleteAttribute(id: number) {
@@ -102,7 +129,7 @@ export class Attributes implements OnInit {
       this.dataService.delete(`attributes/${id}`).subscribe((res: any) => {
         if (res.success) {
           this.globalService.showToast({ success: true, message: 'Attribute deleted' });
-          if (this.selectedAttribute?.id === id) this.selectedAttribute = null;
+          if (this.selectedAttribute?.id === id) this.resetForm();
           this.loadAttributes();
         }
       });

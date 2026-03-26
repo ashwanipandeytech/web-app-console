@@ -519,21 +519,31 @@ export class AddProduct {
   }
 
   generateVariations() {
-    const payload = {
-      attributes: this.selectedAttributesForVariations.map(a => ({
-        attribute_id: a.attribute_id,
-        value_ids: a.value_ids
-      }))
-    };
+    // New payload format: { "attribute_values": [[valId1, valId2], [valId3, valId4]] }
+    const attributeValues = this.selectedAttributesForVariations
+      .filter(a => a.value_ids.length > 0)
+      .map(a => a.value_ids);
 
-    if (payload.attributes.some(a => a.value_ids.length === 0)) {
+    if (attributeValues.length === 0) {
         this.globalService.showToast({ success: false, message: 'Please select at least one value for each attribute' });
         return;
     }
 
-    this.dataService.post(payload, 'products/generate-variants').subscribe((res: any) => {
+    const payload = {
+      attribute_values: attributeValues
+    };
+
+    this.dataService.post(payload, 'attributes/generate-preview').subscribe((res: any) => {
       if (res.success) {
-        this.variableCombinations = res.combinations || [];
+        // Map the preview combinations to the format expected by our table
+        this.variableCombinations = (res.combinations || []).map((combo: any) => ({
+          variant_name: combo.variant_name,
+          attribute_value_ids: combo.attribute_value_ids,
+          sku_suffix: combo.sku_suffix || '',
+          price: combo.price || this.priceSection.value.regularPrice || 0,
+          stock: combo.stock || 0,
+          is_active: true
+        }));
         this.globalService.showToast({ success: true, message: 'Variants generated' });
         this.cd.detectChanges();
       }
@@ -561,8 +571,8 @@ export class AddProduct {
 
     if (this.data?.item) {
         this.productType = this.data.item.product_type || 'simple';
-        if (this.productType === 'variable' && this.data.item.variations) {
-            this.variableCombinations = this.data.item.variations;
+        if (this.productType === 'variable' && this.data.item.variants) {
+            this.variableCombinations = this.data.item.variants;
         }
         const details = this.data.item.product_details;
         if (details) {
@@ -1245,7 +1255,7 @@ export class AddProduct {
     let finalData: any = {
       category_id: this.parentId,
       product_type: this.productType,
-      variations: this.productType === 'variable' ? this.variableCombinations : [],
+      variants: this.productType === 'variable' ? this.variableCombinations : [],
       media: mediaSectionPayload,
       title: this.productDetails.value.productTitle,
       description: this.productDetails.value.productDescription,
@@ -1330,7 +1340,7 @@ export class AddProduct {
     let finalData: any = {
       category_id: this.parentId,
       product_type: this.productType,
-      variations: this.productType === 'variable' ? this.variableCombinations : [],
+      variants: this.productType === 'variable' ? this.variableCombinations : [],
       media: mediaSectionPayload,
       title: this.productDetails.value.productTitle,
       description: this.productDetails.value.productDescription,
