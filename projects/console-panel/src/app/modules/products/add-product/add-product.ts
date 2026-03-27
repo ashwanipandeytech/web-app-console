@@ -436,6 +436,7 @@ export class AddProduct {
   allAttributes: any[] = [];
   selectedAttributesForVariations: any[] = [];
   variableCombinations: any[] = [];
+  private variantsMergeCache: any[] = [];
   showVariantTable = false;
   productType: 'simple' | 'variable' = 'simple';
 
@@ -482,6 +483,11 @@ export class AddProduct {
         this.allAttributes = res || [];
       }
       this.syncSelectedAttributesFromExistingVariants();
+      if (this.variantsReactiveForm && this.variantsFormArray.length > 0) {
+        this.applyVariantsFromSource(this.variantsFormArray.getRawValue());
+      } else if (Array.isArray(this.variableCombinations) && this.variableCombinations.length > 0) {
+        this.applyVariantsFromSource(this.variableCombinations);
+      }
       this.cd.detectChanges();
     });
   }
@@ -622,6 +628,183 @@ export class AddProduct {
     return singleValue === null ? [] : [singleValue];
   }
 
+  private isGenericVariantName(name: any): boolean {
+    const normalized = String(name ?? '').trim();
+    if (!normalized) {
+      return false;
+    }
+    return /^variant\s*\d+$/i.test(normalized);
+  }
+
+  private getVariantNameFromAttributesDetail(attributesDetail: any): string {
+    if (!Array.isArray(attributesDetail)) {
+      return '';
+    }
+
+    return attributesDetail
+      .map((detail: any) => detail?.value_name)
+      .filter((name: any) => typeof name === 'string' && name.trim() !== '')
+      .join(' - ');
+  }
+
+  private getVariantNameFromAttributeValueIds(attributeValueIds: any[]): string {
+    if (!Array.isArray(attributeValueIds) || attributeValueIds.length === 0) {
+      return '';
+    }
+
+    const valueNameById = new Map<string, string>();
+    (this.allAttributes || []).forEach((attr: any) => {
+      (attr?.values || []).forEach((value: any) => {
+        const key = String(value?.id ?? '').trim();
+        const valueLabel = String(value?.value ?? '').trim();
+        if (key !== '' && valueLabel !== '' && !valueNameById.has(key)) {
+          valueNameById.set(key, valueLabel);
+        }
+      });
+    });
+
+    const valueNames = attributeValueIds
+      .map((id: any) => valueNameById.get(String(id)))
+      .filter((name: any) => typeof name === 'string' && name.trim() !== '');
+
+    return valueNames.join(' - ');
+  }
+
+  private resolveVariantName(variant: any): string {
+    const rawVariantName = String(variant?.variant_name ?? '').trim();
+    const skuSuffix = String(variant?.sku_suffix ?? '').trim();
+    const attributeValueIds = this.normalizeAttributeValueIds(variant?.attribute_value_ids);
+    const nameFromDetails = this.getVariantNameFromAttributesDetail(variant?.attributes_detail);
+    const nameFromValueIds = this.getVariantNameFromAttributeValueIds(attributeValueIds);
+    const meaningfulName = nameFromDetails || nameFromValueIds || skuSuffix;
+
+    if (rawVariantName && (!this.isGenericVariantName(rawVariantName) || !meaningfulName)) {
+      return rawVariantName;
+    }
+
+    return meaningfulName || rawVariantName;
+  }
+
+  private getVariantCombinationKey(row: any): string {
+    const normalizedIds = this.normalizeAttributeValueIds(row?.attribute_value_ids)
+      .map((id: any) => String(id))
+      .sort();
+
+    if (normalizedIds.length > 0) {
+      return normalizedIds.join('|');
+    }
+
+    const skuSuffix = String(row?.sku_suffix ?? '').trim().toLowerCase();
+    return skuSuffix ? `sku:${skuSuffix}` : '';
+  }
+
+  private getCurrentVariantsSnapshot(): any[] {
+    const variantsSource =
+      this.variantsReactiveForm && this.variantsFormArray.length > 0
+        ? this.variantsFormArray.getRawValue()
+        : Array.isArray(this.variableCombinations)
+          ? this.variableCombinations
+          : [];
+
+    return this.normalizeVariantCombinations(variantsSource);
+  }
+
+  private findBestVariantMatch(attributeValueIds: any[], existingVariants: any[]) {
+    if (!Array.isArray(attributeValueIds) || attributeValueIds.length === 0) {
+      return null;
+    }
+
+    const targetSet = new Set(attributeValueIds.map((id: any) => String(id)));
+    let bestMatch: any = null;
+    let bestScore = -1;
+
+    existingVariants.forEach((variant: any) => {
+      const candidateIds = this.normalizeAttributeValueIds(variant?.attribute_value_ids);
+      if (candidateIds.length === 0) {
+        return;
+      }
+
+      const candidateSet = new Set(candidateIds.map((id: any) => String(id)));
+      const intersection = candidateIds.filter((id: any) => targetSet.has(String(id))).length;
+      const candidateIsSubsetOfTarget = intersection === candidateSet.size;
+      const targetIsSubsetOfCandidate = intersection === targetSet.size;
+
+      if (!candidateIsSubsetOfTarget && !targetIsSubsetOfCandidate) {
+        return;
+      }
+
+      if (intersection > bestScore) {
+        bestScore = intersection;
+        bestMatch = variant;
+      }
+    });
+
+    return bestMatch;
+  }
+
+  private mergeVariantsWithExistingData(nextVariants: any[], existingVariants: any[]) {
+    if (!Array.isArray(nextVariants) || nextVariants.length === 0) {
+      return [];
+    }
+
+    const normalizedExisting = this.normalizeVariantCombinations(existingVariants || []);
+    const existingByKey = new Map<string, any>();
+    normalizedExisting.forEach((variant: any) => {
+      const key = this.getVariantCombinationKey(variant);
+      if (key) {
+        existingByKey.set(key, variant);
+      }
+    });
+
+    return nextVariants.map((variant: any) => {
+      const attributeValueIds = this.normalizeAttributeValueIds(variant?.attribute_value_ids);
+      const key = this.getVariantCombinationKey({ attribute_value_ids: attributeValueIds, sku_suffix: variant?.sku_suffix });
+      const exactMatchedVariant = key ? existingByKey.get(key) : null;
+      const matchedVariant = exactMatchedVariant || this.findBestVariantMatch(attributeValueIds, normalizedExisting);
+      const isExactMatch = !!exactMatchedVariant;
+
+      if (!matchedVariant) {
+        return variant;
+      }
+
+      const mergedVariant = {
+        ...variant,
+        sku_suffix: isExactMatch
+          ? matchedVariant?.sku_suffix || variant?.sku_suffix || ''
+          : variant?.sku_suffix || matchedVariant?.sku_suffix || '',
+        price: matchedVariant?.price ?? variant?.price ?? '',
+        stock: matchedVariant?.stock ?? variant?.stock ?? 0,
+        is_active: matchedVariant?.is_active ?? variant?.is_active ?? true,
+        attributes_detail:
+          Array.isArray(variant?.attributes_detail) && variant.attributes_detail.length > 0
+            ? variant.attributes_detail
+            : Array.isArray(matchedVariant?.attributes_detail)
+              ? matchedVariant.attributes_detail
+              : []
+      };
+
+      return {
+        ...mergedVariant,
+        variant_name: this.resolveVariantName(mergedVariant)
+      };
+    });
+  }
+
+  getVariantDisplayName(variantCtrl: any, index: number): string {
+    if (!variantCtrl) {
+      return `Variant ${index + 1}`;
+    }
+
+    const row = {
+      variant_name: variantCtrl.get?.('variant_name')?.value ?? '',
+      sku_suffix: variantCtrl.get?.('sku_suffix')?.value ?? '',
+      attribute_value_ids: variantCtrl.get?.('attribute_value_ids')?.value ?? []
+    };
+
+    const resolvedName = this.resolveVariantName(row);
+    return resolvedName || `Variant ${index + 1}`;
+  }
+
   private normalizeVariantCombinations(rows: any[]) {
     if (!Array.isArray(rows)) {
       return [];
@@ -629,21 +812,20 @@ export class AddProduct {
 
     return rows.map((row: any) => {
       const attributeValueIds = this.normalizeAttributeValueIds(row?.attribute_value_ids);
-      const nameFromDetails = Array.isArray(row?.attributes_detail)
-        ? row.attributes_detail
-            .map((detail: any) => detail?.value_name)
-            .filter((name: any) => typeof name === 'string' && name.trim() !== '')
-            .join(' - ')
-        : '';
-
-      return {
-        sku_suffix: row?.sku_suffix || '',
-        variant_name: row?.variant_name || nameFromDetails || row?.sku_suffix || '',
+      const skuSuffix = String(row?.sku_suffix ?? '').trim();
+      const normalizedRow = {
+        sku_suffix: skuSuffix,
+        variant_name: row?.variant_name || '',
         attribute_value_ids: attributeValueIds,
         attributes_detail: Array.isArray(row?.attributes_detail) ? row.attributes_detail : [],
         price: row?.price ?? '',
         stock: row?.stock ?? 0,
         is_active: row?.is_active ?? true
+      };
+
+      return {
+        ...normalizedRow,
+        variant_name: this.resolveVariantName(normalizedRow)
       };
     });
   }
@@ -686,9 +868,14 @@ export class AddProduct {
 
   private applyVariantsFromSource(variants: any[]) {
     const normalizedVariants = this.normalizeVariantCombinations(variants || []);
-    this.variableCombinations = normalizedVariants;
-    this.rebuildVariantsFormArray(normalizedVariants);
-    this.mapAttributesFromVariants(normalizedVariants);
+    const currentSnapshot = this.getCurrentVariantsSnapshot();
+    const mergeCandidates = [...this.variantsMergeCache, ...currentSnapshot];
+    const mergedVariants = this.mergeVariantsWithExistingData(normalizedVariants, mergeCandidates);
+
+    this.variableCombinations = mergedVariants;
+    this.rebuildVariantsFormArray(mergedVariants);
+    this.mapAttributesFromVariants(mergedVariants);
+    this.variantsMergeCache = mergedVariants;
   }
 
   private loadVariantsForEditClone() {
@@ -802,6 +989,7 @@ export class AddProduct {
   }
 
   private clearGeneratedVariationsPreview() {
+    this.variantsMergeCache = this.getCurrentVariantsSnapshot();
     if (this.variableCombinations.length > 0) {
       this.variableCombinations = [];
     }
@@ -916,6 +1104,7 @@ export class AddProduct {
     if (Array.isArray(this.variableCombinations) && this.variableCombinations.length > index) {
       this.variableCombinations.splice(index, 1);
     }
+    this.variantsMergeCache = this.getCurrentVariantsSnapshot();
     this.showVariantTable = this.variantsFormArray.length > 0;
   }
   isNotEmpty(obj: any): boolean {

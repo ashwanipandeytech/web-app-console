@@ -809,11 +809,7 @@
                                 <tr [formGroup]="$any(variantCtrl)">
                                   <td>
                                     <div class="fw-bold">
-                                      {{
-                                        variantCtrl.get('variant_name')?.value ||
-                                        variantCtrl.get('sku_suffix')?.value ||
-                                        ('Variant ' + ($index + 1))
-                                      }}
+                                      {{ getVariantDisplayName(variantCtrl, $index) }}
                                     </div>
                                     @if (variantCtrl.get('sku_suffix')?.value) {
                                       <small class="text-muted">({{ variantCtrl.get('sku_suffix')?.value }})</small>
