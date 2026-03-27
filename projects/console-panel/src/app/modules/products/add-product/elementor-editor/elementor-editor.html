@@ -264,8 +264,10 @@
                         <div [id]="'col-bg-' + block.id + '-' + $index" class="accordion-collapse collapse" data-bs-parent="#colBgAccordion">
                           <div class="accordion-body p-2">
                             <div class="d-flex gap-3 align-items-start">
-                              <div class="bg-preview-small" [style.background-image]="'url(' + col.backgroundImage + ')'" [class.empty]="!col.backgroundImage">
-                                @if (!col.backgroundImage) { <i class="fa fa-image opacity-25"></i> }
+                              <div class="bg-preview-small"
+                                   [ngStyle]="getColumnPreviewStyles(col)"
+                                   [class.empty]="!col.backgroundImage && getOpacityPercent(col.backgroundOpacity) === 0">
+                                @if (!col.backgroundImage && getOpacityPercent(col.backgroundOpacity) === 0) { <i class="fa fa-image opacity-25"></i> }
                                 @if (col.loading) { <i class="fa fa-spinner fa-spin"></i> }
                               </div>
                               <div class="flex-grow-1">
@@ -298,6 +300,26 @@
                                     </div>
                                   </div>
                                 }
+
+                                <div class="row g-2 mt-1">
+                                  <div class="col-6">
+                                    <label class="xx-small text-muted d-block">Color</label>
+                                    <input type="color"
+                                           [ngModel]="col.backgroundColor || '#ffffff'"
+                                           (ngModelChange)="col.backgroundColor = $event; onColumnBackgroundColorChange(col)"
+                                           class="form-control form-control-color form-control-color-xs">
+                                  </div>
+                                  <div class="col-6">
+                                    <label class="xx-small text-muted d-block">Opacity ({{ getOpacityPercent(col.backgroundOpacity) }}%)</label>
+                                    <input type="range"
+                                           min="0"
+                                           max="1"
+                                           step="0.05"
+                                           class="form-range opacity-slider"
+                                           [ngModel]="col.backgroundOpacity ?? 0"
+                                           (ngModelChange)="onColumnOpacityChange(col, $event)">
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -357,10 +379,7 @@
                      cdkDropList
                      [cdkDropListData]="col.blocks"
                      (cdkDropListDropped)="onDrop($event)"
-                     [style.background-image]="col.backgroundImage ? 'url(' + col.backgroundImage + ')' : null"
-                     [style.background-size]="col.backgroundSize"
-                     [style.background-position]="col.backgroundPosition"
-                     [style.background-repeat]="col.backgroundRepeat"
+                     [ngStyle]="getColumnPreviewStyles(col)"
                      style="padding: 20px 10px; min-height: 50px;">
                   
                   @if (activeBlocksArray === col.blocks) {

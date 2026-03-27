@@ -83,6 +83,7 @@ export class ElementorEditor implements ControlValueAccessor, OnChanges {
             try {
                 const jsonStr = decodeURIComponent(escape(atob(jsonMeta)));
                 this.blocks = JSON.parse(jsonStr);
+                this.normalizeColumnsData(this.blocks);
                 this.resetEditingState(this.blocks);
                 this.showStructureChoice = this.blocks.length === 0;
                 this.activeBlocksArray = this.blocks;
@@ -114,6 +115,168 @@ export class ElementorEditor implements ControlValueAccessor, OnChanges {
     }
     this.activeBlocksArray = this.blocks;
     this.cd.detectChanges();
+  }
+
+  private createRowColumn(width: string) {
+    return {
+      width,
+      blocks: [],
+      backgroundImage: '',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      backgroundColor: '#ffffff',
+      backgroundOpacity: 0
+    };
+  }
+
+  private normalizeColumnsData(blocks: ElementorBlock[]) {
+    blocks.forEach((block) => {
+      if (block.type !== 'row' || !Array.isArray(block.data?.columns)) {
+        return;
+      }
+
+      block.data.columns = block.data.columns.map((col: any) => {
+        const hadColor = typeof col.backgroundColor === 'string' && col.backgroundColor.trim().length > 0;
+        return {
+          ...col,
+          blocks: Array.isArray(col.blocks) ? col.blocks : [],
+          backgroundImage: col.backgroundImage || '',
+          backgroundSize: col.backgroundSize || 'cover',
+          backgroundPosition: col.backgroundPosition || 'center',
+          backgroundRepeat: col.backgroundRepeat || 'no-repeat',
+          backgroundColor: hadColor ? col.backgroundColor : '#ffffff',
+          backgroundOpacity: this.normalizeOpacity(col.backgroundOpacity, hadColor ? 1 : 0)
+        };
+      });
+
+      block.data.columns.forEach((col: any) => this.normalizeColumnsData(col.blocks));
+    });
+  }
+
+  private normalizeOpacity(value: any, fallback = 0): number {
+    const parsed = Number(value);
+    if (Number.isNaN(parsed)) {
+      return fallback;
+    }
+    return Math.max(0, Math.min(1, parsed));
+  }
+
+  private colorWithOpacity(color: string, opacity: number): string {
+    if (!color) {
+      return '';
+    }
+
+    const hex = color.replace('#', '').trim();
+    const normalizedOpacity = this.normalizeOpacity(opacity, 0);
+
+    if (/^[0-9a-fA-F]{3}$/.test(hex)) {
+      const r = parseInt(hex[0] + hex[0], 16);
+      const g = parseInt(hex[1] + hex[1], 16);
+      const b = parseInt(hex[2] + hex[2], 16);
+      return `rgba(${r}, ${g}, ${b}, ${normalizedOpacity})`;
+    }
+
+    if (/^[0-9a-fA-F]{6}$/.test(hex)) {
+      const r = parseInt(hex.slice(0, 2), 16);
+      const g = parseInt(hex.slice(2, 4), 16);
+      const b = parseInt(hex.slice(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${normalizedOpacity})`;
+    }
+
+    return color;
+  }
+
+  private getColumnOverlayColor(col: any): string {
+    const opacity = this.normalizeOpacity(col?.backgroundOpacity, 0);
+    if (opacity <= 0) {
+      return '';
+    }
+    return this.colorWithOpacity(col?.backgroundColor || '#ffffff', opacity);
+  }
+
+  private getColumnBackgroundImageStyle(col: any): string {
+    const backgroundImage = col?.backgroundImage;
+    const overlayColor = this.getColumnOverlayColor(col);
+
+    if (backgroundImage && overlayColor) {
+      return `linear-gradient(${overlayColor}, ${overlayColor}), url('${backgroundImage}')`;
+    }
+
+    if (backgroundImage) {
+      return `url('${backgroundImage}')`;
+    }
+
+    return '';
+  }
+
+  private getColumnBackgroundSizeStyle(col: any): string {
+    if (!col?.backgroundImage) {
+      return '';
+    }
+
+    const imageSize = col.backgroundSize || 'cover';
+    return this.getColumnOverlayColor(col) ? `cover, ${imageSize}` : imageSize;
+  }
+
+  private getColumnBackgroundPositionStyle(col: any): string {
+    if (!col?.backgroundImage) {
+      return '';
+    }
+
+    const imagePosition = col.backgroundPosition || 'center';
+    return this.getColumnOverlayColor(col) ? `center, ${imagePosition}` : imagePosition;
+  }
+
+  private getColumnBackgroundRepeatStyle(col: any): string {
+    if (!col?.backgroundImage) {
+      return '';
+    }
+
+    const imageRepeat = col.backgroundRepeat || 'no-repeat';
+    return this.getColumnOverlayColor(col) ? `no-repeat, ${imageRepeat}` : imageRepeat;
+  }
+
+  private getColumnBackgroundColorStyle(col: any): string {
+    if (col?.backgroundImage) {
+      return '';
+    }
+    return this.getColumnOverlayColor(col);
+  }
+
+  getColumnPreviewStyles(col: any): Record<string, string | null> {
+    const backgroundImage = this.getColumnBackgroundImageStyle(col);
+    const backgroundSize = this.getColumnBackgroundSizeStyle(col);
+    const backgroundPosition = this.getColumnBackgroundPositionStyle(col);
+    const backgroundRepeat = this.getColumnBackgroundRepeatStyle(col);
+    const backgroundColor = this.getColumnBackgroundColorStyle(col);
+
+    return {
+      'background-image': backgroundImage || null,
+      'background-size': backgroundSize || null,
+      'background-position': backgroundPosition || null,
+      'background-repeat': backgroundRepeat || null,
+      'background-color': backgroundColor || null
+    };
+  }
+
+  getOpacityPercent(value: any): number {
+    return Math.round(this.normalizeOpacity(value, 0) * 100);
+  }
+
+  onColumnBackgroundColorChange(col: any) {
+    col.backgroundColor = col.backgroundColor || '#ffffff';
+    if (this.normalizeOpacity(col.backgroundOpacity, 0) === 0) {
+      col.backgroundOpacity = 1;
+    } else {
+      col.backgroundOpacity = this.normalizeOpacity(col.backgroundOpacity, 1);
+    }
+    this.updateValue();
+  }
+
+  onColumnOpacityChange(col: any, value: any) {
+    col.backgroundOpacity = this.normalizeOpacity(value, 0);
+    this.updateValue();
   }
 
   private resetEditingState(blocks: ElementorBlock[]) {
@@ -149,14 +312,7 @@ export class ElementorEditor implements ControlValueAccessor, OnChanges {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        columns: cols.map(w => ({ 
-            width: w, 
-            blocks: [],
-            backgroundImage: '',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
-        }))
+        columns: cols.map(w => this.createRowColumn(w))
       }
     };
     this.closeAllEditors();
@@ -286,22 +442,8 @@ export class ElementorEditor implements ControlValueAccessor, OnChanges {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         columns: [
-          { 
-            width: '50%', 
-            blocks: [], 
-            backgroundImage: '',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
-          },
-          { 
-            width: '50%', 
-            blocks: [],
-            backgroundImage: '',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
-          }
+          this.createRowColumn('50%'),
+          this.createRowColumn('50%')
         ]
       };
       default: return { editing: true };
@@ -388,8 +530,25 @@ export class ElementorEditor implements ControlValueAccessor, OnChanges {
       case 'row':
         const rowBgStyle = getBackgroundStyle(block.data);
         const colsHtml = block.data.columns.map((col: any) => {
-            const colBgStyle = getBackgroundStyle(col);
-            return `<div class="elementor-column" style="width: ${ensureUnit(col.width, '%')}; flex: 0 0 ${ensureUnit(col.width, '%')}; padding: 20px 10px; box-sizing: border-box; ${colBgStyle}">
+            const colBgImageStyle = this.getColumnBackgroundImageStyle(col);
+            const colBgSizeStyle = this.getColumnBackgroundSizeStyle(col);
+            const colBgPositionStyle = this.getColumnBackgroundPositionStyle(col);
+            const colBgRepeatStyle = this.getColumnBackgroundRepeatStyle(col);
+            const colBgColorStyle = this.getColumnBackgroundColorStyle(col);
+
+            const colStyle = [
+              `width: ${ensureUnit(col.width, '%')};`,
+              `flex: 0 0 ${ensureUnit(col.width, '%')};`,
+              'padding: 20px 10px;',
+              'box-sizing: border-box;',
+              colBgImageStyle ? `background-image: ${colBgImageStyle};` : '',
+              colBgSizeStyle ? `background-size: ${colBgSizeStyle};` : '',
+              colBgPositionStyle ? `background-position: ${colBgPositionStyle};` : '',
+              colBgRepeatStyle ? `background-repeat: ${colBgRepeatStyle};` : '',
+              colBgColorStyle ? `background-color: ${colBgColorStyle};` : ''
+            ].join(' ');
+
+            return `<div class="elementor-column" style="${colStyle}">
                         ${this.blocksToHtml(col.blocks)}
                     </div>`;
         }).join('');
@@ -498,14 +657,7 @@ export class ElementorEditor implements ControlValueAccessor, OnChanges {
   }
 
   addRowColumn(block: ElementorBlock) {
-    block.data.columns.push({ 
-        width: '50%', 
-        blocks: [],
-        backgroundImage: '',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-    });
+    block.data.columns.push(this.createRowColumn('50%'));
     this.recalculateColumnWidths(block);
     this.updateValue();
   }
