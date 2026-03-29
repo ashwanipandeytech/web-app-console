@@ -9,6 +9,7 @@ import { environment } from 'environments/environment';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationPopupComponent } from '../../confirmationPopup/confirmationPopup.component';
 import { GlobalService } from '../../global.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-category',
@@ -16,7 +17,7 @@ import { GlobalService } from '../../global.service';
   styleUrl: './category.scss',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [Sidebar, Header, FormsModule, ReactiveFormsModule],
+  imports: [Sidebar, Header, FormsModule, ReactiveFormsModule,CommonModule],
 })
 export class Category {
   @ViewChild('fileInput') fileInput!: ElementRef;

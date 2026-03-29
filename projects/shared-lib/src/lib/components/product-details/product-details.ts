@@ -50,6 +50,15 @@ export class ProductDetails {
   displaySalePrice: number | null = null;
   displayRegularPrice: number | null = null;
   displayStock: number | null = null;
+  shippingInfoSummary: {
+    weightText: string | null;
+    dimensionsText: string | null;
+    shippingClassText: string | null;
+  } = {
+    weightText: null,
+    dimensionsText: null,
+    shippingClassText: null,
+  };
 
   mainConfig = {
     slidesToShow: 1,
@@ -183,6 +192,14 @@ setEditorContent(html: string) {
     }
 
     return `${this.displayStock} Products Available`;
+  }
+
+  get hasShippingInfo(): boolean {
+    return !!(
+      this.shippingInfoSummary.weightText ||
+      this.shippingInfoSummary.dimensionsText ||
+      this.shippingInfoSummary.shippingClassText
+    );
   }
 
   getOptionName(option: any): string {
@@ -422,6 +439,7 @@ setEditorContent(html: string) {
         this.productDetails = rawProduct;
         this.selectedProduct = rawProduct;
         this.isWishlisted = !!rawProduct?.is_wishlisted;
+        this.shippingInfoSummary = this.buildShippingInfoSummary(rawProduct);
 
         const details = this.productDetails?.product_details;
         if (details) {
@@ -553,6 +571,46 @@ setEditorContent(html: string) {
     }
 
     this.isLogin = true;
+  }
+
+  private buildShippingInfoSummary(product: any): {
+    weightText: string | null;
+    dimensionsText: string | null;
+    shippingClassText: string | null;
+  } {
+    const shippingInfo = this.extractShippingInfo(product);
+
+    if (!shippingInfo) {
+      return {
+        weightText: null,
+        dimensionsText: null,
+        shippingClassText: null,
+      };
+    }
+
+    const weight = this.toNumber(shippingInfo?.weight);
+    const length = this.toNumber(shippingInfo?.length);
+    const width = this.toNumber(shippingInfo?.width);
+    const height = this.toNumber(shippingInfo?.height);
+
+    const dimensions = [
+      { label: 'L', value: length },
+      { label: 'W', value: width },
+      { label: 'H', value: height },
+    ].filter((item): item is { label: string; value: number } => item.value !== null);
+
+    return {
+      weightText: weight !== null ? `${this.formatShippingValue(weight)} g` : null,
+      dimensionsText:
+        dimensions.length > 0
+          ? `${dimensions.map((item) => this.formatShippingValue(item.value)).join(' x ')} (${dimensions
+              .map((item) => item.label)
+              .join(' x ')})`
+          : null,
+      shippingClassText: this.hasDisplayValue(shippingInfo?.shippingClass)
+        ? String(shippingInfo.shippingClass).trim()
+        : null,
+    };
   }
 
   private updateDisplayPriceAndStock() {
@@ -734,6 +792,33 @@ setEditorContent(html: string) {
     return [];
   }
 
+  private extractShippingInfo(product: any): any | null {
+    const candidates = [product?.shipping_info, product?.product_details?.shipping_info];
+
+    for (const candidate of candidates) {
+      if (!candidate) {
+        continue;
+      }
+
+      if (typeof candidate === 'string') {
+        try {
+          const parsed = JSON.parse(candidate);
+          if (parsed && typeof parsed === 'object') {
+            return parsed;
+          }
+        } catch (error) {
+          continue;
+        }
+      }
+
+      if (typeof candidate === 'object') {
+        return candidate;
+      }
+    }
+
+    return null;
+  }
+
   private normalizeConfigurableOption(option: any, index: number) {
     const valuesSource = this.parseCollectionCandidate(
       option?.values ?? option?.options ?? option?.attribute_values ?? option?.data
@@ -868,6 +953,14 @@ setEditorContent(html: string) {
 
     const parsed = Number(value);
     return Number.isNaN(parsed) ? null : parsed;
+  }
+
+  private formatShippingValue(value: number): string {
+    return Number.isInteger(value) ? String(value) : value.toFixed(2).replace(/\.?0+$/, '');
+  }
+
+  private hasDisplayValue(value: any): boolean {
+    return value !== null && value !== undefined && String(value).trim() !== '';
   }
 
   private toBoolean(value: any): boolean {

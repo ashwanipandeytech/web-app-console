@@ -242,6 +242,32 @@
                   productDetails?.category?.name
                   }}</strong>
               </p>
+              @if (hasShippingInfo) {
+                <div class="shipping-info-card">
+                  <div class="shipping-info-title">Shipping Information</div>
+
+                  @if (shippingInfoSummary.weightText) {
+                    <p class="shipping-info-row">
+                      <span class="shipping-label">Weight:</span>
+                      <strong class="inner-text text-black fw-semibold">{{ shippingInfoSummary.weightText }}</strong>
+                    </p>
+                  }
+
+                  @if (shippingInfoSummary.dimensionsText) {
+                    <p class="shipping-info-row">
+                      <span class="shipping-label">Dimensions:</span>
+                      <strong class="inner-text text-black fw-semibold">{{ shippingInfoSummary.dimensionsText }}</strong>
+                    </p>
+                  }
+
+                  @if (shippingInfoSummary.shippingClassText) {
+                    <p class="shipping-info-row">
+                      <span class="shipping-label">Shipping Class:</span>
+                      <strong class="inner-text text-black fw-semibold">{{ shippingInfoSummary.shippingClassText }}</strong>
+                    </p>
+                  }
+                </div>
+              }
               <!-- <p class="tags">
                 Tags :
                 @for (tag of productDetails.tags.tags; track $index) {

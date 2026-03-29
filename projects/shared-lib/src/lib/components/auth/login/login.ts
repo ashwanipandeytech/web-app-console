@@ -1,9 +1,11 @@
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   inject,
   Input,
   Output,
+  ViewChild,
   ViewEncapsulation,
   Inject, // Add Inject
   PLATFORM_ID, // Add PLATFORM_ID
@@ -35,6 +37,7 @@ import { environment } from '../../../../../../../environments/environment';
   encapsulation: ViewEncapsulation.None,
 })
 export class Login {
+  @ViewChild('forgotEmailInput') forgotEmailInput?: ElementRef<HTMLInputElement>;
   public dataService: any = inject(DataService);
   public globalService: any = inject(GlobaCommonlService);
   public activeModal = inject(NgbActiveModal);
@@ -56,6 +59,7 @@ export class Login {
   showNewPassword: boolean = false;
   showConfirmPassword: boolean = false;
   isForgotPwd: boolean = false;
+  showOtpPlaceholderPopup: boolean = false;
   forgotEmailForm!: FormGroup;
   resetPasswordForm!: FormGroup;
   resetPasswordVia: any;
@@ -218,6 +222,32 @@ export class Login {
       remember: [false],
     });
   }
+
+  openOtpPlaceholderPopup() {
+    this.showOtpPlaceholderPopup = true;
+    this.cd.detectChanges();
+  }
+
+  closeOtpPlaceholderPopup(continueWithEmail = false) {
+    this.showOtpPlaceholderPopup = false;
+
+    if (continueWithEmail) {
+      this.isForgotPwd = true;
+      this.resetPasswordVia = 'email';
+      this.forgotStep = 'email';
+      this.cd.detectChanges();
+
+      if (this.isBrowser) {
+        setTimeout(() => {
+          this.forgotEmailInput?.nativeElement?.focus();
+        }, 0);
+      }
+      return;
+    }
+
+    this.cd.detectChanges();
+  }
+
   addAddress(address: any) {
     this.dataService
       .post(address, 'addresses')

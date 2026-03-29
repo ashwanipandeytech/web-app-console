@@ -1,570 +1,109 @@
 <!-- main content start -->
 <div class="main-content">
-    <div class="row g-4">
-        <div class="col-12">
-            <div class="panel">
-                <div class="panel-header">
-                    <h5 class="fw-bold">All Order</h5>
-                    <!-- <div class="btn-box d-flex gap-2">
-                        <div id="tableSearch"></div>
-                        <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa fa-arrows-rotate"></i></button>
-                        <div class="digi-dropdown dropdown">
-                            <button class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="fa fa-ellipsis-vertical"></i></button>
-                            <ul class="digi-dropdown-menu dropdown-menu">
-                                <li class="dropdown-title">Show Table Title</li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showOrderId" checked>
-                                        <label class="form-check-label" for="showOrderId">
-                                            Order ID
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showCustomer" checked>
-                                        <label class="form-check-label" for="showCustomer">
-                                            Customer
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showStatus" checked>
-                                        <label class="form-check-label" for="showStatus">
-                                            Status
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showProduct" checked>
-                                        <label class="form-check-label" for="showProduct">
-                                            Product
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showPrice" checked>
-                                        <label class="form-check-label" for="showPrice">
-                                            Price
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showPaymentMethod" checked>
-                                        <label class="form-check-label" for="showPaymentMethod">
-                                            Payment Method
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showDeliveryStatus" checked>
-                                        <label class="form-check-label" for="showDeliveryStatus">
-                                            Delivery Status
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showOrderDate" checked>
-                                        <label class="form-check-label" for="showOrderDate">
-                                            Order Date
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showAction" checked>
-                                        <label class="form-check-label" for="showAction">
-                                            Action
-                                        </label>
-                                    </div>
-                                </li>
-                                <li class="dropdown-title pb-1">Showing</li>
-                                <li>
-                                    <div class="input-group">
-                                        <input type="number" class="form-control form-control-sm w-50" value="10">
-                                        <button class="btn btn-sm btn-primary w-50">Apply</button>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div> -->
-                </div>
-                <div class="panel-body">
-                    <!-- <div class="product-table-quantity d-flex justify-content-between align-items-center mb-20">
-                        <ul class="mb-0">
-                            <li class="text-white">All (23)</li>
-                            <li>Pending (19)</li>
-                            <li>Draft (05)</li>
-                            <li>Trush (05)</li>
-                        </ul>
-                        <div class="btn-box d-lg-flex d-none gap-2">
-                            <button class="btn btn-sm btn-icon btn-outline-primary" title="Download Excel" id="downloadExcel"><i class="fa fa-file-spreadsheet"></i></button>
-                            <button class="btn btn-sm btn-icon btn-outline-primary" title="Download PDF" id="downloadPdf"><i class="fa fa-file-pdf"></i></button>
-                        </div>
-                    </div>
-                    <div class="d-none table-filter-option">
-                        <div class="row g-3">
-                            <div class="col-xl-10 col-9 col-xs-12">
-                                <div class="row g-3">
-                                    <div class="col">
-                                        <form class="row g-2">
-                                            <div class="col">
-                                                <select class="form-control form-control-sm">
-                                                    <option value="0">Bulk action</option>
-                                                    <option value="1">Move to trash</option>
-                                                    <option value="2">Change Status to processing</option>
-                                                    <option value="3">Change Status to on-hold</option>
-                                                    <option value="4">Change Status to completed</option>
-                                                    <option value="5">Change Status to cancelled</option>
-                                                </select>
-                                            </div>
-                                            <div class="col">
-                                                <button class="btn btn-sm btn-primary w-100">Apply</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="col">
-                                        <select class="form-control form-control-sm">
-                                            <option value="0">All Orders</option>
-                                            <option value="1">Pending</option>
-                                            <option value="2">Delivered</option>
-                                            <option value="3">Cancel</option>
-                                            <option value="4">Return</option>
-                                        </select>
-                                    </div>
-                                    <div class="col">
-                                        <input type="text" class="form-control form-control-sm" name="basic" id="orderTableFilter" readonly>
-                                    </div>
-                                    <div class="col">
-                                        <button class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter</button>
-                                    </div>
-                                    <div class="col">
-                                        <div class="digi-dropdown dropdown">
-                                            <button class="btn btn-sm btn-icon btn-primary" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="fa fa-plus"></i></button>
-                                            <ul class="digi-dropdown-menu dropdown-menu">
-                                                <li class="dropdown-title">Filter Options</li>
-                                                <li>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="filterDeliveryStatus" checked>
-                                                        <label class="form-check-label" for="filterDeliveryStatus">
-                                                            Delivery Status
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="filterDateRange" checked>
-                                                        <label class="form-check-label" for="filterDateRange">
-                                                            Date Range
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-2 col-3 col-xs-12 d-flex justify-content-end">
-                                <div id="productTableLength"></div>
-                            </div>
-                        </div>
-                    </div> -->
-
-                    <div class="table-responsive">
-                        <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped"
-                            id="allProductTable">
-                            <thead>
-                                <tr>
-                                    <!-- <th class="no-sort">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="markAllProduct">
-                                        </div>
-                                    </th> -->
-                                    <th>Order ID</th>
-                                    <th>Customer</th>
-                                    <th class="text-start" style="width: 250px;">Product</th>
-                                    <th>Price</th>
-                                    <th>Payment Method</th>
-                                    <th>Order Date</th>
-                                    <th class="position-sticky end-0 z-3 text-center" style="min-width: 200px;">Action & Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for(order of orderListData?.data; track $index){
-                                <tr>
-                                    <td>{{order.id}}</td>
-                                    <td>{{order.user.name}}</td>
-                                    <!-- <td>
-                                        <select
-                                            class="form-select form-select-sm"
-                                            [value]="normalizeStatus(order.status)"
-                                            [disabled]="updatingOrderId === order.id"
-                                            (change)="onStatusChange(order, $event)">
-                                            @if (!isKnownStatus(order.status)) {
-                                                <option [value]="normalizeStatus(order.status)" disabled>
-                                                    {{ statusLabel(order.status) }}
-                                                </option>
-                                            }
-                                            @for (status of orderStatusOptions; track status.value) {
-                                                <option [value]="status.value">{{status.label}}</option>
-                                            }
-                                        </select>
-                                    </td> -->
-                                    <td class="text-start">{{order?.items[0]?.product?.title}}</td>
-                                    <td>{{order.total_amount}}</td>
-                                    <td>{{order.payment_method}}</td>
-                                    <td>{{order.created_at | date:'dd MMM yyyy, hh:mm a'}}</td>
-                                    <td class="position-sticky end-0 z-3 bg-white shadow-sm">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <select class="form-select form-select-sm" style="width: 150px;" [ngModel]="order.status" (ngModelChange)="updateStatus(order, $event, order.status)">
-                                                @for(status of allStatuses; track $index) {
-                                                    <option [value]="status.value" [disabled]="!isStatusAllowed(order, status.value)">
-                                                        {{status.label}}
-                                                    </option>
-                                                }
-                                            </select>
-                                            
-                                            <button type="button" class="btn text-danger p-0" title="View Order"><i
-                                                    class="fa fa-eye"></i></button>
-                                            <button type="button" class="btn text-primary p-0" title="Download Invoice" (click)="downloadInvoice(order)">
-                                                <i class="fa fa-file-invoice"></i>
-                                            </button>
-                                            <!-- @if (hasPaySlip(order)) { -->
-                                            <button type="button" class="btn text-success p-0" title="Download Payslip" (click)="downloadPaySlip(order)">
-                                                <i class="fa fa-download"></i>
-                                            </button>
-                                            <!-- } -->
-                                        </div>
-                                    </td>
-                                </tr>
-                                }
-                                <!-- <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox">
-                                        </div>
-                                    </td>
-                                    <td><a href="invoices.html">#22120102</a></td>
-                                    <td>Shaikh Abu Dardah</td>
-                                    <td><span class="text-warning">Hold</span></td>
-                                    <td>15</td>
-                                    <td>₹625</td>
-                                    <td>Paypal</td>
-                                    <td><span class="badge bg-danger">Canceled</span></td>
-                                    <td>12/24/2023 - 01:05 PM</td>
-                                    <td>
-                                        <div class="btn-box">
-                                            <button><i class="fa fa-eye"></i></button>
-                                            <button><i class="fa fa-pen"></i></button>
-                                            <button><i class="fa fa-trash"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox">
-                                        </div>
-                                    </td>
-                                    <td><a href="invoices.html">#22120103</a></td>
-                                    <td>Shaikh Abu Dardah</td>
-                                    <td><span class="text-danger">Pending</span></td>
-                                    <td>12</td>
-                                    <td>₹256</td>
-                                    <td>Cash on</td>
-                                    <td><span class="badge bg-success">Delivered</span></td>
-                                    <td>12/24/2023 - 01:05 PM</td>
-                                    <td>
-                                        <div class="btn-box">
-                                            <button><i class="fa fa-eye"></i></button>
-                                            <button><i class="fa fa-pen"></i></button>
-                                            <button><i class="fa fa-trash"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox">
-                                        </div>
-                                    </td>
-                                    <td><a href="invoices.html">#22120104</a></td>
-                                    <td>Shaikh Abu Dardah</td>
-                                    <td><span class="text-warning">Hold</span></td>
-                                    <td>15</td>
-                                    <td>₹625</td>
-                                    <td>Paypal</td>
-                                    <td><span class="badge bg-danger">Canceled</span></td>
-                                    <td>12/24/2023 - 01:05 PM</td>
-                                    <td>
-                                        <div class="btn-box">
-                                            <button><i class="fa fa-eye"></i></button>
-                                            <button><i class="fa fa-pen"></i></button>
-                                            <button><i class="fa fa-trash"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox">
-                                        </div>
-                                    </td>
-                                    <td><a href="invoices.html">#22120101</a></td>
-                                    <td>Shaikh Abu Dardah</td>
-                                    <td><span class="text-danger">Pending</span></td>
-                                    <td>12</td>
-                                    <td>₹256</td>
-                                    <td>Cash on</td>
-                                    <td><span class="badge bg-success">Delivered</span></td>
-                                    <td>12/24/2023 - 01:05 PM</td>
-                                    <td>
-                                        <div class="btn-box">
-                                            <button><i class="fa fa-eye"></i></button>
-                                            <button><i class="fa fa-pen"></i></button>
-                                            <button><i class="fa fa-trash"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox">
-                                        </div>
-                                    </td>
-                                    <td><a href="invoices.html">#22120102</a></td>
-                                    <td>Shaikh Abu Dardah</td>
-                                    <td><span class="text-warning">Hold</span></td>
-                                    <td>15</td>
-                                    <td>₹625</td>
-                                    <td>Paypal</td>
-                                    <td><span class="badge bg-danger">Canceled</span></td>
-                                    <td>12/24/2023 - 01:05 PM</td>
-                                    <td>
-                                        <div class="btn-box">
-                                            <button><i class="fa fa-eye"></i></button>
-                                            <button><i class="fa fa-pen"></i></button>
-                                            <button><i class="fa fa-trash"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox">
-                                        </div>
-                                    </td>
-                                    <td><a href="invoices.html">#22120103</a></td>
-                                    <td>Shaikh Abu Dardah</td>
-                                    <td><span class="text-danger">Pending</span></td>
-                                    <td>12</td>
-                                    <td>₹256</td>
-                                    <td>Cash on</td>
-                                    <td><span class="badge bg-success">Delivered</span></td>
-                                    <td>12/24/2023 - 01:05 PM</td>
-                                    <td>
-                                        <div class="btn-box">
-                                            <button><i class="fa fa-eye"></i></button>
-                                            <button><i class="fa fa-pen"></i></button>
-                                            <button><i class="fa fa-trash"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox">
-                                        </div>
-                                    </td>
-                                    <td><a href="invoices.html">#22120104</a></td>
-                                    <td>Shaikh Abu Dardah</td>
-                                    <td><span class="text-warning">Hold</span></td>
-                                    <td>15</td>
-                                    <td>₹625</td>
-                                    <td>Paypal</td>
-                                    <td><span class="badge bg-danger">Canceled</span></td>
-                                    <td>12/24/2023 - 01:05 PM</td>
-                                    <td>
-                                        <div class="btn-box">
-                                            <button><i class="fa fa-eye"></i></button>
-                                            <button><i class="fa fa-pen"></i></button>
-                                            <button><i class="fa fa-trash"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox">
-                                        </div>
-                                    </td>
-                                    <td><a href="invoices.html">#22120101</a></td>
-                                    <td>Shaikh Abu Dardah</td>
-                                    <td><span class="text-danger">Pending</span></td>
-                                    <td>12</td>
-                                    <td>₹256</td>
-                                    <td>Cash on</td>
-                                    <td><span class="badge bg-success">Delivered</span></td>
-                                    <td>12/24/2023 - 01:05 PM</td>
-                                    <td>
-                                        <div class="btn-box">
-                                            <button><i class="fa fa-eye"></i></button>
-                                            <button><i class="fa fa-pen"></i></button>
-                                            <button><i class="fa fa-trash"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox">
-                                        </div>
-                                    </td>
-                                    <td><a href="invoices.html">#22120102</a></td>
-                                    <td>Shaikh Abu Dardah</td>
-                                    <td><span class="text-warning">Hold</span></td>
-                                    <td>15</td>
-                                    <td>₹625</td>
-                                    <td>Paypal</td>
-                                    <td><span class="badge bg-danger">Canceled</span></td>
-                                    <td>12/24/2023 - 01:05 PM</td>
-                                    <td>
-                                        <div class="btn-box">
-                                            <button><i class="fa fa-eye"></i></button>
-                                            <button><i class="fa fa-pen"></i></button>
-                                            <button><i class="fa fa-trash"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox">
-                                        </div>
-                                    </td>
-                                    <td><a href="invoices.html">#22120103</a></td>
-                                    <td>Shaikh Abu Dardah</td>
-                                    <td><span class="text-danger">Pending</span></td>
-                                    <td>12</td>
-                                    <td>₹256</td>
-                                    <td>Cash on</td>
-                                    <td><span class="badge bg-success">Delivered</span></td>
-                                    <td>12/24/2023 - 01:05 PM</td>
-                                    <td>
-                                        <div class="btn-box">
-                                            <button><i class="fa fa-eye"></i></button>
-                                            <button><i class="fa fa-pen"></i></button>
-                                            <button><i class="fa fa-trash"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox">
-                                        </div>
-                                    </td>
-                                    <td><a href="invoices.html">#22120104</a></td>
-                                    <td>Shaikh Abu Dardah</td>
-                                    <td><span class="text-warning">Hold</span></td>
-                                    <td>15</td>
-                                    <td>₹625</td>
-                                    <td>Paypal</td>
-                                    <td><span class="badge bg-danger">Canceled</span></td>
-                                    <td>12/24/2023 - 01:05 PM</td>
-                                    <td>
-                                        <div class="btn-box">
-                                            <button><i class="fa fa-eye"></i></button>
-                                            <button><i class="fa fa-pen"></i></button>
-                                            <button><i class="fa fa-trash"></i></button>
-                                        </div>
-                                    </td>
-                                </tr> -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-end gap-1 py-2">
-                        @for (page of orderListData?.links; track $index) {
-                        <button type="button" class="btn" (click)="nextPage(page.page)">
-                            <span [innerHTML]="page.label"></span>
-                        </button>
-                        }
-                    </div>
-
-                    <!-- <div class="table-bottom-control"></div> -->
-                </div>
-            </div>
+  <div class="row g-4">
+    <div class="col-12">
+      <div class="panel">
+        <div class="panel-header">
+          <h5 class="fw-bold">All Order</h5>
         </div>
-    </div>
 
-    <!-- footer start -->
-    <div class="footer">
-        <p>Copyright©
-            <script>document.write(new Date().getFullYear())</script> All Rights Reserved By <span
-                class="text-primary">Safure</span>
-        </p>
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table
+              class="table table-dashed table-hover digi-dataTable all-product-table table-striped"
+              id="allProductTable"
+            >
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th class="text-start" style="width: 250px;">Product</th>
+                  <th>Price</th>
+                  <th>Payment Method</th>
+                  <th>Order Date</th>
+                  <th class="position-sticky end-0 z-3 text-center" style="min-width: 200px;">
+                    Action & Status
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                @for (order of orderListData?.data; track $index) {
+                  <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ getCustomerName(order) }}</td>
+                    <td class="text-start">{{ getPrimaryProductTitle(order) }}</td>
+                    <td>{{ order.total_amount }}</td>
+                    <td>{{ order.payment_method }}</td>
+                    <td>{{ order.created_at | date:'dd MMM yyyy, hh:mm a' }}</td>
+                    <td class="position-sticky end-0 z-3 bg-white shadow-sm">
+                      <div class="d-flex align-items-center gap-2">
+                        <select
+                          class="form-select form-select-sm"
+                          style="width: 150px;"
+                          [ngModel]="order.status"
+                          (ngModelChange)="updateStatus(order, $event, order.status)"
+                        >
+                          @for (status of allStatuses; track $index) {
+                            <option [value]="status.value" [disabled]="!isStatusAllowed(order, status.value)">
+                              {{ status.label }}
+                            </option>
+                          }
+                        </select>
+
+                        <button
+                          type="button"
+                          class="btn text-danger p-0 border-0 bg-transparent"
+                          title="View Order"
+                          aria-label="View order details"
+                          (click)="viewOrder(order)"
+                        >
+                          <i class="fa fa-eye"></i>
+                        </button>
+
+                        <button
+                          type="button"
+                          class="btn text-primary p-0"
+                          title="Download Invoice"
+                          (click)="downloadInvoice(order)"
+                        >
+                          <i class="fa fa-file-invoice"></i>
+                        </button>
+
+                        <button
+                          type="button"
+                          class="btn text-success p-0"
+                          title="Download Payslip"
+                          (click)="downloadPaySlip(order)"
+                        >
+                          <i class="fa fa-download"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-end gap-1 py-2">
+            @for (page of orderListData?.links; track $index) {
+              <button type="button" class="btn" (click)="nextPage(page.page)">
+                <span [innerHTML]="page.label"></span>
+              </button>
+            }
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- footer end -->
+  </div>
+
+  <div class="footer">
+    <p>
+      Copyright&copy;
+      <script>document.write(new Date().getFullYear())</script>
+      All Rights Reserved By <span class="text-primary">Safure</span>
+    </p>
+  </div>
 </div>
 <!-- main content end -->
-
-<!-- Modal start  -->
-<ng-template #editOrderModal let-modal>
-    <div class="modal-header">
-        <h5 class="modal-title">Edit Order</h5>
-        <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
-    </div>
-
-    <form [formGroup]="orderForm" (ngSubmit)="submit(modal)">
-        <div class="modal-body">
-
-            <div class="mb-3">
-                <label>Customer</label>
-                <input class="form-control" formControlName="customer">
-            </div>
-
-            <div class="mb-3">
-                <label>Status</label>
-                <select class="form-control" formControlName="status">
-                    @for(status of allStatuses; track $index) {
-                        <option [value]="status.value" [disabled]="selectedOrder && !isStatusAllowed(selectedOrder, status.value)">
-                            {{status.label}}
-                        </option>
-                    }
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label>Product</label>
-                <input class="form-control" formControlName="product">
-            </div>
-
-            <div class="mb-3">
-                <label>Price</label>
-                <input type="number" class="form-control" formControlName="price">
-            </div>
-
-            <div class="mb-3">
-                <label>Payment Method</label>
-                <select class="form-control" formControlName="payment_method">
-                    <option value="cod">COD</option>
-                    <option value="online">Online</option>
-                </select>
-            </div>
-
-        </div>
-
-        <div class="modal-footer gap-2">
-            <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
-            <button type="submit" class="btn btn-primary" [disabled]="orderForm.invalid">
-                Update
-            </button>
-        </div>
-    </form>
-</ng-template>

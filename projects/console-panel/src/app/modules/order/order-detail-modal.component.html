@@ -1,0 +1,192 @@
+<div class="modal-header border-0 pb-2">
+  <div>
+    <div class="order-kicker">Order Details</div>
+    <h5 class="modal-title mb-1">#{{ getOrderNumber() || '-' }}</h5>
+    <div class="d-flex flex-wrap align-items-center gap-2">
+      <span class="status-badge" [ngClass]="getStatusClass(orderData?.status)">
+        {{ getStatusLabel(orderData?.status) }}
+      </span>
+      @if (isLoading) {
+        <span class="text-muted small d-inline-flex align-items-center gap-2">
+          <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+          Refreshing latest details
+        </span>
+      }
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="btn-close shadow-none"
+    aria-label="Close"
+    (click)="close()"
+  ></button>
+</div>
+
+<div class="modal-body pt-0">
+  @if (loadError) {
+    <div class="alert alert-warning info-alert mb-4" role="alert">
+      {{ loadError }}
+    </div>
+  }
+
+  <div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+      <div class="summary-card">
+        <div class="summary-label">Customer</div>
+        <div class="summary-value">{{ getCustomerName() }}</div>
+        <div class="summary-subvalue">{{ getCustomerEmail() }}</div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-xl-3">
+      <div class="summary-card">
+        <div class="summary-label">Order Date</div>
+        <div class="summary-value">
+          {{ orderData?.created_at ? (orderData?.created_at | date:'dd MMM yyyy') : '-' }}
+        </div>
+        <div class="summary-subvalue">
+          {{ orderData?.created_at ? (orderData?.created_at | date:'hh:mm a') : '' }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-xl-3">
+      <div class="summary-card">
+        <div class="summary-label">Payment Method</div>
+        <div class="summary-value">{{ getPaymentMethod() }}</div>
+        <div class="summary-subvalue">Transaction: {{ getTransactionId() }}</div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-xl-3">
+      <div class="summary-card">
+        <div class="summary-label">Total Amount</div>
+        <div class="summary-value">&#8377;{{ getOrderTotal() | number:'1.2-2' }}</div>
+        <div class="summary-subvalue">{{ orderItems.length }} item(s)</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="detail-section mb-4">
+    <div class="section-heading">
+      <div>
+        <h6 class="mb-1">Products</h6>
+        <p class="section-copy mb-0">Complete product list for this order.</p>
+      </div>
+    </div>
+
+    @if (orderItems.length > 0) {
+      <div class="table-responsive">
+        <table class="table align-middle product-table mb-0">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th class="text-center">Qty</th>
+              <th class="text-end">Price</th>
+              <th class="text-end">Total</th>
+              <th class="text-end">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of orderItems; track item?.id || $index) {
+              <tr>
+                <td>
+                  <div class="product-name">{{ getItemName(item) }}</div>
+                </td>
+                <td class="text-center">{{ getItemQuantity(item) }}</td>
+                <td class="text-end">&#8377;{{ getItemPrice(item) | number:'1.2-2' }}</td>
+                <td class="text-end">&#8377;{{ getItemTotal(item) | number:'1.2-2' }}</td>
+                <td class="text-end">
+                  <span class="status-badge" [ngClass]="getStatusClass(item?.status || orderData?.status)">
+                    {{ getStatusLabel(item?.status || orderData?.status) }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <div class="empty-state">
+        Product details are not available for this order yet.
+      </div>
+    }
+  </section>
+
+  <div class="row g-3">
+    <div class="col-lg-7">
+      <section class="detail-section h-100">
+        <div class="section-heading">
+          <div>
+            <h6 class="mb-1">Customer Information</h6>
+            <p class="section-copy mb-0">Contact and delivery details.</p>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Customer Name</span>
+          <span class="detail-value">{{ getCustomerName() }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Email</span>
+          <span class="detail-value">{{ getCustomerEmail() }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Phone</span>
+          <span class="detail-value">{{ getCustomerPhone() }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Address</span>
+          <span class="detail-value address-value">
+            @if (getAddressLines().length > 0) {
+              @for (line of getAddressLines(); track $index) {
+                <span>{{ line }}</span>
+              }
+            } @else {
+              <span>-</span>
+            }
+          </span>
+        </div>
+      </section>
+    </div>
+
+    <div class="col-lg-5">
+      <section class="detail-section h-100">
+        <div class="section-heading">
+          <div>
+            <h6 class="mb-1">Payment Summary</h6>
+            <p class="section-copy mb-0">Breakdown for this order.</p>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Subtotal</span>
+          <span class="detail-value">&#8377;{{ getOrderSubtotal() | number:'1.2-2' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Shipping</span>
+          <span class="detail-value">&#8377;{{ getShippingAmount() | number:'1.2-2' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Discount</span>
+          <span class="detail-value">&#8377;{{ getDiscountAmount() | number:'1.2-2' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Payment Method</span>
+          <span class="detail-value">{{ getPaymentMethod() }}</span>
+        </div>
+        <div class="detail-row total-row">
+          <span class="detail-label">Grand Total</span>
+          <span class="detail-value">&#8377;{{ getOrderTotal() | number:'1.2-2' }}</span>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer border-0 pt-2">
+  <button type="button" class="btn btn-secondary px-4" (click)="close()">
+    Close
+  </button>
+</div>
