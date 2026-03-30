@@ -1830,3 +1830,18 @@ input[type="number"] {
 web-header {
   z-index: 999;
 }
+
+.elementor-column {
+  // background-color: red;
+  .table, .table table {
+    width: 100% !important;
+  }
+  ul {
+    padding-left: 24px !important;
+    li {
+      p {
+        margin-left: 0 !important;
+      }
+    }
+  }
+}
