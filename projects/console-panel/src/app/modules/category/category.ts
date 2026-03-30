@@ -55,7 +55,7 @@ unloadNotification($event: BeforeUnloadEvent) {
 
   // display_type: ['', Validators.required],
 
-  is_menu: [false, Validators.requiredTrue], // checkbox must be checked
+  is_menu: [false], // checkbox must be checked
 
   allow_on: ['', Validators.required]
 });
