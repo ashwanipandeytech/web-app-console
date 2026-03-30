@@ -1757,6 +1757,15 @@ input[type="number"] {
     width: 100% !important;
   }
 
+  ul {
+    padding-left: 24px !important;
+    li {
+      p {
+        margin-left: 0 !important;
+      }
+    }
+  }
+
   .h1,
   h1 {
     font-size: calc(1.375rem + 1.5vw)
