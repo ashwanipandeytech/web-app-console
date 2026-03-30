@@ -288,20 +288,24 @@ else{
     this.dataService.delete(`categories/${id}`)
       .pipe(
         catchError(err => {
-          console.error('Error:', err);
-           setTimeout(() => {
-          this.globalService.showToast(err);
-        }, 100);
-          return of(null);
+          return of(err);
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+         if (res.success == true) {
         this.getCategoryList();
-          setTimeout(() => {
-          this.globalService.showToast(res);
-        }, 100);
+        this.globalService.showToast(res);
         this.cd.detectChanges();
+        } else if (res.error && res.error.message) {
+          this.globalService.showToast(res.error);
+        }
+
+
+        // this.getCategoryList();
+        //   setTimeout(() => {
+        //   this.globalService.showToast(res);
+        // }, 100);
+        // this.cd.detectChanges();
         // this.categoryListData = res.data;
       });
   }

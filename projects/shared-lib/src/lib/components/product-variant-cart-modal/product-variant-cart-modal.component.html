@@ -1,0 +1,111 @@
+<div class="modal-header border-0 pb-0 align-items-start">
+  <div>
+    <div class="variant-modal-eyebrow">Choose Variant</div>
+    <h5 class="modal-title mb-1">{{ productDetails?.title || product?.title || 'Select options' }}</h5>
+    @if (productDetails?.category?.name || product?.category?.name) {
+      <div class="variant-modal-category">
+        {{ productDetails?.category?.name || product?.category?.name }}
+      </div>
+    }
+  </div>
+
+  <button
+    type="button"
+    class="btn-close shadow-none"
+    aria-label="Close"
+    (click)="activeModal.dismiss()"
+  ></button>
+</div>
+
+<div class="modal-body pt-3">
+  @if (loading) {
+    <div class="variant-modal-loader">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mb-0">Loading variant options...</p>
+    </div>
+  } @else {
+    <div class="variant-modal-summary-card">
+    <div class="variant-modal-image">
+        @if (productImageUrl) {
+          <img [src]="productImageUrl" [alt]="productDetails?.title || product?.title || 'Product image'" />
+        } @else {
+          <div class="variant-modal-image-placeholder">No image</div>
+        }
+      </div>
+
+      <div class="variant-modal-summary">
+        <div class="price gap-2 mb-2">
+          @if (
+            displayRegularPrice !== null &&
+            displayRegularPrice !== undefined &&
+            displayRegularPrice !== displaySalePrice
+          ) {
+            <span class="price-cut">&#8377;{{ displayRegularPrice }}</span>
+          }
+          <span class="new-price">&#8377;{{ displaySalePrice ?? displayRegularPrice }}</span>
+        </div>
+
+        <div
+          class="variant-stock-badge"
+          [class.out-of-stock]="isVariableProduct ? !selectedVariantId || shouldDisableAddToCart : shouldDisableAddToCart"
+        >
+          {{ availabilityText }}
+        </div>
+
+        @if (selectedVariant?.variant_name) {
+          <div class="selected-variant-pill mt-2">
+            Selected: {{ selectedVariant?.variant_name }}
+          </div>
+        }
+      </div>
+    </div>
+
+    @if (hasVariantRequirement && !isVariableProduct) {
+      <div class="variant-modal-alert mt-3">
+        We could not load the required variant options right now. Please try again in a moment.
+      </div>
+    }
+
+    @if (isVariableProduct && configurableOptions.length > 0) {
+      <div class="variant-selector-wrap mt-4">
+        @for (option of configurableOptions; track option.key) {
+          <div class="variant-option-group mb-3">
+            <div class="variant-option-title">{{ getOptionName(option) }}</div>
+
+            <div class="d-flex flex-wrap gap-2 mt-2">
+              @for (value of getOptionValues(option); track value.id) {
+                <button
+                  type="button"
+                  class="btn btn-sm variant-option-btn"
+                  [class.active]="isVariantOptionSelected(option, value)"
+                  [disabled]="isVariantOptionDisabled(option, value)"
+                  (click)="onVariantOptionSelect(option, value)"
+                >
+                  {{ getOptionValueLabel(value) }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+
+        @if (variantSelectionError) {
+          <small class="text-danger d-block mt-1">{{ variantSelectionError }}</small>
+        }
+      </div>
+    }
+  }
+</div>
+
+<div class="modal-footer border-0 pt-0">
+  <button type="button" class="btn btn-light px-4 py-2 rounded-3 fw-semibold mr-3" (click)="activeModal.dismiss()">
+    Cancel
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary px-4 py-2 rounded-3 fw-semibold"
+    [disabled]="shouldDisableAddToCart"
+    (click)="addToCart()"
+  >
+    Add to Cart
+  </button>
+</div>

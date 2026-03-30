@@ -8,6 +8,9 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { GlobalFunctionService } from '../../services/global-function.service';
 import { NoDataComponent } from '../no-data/no-data.component';
 import { SignalService } from '../../services/signal-service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProductVariantService } from '../../services/product-variant.service';
+import { ProductVariantCartModalComponent } from '../product-variant-cart-modal/product-variant-cart-modal.component';
 
 @Component({
   selector: 'web-category-details',
@@ -23,6 +26,8 @@ export class ProductSidebarCommon {
   categoryListData: any;
   public globalService: any = inject(GlobaCommonlService);
   private route = inject(ActivatedRoute);
+  private readonly ngbModal = inject(NgbModal);
+  private readonly productVariantService = inject(ProductVariantService);
   productId: any;
   filteredProductList: any;
   defaultProductListData: any;
@@ -156,12 +161,8 @@ export class ProductSidebarCommon {
   }
 
   addToCart(data: any) {
-    if (String(data?.product_type || '').toLowerCase() === 'variable') {
-      this.globalService.showToast({
-        success: false,
-        message: 'Please select variant options from product details before adding to cart.',
-      });
-      this.openProduct(data);
+    if (this.productVariantService.isVariantProduct(data)) {
+      this.openVariantCartModal(data);
       return;
     }
 
@@ -186,16 +187,16 @@ export class ProductSidebarCommon {
       .subscribe((res: any) => {
         // //console.log('Response:', res);
         // //console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
-        if (res.headers) {
-          let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
-          //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
-          if (nonLoggedInUserToken) {
-            if (this.isBrowser) {
-              localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
-            }
-          }
-          this.globalService.showToast(res.body);
-        }
+        // if (res.headers) {
+        //   let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
+        //   //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
+        //   if (nonLoggedInUserToken) {
+        //     if (this.isBrowser) {
+        //       localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
+        //     }
+        //   }
+        //   this.globalService.showToast(res.body);
+        // }
         // let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
         // if (nonLoggedInUserToken) {
         //   localStorage.setItem('isNonUser', JSON.stringify(nonLoggedInUserToken));
@@ -204,11 +205,27 @@ export class ProductSidebarCommon {
           this.globalService.showToast(res);
           this.globalFunctionService.getCount();
           this.cd.detectChanges();
-        } else if (res.error && res.error.message) {
+        } 
+        // else if(res.success == false){
+        //   this.globalService.showToast(res.message);
+        // }
+        else if (res.error && res.error.message) {
           this.globalService.showToast(res.error);
         }
       });
   }
+
+  private openVariantCartModal(product: any) {
+    const modalRef = this.ngbModal.open(ProductVariantCartModalComponent, {
+      windowClass: 'mobile-modal',
+      centered: true,
+      scrollable: true,
+      size: 'lg',
+    });
+
+    modalRef.componentInstance.product = product;
+  }
+
   toggleHeart(item: any) {
     if (String(item?.product_type || '').toLowerCase() === 'variable') {
       this.globalService.showToast({

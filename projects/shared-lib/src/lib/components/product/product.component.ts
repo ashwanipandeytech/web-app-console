@@ -9,6 +9,9 @@ import { GlobalFunctionService } from '../../services/global-function.service';
 
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { SignalService } from '../../services/signal-service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProductVariantService } from '../../services/product-variant.service';
+import { ProductVariantCartModalComponent } from '../product-variant-cart-modal/product-variant-cart-modal.component';
 
 @Component({
   selector: 'app-product',
@@ -21,6 +24,8 @@ export class ProductComponent implements OnInit {
   public globalService: any = inject(GlobaCommonlService);
   private globalFunctionService = inject(GlobalFunctionService);
   private signalService = inject(SignalService);
+  private readonly productVariantService = inject(ProductVariantService);
+  private readonly ngbModal = inject(NgbModal);
   dataService = inject(DataService);
   cd = inject(ChangeDetectorRef);
   productListData: any = [];
@@ -175,12 +180,8 @@ export class ProductComponent implements OnInit {
   }
 
   addToCart(data: any) {
-      if (String(data?.product_type || '').toLowerCase() === 'variable') {
-        this.globalService.showToast({
-          success: false,
-          message: 'Please select variant options from product details before adding to cart.',
-        });
-        this.openProduct(data);
+      if (this.productVariantService.isVariantProduct(data)) {
+        this.openVariantCartModal(data);
         return;
       }
 
@@ -225,5 +226,16 @@ export class ProductComponent implements OnInit {
         }
         // EMIT THE CART ADDED SIGNAL
       });
+  }
+
+  private openVariantCartModal(product: any) {
+    const modalRef = this.ngbModal.open(ProductVariantCartModalComponent, {
+      windowClass: 'mobile-modal',
+      centered: true,
+      scrollable: true,
+      size: 'lg',
+    });
+
+    modalRef.componentInstance.product = product;
   }
 }
