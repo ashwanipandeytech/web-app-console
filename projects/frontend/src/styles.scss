@@ -1844,6 +1844,9 @@ web-header {
   // background-color: red;
   .table, .table table {
     width: 100% !important;
+    td {
+      width: auto !important;
+    }
   }
   ul {
     padding-left: 24px !important;
