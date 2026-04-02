@@ -63,7 +63,7 @@
               }
 
               <ngx-slick-carousel class="slick-main slick-carousel" #mainSlick="slick-carousel" [config]="mainConfig"
-                (afterChange)="onMainAfterChange($event)">
+                (init)="onMainSlickInit()" (afterChange)="onMainAfterChange($event)">
                 @if (displayGalleryImages.length === 0 && selectedVariantPreviewImageUrl) {
                 <div ngxSlickItem class="main-img">
                   <img [src]="selectedVariantPreviewImageUrl" alt="product" class="w-100 object-fit-contain" />
@@ -130,7 +130,7 @@
                             type="button"
                             class="btn btn-sm variant-option-btn"
                             [class.active]="isVariantOptionSelected(option, value)"
-                            [disabled]="isVariantOptionDisabled(option, value)"
+                            [disabled]="isVariantOptionDisabled(option, value) || (getOptionValues(option).length === 1 && isVariantOptionSelected(option, value))"
                             (click)="onVariantOptionSelect(option, value)">
                             {{ getOptionValueLabel(value) }}
                           </button>
@@ -142,6 +142,11 @@
                   @if (variantSelectionError) {
                     <small class="text-danger d-block mt-1">{{ variantSelectionError }}</small>
                   }
+                </div>
+              }
+              @if (isVariableProduct && selectedVariantDisplayName) {
+                <div class="selected-variant-pill mt-2">
+                  Selected: {{ selectedVariantDisplayName }}
                 </div>
               }
               <div class="product-quantity align-items-start justify-content-start mt-2">

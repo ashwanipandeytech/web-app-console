@@ -468,6 +468,8 @@ export class AddProduct {
   selectedAttributesForVariations: any[] = [];
   variableCombinations: any[] = [];
   private variantsMergeCache: any[] = [];
+  private hasAutoPreviewedUpdateCombinations = false;
+  private isAutoPreviewInProgress = false;
   private colorAttributeValueIds = new Set<string>();
   private uploadingVariantImageIndexes = new Set<number>();
   private pendingVariantImageFiles = new Map<string, File>();
@@ -523,6 +525,7 @@ export class AddProduct {
       } else if (Array.isArray(this.variableCombinations) && this.variableCombinations.length > 0) {
         this.applyVariantsFromSource(this.variableCombinations);
       }
+      this.tryAutoGeneratePreviewCombinationsForUpdate();
       this.cd.detectChanges();
     });
   }
@@ -1554,6 +1557,7 @@ export class AddProduct {
     if (localVariants.length > 0) {
       this.productType = 'variable';
       this.applyVariantsFromSource(localVariants);
+      this.tryAutoGeneratePreviewCombinationsForUpdate();
       return;
     }
 
@@ -1580,6 +1584,7 @@ export class AddProduct {
         if (apiVariants.length > 0) {
           this.productType = 'variable';
           this.applyVariantsFromSource(apiVariants);
+          this.tryAutoGeneratePreviewCombinationsForUpdate();
           this.cd.detectChanges();
         }
       });
@@ -1670,25 +1675,69 @@ export class AddProduct {
     this.showVariantTable = false;
   }
 
-  generateVariations() {
-    if (this.selectedAttributesForVariations.length === 0) {
-      this.globalService.showToast({
-        success: false,
-        message: 'Please select at least one attribute to preview combinations'
-      });
+  private shouldAutoGeneratePreviewCombinations(): boolean {
+    const isUpdateMode = this.data?.mode === 'update';
+    if (!isUpdateMode) {
+      return false;
+    }
+
+    if (String(this.productType || '').toLowerCase() !== 'variable') {
+      return false;
+    }
+
+    return Array.isArray(this.allAttributes) && this.allAttributes.length > 0;
+  }
+
+  private tryAutoGeneratePreviewCombinationsForUpdate() {
+    if (!this.shouldAutoGeneratePreviewCombinations()) {
       return;
+    }
+
+    if (this.hasAutoPreviewedUpdateCombinations || this.isAutoPreviewInProgress) {
+      return;
+    }
+
+    if (!this.hasSelectedVariationValues()) {
+      return;
+    }
+
+    this.isAutoPreviewInProgress = true;
+    void this.generateVariationsWithOptions({ silent: true })
+      .then((generated) => {
+        if (generated) {
+          this.hasAutoPreviewedUpdateCombinations = true;
+        }
+      })
+      .finally(() => {
+        this.isAutoPreviewInProgress = false;
+      });
+  }
+
+  private async generateVariationsWithOptions(options: { silent?: boolean } = {}): Promise<boolean> {
+    const silent = !!options.silent;
+
+    if (this.selectedAttributesForVariations.length === 0) {
+      if (!silent) {
+        this.globalService.showToast({
+          success: false,
+          message: 'Please select at least one attribute to preview combinations'
+        });
+      }
+      return false;
     }
 
     const missingSelections = this.getAttributesMissingValueSelection();
     if (missingSelections.length > 0) {
-      const names = this.getIncompleteAttributeNames();
-      this.globalService.showToast({
-        success: false,
-        message: names
-          ? `Please select at least one value for: ${names}`
-          : 'Please select values for all selected attributes'
-      });
-      return;
+      if (!silent) {
+        const names = this.getIncompleteAttributeNames();
+        this.globalService.showToast({
+          success: false,
+          message: names
+            ? `Please select at least one value for: ${names}`
+            : 'Please select values for all selected attributes'
+        });
+      }
+      return false;
     }
 
     const attributeValues = this.selectedAttributesForVariations
@@ -1705,32 +1754,63 @@ export class AddProduct {
       .filter((ids: any[]) => ids.length > 0);
 
     if (attributeValues.length === 0) {
-      this.globalService.showToast({
-        success: false,
-        message: 'Please select at least one value to preview combinations'
-      });
-      return;
+      if (!silent) {
+        this.globalService.showToast({
+          success: false,
+          message: 'Please select at least one value to preview combinations'
+        });
+      }
+      return false;
     }
 
     const payload = {
       attribute_values: attributeValues
     };
 
-    this.dataService.post(payload, 'attributes/generate-preview').subscribe((res: any) => {
-      if (res.success) {
-        const previewRows = Array.isArray(res?.data)
-          ? res.data
-          : Array.isArray(res?.data?.data)
-            ? res.data.data
-            : Array.isArray(res?.combinations)
-              ? res.combinations
-              : [];
+    const res: any = await firstValueFrom(
+      this.dataService.post(payload, 'attributes/generate-preview').pipe(
+        catchError(() => of(null))
+      )
+    );
 
-        this.applyVariantsFromSource(previewRows);
-        this.globalService.showToast({ success: true, message: 'Variants generated' });
-        this.cd.detectChanges();
+    if (!res?.success) {
+      if (!silent) {
+        this.globalService.showToast({
+          success: false,
+          message: res?.message || 'Failed to generate variant combinations'
+        });
       }
-    });
+      return false;
+    }
+
+    const previewRows = Array.isArray(res?.data)
+      ? res.data
+      : Array.isArray(res?.data?.data)
+        ? res.data.data
+        : Array.isArray(res?.combinations)
+          ? res.combinations
+          : [];
+
+    if (previewRows.length === 0) {
+      if (!silent) {
+        this.globalService.showToast({
+          success: false,
+          message: 'No combinations generated for selected attributes'
+        });
+      }
+      return false;
+    }
+
+    this.applyVariantsFromSource(previewRows);
+    if (!silent) {
+      this.globalService.showToast({ success: true, message: 'Variants generated' });
+    }
+    this.cd.detectChanges();
+    return true;
+  }
+
+  generateVariations() {
+    void this.generateVariationsWithOptions();
   }
 
   openVariantGenerator(modalTemplate: any) {
@@ -1744,6 +1824,8 @@ export class AddProduct {
 
   ngOnInit() {
     this.domain = window.location.origin;
+    this.hasAutoPreviewedUpdateCombinations = false;
+    this.isAutoPreviewInProgress = false;
     this.getCategoryList();
     this.loadAllAttributes();
     this.initializeForms();
@@ -3201,6 +3283,8 @@ export class AddProduct {
     this.galleryImageEntries = [];
     this.removedGalleryMediaIds.clear();
     this.removedGalleryImageUrls.clear();
+    this.hasAutoPreviewedUpdateCombinations = false;
+    this.isAutoPreviewInProgress = false;
     this.productType = 'simple';
     this.variableCombinations = [];
     this.showVariantTable = false;

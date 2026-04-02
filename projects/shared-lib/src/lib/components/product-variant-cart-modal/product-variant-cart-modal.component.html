@@ -52,9 +52,9 @@
           {{ availabilityText }}
         </div>
 
-        @if (selectedVariant?.variant_name) {
+        @if (selectedVariantDisplayName) {
           <div class="selected-variant-pill mt-2">
-            Selected: {{ selectedVariant?.variant_name }}
+            Selected: {{ selectedVariantDisplayName }}
           </div>
         }
       </div>
@@ -78,7 +78,7 @@
                   type="button"
                   class="btn btn-sm variant-option-btn"
                   [class.active]="isVariantOptionSelected(option, value)"
-                  [disabled]="isVariantOptionDisabled(option, value)"
+                  [disabled]="isVariantOptionDisabled(option, value) || (getOptionValues(option).length === 1 && isVariantOptionSelected(option, value))"
                   (click)="onVariantOptionSelect(option, value)"
                 >
                   {{ getOptionValueLabel(value) }}

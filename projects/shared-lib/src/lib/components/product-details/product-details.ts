@@ -83,15 +83,52 @@ export class ProductDetails {
   activeIndex = 0;
   displayGalleryImages: any[] = [];
   selectedVariantPreviewImageUrl = '';
+  private pendingMainSlideIndex: number | null = null;
 
-goToSlide(index: number) {
-  this.activeIndex = index;
-  this.mainSlick.slickGoTo(index);
-}
+  goToSlide(index: number) {
+    this.activeIndex = index;
+    this.navigateMainSlick(index);
+  }
 
-onMainAfterChange(event: any) {
-  this.activeIndex = event.currentSlide;
-}
+  onMainAfterChange(event: any) {
+    this.activeIndex = event.currentSlide;
+  }
+
+  onMainSlickInit() {
+    if (this.pendingMainSlideIndex === null) {
+      return;
+    }
+
+    const pendingIndex = this.pendingMainSlideIndex;
+    this.pendingMainSlideIndex = null;
+    this.navigateMainSlick(pendingIndex, false);
+  }
+
+  private navigateMainSlick(index: number, storePending = true) {
+    const mainSlickRef = this.mainSlick;
+    const canNavigate =
+      !!mainSlickRef &&
+      !!mainSlickRef.$instance &&
+      typeof mainSlickRef.$instance.slick === 'function' &&
+      typeof mainSlickRef.slickGoTo === 'function';
+
+    if (!canNavigate) {
+      if (storePending) {
+        this.pendingMainSlideIndex = index;
+      }
+      return;
+    }
+
+    try {
+      mainSlickRef.slickGoTo(index);
+      this.pendingMainSlideIndex = null;
+    } catch (error) {
+      if (storePending) {
+        this.pendingMainSlideIndex = index;
+      }
+      console.warn('Failed to navigate product image slider', error);
+    }
+  }
 
   // slideConfig = {
   //   slidesToShow: 1,
@@ -198,6 +235,14 @@ setEditorContent(html: string) {
     return `${this.displayStock} Products Available`;
   }
 
+  get selectedVariantDisplayName(): string {
+    return this.productVariantService.getSelectedVariantDisplayName(
+      this.selectedVariant,
+      this.configurableOptions,
+      this.selectedVariantOptions,
+    );
+  }
+
   get hasShippingInfo(): boolean {
     return !!(
       this.shippingInfoSummary.weightText ||
@@ -248,18 +293,11 @@ setEditorContent(html: string) {
   }
 
   onVariantOptionSelect(option: any, value: any) {
-    const optionKey = this.getOptionKey(option);
-    const valueId = this.getOptionValueId(value);
-    if (!optionKey || !valueId) {
-      return;
-    }
-
-    if (this.selectedVariantOptions[optionKey] === valueId) {
-      delete this.selectedVariantOptions[optionKey];
-    } else {
-      this.selectedVariantOptions[optionKey] = valueId;
-    }
-
+    this.selectedVariantOptions = this.productVariantService.toggleVariantOptionSelection(
+      option,
+      value,
+      this.selectedVariantOptions,
+    );
     this.variantSelectionError = '';
     this.resolveSelectedVariant();
   }
@@ -680,7 +718,7 @@ setEditorContent(html: string) {
     if (this.selectedVariantPreviewImageUrl && (hasPreviewChanged || this.activeIndex !== 0)) {
       this.activeIndex = 0;
       Promise.resolve().then(() => {
-        this.mainSlick?.slickGoTo?.(0);
+        this.navigateMainSlick(0);
       });
     }
   }
@@ -895,19 +933,18 @@ setEditorContent(html: string) {
     return [];
   }
 
-  private normalizeVariant(variant: any, index: number) {
+  private normalizeVariant(variant: any, _index: number) {
     const normalizedIds = this.normalizeAttributeValueIds(variant?.attribute_value_ids);
     const details = Array.isArray(variant?.attributes_detail) ? variant.attributes_detail : [];
-    const detailName = details
-      .map((item: any) => item?.value_name || item?.value)
-      .filter((value: any) => !!value)
-      .join(' - ');
+    const variantDisplayName = this.productVariantService.getSelectedVariantDisplayName({
+      ...variant,
+      attributes_detail: details,
+    });
 
     return {
       ...variant,
       id: variant?.id ?? variant?.variant_id ?? null,
-      variant_name:
-        variant?.variant_name || detailName || variant?.sku_suffix || `Variant ${index + 1}`,
+      variant_name: variantDisplayName,
       attribute_value_ids: normalizedIds,
       price: this.toNumber(variant?.price),
       stock: this.toNumber(variant?.stock),

@@ -106,6 +106,14 @@ export class ProductVariantCartModalComponent {
     return this.isCurrentSelectionOutOfStock();
   }
 
+  get selectedVariantDisplayName(): string {
+    return this.productVariantService.getSelectedVariantDisplayName(
+      this.selectedVariant,
+      this.configurableOptions,
+      this.selectedVariantOptions,
+    );
+  }
+
   getOptionName(option: any): string {
     return this.productVariantService.getOptionName(option);
   }

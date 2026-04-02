@@ -64,7 +64,7 @@
                         [(ngModel)]="settingsModel.general.logo.desktop.imgSrc"
                         placeholder="https://example.com/desktop-logo.png">
 
-                      <button class="btn btn-primary p-1 ms-2" (click)="openUploadModal('desktop')">
+                      <button type="button" class="btn btn-primary p-1 ms-2" (click)="openUploadModal('desktop')">
 Upload</button>
                     </div>
 
@@ -93,7 +93,7 @@ Upload</button>
                         [(ngModel)]="settingsModel.general.logo.mobile.imgSrc"
                         placeholder="https://example.com/mobile-logo.png">
 
-                      <button class="btn btn-primary p-1 ms-2" (click)="openUploadModal('mobile')">
+                      <button type="button" class="btn btn-primary p-1 ms-2" (click)="openUploadModal('mobile')">
 Upload</button>
                     </div>
 
@@ -135,7 +135,7 @@ Upload</button>
                       <input type="text" class="form-control" name="general.favico.desktop.imgSrc"
                         [(ngModel)]="settingsModel.general.favico.desktop.imgSrc"
                         placeholder="https://example.com/favicon.ico">
-                      <button class="btn btn-primary p-1 ms-2" (click)="openUploadModal('fav_desktop')">
+                      <button type="button" class="btn btn-primary p-1 ms-2" (click)="openUploadModal('fav_desktop')">
 Upload</button>
                     </div>
 
@@ -152,7 +152,7 @@ Upload</button>
                         [(ngModel)]="settingsModel.general.favico.mobile.imgSrc"
                         placeholder="https://example.com/mobile-favicon.png">
 
-                      <button class="btn btn-primary p-1 ms-2" (click)="openUploadModal('fav_mobile')">
+                      <button type="button" class="btn btn-primary p-1 ms-2" (click)="openUploadModal('fav_mobile')">
 Upload</button>
                     </div>
 
@@ -200,7 +200,7 @@ Upload</button>
                           <input type="text" class="form-control" [name]="'home_Banner_Slider[' + $index + '].imgSrc'"
                             [(ngModel)]="slide.imgSrc" placeholder="https://example.com/slide.jpg">
 
-                          <button class="btn btn-primary p-1 ms-2" (click)="openUploadModal('slider' + $index)">
+                          <button type="button" class="btn btn-primary p-1 ms-2" (click)="openUploadModal('slider' + $index)">
 Upload</button>
                         </div>
 
@@ -217,8 +217,7 @@ Upload</button>
                       <div class="col-md-4">
                         <label class="form-label fw-semibold">Link URL</label>
                         <input type="text" class="form-control" [name]="'home_Banner_Slider[' + $index + '].url'"
-                          [(ngModel)]="slide.url" placeholder="https://example.com"
-                          (ngModelChange)="heroBannerSliderUrlValue(slide, $index,'slider'+ $index)">
+                          [(ngModel)]="slide.url" placeholder="https://example.com">
                       </div>
                     </div>
                   </div>
@@ -266,7 +265,7 @@ Upload</button>
                           <input type="text" class="form-control" [name]="'home_Promo_Slider[' + $index + '].imgSrc'"
                             [(ngModel)]="slide.imgSrc" placeholder="https://example.com/slide.jpg">
 
-                          <button class="btn btn-primary p-1 ms-2" (click)="openUploadModal('promoslider' + $index)">
+                          <button type="button" class="btn btn-primary p-1 ms-2" (click)="openUploadModal('promoslider' + $index)">
 Upload</button>
                         </div>
 
@@ -333,7 +332,7 @@ Upload</button>
                             [name]="'home_Promo_Slider_testimonials[' + $index + '].imgSrc'" [(ngModel)]="slide.imgSrc"
                             placeholder="https://example.com/slide.jpg">
 
-                          <button class="btn btn-primary p-1 ms-2" (click)="openUploadModal('promoslidertestimonial' + $index)">
+                          <button type="button" class="btn btn-primary p-1 ms-2" (click)="openUploadModal('promoslidertestimonial' + $index)">
 Upload</button>
                         </div>
 
@@ -399,7 +398,7 @@ Upload</button>
                             [name]="'home_Promo_Slider_bottom[' + $index + '].imgSrc'" [(ngModel)]="slide.imgSrc"
                             placeholder="https://example.com/slide.jpg">
 
-                          <button class="btn btn-primary p-1 ms-2" (click)="openUploadModal('homebottombanner' + $index)">
+                          <button type="button" class="btn btn-primary p-1 ms-2" (click)="openUploadModal('homebottombanner' + $index)">
 Upload</button>
                         </div>
 

@@ -212,6 +212,10 @@ export class ProductVariantService {
 
     const nextSelection = { ...selectedVariantOptions };
     if (nextSelection[optionKey] === valueId) {
+      const optionValues = this.getOptionValues(option);
+      if (optionValues.length <= 1) {
+        return nextSelection;
+      }
       delete nextSelection[optionKey];
     } else {
       nextSelection[optionKey] = valueId;
@@ -240,6 +244,41 @@ export class ProductVariantService {
     return this.normalizeId(
       value?.id ?? value?.value_id ?? value?.attribute_value_id ?? value?.value ?? value?.name,
     );
+  }
+
+  getSelectedVariantDisplayName(
+    selectedVariant: any,
+    configurableOptions: any[] = [],
+    selectedVariantOptions: Record<string, string> = {},
+  ): string {
+    if (!selectedVariant) {
+      return '';
+    }
+
+    const preferredName = this.normalizePreferredVariantName(
+      selectedVariant?.variant_name ??
+        selectedVariant?.name ??
+        selectedVariant?.title ??
+        selectedVariant?.label,
+    );
+    if (preferredName !== '') {
+      return preferredName;
+    }
+
+    const detailName = this.buildVariantDetailsDisplayName(selectedVariant?.attributes_detail);
+    if (detailName !== '') {
+      return detailName;
+    }
+
+    const selectedOptionName = this.buildVariantOptionDisplayName(
+      configurableOptions,
+      selectedVariantOptions,
+    );
+    if (selectedOptionName !== '') {
+      return selectedOptionName;
+    }
+
+    return this.normalizeDisplayText(selectedVariant?.sku_suffix);
   }
 
   isVariantOptionSelected(
@@ -516,19 +555,18 @@ export class ProductVariantService {
     };
   }
 
-  private normalizeVariant(variant: any, index: number) {
+  private normalizeVariant(variant: any, _index: number) {
     const normalizedIds = this.normalizeAttributeValueIds(variant?.attribute_value_ids);
     const details = Array.isArray(variant?.attributes_detail) ? variant.attributes_detail : [];
-    const detailName = details
-      .map((item: any) => item?.value_name || item?.value)
-      .filter((value: any) => !!value)
-      .join(' - ');
+    const variantDisplayName = this.getSelectedVariantDisplayName({
+      ...variant,
+      attributes_detail: details,
+    });
 
     return {
       ...variant,
       id: variant?.id ?? variant?.variant_id ?? null,
-      variant_name:
-        variant?.variant_name || detailName || variant?.sku_suffix || `Variant ${index + 1}`,
+      variant_name: variantDisplayName,
       attribute_value_ids: normalizedIds,
       price: this.toNumber(variant?.price),
       stock: this.toNumber(variant?.stock),
@@ -799,5 +837,74 @@ export class ProductVariantService {
 
   private normalizeLookup(value: any): string {
     return String(value ?? '').trim().toLowerCase();
+  }
+
+  private normalizeDisplayText(value: any): string {
+    if (value === null || value === undefined) {
+      return '';
+    }
+
+    return String(value).trim();
+  }
+
+  private normalizePreferredVariantName(value: any): string {
+    const normalizedName = this.normalizeDisplayText(value);
+    if (normalizedName === '') {
+      return '';
+    }
+
+    if (
+      /^variant[\s#-]*\d+$/i.test(normalizedName) ||
+      /^\d+$/.test(normalizedName) ||
+      this.normalizeLookup(normalizedName) === 'variant'
+    ) {
+      return '';
+    }
+
+    return normalizedName;
+  }
+
+  private buildVariantDetailsDisplayName(details: any): string {
+    if (!Array.isArray(details) || details.length === 0) {
+      return '';
+    }
+
+    return details
+      .map((item: any) =>
+        this.normalizeDisplayText(item?.value_name ?? item?.value ?? item?.label ?? item?.name),
+      )
+      .filter((value: string) => value !== '')
+      .join(' - ');
+  }
+
+  private buildVariantOptionDisplayName(
+    configurableOptions: any[],
+    selectedVariantOptions: Record<string, string>,
+  ): string {
+    if (!Array.isArray(configurableOptions) || configurableOptions.length === 0) {
+      return '';
+    }
+
+    const selectedLabels = configurableOptions
+      .map((option: any) => {
+        const optionKey = this.getOptionKey(option);
+        const selectedValueId = selectedVariantOptions?.[optionKey];
+        if (!selectedValueId) {
+          return '';
+        }
+
+        const selectedValue = this.getOptionValues(option).find(
+          (value: any) => this.getOptionValueId(value) === this.normalizeId(selectedValueId),
+        );
+
+        if (selectedValue) {
+          return this.normalizeDisplayText(this.getOptionValueLabel(selectedValue));
+        }
+
+        return this.normalizeDisplayText(selectedValueId);
+      })
+      .filter((label: string) => label !== '');
+
+    return selectedLabels.join(' - ');
   }
 }
