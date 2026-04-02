@@ -1841,6 +1841,12 @@ web-header {
 }
 
 .elementor-column, .elementor-block-text {
+  & * {
+    width: 100% !important;
+    min-width: auto !important;
+    max-width: 100% !important;
+    flex-grow: 1;
+  }
   // background-color: red;
   .table, .table table {
     width: 100% !important;
