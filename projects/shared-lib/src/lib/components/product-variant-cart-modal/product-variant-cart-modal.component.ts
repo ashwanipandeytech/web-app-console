@@ -60,7 +60,10 @@ export class ProductVariantCartModalComponent {
   }
 
   get productImageUrl(): string {
-    return this.productDetails?.images?.[0]?.url || this.product?.images?.[0]?.url || '';
+    return this.productVariantService.getProductDisplayImageUrl(
+      this.productDetails || this.product,
+      this.selectedVariant,
+    );
   }
 
   get availabilityText(): string {
@@ -206,12 +209,23 @@ export class ProductVariantCartModalComponent {
           this.globalService.showToast(res);
           this.activeModal.close({
             addedToCart: true,
+            closedBy: 'add_to_cart',
             variantId: this.selectedVariantId,
+            variantImageUrl: this.productImageUrl,
           });
         } else if (res.error?.message) {
           this.globalService.showToast(res.error);
         }
       });
+  }
+
+  closeWithSelection(action: 'close' | 'cancel' = 'close') {
+    this.activeModal.close({
+      addedToCart: false,
+      closedBy: action,
+      variantId: this.selectedVariantId,
+      variantImageUrl: this.productImageUrl,
+    });
   }
 
   private loadProductDetails(identifier: number | string) {

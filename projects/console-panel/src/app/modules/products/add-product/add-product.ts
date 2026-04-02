@@ -34,6 +34,13 @@ interface FoodNode {
   children?: FoodNode[];
 }
 
+interface ProductGalleryImageEntry {
+  source: 'existing' | 'new';
+  url: string;
+  mediaId: number | null;
+  file?: File;
+}
+
 @Component({
   selector: 'app-add-customer',
   imports: [ReactiveFormsModule, QuillModule, MatTreeModule, MatIconModule, CategoryTreeComponent, NgClass, CommonModule, FormsModule, CustomEditorComponent, ElementorEditor],
@@ -96,6 +103,29 @@ export class AddProduct {
     offer: {},
 
   };
+
+  private resolveMediaModuleId(preferredModuleId?: number | string): string {
+    if (preferredModuleId !== undefined && preferredModuleId !== null && String(preferredModuleId).trim() !== '') {
+      return String(preferredModuleId);
+    }
+
+    const currentModuleId = this.data?.item?.id;
+    if (currentModuleId !== undefined && currentModuleId !== null && String(currentModuleId).trim() !== '') {
+      return String(currentModuleId);
+    }
+
+    return '0';
+  }
+
+  private buildMediaUploadFormData(file: File, type: string, moduleId?: number | string): FormData {
+    const formData = new FormData();
+    formData.append('files', file);
+    formData.append('module', 'product');
+    formData.append('module_id', this.resolveMediaModuleId(moduleId));
+    formData.append('type', type);
+    return formData;
+  }
+
   handleImageUpload = async (file: File): Promise<string> => {
     if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
       throw new Error('Unsupported file type');
@@ -104,9 +134,7 @@ export class AddProduct {
       throw new Error('File size too large');
     }
 
-    const formData = new FormData();
-    formData.append('files', file);
-    formData.append('type', 'product_image_description');
+    const formData = this.buildMediaUploadFormData(file, 'product_image_description');
 
     const extractUrl = (res: any): string | undefined =>
       res?.data?.[0]?.url ||
@@ -426,6 +454,9 @@ export class AddProduct {
   selectProductDesciptionImageGallery: File[] = [];
   prodDescriptionImageGallery: any = [];
   selectedFile: File[] = [];
+  private galleryImageEntries: ProductGalleryImageEntry[] = [];
+  private removedGalleryMediaIds = new Set<number>();
+  private removedGalleryImageUrls = new Set<string>();
   statusMap: any = [];
   isUpdateproduct: boolean = false;
   finalpriceObj: any;
@@ -437,6 +468,9 @@ export class AddProduct {
   selectedAttributesForVariations: any[] = [];
   variableCombinations: any[] = [];
   private variantsMergeCache: any[] = [];
+  private colorAttributeValueIds = new Set<string>();
+  private uploadingVariantImageIndexes = new Set<number>();
+  private pendingVariantImageFiles = new Map<string, File>();
   showVariantTable = false;
   productType: 'simple' | 'variable' = 'simple';
 
@@ -482,6 +516,7 @@ export class AddProduct {
       } else {
         this.allAttributes = res || [];
       }
+      this.colorAttributeValueIds = this.collectColorAttributeValueIds(this.allAttributes);
       this.syncSelectedAttributesFromExistingVariants();
       if (this.variantsReactiveForm && this.variantsFormArray.length > 0) {
         this.applyVariantsFromSource(this.variantsFormArray.getRawValue());
@@ -516,6 +551,607 @@ export class AddProduct {
     return this.variantsReactiveForm.get('variants') as FormArray;
   }
 
+  private isColorAttribute(attr: any): boolean {
+    const normalizedName = String(attr?.name ?? '').trim().toLowerCase();
+    const normalizedType = String(attr?.type ?? '').trim().toLowerCase();
+
+    return normalizedName === 'color' || normalizedType === 'color' || normalizedType === 'color_swatch';
+  }
+
+  private collectColorAttributeValueIds(attributes: any[]): Set<string> {
+    const colorValueIds = new Set<string>();
+
+    (attributes || []).forEach((attr: any) => {
+      if (!this.isColorAttribute(attr)) {
+        return;
+      }
+
+      (attr?.values || []).forEach((value: any) => {
+        const normalizedId = String(value?.id ?? '').trim();
+        if (normalizedId !== '') {
+          colorValueIds.add(normalizedId);
+        }
+      });
+    });
+
+    return colorValueIds;
+  }
+
+  private normalizeVariantImageId(rawValue: any): number | null {
+    if (rawValue === null || rawValue === undefined || rawValue === '') {
+      return null;
+    }
+
+    const parsedValue = Number(rawValue);
+    if (Number.isNaN(parsedValue) || parsedValue <= 0) {
+      return null;
+    }
+
+    return parsedValue;
+  }
+
+  private normalizeMediaType(type: any): string {
+    return String(type ?? '').trim().toLowerCase();
+  }
+
+  private isGalleryMediaType(type: any): boolean {
+    const normalizedType = this.normalizeMediaType(type);
+    return normalizedType === 'gallery' || normalizedType === 'thumbgallery';
+  }
+
+  private extractProductMediaId(media: any): number | null {
+    const candidateIds = [
+      media?.media_id,
+      media?.image_id,
+      media?.id,
+      media?.mediaId,
+      media?.imageId
+    ];
+
+    for (const candidateId of candidateIds) {
+      const normalizedId = this.normalizeVariantImageId(candidateId);
+      if (normalizedId !== null) {
+        return normalizedId;
+      }
+    }
+
+    return null;
+  }
+
+  private extractProductMediaUrl(media: any): string {
+    const candidateUrl =
+      media?.url ??
+      media?.path ??
+      media?.image_url ??
+      media?.image?.url ??
+      media?.image?.path ??
+      '';
+
+    return typeof candidateUrl === 'string' ? candidateUrl.trim() : '';
+  }
+
+  private syncThumbGalleryFromEntries() {
+    this.thumbGallery = this.galleryImageEntries.map((entry: ProductGalleryImageEntry) => entry.url);
+  }
+
+  private rebuildGalleryInputFileList() {
+    if (!this.galleryInput) {
+      return;
+    }
+
+    if (!Array.isArray(this.selectedFile) || this.selectedFile.length === 0) {
+      this.galleryInput.nativeElement.value = '';
+      return;
+    }
+
+    const dataTransfer = new DataTransfer();
+    this.selectedFile.forEach((file: File) => dataTransfer.items.add(file));
+    this.galleryInput.nativeElement.files = dataTransfer.files;
+  }
+
+  private removeSelectedFileByReference(file?: File) {
+    if (!file) {
+      return;
+    }
+
+    const fileIndex = this.selectedFile.findIndex((item: File) => item === file);
+    if (fileIndex > -1) {
+      this.selectedFile.splice(fileIndex, 1);
+    }
+  }
+
+  private initializeGalleryEntries(images: any[] = []) {
+    const galleryImages = (images || []).filter((img: any) => this.isGalleryMediaType(img?.type));
+    const entries: ProductGalleryImageEntry[] = [];
+
+    galleryImages.forEach((img: any) => {
+      const url = this.extractProductMediaUrl(img);
+      if (url === '') {
+        return;
+      }
+
+      entries.push({
+        source: 'existing',
+        url,
+        mediaId: this.extractProductMediaId(img)
+      });
+    });
+
+    this.galleryImageEntries = entries;
+
+    this.selectedFile = [];
+    this.syncThumbGalleryFromEntries();
+    this.rebuildGalleryInputFileList();
+  }
+
+  private rememberRemovedGalleryUrl(url: string) {
+    const normalizedUrl = String(url ?? '').trim();
+    if (normalizedUrl === '') {
+      return;
+    }
+
+    this.removedGalleryImageUrls.add(normalizedUrl);
+    if (!/^https?:\/\//i.test(normalizedUrl) && !/^(data:|blob:)/i.test(normalizedUrl)) {
+      this.removedGalleryImageUrls.add(this.buildAbsoluteImageUrl(normalizedUrl));
+    }
+  }
+
+  private getRemovedGalleryMediaIds(): number[] {
+    return Array.from(this.removedGalleryMediaIds.values())
+      .map((id: number) => this.normalizeVariantImageId(id))
+      .filter((id: number | null): id is number => id !== null);
+  }
+
+  private getRemovedGalleryUrls(): string[] {
+    return Array.from(this.removedGalleryImageUrls.values()).filter(
+      (url: string) => typeof url === 'string' && url.trim() !== ''
+    );
+  }
+
+  private async callMediaDeleteEndpoint(
+    endpoint: string,
+    moduleId: number | string,
+    mediaId: number,
+    method: 'delete' | 'post'
+  ): Promise<boolean> {
+    try {
+      const payload = {
+        id: mediaId,
+        media_id: mediaId,
+        module: 'product',
+        module_id: this.resolveMediaModuleId(moduleId)
+      };
+
+      const response: any = await firstValueFrom(
+        (method === 'delete'
+          ? this.dataService.delete(endpoint)
+          : this.dataService.post(payload, endpoint)
+        ).pipe(
+          catchError(() => of(null))
+        )
+      );
+
+      if (!response) {
+        return false;
+      }
+
+      if (response?.error || response?.success === false) {
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  private async deleteGalleryMediaById(mediaId: number, moduleId: number | string): Promise<boolean> {
+    const deleteEndpoints = [
+      { endpoint: `media/${mediaId}`, method: 'delete' as const },
+      { endpoint: `gallery/${mediaId}`, method: 'delete' as const },
+      { endpoint: 'media/delete', method: 'post' as const },
+      { endpoint: 'gallery/delete', method: 'post' as const },
+      { endpoint: 'media/remove', method: 'post' as const }
+    ];
+
+    for (const attempt of deleteEndpoints) {
+      const deleted = await this.callMediaDeleteEndpoint(
+        attempt.endpoint,
+        moduleId,
+        mediaId,
+        attempt.method
+      );
+      if (deleted) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private async syncRemovedGalleryMedia(moduleId: number | string): Promise<{ removed: number; failedIds: number[] }> {
+    const removedMediaIds = this.getRemovedGalleryMediaIds();
+    if (removedMediaIds.length === 0) {
+      return { removed: 0, failedIds: [] };
+    }
+
+    const failedIds: number[] = [];
+    let removed = 0;
+
+    for (const mediaId of removedMediaIds) {
+      const deleted = await this.deleteGalleryMediaById(mediaId, moduleId);
+      if (deleted) {
+        removed++;
+        this.removedGalleryMediaIds.delete(mediaId);
+      } else {
+        failedIds.push(mediaId);
+      }
+    }
+
+    if (failedIds.length === 0) {
+      this.removedGalleryImageUrls.clear();
+    }
+
+    return { removed, failedIds };
+  }
+
+  private buildMediaSectionPayload(moduleId?: number | string) {
+    return {
+      thumbFile: this.thumbFile,
+      galleryFiles: this.galleryFiles,
+      removed_gallery_media_ids: this.getRemovedGalleryMediaIds(),
+      removed_gallery_urls: this.getRemovedGalleryUrls(),
+      module: 'product',
+      module_id: this.resolveMediaModuleId(moduleId)
+    };
+  }
+
+  private getVariantSkuSuffix(variant: any): string {
+    return String(variant?.sku_suffix ?? variant?.skuSuffix ?? variant?.sku ?? '').trim();
+  }
+
+  private normalizeVariantStatus(rawStatus: any): boolean {
+    if (rawStatus === null || rawStatus === undefined || rawStatus === '') {
+      return true;
+    }
+
+    if (typeof rawStatus === 'boolean') {
+      return rawStatus;
+    }
+
+    if (typeof rawStatus === 'number') {
+      return rawStatus === 1;
+    }
+
+    const normalized = String(rawStatus).trim().toLowerCase();
+    if (normalized === 'false' || normalized === '0' || normalized === 'inactive' || normalized === 'disabled') {
+      return false;
+    }
+    if (normalized === 'true' || normalized === '1' || normalized === 'active' || normalized === 'enabled') {
+      return true;
+    }
+
+    return true;
+  }
+
+  private extractVariantImageId(variant: any): number | null {
+    const candidateIds = [
+      variant?.image_id,
+      variant?.media_id,
+      variant?.imageId,
+      variant?.mediaId,
+      variant?.image?.image_id,
+      variant?.image?.media_id,
+      variant?.image?.id,
+      variant?.media?.image_id,
+      variant?.media?.media_id,
+      variant?.media?.id
+    ];
+
+    for (const candidateId of candidateIds) {
+      const normalizedId = this.normalizeVariantImageId(candidateId);
+      if (normalizedId !== null) {
+        return normalizedId;
+      }
+    }
+
+    return null;
+  }
+
+  private extractVariantImagePreviewUrl(row: any): string {
+    const rawUrl =
+      row?.variant_image_url ||
+      row?.image_preview_url ||
+      row?.image_url ||
+      row?.image?.url ||
+      row?.image?.path ||
+      row?.media?.url ||
+      row?.media?.path ||
+      '';
+
+    if (typeof rawUrl !== 'string' || rawUrl.trim() === '') {
+      return '';
+    }
+
+    if (/^(data:|blob:)/i.test(rawUrl)) {
+      return rawUrl;
+    }
+
+    return this.buildAbsoluteImageUrl(rawUrl);
+  }
+
+  private findImageByIdInObject(input: any, targetImageId: number, seen = new Set<any>()): any | null {
+    if (input == null || typeof input !== 'object') {
+      return null;
+    }
+
+    if (seen.has(input)) {
+      return null;
+    }
+    seen.add(input);
+
+    if (Array.isArray(input)) {
+      for (const item of input) {
+        const found = this.findImageByIdInObject(item, targetImageId, seen);
+        if (found) {
+          return found;
+        }
+      }
+      return null;
+    }
+
+    const candidateIds = [
+      input?.id,
+      input?.image_id,
+      input?.media_id,
+      input?.imageId,
+      input?.mediaId
+    ];
+    const hasMatchingId = candidateIds.some(
+      (candidateId: any) => this.normalizeVariantImageId(candidateId) === targetImageId
+    );
+    if (hasMatchingId) {
+      const hasImageUrl =
+        typeof input?.url === 'string' ||
+        typeof input?.path === 'string' ||
+        typeof input?.image_url === 'string' ||
+        typeof input?.image?.url === 'string' ||
+        typeof input?.image?.path === 'string';
+
+      if (hasImageUrl) {
+        return input;
+      }
+    }
+
+    for (const value of Object.values(input)) {
+      const found = this.findImageByIdInObject(value, targetImageId, seen);
+      if (found) {
+        return found;
+      }
+    }
+
+    return null;
+  }
+
+  private resolveVariantImagePreviewUrl(row: any): string {
+    const directPreviewUrl = this.extractVariantImagePreviewUrl(row);
+    if (directPreviewUrl) {
+      return directPreviewUrl;
+    }
+
+    const imageId = this.extractVariantImageId(row);
+    if (imageId === null) {
+      return '';
+    }
+
+    const lookupSources = [
+      row?.image,
+      row?.media,
+      row,
+      this.data?.item?.images,
+      this.data?.item?.media,
+      this.data?.item?.product_details,
+      this.data?.item
+    ];
+
+    for (const source of lookupSources) {
+      const matchedImage = this.findImageByIdInObject(source, imageId);
+      if (!matchedImage) {
+        continue;
+      }
+
+      const matchedUrl =
+        matchedImage?.url ??
+        matchedImage?.path ??
+        matchedImage?.image_url ??
+        matchedImage?.image?.url ??
+        matchedImage?.image?.path ??
+        '';
+
+      if (typeof matchedUrl === 'string' && matchedUrl.trim() !== '') {
+        if (/^(data:|blob:)/i.test(matchedUrl)) {
+          return matchedUrl;
+        }
+        return this.buildAbsoluteImageUrl(matchedUrl.trim());
+      }
+    }
+
+    return '';
+  }
+
+  private extractUploadedMediaUrl(response: any): string | undefined {
+    const directUrl =
+      response?.data?.[0]?.url ||
+      response?.data?.data?.[0]?.url ||
+      response?.data?.url ||
+      response?.data?.data?.url ||
+      response?.url ||
+      response?.data?.path ||
+      response?.data?.[0]?.path ||
+      response?.data?.data?.[0]?.path;
+
+    if (typeof directUrl === 'string' && directUrl.trim() !== '') {
+      return directUrl;
+    }
+
+    return this.findImageUrlDeep(response?.data ?? response);
+  }
+
+  private findImageUrlDeep(input: any, seen = new Set<any>()): string | undefined {
+    if (input == null || typeof input === 'boolean') {
+      return undefined;
+    }
+
+    if (typeof input === 'string') {
+      return /\.(png|jpe?g|webp|gif|svg)(\?.*)?$/i.test(input) ? input : undefined;
+    }
+
+    if (typeof input !== 'object') {
+      return undefined;
+    }
+
+    if (seen.has(input)) {
+      return undefined;
+    }
+    seen.add(input);
+
+    if (Array.isArray(input)) {
+      for (const item of input) {
+        const foundUrl = this.findImageUrlDeep(item, seen);
+        if (foundUrl) {
+          return foundUrl;
+        }
+      }
+      return undefined;
+    }
+
+    for (const key of Object.keys(input)) {
+      const foundUrl = this.findImageUrlDeep(input[key], seen);
+      if (foundUrl) {
+        return foundUrl;
+      }
+    }
+
+    return undefined;
+  }
+
+  private findMediaIdDeep(input: any, seen = new Set<any>()): number | null {
+    if (input == null) {
+      return null;
+    }
+
+    if (typeof input !== 'object') {
+      return null;
+    }
+
+    if (seen.has(input)) {
+      return null;
+    }
+    seen.add(input);
+
+    if (Array.isArray(input)) {
+      for (const item of input) {
+        const foundId = this.findMediaIdDeep(item, seen);
+        if (foundId !== null) {
+          return foundId;
+        }
+      }
+      return null;
+    }
+
+    const mediaLikeId = this.normalizeVariantImageId(
+      input?.media_id ?? input?.mediaId ?? (input?.url || input?.path ? input?.id : null)
+    );
+    if (mediaLikeId !== null) {
+      return mediaLikeId;
+    }
+
+    for (const key of ['media_id', 'mediaId', 'id']) {
+      const matchedId = this.normalizeVariantImageId(input?.[key]);
+      if (matchedId !== null) {
+        return matchedId;
+      }
+    }
+
+    for (const value of Object.values(input)) {
+      const foundId = this.findMediaIdDeep(value, seen);
+      if (foundId !== null) {
+        return foundId;
+      }
+    }
+
+    return null;
+  }
+
+  private extractUploadedMediaId(response: any): number | null {
+    const candidateIds = [
+      response?.data?.[0]?.media_id,
+      response?.data?.[0]?.id,
+      response?.data?.data?.[0]?.media_id,
+      response?.data?.data?.[0]?.id,
+      response?.data?.media_id,
+      response?.data?.id,
+      response?.data?.data?.media_id,
+      response?.data?.data?.id,
+      response?.media_id,
+      response?.id
+    ];
+
+    for (const candidateId of candidateIds) {
+      const normalizedId = this.normalizeVariantImageId(candidateId);
+      if (normalizedId !== null) {
+        return normalizedId;
+      }
+    }
+
+    return this.findMediaIdDeep(response?.data?.data ?? response?.data ?? response);
+  }
+
+  private normalizeUploadedMediaUrl(rawUrl: string): string {
+    if (/^https?:\/\//i.test(rawUrl)) {
+      if (rawUrl.startsWith('http://') && environment.DOMAIN.startsWith('https://')) {
+        return rawUrl.replace(/^http:\/\//i, 'https://');
+      }
+      return rawUrl;
+    }
+
+    return `${environment.DOMAIN.replace(/\/$/, '')}/${rawUrl.replace(/^\//, '')}`;
+  }
+
+  private async readFileAsDataUrl(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => resolve(String(reader.result ?? ''));
+      reader.onerror = () => reject(new Error('Unable to read selected image'));
+
+      reader.readAsDataURL(file);
+    });
+  }
+
+  private async uploadVariantImageFile(file: File, moduleId?: number | string): Promise<{ imageId: number; imageUrl: string }> {
+    if (!file.type || !file.type.toLowerCase().startsWith('image/')) {
+      throw new Error('Please select a valid image file');
+    }
+
+    const formData = this.buildMediaUploadFormData(file, 'variant', moduleId);
+
+    const response: any = await firstValueFrom(this.dataService.postForm('media/upload', formData));
+    const imageId = this.extractUploadedMediaId(response);
+
+    if (imageId === null) {
+      console.error('Variant image upload failed: no media ID returned', response);
+      throw new Error('Upload failed: no media ID returned');
+    }
+
+    const uploadedUrl = this.extractUploadedMediaUrl(response);
+
+    return {
+      imageId,
+      imageUrl: uploadedUrl ? this.normalizeUploadedMediaUrl(uploadedUrl) : ''
+    };
+  }
+
   private rebuildVariantsFormArray(variants: any[]) {
     if (!this.variantsReactiveForm) {
       return;
@@ -525,14 +1161,24 @@ export class AddProduct {
     formArray.clear();
 
     (variants || []).forEach((variant: any) => {
+      const normalizedSkuSuffix = this.getVariantSkuSuffix(variant);
+      const normalizedAttributeIds = this.extractVariantAttributeValueIds(variant);
+      const normalizedStatus = this.normalizeVariantStatus(
+        variant?.is_active ?? variant?.status ?? variant?.isActive
+      );
+      const normalizedImageId = this.extractVariantImageId(variant);
+      const previewUrl = this.resolveVariantImagePreviewUrl(variant);
+
       formArray.push(
         this.fb.group({
-          variant_name: [variant?.variant_name || ''],
-          sku_suffix: [variant?.sku_suffix || ''],
-          attribute_value_ids: [this.normalizeAttributeValueIds(variant?.attribute_value_ids)],
+          variant_name: [this.resolveVariantName({ ...variant, sku_suffix: normalizedSkuSuffix, attribute_value_ids: normalizedAttributeIds }) || variant?.variant_name || ''],
+          sku_suffix: [normalizedSkuSuffix],
+          attribute_value_ids: [normalizedAttributeIds],
           price: [variant?.price ?? ''],
           stock: [variant?.stock ?? 0],
-          is_active: [variant?.is_active ?? true]
+          is_active: [normalizedStatus],
+          image_id: [normalizedImageId],
+          image_preview_url: [previewUrl]
         })
       );
     });
@@ -626,6 +1272,16 @@ export class AddProduct {
 
     const singleValue = toNormalizedId(rawValue);
     return singleValue === null ? [] : [singleValue];
+  }
+
+  private extractVariantAttributeValueIds(variant: any): any[] {
+    return this.normalizeAttributeValueIds(
+      variant?.attribute_value_ids ??
+      variant?.attributeValues ??
+      variant?.attribute_values ??
+      variant?.attribute_value_id ??
+      variant?.attribute_valueIds
+    );
   }
 
   private isGenericVariantName(name: any): boolean {
@@ -770,11 +1426,24 @@ export class AddProduct {
       const mergedVariant = {
         ...variant,
         sku_suffix: isExactMatch
-          ? matchedVariant?.sku_suffix || variant?.sku_suffix || ''
-          : variant?.sku_suffix || matchedVariant?.sku_suffix || '',
+          ? this.getVariantSkuSuffix(matchedVariant) || this.getVariantSkuSuffix(variant) || ''
+          : this.getVariantSkuSuffix(variant) || this.getVariantSkuSuffix(matchedVariant) || '',
         price: matchedVariant?.price ?? variant?.price ?? '',
         stock: matchedVariant?.stock ?? variant?.stock ?? 0,
-        is_active: matchedVariant?.is_active ?? variant?.is_active ?? true,
+        is_active: this.normalizeVariantStatus(
+          matchedVariant?.is_active ?? matchedVariant?.status ?? variant?.is_active ?? variant?.status
+        ),
+        image_id: this.extractVariantImageId({
+          image_id: matchedVariant?.image_id ?? variant?.image_id,
+          media_id: matchedVariant?.media_id ?? variant?.media_id,
+          imageId: matchedVariant?.imageId ?? variant?.imageId,
+          mediaId: matchedVariant?.mediaId ?? variant?.mediaId,
+          image: matchedVariant?.image ?? variant?.image,
+          media: matchedVariant?.media ?? variant?.media
+        }),
+        image_preview_url:
+          this.resolveVariantImagePreviewUrl(variant) ||
+          this.resolveVariantImagePreviewUrl(matchedVariant),
         attributes_detail:
           Array.isArray(variant?.attributes_detail) && variant.attributes_detail.length > 0
             ? variant.attributes_detail
@@ -811,8 +1480,8 @@ export class AddProduct {
     }
 
     return rows.map((row: any) => {
-      const attributeValueIds = this.normalizeAttributeValueIds(row?.attribute_value_ids);
-      const skuSuffix = String(row?.sku_suffix ?? '').trim();
+      const attributeValueIds = this.extractVariantAttributeValueIds(row);
+      const skuSuffix = this.getVariantSkuSuffix(row);
       const normalizedRow = {
         sku_suffix: skuSuffix,
         variant_name: row?.variant_name || '',
@@ -820,7 +1489,9 @@ export class AddProduct {
         attributes_detail: Array.isArray(row?.attributes_detail) ? row.attributes_detail : [],
         price: row?.price ?? '',
         stock: row?.stock ?? 0,
-        is_active: row?.is_active ?? true
+        is_active: this.normalizeVariantStatus(row?.is_active ?? row?.status ?? row?.isActive),
+        image_id: this.extractVariantImageId(row),
+        image_preview_url: this.resolveVariantImagePreviewUrl(row)
       };
 
       return {
@@ -1100,6 +1771,10 @@ export class AddProduct {
     if (!this.variantsReactiveForm || index < 0 || index >= this.variantsFormArray.length) {
       return;
     }
+    const variantGroup = this.variantsFormArray.at(index) as FormGroup;
+    const variantKey = this.getVariantUploadKey(variantGroup?.getRawValue?.() ?? {}, index);
+    this.pendingVariantImageFiles.delete(variantKey);
+
     this.variantsFormArray.removeAt(index);
     if (Array.isArray(this.variableCombinations) && this.variableCombinations.length > index) {
       this.variableCombinations.splice(index, 1);
@@ -1107,6 +1782,202 @@ export class AddProduct {
     this.variantsMergeCache = this.getCurrentVariantsSnapshot();
     this.showVariantTable = this.variantsFormArray.length > 0;
   }
+
+  variantHasColorAttribute(variantCtrlOrRow: any): boolean {
+    if (this.colorAttributeValueIds.size === 0 || !variantCtrlOrRow) {
+      return false;
+    }
+
+    const rawAttributeValueIds = variantCtrlOrRow?.get
+      ? variantCtrlOrRow.get('attribute_value_ids')?.value
+      : variantCtrlOrRow?.attribute_value_ids;
+    const attributeValueIds = this.normalizeAttributeValueIds(rawAttributeValueIds);
+
+    return attributeValueIds.some((id: any) => this.colorAttributeValueIds.has(String(id)));
+  }
+
+  shouldShowVariantImageColumn(): boolean {
+    if (!this.showVariantTable || !this.variantsReactiveForm || this.colorAttributeValueIds.size === 0) {
+      return false;
+    }
+
+    return this.variantsFormArray.controls.some((variantCtrl: any) => this.variantHasColorAttribute(variantCtrl));
+  }
+
+  isVariantImageUploading(index: number): boolean {
+    return this.uploadingVariantImageIndexes.has(index);
+  }
+
+  private getVariantUploadKey(variantRow: any, index?: number): string {
+    const normalizedAttributeIds = this
+      .normalizeAttributeValueIds(variantRow?.attribute_value_ids)
+      .map((id: any) => String(id).trim())
+      .filter((id: string) => id !== '')
+      .sort();
+
+    if (normalizedAttributeIds.length > 0) {
+      return `attr:${normalizedAttributeIds.join('|')}`;
+    }
+
+    const skuSuffix = String(variantRow?.sku_suffix ?? '').trim().toLowerCase();
+    if (skuSuffix !== '') {
+      return `sku:${skuSuffix}`;
+    }
+
+    return `idx:${index ?? -1}`;
+  }
+
+  private async uploadPendingVariantImages(moduleId: number | string): Promise<{ hadPending: boolean; success: boolean }> {
+    if (!this.variantsReactiveForm || this.variantsFormArray.length === 0) {
+      return { hadPending: false, success: true };
+    }
+
+    const hadPending = this.pendingVariantImageFiles.size > 0;
+    if (!hadPending) {
+      return { hadPending: false, success: true };
+    }
+
+    let uploadedCount = 0;
+    let failedCount = 0;
+
+    for (let index = 0; index < this.variantsFormArray.length; index++) {
+      const variantGroup = this.variantsFormArray.at(index) as FormGroup;
+      const variantKey = this.getVariantUploadKey(variantGroup.getRawValue(), index);
+      const pendingFile = this.pendingVariantImageFiles.get(variantKey);
+      if (!pendingFile) {
+        continue;
+      }
+
+      try {
+        this.uploadingVariantImageIndexes.add(index);
+        this.cd.detectChanges();
+
+        const currentPreviewUrl = String(variantGroup.get('image_preview_url')?.value ?? '');
+        const uploadResult = await this.uploadVariantImageFile(pendingFile, moduleId);
+        variantGroup.patchValue({
+          image_id: uploadResult.imageId,
+          image_preview_url: uploadResult.imageUrl || currentPreviewUrl
+        });
+        variantGroup.markAsDirty();
+
+        this.pendingVariantImageFiles.delete(variantKey);
+        uploadedCount++;
+      } catch (error) {
+        failedCount++;
+      } finally {
+        this.uploadingVariantImageIndexes.delete(index);
+        this.cd.detectChanges();
+      }
+    }
+
+    if (uploadedCount > 0) {
+      this.variantsReactiveForm.markAsDirty();
+      const currentSnapshot = this.getCurrentVariantsSnapshot();
+      this.variableCombinations = currentSnapshot;
+      this.variantsMergeCache = currentSnapshot;
+    }
+
+    if (failedCount > 0) {
+      this.globalService.showToast({
+        success: false,
+        message: `Failed to upload ${failedCount} variant image${failedCount > 1 ? 's' : ''}`
+      });
+      return { hadPending, success: false };
+    }
+
+    return { hadPending, success: true };
+  }
+
+  private async syncVariantsForProduct(productId: number | string): Promise<boolean> {
+    const variantsResult = this.getVariantsPayloadForPublish();
+    if (variantsResult.hasError) {
+      return false;
+    }
+
+    if (variantsResult.variants.length === 0) {
+      return true;
+    }
+
+    try {
+      const response: any = await firstValueFrom(
+        this.dataService.put(
+          {
+            product_type: this.productType,
+            variants: variantsResult.variants
+          },
+          `products/${productId}`
+        )
+      );
+
+      if (response?.error || response?.success === false) {
+        this.globalService.showToast({
+          success: false,
+          message: response?.message || 'Product saved, but variant images were not linked'
+        });
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      this.globalService.showToast({
+        success: false,
+        message: 'Product saved, but variant images were not linked'
+      });
+      return false;
+    }
+  }
+
+  async onVariantImageSelected(event: Event, index: number) {
+    const input = event.target as HTMLInputElement | null;
+    const file = input?.files?.[0];
+
+    if (!file || !this.variantsReactiveForm || index < 0 || index >= this.variantsFormArray.length) {
+      if (input) {
+        input.value = '';
+      }
+      return;
+    }
+
+    const variantGroup = this.variantsFormArray.at(index) as FormGroup;
+    const previousPreviewUrl = String(variantGroup.get('image_preview_url')?.value ?? '');
+
+    try {
+      const localPreviewUrl = await this.readFileAsDataUrl(file);
+
+      variantGroup.patchValue({
+        image_preview_url: localPreviewUrl
+      });
+      variantGroup.markAsDirty();
+      this.variantsReactiveForm.markAsDirty();
+
+      const variantKey = this.getVariantUploadKey(variantGroup.getRawValue(), index);
+      this.pendingVariantImageFiles.set(variantKey, file);
+
+      this.globalService.showToast({
+        success: true,
+        message: 'Variant image selected. It will upload when you save the product'
+      });
+    } catch (error: any) {
+      variantGroup.patchValue({
+        image_preview_url: previousPreviewUrl
+      });
+
+      this.globalService.showToast({
+        success: false,
+        message: error?.message || 'Failed to prepare variant image'
+      });
+    } finally {
+      const currentSnapshot = this.getCurrentVariantsSnapshot();
+      this.variableCombinations = currentSnapshot;
+      this.variantsMergeCache = currentSnapshot;
+
+      if (input) {
+        input.value = '';
+      }
+      this.cd.detectChanges();
+    }
+  }
+
   isNotEmpty(obj: any): boolean {
     return obj && Object.keys(obj).length > 0;
   }
@@ -1147,12 +2018,9 @@ export class AddProduct {
       if (this.data?.item?.images) {
         const images = this.data?.item?.images || [];
 
-        this.thumbGallery = images
-          .filter((img: any) => {
-            const type = String(img?.type || '').toLowerCase();
-            return type === 'gallery' || type === 'thumbgallery';
-          })
-          .map((img: any) => img.url);
+        this.removedGalleryMediaIds.clear();
+        this.removedGalleryImageUrls.clear();
+        this.initializeGalleryEntries(images);
 
         const previewList = images
           .filter((img: any) => {
@@ -1168,6 +2036,11 @@ export class AddProduct {
         // console.log('thumbPreview==>',this.thumbPreview);
 
         // this.cd.detectChanges();
+      }
+      else {
+        this.removedGalleryMediaIds.clear();
+        this.removedGalleryImageUrls.clear();
+        this.initializeGalleryEntries([]);
       }
       if (this.data?.item?.category) {
         console.log(' this.data?.category==>', Array.isArray(this.data?.item?.category));
@@ -1190,6 +2063,9 @@ export class AddProduct {
       }
     }
     else {
+      this.removedGalleryMediaIds.clear();
+      this.removedGalleryImageUrls.clear();
+      this.initializeGalleryEntries([]);
       this.addProductDetails();
       this.productOptionType();
       this.submitProductMultipleOptionForm();
@@ -1580,27 +2456,48 @@ export class AddProduct {
 
   // media upload photo fnc
   onFileSelect(event: any) {
-    // const file = event.target.files[0];
-    for (let i = 0; i < event.target.files.length; i++) {
-      const file = event.target.files[i];
-      if (!file) return;
-      this.selectedFile.push(file);
-      //console.log('this.selectedFile===>', this.selectedFile);
+    const files = event?.target?.files;
+    if (!files?.length) {
+      return;
+    }
 
-      // Preview if needed
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (!file) {
+        continue;
+      }
+
+      const entry: ProductGalleryImageEntry = {
+        source: 'new',
+        url: '',
+        mediaId: null,
+        file
+      };
+      this.galleryImageEntries.push(entry);
+      this.selectedFile.push(file);
+
       const reader = new FileReader();
       reader.onload = () => {
-        // this.thumbPreview = reader.result as string;
-        this.thumbGallery.push(reader.result as string);
+        entry.url = String(reader.result ?? '');
+        this.syncThumbGalleryFromEntries();
         this.cd.detectChanges();
       };
-
-      const element = this.selectedFile[i];
-      reader.readAsDataURL(element);
+      reader.onerror = () => {
+        this.removeSelectedFileByReference(file);
+        const entryIndex = this.galleryImageEntries.indexOf(entry);
+        if (entryIndex > -1) {
+          this.galleryImageEntries.splice(entryIndex, 1);
+        }
+        this.syncThumbGalleryFromEntries();
+        this.rebuildGalleryInputFileList();
+        this.cd.detectChanges();
+      };
+      reader.readAsDataURL(file);
     }
-    // Call upload immediately
-    // this.uploadImage();
-    //console.log(' this.thumbGallery===>', this.thumbGallery);
+
+    this.rebuildGalleryInputFileList();
+    this.productMediaSection?.markAsDirty();
+    this.cd.detectChanges();
   }
   onFileProductDescriptionGallery(event: any) {
     // const file = event.target.files[0];
@@ -1647,15 +2544,7 @@ export class AddProduct {
   }
   uploadImage() {
     if (!this.selectedThumbImg) return;
-    const formData = new FormData();
-    // for (let i = 0; i < this.selectedFile.length; i++) {
-    // const element = this.selectedFile[i];
-    formData.append('files', this.selectedThumbImg, this.selectedThumbImg.name);
-    formData.append('module', 'product');
-    formData.append('module_id', 'gallery');
-    formData.append('type', 'gallery');
-    // }
-    // Add other parameters if needed
+    this.buildMediaUploadFormData(this.selectedThumbImg, 'gallery');
   }
 
   onGallerySelect(event: any) {
@@ -1670,10 +2559,12 @@ export class AddProduct {
   }
 
   private getGalleryPreviewUrls(): string[] {
-    if (!Array.isArray(this.thumbGallery)) {
+    if (!Array.isArray(this.galleryImageEntries) || this.galleryImageEntries.length === 0) {
       return [];
     }
-    return this.thumbGallery.filter((url: any) => typeof url === 'string' && url.trim() !== '');
+    return this.galleryImageEntries
+      .map((entry: ProductGalleryImageEntry) => entry.url)
+      .filter((url: any) => typeof url === 'string' && url.trim() !== '');
   }
 
   private isRemoteLikeImageUrl(url: string): boolean {
@@ -1716,11 +2607,7 @@ export class AddProduct {
   }
 
   private uploadSingleMediaFile(file: File, moduleId: number | string, type: string) {
-    const formData = new FormData();
-    formData.append('files', file);
-    formData.append('module', 'product');
-    formData.append('module_id', String(moduleId));
-    formData.append('type', type);
+    const formData = this.buildMediaUploadFormData(file, type, moduleId);
     this.callUploadnediaSection(formData);
   }
 
@@ -1816,19 +2703,22 @@ export class AddProduct {
         return { hasError: true, variants: [] as any[] };
       }
 
+      const normalizedImageId = this.extractVariantImageId(row);
+
       mappedVariants.push({
-        sku_suffix: row.sku_suffix || '',
-        attribute_value_ids: this.normalizeAttributeValueIds(row.attribute_value_ids),
+        sku_suffix: this.getVariantSkuSuffix(row),
+        attribute_value_ids: this.extractVariantAttributeValueIds(row),
         price: normalizedPrice,
         stock: parsedStock,
-        is_active: row.is_active ?? true
+        is_active: this.normalizeVariantStatus(row.is_active ?? row.status ?? row.isActive),
+        ...(normalizedImageId !== null ? { image_id: normalizedImageId } : {})
       });
     }
 
     return { hasError: false, variants: mappedVariants };
   }
 
-  updateProduct() {
+  async updateProduct() {
     console.log('this.data?.id===>', this.data?.item?.id);
 
     this.finalpriceObj = this.priceSection.value;
@@ -1836,10 +2726,12 @@ export class AddProduct {
 
     // priceSection.priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
     // priceSection.priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
-    let mediaSectionPayload = {
-      thumbFile: this.thumbFile,
-      galleryFiles: this.galleryFiles,
-    };
+    const existingProductId = this.data?.item?.id;
+    const mediaSectionPayload = this.buildMediaSectionPayload(existingProductId);
+    if (existingProductId !== undefined && existingProductId !== null) {
+      await this.uploadPendingVariantImages(existingProductId);
+    }
+
     const variantsResult = this.getVariantsPayloadForPublish();
     if (variantsResult.hasError) {
       return;
@@ -1885,13 +2777,18 @@ export class AddProduct {
           return of(err);
         })
       )
-      .subscribe((res: any) => {
+      .subscribe(async (res: any) => {
         //console.log('Response:', res);
         if (res.error) {
           this.globalService.showToast(res.error);
           return;
         } else if (res.success == true) {
           let id = res.data.data.id;
+          const removedGalleryResult = await this.syncRemovedGalleryMedia(id);
+          if (removedGalleryResult.failedIds.length > 0) {
+            console.warn('Some removed gallery images could not be synced by direct media delete endpoints', removedGalleryResult.failedIds);
+          }
+
           this.uploadProductMedia(id).finally(() => {
             setTimeout(() => {
               this.globalService.showToast(res);
@@ -1912,23 +2809,20 @@ export class AddProduct {
       return;
     }
     if (action == 'update') {
-      this.updateProduct();
+      void this.updateProduct();
     }
     else {
-      this.getProductDetails();
+      void this.getProductDetails();
     }
   }
-  getProductDetails() {
+  async getProductDetails() {
     //console.log('productDetails==>', this.productDetails.value);
 
     let priceSection = this.priceSection.value;
     // priceSection.priceDateStart = new Date(this.priceSection.value.priceDateStart).getTime();
     // priceSection.priceDateEnd = new Date(this.priceSection.value.priceDateEnd).getTime();
     // media payload
-    let mediaSectionPayload = {
-      thumbFile: this.thumbFile,
-      galleryFiles: this.galleryFiles,
-    };
+    const mediaSectionPayload = this.buildMediaSectionPayload();
     const variantsResult = this.getVariantsPayloadForPublish();
     if (variantsResult.hasError) {
       return;
@@ -1975,7 +2869,7 @@ export class AddProduct {
           return of(err);
         })
       )
-      .subscribe((res: any) => {
+      .subscribe(async (res: any) => {
         //console.log('Response:', res);
         if (res.error) {
           this.globalService.showToast(res.error);
@@ -1983,6 +2877,18 @@ export class AddProduct {
         } else if (res.success == true) {
           // let id = res.data.id;
           let id = res.data.data.id;
+
+          const pendingVariantUploadResult = await this.uploadPendingVariantImages(id);
+          if (pendingVariantUploadResult.hadPending) {
+            await this.syncVariantsForProduct(id);
+          }
+          if (!pendingVariantUploadResult.success) {
+            this.globalService.showToast({
+              success: false,
+              message: 'Product saved, but some variant images failed. Please edit and retry.'
+            });
+          }
+
           this.uploadProductMedia(id).finally(() => {
             setTimeout(() => {
               this.globalService.showToast(res);
@@ -2214,30 +3120,24 @@ export class AddProduct {
 
 
   removeGalleryImage(index: number) {
-    // Remove from the preview array
-    this.thumbGallery.splice(index, 1);
-
-    // Remove from the selected files array
-    if (this.selectedFile && this.selectedFile.length > index) {
-      this.selectedFile.splice(index, 1);
+    if (!Array.isArray(this.galleryImageEntries) || index < 0 || index >= this.galleryImageEntries.length) {
+      return;
     }
 
-    // Update the file input with remaining files
-    if (this.galleryInput) {
-      if (this.selectedFile.length === 0) {
-        // Clear input if no files remain
-        this.galleryInput.nativeElement.value = '';
-      } else {
-        // Rebuild the FileList with remaining files
-        const dataTransfer = new DataTransfer();
-        this.selectedFile.forEach((file) => {
-          dataTransfer.items.add(file);
-        });
-        this.galleryInput.nativeElement.files = dataTransfer.files;
+    const removedEntry = this.galleryImageEntries[index];
+    if (removedEntry?.source === 'existing') {
+      if (removedEntry.mediaId !== null) {
+        this.removedGalleryMediaIds.add(removedEntry.mediaId);
       }
+      this.rememberRemovedGalleryUrl(removedEntry.url);
+    } else {
+      this.removeSelectedFileByReference(removedEntry?.file);
     }
 
-    // Trigger change detection
+    this.galleryImageEntries.splice(index, 1);
+    this.syncThumbGalleryFromEntries();
+    this.rebuildGalleryInputFileList();
+    this.productMediaSection?.markAsDirty();
     this.cd.detectChanges();
   }
   removeProductDescriptionGalleryImage(index: number) {
@@ -2297,14 +3197,20 @@ export class AddProduct {
     this.seoForm.reset();
     this.permaLink = '';
     this.thumbPreview = '';
+    this.selectedFile = [];
+    this.galleryImageEntries = [];
+    this.removedGalleryMediaIds.clear();
+    this.removedGalleryImageUrls.clear();
     this.productType = 'simple';
     this.variableCombinations = [];
     this.showVariantTable = false;
     this.selectedAttributesForVariations = [];
+    this.pendingVariantImageFiles.clear();
+    this.uploadingVariantImageIndexes.clear();
     if (this.variantsReactiveForm) {
       this.variantsFormArray.clear();
     }
-    this.thumbGallery = '';
+    this.thumbGallery = [];
     this.onGetId(removeCategory);
     this.cd.detectChanges();
   }
@@ -2326,6 +3232,7 @@ export class AddProduct {
       this.priceSection?.dirty ||
       this.shippingInfoSection?.dirty ||
       this.productAttributesForm?.dirty ||
+      this.variantsReactiveForm?.dirty ||
       this.shippingConfigForm?.dirty ||
       this.offerForm?.dirty ||
       this.seoForm?.dirty

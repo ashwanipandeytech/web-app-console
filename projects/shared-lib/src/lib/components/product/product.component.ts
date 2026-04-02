@@ -115,6 +115,7 @@ export class ProductComponent implements OnInit {
       .subscribe((response: any) => {
         const products = Array.isArray(response?.data?.data) ? response.data.data : [];
         this.productListData = this.filterProductsBySection(products);
+        this.applyProductCardImages(this.productListData);
 
         this.cd.detectChanges();
         if (response && response.success) {
@@ -237,5 +238,29 @@ export class ProductComponent implements OnInit {
     });
 
     modalRef.componentInstance.product = product;
+    const applyVariantImage = (result: any) => {
+      if (result?.variantImageUrl) {
+        product.__cardImageUrl = result.variantImageUrl;
+        this.cd.detectChanges();
+      }
+    };
+
+    modalRef.result
+      .then((result: any) => applyVariantImage(result))
+      .catch((reason: any) => applyVariantImage(reason));
+  }
+
+  private applyProductCardImages(products: any[]) {
+    if (!Array.isArray(products)) {
+      return;
+    }
+
+    products.forEach((product: any) => {
+      const variantState = this.productVariantService.initializeVariantState(product);
+      product.__cardImageUrl = this.productVariantService.getProductDisplayImageUrl(
+        product,
+        variantState.selectedVariant,
+      );
+    });
   }
 }

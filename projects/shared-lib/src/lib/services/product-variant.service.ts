@@ -83,6 +83,87 @@ export class ProductVariantService {
     };
   }
 
+  getProductDisplayImageUrl(product: any, selectedVariant: any = null): string {
+    const variantImageUrl = this.resolveVariantImageUrl(selectedVariant, product);
+    if (variantImageUrl) {
+      return variantImageUrl;
+    }
+
+    return this.resolvePrimaryProductImageUrl(product);
+  }
+
+  resolveVariantImageUrl(variant: any, product: any): string {
+    if (!variant) {
+      return '';
+    }
+
+    const directCandidates = [
+      variant?.variant_image_url,
+      variant?.image_preview_url,
+      variant?.image_url,
+      variant?.image?.url,
+      variant?.image?.path,
+      variant?.media?.url,
+      variant?.media?.path,
+      variant?.thumbnail,
+      variant?.url,
+      variant?.path,
+    ];
+
+    for (const candidate of directCandidates) {
+      if (typeof candidate === 'string' && candidate.trim() !== '') {
+        return candidate.trim();
+      }
+    }
+
+    const variantSkuSuffix = this.normalizeLookup(variant?.sku_suffix);
+    if (product && variantSkuSuffix !== '') {
+      const variantImageBySku = this.findImageBySkuSuffixInObject(product, variantSkuSuffix);
+      if (variantImageBySku) {
+        const skuMappedUrl = variantImageBySku?.url ?? variantImageBySku?.path ?? '';
+        if (typeof skuMappedUrl === 'string' && skuMappedUrl.trim() !== '') {
+          return skuMappedUrl.trim();
+        }
+      }
+    }
+
+    const explicitVariantImageId = this.normalizeId(
+      variant?.image_id ?? variant?.media_id ?? variant?.imageId ?? variant?.mediaId,
+    );
+    const fallbackImageId = this.resolveImageIdFromSiblingVariant(product, variant);
+    const variantImageId = explicitVariantImageId || fallbackImageId;
+
+    if (variantImageId === '') {
+      return '';
+    }
+
+    const productImages = this.extractProductImages(product);
+    const matchedImage = productImages.find((image: any) => {
+      const candidateIds = [
+        image?.id,
+        image?.image_id,
+        image?.media_id,
+        image?.mediaId,
+        image?.imageId,
+      ];
+
+      return candidateIds.some((candidateId: any) => this.normalizeId(candidateId) === variantImageId);
+    });
+
+    if (matchedImage) {
+      const matchedImageUrl = matchedImage?.url ?? matchedImage?.path ?? '';
+      return typeof matchedImageUrl === 'string' ? matchedImageUrl : '';
+    }
+
+    const deepMatchedImage = this.findImageByIdInObject(product, variantImageId);
+    if (!deepMatchedImage) {
+      return '';
+    }
+
+    const deepMatchedImageUrl = deepMatchedImage?.url ?? deepMatchedImage?.path ?? '';
+    return typeof deepMatchedImageUrl === 'string' ? deepMatchedImageUrl : '';
+  }
+
   resolveSelectedVariant(
     product: any,
     configurableOptions: any[],
@@ -452,8 +533,179 @@ export class ProductVariantService {
       price: this.toNumber(variant?.price),
       stock: this.toNumber(variant?.stock),
       is_active: variant?.is_active ?? true,
+      variant_image_url: this.resolveVariantImageUrl(variant, null),
       attributes_detail: details,
     };
+  }
+
+  private resolvePrimaryProductImageUrl(product: any): string {
+    const images = this.extractProductImages(product);
+    const primaryImage = images[0];
+    if (!primaryImage) {
+      return '';
+    }
+
+    const primaryImageUrl = primaryImage?.url ?? primaryImage?.path ?? '';
+    return typeof primaryImageUrl === 'string' ? primaryImageUrl : '';
+  }
+
+  private extractProductImages(product: any): any[] {
+    const candidates = [
+      product?.images,
+      product?.media?.uploadedImages,
+      product?.media?.images,
+      product?.product_details?.images,
+    ];
+
+    for (const candidate of candidates) {
+      const parsed = this.parseCollectionCandidate(candidate);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+
+    return [];
+  }
+
+  private findImageByIdInObject(
+    input: any,
+    targetId: string,
+    seen = new Set<any>(),
+  ): any | null {
+    if (!input || typeof input !== 'object') {
+      return null;
+    }
+
+    if (seen.has(input)) {
+      return null;
+    }
+    seen.add(input);
+
+    if (Array.isArray(input)) {
+      for (const item of input) {
+        const found = this.findImageByIdInObject(item, targetId, seen);
+        if (found) {
+          return found;
+        }
+      }
+      return null;
+    }
+
+    const candidateIds = [
+      input?.id,
+      input?.image_id,
+      input?.media_id,
+      input?.mediaId,
+      input?.imageId,
+    ];
+    const hasTargetId = candidateIds.some(
+      (candidateId: any) => this.normalizeId(candidateId) === targetId,
+    );
+    if (hasTargetId && typeof (input?.url ?? input?.path) === 'string') {
+      return input;
+    }
+
+    for (const value of Object.values(input)) {
+      const found = this.findImageByIdInObject(value, targetId, seen);
+      if (found) {
+        return found;
+      }
+    }
+
+    return null;
+  }
+
+  private resolveImageIdFromSiblingVariant(product: any, currentVariant: any): string {
+    if (!product || !currentVariant) {
+      return '';
+    }
+
+    const productVariants = this.extractVariants(product);
+    if (!Array.isArray(productVariants) || productVariants.length === 0) {
+      return '';
+    }
+
+    const currentVariantId = this.normalizeId(currentVariant?.id ?? currentVariant?.variant_id);
+    const currentSku = this.normalizeLookup(currentVariant?.sku_suffix);
+    const currentAttributeIds = this.normalizeAttributeValueIds(currentVariant?.attribute_value_ids).map((id) =>
+      this.normalizeId(id),
+    );
+    const currentAttributeKey = currentAttributeIds.slice().sort().join('|');
+
+    const matchedVariant = productVariants.find((variant: any) => {
+      const variantId = this.normalizeId(variant?.id ?? variant?.variant_id);
+      if (currentVariantId !== '' && variantId !== '' && currentVariantId === variantId) {
+        return true;
+      }
+
+      const variantSku = this.normalizeLookup(variant?.sku_suffix);
+      if (currentSku !== '' && variantSku !== '' && currentSku === variantSku) {
+        return true;
+      }
+
+      if (currentAttributeKey !== '') {
+        const variantAttributeIds = this.normalizeAttributeValueIds(variant?.attribute_value_ids).map((id) =>
+          this.normalizeId(id),
+        );
+        const variantAttributeKey = variantAttributeIds.slice().sort().join('|');
+        return variantAttributeKey !== '' && variantAttributeKey === currentAttributeKey;
+      }
+
+      return false;
+    });
+
+    if (!matchedVariant) {
+      return '';
+    }
+
+    return this.normalizeId(
+      matchedVariant?.image_id ??
+        matchedVariant?.media_id ??
+        matchedVariant?.imageId ??
+        matchedVariant?.mediaId,
+    );
+  }
+
+  private findImageBySkuSuffixInObject(
+    input: any,
+    targetSkuSuffix: string,
+    seen = new Set<any>(),
+  ): any | null {
+    if (!input || typeof input !== 'object') {
+      return null;
+    }
+
+    if (seen.has(input)) {
+      return null;
+    }
+    seen.add(input);
+
+    if (Array.isArray(input)) {
+      for (const item of input) {
+        const found = this.findImageBySkuSuffixInObject(item, targetSkuSuffix, seen);
+        if (found) {
+          return found;
+        }
+      }
+      return null;
+    }
+
+    const skuSuffix = this.normalizeLookup(input?.sku_suffix);
+    if (skuSuffix !== '' && skuSuffix === targetSkuSuffix) {
+      const candidateUrl = input?.url ?? input?.path;
+      if (typeof candidateUrl === 'string' && candidateUrl.trim() !== '') {
+        return input;
+      }
+    }
+
+    for (const value of Object.values(input)) {
+      const found = this.findImageBySkuSuffixInObject(value, targetSkuSuffix, seen);
+      if (found) {
+        return found;
+      }
+    }
+
+    return null;
   }
 
   private parseCollectionCandidate(candidate: any): any[] {

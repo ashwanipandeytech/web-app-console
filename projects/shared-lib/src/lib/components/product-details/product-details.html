@@ -34,7 +34,7 @@
             <!-- LEFT THUMBNAILS -->
             <div class="thumb-slider d-md-inline-block d-none">
               <ngx-slick-carousel class="slick-thumb" [config]="thumbConfig">
-                @for (item of productDetails?.images; track $index) {
+                @for (item of displayGalleryImages; track $index) {
                 <div ngxSlickItem class="thumb-item cursor-pointer" (click)="goToSlide($index)" [ngClass]="{
                       'border-primary': activeIndex === $index,
                       'rounded-2': activeIndex === $index
@@ -64,9 +64,17 @@
 
               <ngx-slick-carousel class="slick-main slick-carousel" #mainSlick="slick-carousel" [config]="mainConfig"
                 (afterChange)="onMainAfterChange($event)">
-                @for (item of productDetails?.images; track $index) {
+                @if (displayGalleryImages.length === 0 && selectedVariantPreviewImageUrl) {
                 <div ngxSlickItem class="main-img">
-                  <img [src]="item.url" alt="product" class="w-100 object-fit-contain" />
+                  <img [src]="selectedVariantPreviewImageUrl" alt="product" class="w-100 object-fit-contain" />
+                </div>
+                }
+                @for (item of displayGalleryImages; track $index) {
+                <div ngxSlickItem class="main-img">
+                  <img
+                    [src]="$index === 0 && selectedVariantPreviewImageUrl ? selectedVariantPreviewImageUrl : item.url"
+                    alt="product"
+                    class="w-100 object-fit-contain" />
                 </div>
                 }
               </ngx-slick-carousel>

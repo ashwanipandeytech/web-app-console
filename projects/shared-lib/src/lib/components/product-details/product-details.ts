@@ -17,6 +17,7 @@ import { GlobalFunctionService } from '../../services/global-function.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Login } from '../auth/login/login';
 import { NoDataComponent } from '../no-data/no-data.component';
+import { ProductVariantService } from '../../services/product-variant.service';
 
 @Component({
   selector: 'app-product-details',
@@ -31,6 +32,7 @@ export class ProductDetails {
   public dataService: any = inject(DataService);
   public globalService: any = inject(GlobaCommonlService);
   private globalFunctionService = inject(GlobalFunctionService);
+  private readonly productVariantService = inject(ProductVariantService);
   readonly ngbModal = inject(NgbModal);
   ratingStars: number[] = [1, 2, 3, 4, 5];
   isWishlisted = false;
@@ -79,6 +81,8 @@ export class ProductDetails {
   };
 
   activeIndex = 0;
+  displayGalleryImages: any[] = [];
+  selectedVariantPreviewImageUrl = '';
 
 goToSlide(index: number) {
   this.activeIndex = index;
@@ -438,6 +442,9 @@ setEditorContent(html: string) {
 
         this.productDetails = rawProduct;
         this.selectedProduct = rawProduct;
+        this.displayGalleryImages = Array.isArray(rawProduct?.images) ? [...rawProduct.images] : [];
+        this.activeIndex = 0;
+        this.selectedVariantPreviewImageUrl = '';
         this.isWishlisted = !!rawProduct?.is_wishlisted;
         this.shippingInfoSummary = this.buildShippingInfoSummary(rawProduct);
 
@@ -489,6 +496,7 @@ setEditorContent(html: string) {
     }
 
     this.updateDisplayPriceAndStock();
+    this.syncVariantPreviewImage();
   }
 
   private applyDefaultVariantSelection() {
@@ -507,6 +515,7 @@ setEditorContent(html: string) {
     this.selectedVariantOptions = this.buildSelectionFromVariant(defaultVariant);
     this.variantSelectionError = '';
     this.updateDisplayPriceAndStock();
+    this.syncVariantPreviewImage();
   }
 
   private buildSelectionFromVariant(variant: any): Record<string, string> {
@@ -637,6 +646,7 @@ setEditorContent(html: string) {
       this.selectedVariant = null;
       this.selectedVariantId = null;
       this.updateDisplayPriceAndStock();
+      this.syncVariantPreviewImage();
       this.cd.detectChanges();
       return;
     }
@@ -656,7 +666,23 @@ setEditorContent(html: string) {
     }
 
     this.updateDisplayPriceAndStock();
+    this.syncVariantPreviewImage();
     this.cd.detectChanges();
+  }
+
+  private syncVariantPreviewImage() {
+    const nextVariantPreviewImageUrl =
+      this.productVariantService.resolveVariantImageUrl(this.selectedVariant, this.productDetails) || '';
+    const hasPreviewChanged = this.selectedVariantPreviewImageUrl !== nextVariantPreviewImageUrl;
+
+    this.selectedVariantPreviewImageUrl = nextVariantPreviewImageUrl;
+
+    if (this.selectedVariantPreviewImageUrl && (hasPreviewChanged || this.activeIndex !== 0)) {
+      this.activeIndex = 0;
+      Promise.resolve().then(() => {
+        this.mainSlick?.slickGoTo?.(0);
+      });
+    }
   }
 
   private findMatchingVariant(selectedIds: string[], strict: boolean): any | null {

@@ -17,7 +17,7 @@
         <div class="product-wrapper me-md-3 mx-2 bg-white p-3 rounded-2 border d-flex flex-column h-100" ngxSlickItem>
           <div class="product-img" style="height: 190px">
             <a (click)="openProduct(item)" class="h-100 w-100 overflow-hidden">
-              <img [src]="item?.images[0]?.url" class="h-100" alt="product-img" />
+              <img [src]="item?.__cardImageUrl || item?.images[0]?.url" class="h-100" alt="product-img" />
             </a>
 
             @if(isLogin==true){

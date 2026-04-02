@@ -798,6 +798,9 @@
                             <thead class="bg-light">
                               <tr>
                                 <th>Variant (SKU)</th>
+                                @if (shouldShowVariantImageColumn()) {
+                                  <th style="width: 260px;">Upload Image</th>
+                                }
                                 <th style="width: 180px;">Override Price</th>
                                 <th style="width: 120px;">Stock</th>
                                 <th style="width: 120px;">Status</th>
@@ -815,6 +818,43 @@
                                       <small class="text-muted">({{ variantCtrl.get('sku_suffix')?.value }})</small>
                                     }
                                   </td>
+                                  @if (shouldShowVariantImageColumn()) {
+                                    <td>
+                                      @if (variantHasColorAttribute(variantCtrl)) {
+                                        <div class="d-flex align-items-start gap-2">
+                                          <div class="variant-image-thumb border rounded bg-light d-flex align-items-center justify-content-center overflow-hidden">
+                                            @if (variantCtrl.get('image_preview_url')?.value) {
+                                              <img
+                                                [src]="variantCtrl.get('image_preview_url')?.value"
+                                                alt="Variant image preview"
+                                                class="w-100 h-100 object-fit-cover">
+                                            } @else if (variantCtrl.get('image_id')?.value) {
+                                              <span class="small fw-semibold text-primary">#{{ variantCtrl.get('image_id')?.value }}</span>
+                                            } @else {
+                                              <i class="fa fa-image text-muted"></i>
+                                            }
+                                          </div>
+                                          <div class="flex-grow-1">
+                                            <input
+                                              type="file"
+                                              class="form-control form-control-sm"
+                                              accept="image/*"
+                                              [disabled]="isVariantImageUploading($index)"
+                                              (change)="onVariantImageSelected($event, $index)">
+                                            @if (isVariantImageUploading($index)) {
+                                              <small class="text-muted d-block mt-1">Uploading image...</small>
+                                            } @else if (variantCtrl.get('image_id')?.value) {
+                                              <small class="text-success d-block mt-1">Media ID: {{ variantCtrl.get('image_id')?.value }}</small>
+                                            } @else {
+                                              <small class="text-muted d-block mt-1">Upload a color-specific image</small>
+                                            }
+                                          </div>
+                                        </div>
+                                      } @else {
+                                        <small class="text-muted">Not required</small>
+                                      }
+                                    </td>
+                                  }
                                   <td>
                                     <input type="number" class="form-control" formControlName="price">
                                   </td>

@@ -13,7 +13,7 @@
     type="button"
     class="btn-close shadow-none"
     aria-label="Close"
-    (click)="activeModal.dismiss()"
+    (click)="closeWithSelection('close')"
   ></button>
 </div>
 
@@ -97,7 +97,7 @@
 </div>
 
 <div class="modal-footer border-0 pt-0">
-  <button type="button" class="btn btn-light px-4 py-2 rounded-3 fw-semibold mr-3" (click)="activeModal.dismiss()">
+  <button type="button" class="btn btn-light px-4 py-2 rounded-3 fw-semibold mr-3" (click)="closeWithSelection('cancel')">
     Cancel
   </button>
   <button

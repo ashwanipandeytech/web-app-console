@@ -140,7 +140,7 @@
                   >
                     <div class="product-img aspect-ratio-1" style="height: 200px">
                       <a (click)="openProduct(item)" class="h-100 w-100 overflow-hidden">
-                        <img [src]="item?.images[0]?.url" alt="product-img" class="h-100 w-100" />
+                        <img [src]="item?.__cardImageUrl || item?.images[0]?.url" alt="product-img" class="h-100 w-100" />
                       </a>
 
                        @if(isLogin==true){

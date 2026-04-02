@@ -117,6 +117,7 @@ export class ProductSidebarCommon {
           this.productListData = response.data.data;
           this.isLoading = false;
         }
+        this.applyProductCardImages(this.productListData);
         //console.log('this.productListData.length',this.productListData.length);
 
         this.cd.detectChanges();
@@ -224,6 +225,30 @@ export class ProductSidebarCommon {
     });
 
     modalRef.componentInstance.product = product;
+    const applyVariantImage = (result: any) => {
+      if (result?.variantImageUrl) {
+        product.__cardImageUrl = result.variantImageUrl;
+        this.cd.detectChanges();
+      }
+    };
+
+    modalRef.result
+      .then((result: any) => applyVariantImage(result))
+      .catch((reason: any) => applyVariantImage(reason));
+  }
+
+  private applyProductCardImages(products: any[]) {
+    if (!Array.isArray(products)) {
+      return;
+    }
+
+    products.forEach((product: any) => {
+      const variantState = this.productVariantService.initializeVariantState(product);
+      product.__cardImageUrl = this.productVariantService.getProductDisplayImageUrl(
+        product,
+        variantState.selectedVariant,
+      );
+    });
   }
 
   toggleHeart(item: any) {
