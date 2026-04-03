@@ -10,10 +10,11 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GlobalFunctionService } from '../../../services/global-function.service';
 import { SignalService } from '../../../services/signal-service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NoDataComponent } from '../../no-data/no-data.component';
 
 @Component({
   selector: 'web-checkout',
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterLink, NoDataComponent],
   templateUrl: './checkout.html',
   styleUrl: './checkout.scss'
 })
@@ -34,7 +35,7 @@ export class Checkout {
   private http = inject(HttpClient);
   private cd = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
-  cartListData: any = {};
+  cartListData: any[] = [];
   grandTotal = 0;
   subTotal: any = 0;
   checkoutForm!: FormGroup;
@@ -103,7 +104,9 @@ export class Checkout {
     this.createCheckoutBillingForm();
     this.carList();
     this.loadCountries();
-    this.getAddressList();
+    if (this.signalService.userLoggedIn()) {
+      this.getAddressList();
+    }
   }
 
   private toNumber(value: any): number | null {
@@ -189,7 +192,7 @@ export class Checkout {
       this.isLoading = true;
       //console.log('response==>', response);
       if (response.success == true) {
-        this.cartListData = response.data.data;
+        this.cartListData = response.data.data || [];
         if (this.cartListData.length <= 0) {
           localStorage.removeItem('appliedCoupon');
           this.cd.detectChanges();
@@ -478,53 +481,18 @@ export class Checkout {
 
   }
   placeOrder() {
-    // if (this.selectedPaymentMethod == false) {
-    // this.isSelectPaymentMethodInput = false;
-    //console.log('this.addressListData==>',this.addressListData);
+    if (!this.signalService.userLoggedIn()) {
+      this.signalService.openLoginTrigger.update(v => v + 1);
+      this.signalService.openLoginPopup.set(true);
+      return;
+    }
 
     if (!this.addressListData || this.addressListData == undefined) {
       this.addressNotfound = true;
       return;
     }
-    //  if (this.checkoutForm.invalid) {
-    //   this.checkoutForm.markAllAsTouched();
-    // }
-    // return;
-    // }
 
     this.openCheckout(this.addressListData.id);
-
-    //  if (this.checkoutForm.invalid) {
-    //   this.checkoutForm.markAllAsTouched();
-    //   return;
-    // }
-    //       else if (this.checkoutForm.valid) {
-    //       //console.log(this.checkoutForm.value);
-    //       this.fullAddrress = this.checkoutForm.value;
-    //        this.fullAddrress.label = this.checkoutForm.value.type;
-    //        this.fullAddrress.name = this.checkoutForm.value.fname + ' ' + this.checkoutForm.value.lname;
-    //        this.dataService.post(this.fullAddrress, 'addresses')
-    //             .pipe(
-    //               catchError(err => {
-    //                 console.error('Error:', err);
-    //                 return of(err);
-    //               })
-    //             )
-    //             .subscribe((res: any) => {
-    //               //console.log('Response:', res);
-    //               if (res.success == true) { 
-
-    //                 this.openCheckout(res.data.id);
-    //               // this.razorpayService.openCheckout(this.grandTotal);
-    //                 // this.router.navigate(['/cart']);
-    //               }
-    //               else {
-    //                 if (res.err) {
-    //                   this.globalService.showToast(res.err);
-    //                 }
-    //               }
-    //             });
-    //  }
   }
   createCheckoutBillingForm() {
     this.checkoutForm = this.fb.group({
@@ -671,6 +639,11 @@ export class Checkout {
     this.cd.detectChanges();
   }
   async addAddress() {
+    if (!this.signalService.userLoggedIn()) {
+      this.signalService.openLoginTrigger.update(v => v + 1);
+      this.signalService.openLoginPopup.set(true);
+      return;
+    }
     let addresss = {
       isNewAddress: true
     };
