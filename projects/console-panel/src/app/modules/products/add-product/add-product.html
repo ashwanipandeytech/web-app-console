@@ -798,9 +798,9 @@
                             <thead class="bg-light">
                               <tr>
                                 <th>Variant (SKU)</th>
-                                @if (shouldShowVariantImageColumn()) {
+                                <!-- @if (shouldShowVariantImageColumn()) { -->
                                   <th style="width: 260px;">Upload Image</th>
-                                }
+                                <!-- } -->
                                 <th style="width: 180px;">Override Price</th>
                                 <th style="width: 120px;">Stock</th>
                                 <th style="width: 120px;">Status</th>
@@ -818,9 +818,9 @@
                                       <small class="text-muted">({{ variantCtrl.get('sku_suffix')?.value }})</small>
                                     }
                                   </td>
-                                  @if (shouldShowVariantImageColumn()) {
+                                  <!-- @if (shouldShowVariantImageColumn()) { -->
                                     <td>
-                                      @if (variantHasColorAttribute(variantCtrl)) {
+                                      <!-- @if (variantHasColorAttribute(variantCtrl)) { -->
                                         <div class="d-flex align-items-start gap-2">
                                           <div class="variant-image-thumb border rounded bg-light d-flex align-items-center justify-content-center overflow-hidden">
                                             @if (variantCtrl.get('image_preview_url')?.value) {
@@ -850,11 +850,11 @@
                                             }
                                           </div>
                                         </div>
-                                      } @else {
+                                      <!-- } @else {
                                         <small class="text-muted">Not required</small>
-                                      }
+                                      } -->
                                     </td>
-                                  }
+                                  <!-- } -->
                                   <td>
                                     <input type="number" class="form-control" formControlName="price">
                                   </td>

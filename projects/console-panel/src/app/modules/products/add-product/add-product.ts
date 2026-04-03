@@ -1878,13 +1878,13 @@ export class AddProduct {
     return attributeValueIds.some((id: any) => this.colorAttributeValueIds.has(String(id)));
   }
 
-  shouldShowVariantImageColumn(): boolean {
-    if (!this.showVariantTable || !this.variantsReactiveForm || this.colorAttributeValueIds.size === 0) {
-      return false;
-    }
+  // shouldShowVariantImageColumn(): boolean {
+  //   if (!this.showVariantTable || !this.variantsReactiveForm || this.colorAttributeValueIds.size === 0) {
+  //     return false;
+  //   }
 
-    return this.variantsFormArray.controls.some((variantCtrl: any) => this.variantHasColorAttribute(variantCtrl));
-  }
+  //   return this.variantsFormArray.controls.some((variantCtrl: any) => this.variantHasColorAttribute(variantCtrl));
+  // }
 
   isVariantImageUploading(index: number): boolean {
     return this.uploadingVariantImageIndexes.has(index);
