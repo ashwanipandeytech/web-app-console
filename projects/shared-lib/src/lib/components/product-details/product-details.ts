@@ -480,7 +480,7 @@ setEditorContent(html: string) {
 
         this.productDetails = rawProduct;
         this.selectedProduct = rawProduct;
-        this.displayGalleryImages = Array.isArray(rawProduct?.images) ? [...rawProduct.images] : [];
+        this.displayGalleryImages = this.getProductGalleryImages(rawProduct?.images);
         this.activeIndex = 0;
         this.selectedVariantPreviewImageUrl = '';
         this.isWishlisted = !!rawProduct?.is_wishlisted;
@@ -979,6 +979,14 @@ setEditorContent(html: string) {
     }
 
     return [];
+  }
+
+  private getProductGalleryImages(images: any): any[] {
+    if (!Array.isArray(images)) {
+      return [];
+    }
+
+    return images.filter((image: any) => this.normalizeLookup(image?.type) !== 'variant');
   }
 
   private normalizeAttributeValueIds(rawValue: any): any[] {
