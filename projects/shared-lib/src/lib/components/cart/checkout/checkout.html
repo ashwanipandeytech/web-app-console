@@ -12,9 +12,10 @@
 </section>
 
 @if (!isLoading) {
+  @if (cartListData.length > 0 || signalService.userLoggedIn()) {
   <section class="checkout-container w-1100 mx-auto px-3 px-sm-0 mb-5">
     <div class="row g-4">
-      <div class="col-md-8 col-12">
+      <div [class]="cartListData.length > 0 ? 'col-md-8 col-12' : 'col-12'">
         <!-- Product List Section -->
         <div class="mb-4">
           <h5 class="fw-800 text-dark mb-3 d-flex align-items-center gap-2">
@@ -22,181 +23,209 @@
             Review Your Items
           </h5>
           <div class="d-flex flex-column gap-2">
-            @for(item of cartListData; track $index; let i=$index){
-              <div class="checkout-item-card d-flex align-items-center p-2 shadow-sm">
-                <div class="item-img-container">
-                  <img [src]="item?.product?.media?.uploadedImages[0]?.url" alt="Product" />
-                </div>
-                <div class="flex-grow-1 px-3">
-                  <h6 class="item-title mb-1">{{ item.product.title }}</h6>
-                  <div class="item-price fw-bold text-primary">&#8377;{{ item.product.price_data.finalPrice }}</div>
-                  @if (getCartItemVariantAttributes(item).length > 0) {
-                    <div class="text-muted fs-12 mt-1 d-flex flex-column gap-1">
-                      @for (attribute of getCartItemVariantAttributes(item); track $index) {
-                        <span>{{ attribute.name }}: {{ attribute.value }}</span>
-                      }
-                    </div>
-                  }
-                </div>
+            @if (cartListData.length > 0) {
+              @for(item of cartListData; track $index; let i=$index){
+                <div class="checkout-item-card d-flex align-items-center p-2 shadow-sm">
+                  <div class="item-img-container">
+                    <img [src]="item?.product?.media?.uploadedImages[0]?.url" alt="Product" />
+                  </div>
+                  <div class="flex-grow-1 px-3">
+                    <h6 class="item-title mb-1">{{ item.product.title }}</h6>
+                    <div class="item-price fw-bold text-primary">&#8377;{{ item.product.price_data.finalPrice }}</div>
+                    @if (getCartItemVariantAttributes(item).length > 0) {
+                      <div class="text-muted fs-12 mt-1 d-flex flex-column gap-1">
+                        @for (attribute of getCartItemVariantAttributes(item); track $index) {
+                          <span>{{ attribute.name }}: {{ attribute.value }}</span>
+                        }
+                      </div>
+                    }
+                  </div>
 
-                <div class="d-flex align-items-center gap-3 pe-2">
-                  <div class="quantity-stepper d-flex align-items-center border shadow-none overflow-hidden">
-                    <button class="btn step-btn border-0 shadow-none" (click)="decrease(item.quantity, i)" [disabled]="item.quantity <= 1">
-                      <i class="fa-solid fa-minus fa-xs"></i>
-                    </button>
-                    <span class="qty-number">{{ item.quantity }}</span>
-                    <button class="btn step-btn border-0 shadow-none" (click)="increase(item.quantity, i)">
-                      <i class="fa-solid fa-plus fa-xs"></i>
+                  <div class="d-flex align-items-center gap-3 pe-2">
+                    <div class="quantity-stepper d-flex align-items-center border shadow-none overflow-hidden">
+                      <button class="btn step-btn border-0 shadow-none" (click)="decrease(item.quantity, i)" [disabled]="item.quantity <= 1">
+                        <i class="fa-solid fa-minus fa-xs"></i>
+                      </button>
+                      <span class="qty-number">{{ item.quantity }}</span>
+                      <button class="btn step-btn border-0 shadow-none" (click)="increase(item.quantity, i)">
+                        <i class="fa-solid fa-plus fa-xs"></i>
+                      </button>
+                    </div>
+                    <button class="btn btn-link text-danger p-0 border-0 shadow-none" (click)="deleteCartItem(item.id)">
+                      <i class="fa-solid fa-trash-can opacity-75"></i>
                     </button>
                   </div>
-                  <button class="btn btn-link text-danger p-0 border-0 shadow-none" (click)="deleteCartItem(item.id)">
-                    <i class="fa-solid fa-trash-can opacity-75"></i>
-                  </button>
                 </div>
-              </div>
+              }
+            } @else {
+              <app-no-data
+                title="No items available in cart."
+                message="Your cart is empty. Please add items to proceed with checkout."
+                [showAction]="false"
+                [isLogin]="signalService.userLoggedIn()"
+                [displayNoDataText]="cartListData.length === 0 && signalService.userLoggedIn()"
+              >
+              </app-no-data>
             }
           </div>
         </div>
 
         <!-- Address Section -->
-        <div class="mb-4">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="fw-800 text-dark mb-0 d-flex align-items-center gap-2">
-              <i class="fa-solid fa-location-dot text-primary opacity-75"></i>
-              Delivery Address
-            </h5>
-            @if (AllAddressList?.length > 1) {
-              <button (click)="openChangedModal()" class="btn btn-sm btn-link text-primary fw-bold text-decoration-none p-0">
-                Change Address <i class="fa-solid fa-chevron-right fs-10 ms-1"></i>
-              </button>
+        @if (cartListData.length > 0) {
+          <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-800 text-dark mb-0 d-flex align-items-center gap-2">
+                <i class="fa-solid fa-location-dot text-primary opacity-75"></i>
+                Delivery Address
+              </h5>
+              @if (AllAddressList?.length > 1) {
+                <button (click)="openChangedModal()" class="btn btn-sm btn-link text-primary fw-bold text-decoration-none p-0">
+                  Change Address <i class="fa-solid fa-chevron-right fs-10 ms-1"></i>
+                </button>
+              }
+            </div>
+
+            @if(AllAddressList?.length > 0){
+              <div class="address-section-card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="address-badge text-uppercase">{{addressListData?.type}}</span>
+                    <span class="fw-bold text-dark fs-14">Default Address</span>
+                  </div>
+                  <button (click)="editAddress(addressListData)" class="btn btn-sm btn-light border-0 rounded-pill px-3 fw-bold fs-11">
+                    <i class="fa-solid fa-pen-to-square me-1"></i> Edit
+                  </button>
+                </div>
+                <div class="card-body p-4">
+                  <div class="address-details">
+                    <div class="name mb-3">{{addressListData?.name}}</div>
+                    <div class="info-item d-flex align-items-start gap-2">
+                      <i class="fa-solid fa-map-location-dot mt-1"></i>
+                      <span>{{addressListData?.street}}, {{addressListData?.city}} - {{addressListData?.postal_code}}</span>
+                    </div>
+                    <div class="info-item d-flex align-items-center gap-2">
+                      <i class="fa-solid fa-phone"></i>
+                      <span>{{addressListData?.phone}}</span>
+                    </div>
+                    <div class="info-item d-flex align-items-center gap-2">
+                      <i class="fa-solid fa-envelope"></i>
+                      <span>{{email}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <div class="address-box-new d-flex align-items-center justify-content-center p-4 mt-3 cursor-pointer" (click)="addAddress()">
+              <div class="d-flex align-items-center gap-2 fw-800">
+                <i class="fa-solid fa-circle-plus fs-4"></i>
+                <span>Add New Delivery Address</span>
+              </div>
+            </div>
+
+            @if (addressNotfound) {
+              <div class="alert alert-danger border-0 rounded-3 mt-2 py-2 px-3 fs-13 fw-bold d-flex align-items-center gap-2">
+                <i class="fa-solid fa-circle-exclamation"></i> Please add or select a delivery address first
+              </div>
             }
           </div>
-
-          @if(AllAddressList.length > 0){
-            <div class="address-section-card shadow-sm">
-              <div class="card-header d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center gap-2">
-                  <span class="address-badge text-uppercase">{{addressListData?.type}}</span>
-                  <span class="fw-bold text-dark fs-14">Default Address</span>
-                </div>
-                <button (click)="editAddress(addressListData)" class="btn btn-sm btn-light border-0 rounded-pill px-3 fw-bold fs-11">
-                  <i class="fa-solid fa-pen-to-square me-1"></i> Edit
-                </button>
-              </div>
-              <div class="card-body p-4">
-                <div class="address-details">
-                  <div class="name mb-3">{{addressListData?.name}}</div>
-                  <div class="info-item d-flex align-items-start gap-2">
-                    <i class="fa-solid fa-map-location-dot mt-1"></i>
-                    <span>{{addressListData?.street}}, {{addressListData?.city}} - {{addressListData?.postal_code}}</span>
-                  </div>
-                  <div class="info-item d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-phone"></i>
-                    <span>{{addressListData?.phone}}</span>
-                  </div>
-                  <div class="info-item d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-envelope"></i>
-                    <span>{{email}}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          }
-
-          <div class="address-box-new d-flex align-items-center justify-content-center p-4 mt-3 cursor-pointer" (click)="addAddress()">
-            <div class="d-flex align-items-center gap-2 fw-800">
-              <i class="fa-solid fa-circle-plus fs-4"></i>
-              <span>Add New Delivery Address</span>
-            </div>
-          </div>
-
-          @if (addressNotfound) {
-            <div class="alert alert-danger border-0 rounded-3 mt-2 py-2 px-3 fs-13 fw-bold d-flex align-items-center gap-2">
-              <i class="fa-solid fa-circle-exclamation"></i> Please add or select a delivery address first
-            </div>
-          }
-        </div>
+        }
       </div>
 
       <!-- Price/Summary Section -->
-      <div class="col-md-4 col-12">
-        <div class="summary-card p-4 shadow-sm">
-          <h3 class="summary-title mb-4">Order Summary</h3>
-          
-          <div class="mb-4">
-            @if (this.appliedCoupon == '' || this.appliedCoupon == undefined) {
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="fw-bold fs-14 text-dark">Apply Coupon</span>
-                <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 fs-11 fw-800" (click)="openCouponModal()">
-                  Enter Code
-                </button>
+      @if (cartListData.length > 0) {
+        <div class="col-md-4 col-12">
+          <div class="summary-card p-4 shadow-sm">
+            <h3 class="summary-title mb-4">Order Summary</h3>
+            
+            <div class="mb-4">
+              @if (this.appliedCoupon == '' || this.appliedCoupon == undefined) {
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="fw-bold fs-14 text-dark">Apply Coupon</span>
+                  <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 fs-11 fw-800" (click)="openCouponModal()">
+                    Enter Code
+                  </button>
+                </div>
+              } @else {
+                <div class="alert alert-success d-flex align-items-center gap-2 border-0 p-2 mb-0 bg-success bg-opacity-10 rounded-3">
+                  <span class="badge bg-success text-white fw-bold px-2 py-1 fs-10">{{appliedCoupon}}</span>
+                  <span class="text-success fs-12 fw-bold">Coupon Applied!</span>
+                  <button type="button" class="btn btn-sm text-danger ms-auto p-0 border-0" (click)="removeCoupon()">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                  </button>
+                </div>
+              }
+            </div>
+
+            <div class="summary-details d-flex flex-column gap-2 border-bottom pb-3 mb-3">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted fs-14">Items Total</span>
+                <span class="text-dark fw-bold">₹{{grandTotal}}</span>
               </div>
-            } @else {
-              <div class="alert alert-success d-flex align-items-center gap-2 border-0 p-2 mb-0 bg-success bg-opacity-10 rounded-3">
-                <span class="badge bg-success text-white fw-bold px-2 py-1 fs-10">{{appliedCoupon}}</span>
-                <span class="text-success fs-12 fw-bold">Coupon Applied!</span>
-                <button type="button" class="btn btn-sm text-danger ms-auto p-0 border-0" (click)="removeCoupon()">
-                  <i class="fa-solid fa-circle-xmark"></i>
-                </button>
+              <div class="d-flex justify-content-between">
+                <span class="text-muted fs-14">Discount</span>
+                <span class="text-danger fw-bold">- ₹{{ gstSummary?.discount_total | number:'1.2-2' }}</span>
               </div>
-            }
-          </div>
-
-          <div class="summary-details d-flex flex-column gap-2 border-bottom pb-3 mb-3">
-            <div class="d-flex justify-content-between">
-              <span class="text-muted fs-14">Items Total</span>
-              <span class="text-dark fw-bold">₹{{grandTotal}}</span>
+              <div class="d-flex justify-content-between">
+                <span class="text-muted fs-14">GST/Tax</span>
+                <span class="text-dark fw-bold">₹{{ gstSummary?.total_tax | number:'1.2-2' }}</span>
+              </div>
             </div>
-            <div class="d-flex justify-content-between">
-              <span class="text-muted fs-14">Discount</span>
-              <span class="text-danger fw-bold">- ₹{{ gstSummary?.discount_total | number:'1.2-2' }}</span>
-            </div>
-            <div class="d-flex justify-content-between">
-              <span class="text-muted fs-14">GST/Tax</span>
-              <span class="text-dark fw-bold">₹{{ gstSummary?.total_tax | number:'1.2-2' }}</span>
-            </div>
-          </div>
 
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <span class="fw-800 text-dark fs-16">Total Payable</span>
-            <span class="fw-800 text-primary fs-20">₹{{gstSummary?.final_total | number:'1.2-2' }}</span>
-          </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <span class="fw-800 text-dark fs-16">Total Payable</span>
+              <span class="fw-800 text-primary fs-20">₹{{gstSummary?.final_total | number:'1.2-2' }}</span>
+            </div>
 
-          <!-- Payment Methods -->
-          <div class="mb-4">
-            <label class="fw-800 text-dark fs-12 text-uppercase mb-3 letter-spacing-1">Payment Method</label>
-            <div class="d-flex flex-column gap-2">
-              <div class="payment-option d-flex align-items-center" (click)="choosePaymentMethod('cod')">
-                <div class="form-check w-100 mb-0 ps-4">
-                  <input class="form-check-input mt-1" type="radio" id="cash" name="paymentGroup" checked />
-                  <label class="form-check-label w-100 cursor-pointer fs-14 fw-medium" for="cash">
-                    Cash on Delivery
-                  </label>
+            <!-- Payment Methods -->
+            <div class="mb-4">
+              <label class="fw-800 text-dark fs-12 text-uppercase mb-3 letter-spacing-1">Payment Method</label>
+              <div class="d-flex flex-column gap-2">
+                <div class="payment-option d-flex align-items-center" (click)="choosePaymentMethod('cod')">
+                  <div class="form-check w-100 mb-0 ps-4">
+                    <input class="form-check-input mt-1" type="radio" id="cash" name="paymentGroup" checked />
+                    <label class="form-check-label w-100 cursor-pointer fs-14 fw-medium" for="cash">
+                      Cash on Delivery
+                    </label>
+                  </div>
+                </div>
+                <div class="payment-option d-flex align-items-center" (click)="choosePaymentMethod('online')">
+                  <div class="form-check w-100 mb-0 ps-4">
+                    <input class="form-check-input mt-1" type="radio" id="credit" name="paymentGroup" />
+                    <label class="form-check-label w-100 cursor-pointer fs-14 fw-medium" for="credit">
+                      Cards or Online Payment
+                    </label>
+                  </div>
                 </div>
               </div>
-              <div class="payment-option d-flex align-items-center" (click)="choosePaymentMethod('online')">
-                <div class="form-check w-100 mb-0 ps-4">
-                  <input class="form-check-input mt-1" type="radio" id="credit" name="paymentGroup" />
-                  <label class="form-check-label w-100 cursor-pointer fs-14 fw-medium" for="credit">
-                    Cards or Online Payment
-                  </label>
+              @if (!isSelectPaymentMethodInput) {
+                <div class="text-danger fs-11 mt-2 fw-bold">
+                  <i class="fa-solid fa-triangle-exclamation me-1"></i> Please choose a payment method
                 </div>
-              </div>
+              }
             </div>
-            @if (!isSelectPaymentMethodInput) {
-              <div class="text-danger fs-11 mt-2 fw-bold">
-                <i class="fa-solid fa-triangle-exclamation me-1"></i> Please choose a payment method
-              </div>
-            }
-          </div>
 
-          <button (click)="cartListData.length>0?placeOrder():addItemAlert()" class="btn-place-order w-100">
-            <i class="fa-solid fa-lock me-2"></i> Place Order Now
-          </button>
+            <button (click)="cartListData.length>0?placeOrder():addItemAlert()" class="btn-place-order w-100">
+              <i class="fa-solid fa-lock me-2"></i> Place Order Now
+            </button>
+          </div>
         </div>
-      </div>
+      }
     </div>
   </section>
+  } @else {
+    <div class="empty-checkout mx-auto w-1100 px-3 px-sm-0 my-5">
+      <app-no-data
+        title="No items available for checkout."
+        message="Your cart is empty. Please add items to proceed with checkout."
+        [showAction]="false"
+        actionText="Login"
+        [isLogin]="signalService.userLoggedIn()"
+        [displayNoDataText]="cartListData.length === 0 && signalService.userLoggedIn()"
+      >
+      </app-no-data>
+    </div>
+  }
 }
 
 <!-- Modals -->

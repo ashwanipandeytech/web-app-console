@@ -352,9 +352,9 @@ if(recallApi == false){
   this.activeModal.dismiss();
   return;
 }
-    const keywords = ['cart', 'user-profile'];
+    const keywords = ['cart', 'user-profile', 'checkout'];
 
-    // Returns true if the URL contains "cart" OR "user-profile"
+    // Returns true if the URL contains "cart" OR "user-profile" OR "checkout"
     const shouldExclude = keywords.some(key => this.router.url.includes(key));
 
     console.info('shouldExclude', shouldExclude, this.router.url,)
@@ -367,8 +367,10 @@ if(recallApi == false){
       });
 
 
-    }else{
-      recallApi
+    } else {
+      if (this.isBrowser) {
+        window.location.reload()
+      }
     }
     // if (this.router.url.includes('user-profile')) {
     //    this.router.navigate([this.router.url]).then(() => {
