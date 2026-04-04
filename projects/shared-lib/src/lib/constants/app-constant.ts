@@ -32,6 +32,7 @@ export const  promoBannerSlideConfig = {
     centerMode: false,
     lazyLoad: 'ondemand',
     centerPadding: '12px',
+    arrows: true,
     responsive: [
       {
         breakpoint: 1320,
@@ -40,11 +41,17 @@ export const  promoBannerSlideConfig = {
         }
       },
       {
-      breakpoint: 769, // 👈 IMPORTANT
+      breakpoint: 1100, // 👈 IMPORTANT
+      settings: {
+        slidesToShow: 4,
+        centerPadding: '16px',
+      }
+      },
+      {
+      breakpoint: 992, // 👈 IMPORTANT
       settings: {
         slidesToShow: 3,
         centerPadding: '16px',
-        arrows: true,
       }
       },
       {
@@ -52,7 +59,6 @@ export const  promoBannerSlideConfig = {
         settings: {
           slidesToShow: 1.8,
           centerPadding: '16px',
-          arrows: true,
           // dots:true
         }
       }

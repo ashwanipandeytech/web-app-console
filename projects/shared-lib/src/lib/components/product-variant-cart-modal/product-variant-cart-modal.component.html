@@ -45,18 +45,20 @@
           <span class="new-price">&#8377;{{ displaySalePrice ?? displayRegularPrice }}</span>
         </div>
 
-        <div
-          class="variant-stock-badge"
-          [class.out-of-stock]="isVariableProduct ? !selectedVariantId || shouldDisableAddToCart : shouldDisableAddToCart"
-        >
-          {{ availabilityText }}
-        </div>
-
-        @if (selectedVariantDisplayName) {
-          <div class="selected-variant-pill mt-2">
-            Selected: {{ selectedVariantDisplayName }}
+        <div class="d-flex align-items-center gap-2">
+          <div
+            class="variant-stock-badge"
+            [class.out-of-stock]="isVariableProduct ? !selectedVariantId || shouldDisableAddToCart : shouldDisableAddToCart"
+          >
+            {{ availabilityText }}
           </div>
-        }
+  
+          @if (selectedVariantDisplayName) {
+            <div class="selected-variant-pill">
+              Selected: {{ selectedVariantDisplayName }}
+            </div>
+          }
+        </div>
       </div>
     </div>
 
@@ -96,7 +98,7 @@
   }
 </div>
 
-<div class="modal-footer border-0 pt-0">
+<div class="modal-footer gap-2 border-0 pt-0">
   <button type="button" class="btn btn-light px-4 py-2 rounded-3 fw-semibold mr-3" (click)="closeWithSelection('cancel')">
     Cancel
   </button>
