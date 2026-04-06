@@ -39,6 +39,59 @@
             ]
           },
           "configurations": {
+                 "web-farming-ssr": {
+              "server": "projects/frontend/src/main.server.ts",
+              "outputMode": "server",
+              "ssr": {
+                "entry": "projects/frontend/src/server.ts"
+              },
+              "fileReplacements": [
+                {
+                  "replace": "environments/environment.ts",
+                  "with": "projects/frontend/environments/farming.environment.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "3MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "40kB",
+                  "maximumError": "80kB"
+                }
+              ],
+              "outputHashing": "all",
+              "optimization": true,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
+            "web-farming": {
+              "fileReplacements": [
+                {
+                  "replace": "environments/environment.ts",
+                  "with": "projects/frontend/environments/farming.environment.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "3MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "40kB",
+                  "maximumError": "80kB"
+                }
+              ],
+              "outputHashing": "all",
+              "optimization": true,
+              "extractLicenses": false,
+              "sourceMap": false
+            },
             "web-production-ssr": {
               "server": "projects/frontend/src/main.server.ts",
               "outputMode": "server",
@@ -134,6 +187,12 @@
             "web-production": {
               "buildTarget": "frontend:build:web-production"
             },
+                "web-farming-ssr": {
+              "buildTarget": "frontend:build:web-farming-ssr"
+            },
+            "web-farming": {
+              "buildTarget": "frontend:build:web-farming"
+            },
             "web-development-ssr": {
               "buildTarget": "frontend:build:web-development-ssr"
             },
@@ -210,6 +269,27 @@
             ]
           },
           "configurations": {
+               "console-farming": {
+              "fileReplacements": [
+                {
+                  "replace": "environments/environment.ts",
+                  "with": "projects/console-panel/environments/farming.environment.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
             "console-production": {
               "fileReplacements": [
                 {
@@ -253,6 +333,9 @@
           "configurations": {
             "console-production": {
               "buildTarget": "console-panel:build:console-production"
+            },
+            "console-farming": {
+              "buildTarget": "console-panel:build:console-farming"
             },
             "console-development": {
               "buildTarget": "console-panel:build:console-development"
