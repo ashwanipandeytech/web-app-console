@@ -39,7 +39,7 @@
             ]
           },
           "configurations": {
-                 "web-farming-ssr": {
+            "web-farming-ssr": {
               "server": "projects/frontend/src/main.server.ts",
               "outputMode": "server",
               "ssr": {
@@ -146,7 +146,7 @@
               "sourceMap": false
             },
             "web-development-ssr": {
-               "server": "projects/frontend/src/main.server.ts",
+              "server": "projects/frontend/src/main.server.ts",
               "outputMode": "server",
               "ssr": {
                 "entry": "projects/frontend/src/server.ts"
@@ -178,8 +178,10 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "options": {
-    "allowedHosts": [".ngrok-free.app"]
-  },
+            "allowedHosts": [
+              ".ngrok-free.app"
+            ]
+          },
           "configurations": {
             "web-production-ssr": {
               "buildTarget": "frontend:build:web-production-ssr"
@@ -187,7 +189,7 @@
             "web-production": {
               "buildTarget": "frontend:build:web-production"
             },
-                "web-farming-ssr": {
+            "web-farming-ssr": {
               "buildTarget": "frontend:build:web-farming-ssr"
             },
             "web-farming": {
@@ -200,7 +202,7 @@
               "buildTarget": "frontend:build:web-development"
             }
           },
-          "defaultConfiguration": "web-development-ssr"
+          "defaultConfiguration": "web-farming-ssr"
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"
@@ -244,9 +246,9 @@
           "builder": "@angular/build:application",
           "options": {
             "allowedCommonJsDependencies": [
-    "quill",
-    "quill-html-edit-button"
-  ],
+              "quill",
+              "quill-html-edit-button"
+            ],
             "browser": "projects/console-panel/src/main.ts",
             "tsConfig": "projects/console-panel/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -269,7 +271,7 @@
             ]
           },
           "configurations": {
-               "console-farming": {
+            "console-farming": {
               "fileReplacements": [
                 {
                   "replace": "environments/environment.ts",
@@ -280,12 +282,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumError": "4MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "41kB",
+                  "maximumError": "80kB"
                 }
               ],
               "outputHashing": "all"
@@ -301,12 +303,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumError": "4MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "41kB",
+                  "maximumError": "80kB"
                 }
               ],
               "outputHashing": "all"
@@ -323,12 +325,14 @@
               "sourceMap": true
             }
           },
-          "defaultConfiguration": "console-development"
+          "defaultConfiguration": "console-farming"
         },
         "serve": {
           "options": {
-    "allowedHosts": [".ngrok-free.app"]
-  },
+            "allowedHosts": [
+              ".ngrok-free.app"
+            ]
+          },
           "builder": "@angular/build:dev-server",
           "configurations": {
             "console-production": {
@@ -341,7 +345,7 @@
               "buildTarget": "console-panel:build:console-development"
             }
           },
-          "defaultConfiguration": "console-development"
+          "defaultConfiguration": "console-farming"
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"
@@ -349,7 +353,6 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            
             "tsConfig": "projects/console-panel/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
