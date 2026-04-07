@@ -8,9 +8,10 @@ export const environment = {
 'GLOBAL_AUTH': 'TEST_VALUE',
 'APPLICATION':'CONSOLE',
 'VERSION':'v1',
-'API_URL':'https://api.farmingmart.in/api/v1/',
+
+'API_URL':'https://api.farmingmart.in/api/v1/admin/',
 'DOMAIN':'https://api.farmingmart.in',
-'RAZORPAY_KEY_ID':'rzp_test_Rkp1Rm8aI8wDkH',
+'RAZORPAY_KEY_ID':false,
 'WEB_URL':'https://farmingmart.in/',
 'ADDRESS_API_KEY':'25d261a6a2cc45deb0954b14270ac706'
 

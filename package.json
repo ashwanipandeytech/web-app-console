@@ -6,6 +6,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build frontend --configuration web-production",
+    "build-frontend-live": "ng build frontend --configuration web-farming",
+    "build-console-live": "ng build console-panel --configuration console-farming",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:frontend": "node dist/frontend/server/server.mjs",
