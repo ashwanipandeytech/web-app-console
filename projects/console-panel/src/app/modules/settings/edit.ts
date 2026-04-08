@@ -77,11 +77,11 @@ export class EditPage implements OnInit {
 
     //         // 1. Validation Logic
     //         if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
-    //           console.info('Unsupported type');
+    //           // console.info('Unsupported type');
     //           return reject('Unsupported type');
     //         }
     //         // if (file.size > 1000000) {
-    //         //     console.info('Size');
+    //         //     // console.info('Size');
     //         //   return reject('Size too large (Max 1MB)');
     //         // }
 
@@ -98,7 +98,7 @@ export class EditPage implements OnInit {
     //             })
     //           )
     //           .subscribe((res: any) => {
-    //             console.log('Response:', res);
+    //             // console.log('Response:', res);
     //             resolve(res.data[0].url);
 
     //           });
@@ -123,7 +123,7 @@ export class EditPage implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        // //console.log('Response:', res.data);
+        // //// console.log('Response:', res.data);
         if (res.success) {
           this.newPage = res.data.settings;
 
@@ -136,13 +136,13 @@ export class EditPage implements OnInit {
 
 
   handleImageUpload(file: any) {
-    console.info('files', file)
+    // console.info('files', file)
 
     // 2. Call the Service
     const formData = new FormData();
     formData.append('files', file);
     formData.append('type', 'pages');
-    console.info('herere test', formData)
+    // console.info('herere test', formData)
     this.dataService
       .postForm('gallery', formData)
       .pipe(
@@ -151,7 +151,7 @@ export class EditPage implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        // console.log('Response:', res);
         // resolve(res.data[0].url);
 
       });
@@ -162,11 +162,11 @@ export class EditPage implements OnInit {
 
       // 1. Validation Logic
       if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
-        console.info('Unsupported type');
+        // console.info('Unsupported type');
         return reject('Unsupported type');
       }
       if (file.size > 1000000) {
-        console.info('Size');
+        // console.info('Size');
         return reject('Size too large (Max 1MB)');
       }
 
@@ -174,7 +174,7 @@ export class EditPage implements OnInit {
       const formData = new FormData();
       formData.append('files', file);
       formData.append('type', 'pages');
-      console.info('herere test', formData)
+      // console.info('herere test', formData)
       this.dataService
         .postForm('gallery', formData)
         .pipe(
@@ -183,7 +183,7 @@ export class EditPage implements OnInit {
           })
         )
         .subscribe((res: any) => {
-          console.log('Response:', res);
+          // console.log('Response:', res);
           resolve(res.data[0].url);
 
         });
@@ -192,7 +192,7 @@ export class EditPage implements OnInit {
   }
 
   updatePage() {
-    console.info('this.newPage', this.newPage)
+    // console.info('this.newPage', this.newPage)
     let payload = {
       settings_name: this.newPage.slug,
       settings: this.newPage
@@ -205,7 +205,7 @@ export class EditPage implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        //// console.log('Response:', res);
         this.globalService.showToast(res);
         this.router.navigate(['/pages']);
 

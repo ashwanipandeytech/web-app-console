@@ -59,7 +59,7 @@ export class App {
           })
         )
         .subscribe((res: any) => {
-          //console.log('Response:', res);
+          //// console.log('Response:', res);
           if (res.success == true) {
             if (this.isBrowser) { // Guard this localStorage.setItem
               localStorage.setItem('GUEST_TOKEN', JSON.stringify(res.data.guest_token));
@@ -84,7 +84,7 @@ export class App {
           this.openForgotPopup(resetToken, resetEmail, forgotStep);
         }, 0);
       }
-      //console.info('this.router.url', this.router?.url.split('?')[0] === '/', params['key'])
+      //// console.info('this.router.url', this.router?.url.split('?')[0] === '/', params['key'])
       if (this.router?.url.split('?')[0] === '/' && params['key']) {
         let payLoad = {
           'X-Social-Login-Key': params['key']
@@ -100,7 +100,7 @@ export class App {
           .subscribe((res: any) => {
 
             if (res.success == true) {
-              console.info('data', res)
+              // console.info('data', res)
               this.globalService.showToast(res);
 
               localStorage.removeItem("GUEST_TOKEN");
@@ -170,7 +170,7 @@ export class App {
 
   openForgotPopup(token: any = '', email: any, step: any) {
     let user: any = localStorage.getItem('user');
-    console.log('enter===>', user);
+    // console.log('enter===>', user);
 
     let data = {
       token: token,
@@ -186,10 +186,10 @@ export class App {
     this.router.navigate(['']);
     modalRef.result
       .then((result) => {
-        //console.log('Modal closed with result:', result);
+        //// console.log('Modal closed with result:', result);
       })
       .catch((reason) => {
-        //console.log('Modal dismissed:', reason);
+        //// console.log('Modal dismissed:', reason);
       });
   }
   openCheckout(amount: number) {

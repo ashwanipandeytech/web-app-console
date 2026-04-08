@@ -1,6 +1,6 @@
 import { Injectable, Inject, PLATFORM_ID, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../../environments/environment';
+import { environment } from 'environments/environment';
 import { Observable, switchMap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { DataService } from './data-service';
@@ -41,7 +41,7 @@ export class RazorpayService {
   //       // Success! You can save this ID
   //     },
   //     onpaymenterror: (error: any) => {
-  //     console.log('Payment FAILED:', error);
+  //     // console.log('Payment FAILED:', error);
   //     alert(`Payment Failed: ${error.description || 'Unknown error'}`);
       
   //     // Common error codes you can handle:
@@ -85,7 +85,7 @@ export class RazorpayService {
 //     const amount = event.payload.payment.entity.amount;
 
 //     // THIS IS 100% CONFIRMED SUCCESS
-//     console.log('Payment successful:', paymentId);
+//     // console.log('Payment successful:', paymentId);
     
 //     // Update your database, give access to user, etc.
 //   }

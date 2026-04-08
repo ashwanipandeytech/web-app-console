@@ -38,7 +38,7 @@ couponForm(){
     });
 }
 submit() {
-    console.log(this.discountForm.value);
+    // console.log(this.discountForm.value);
  this.dataService
       .post(this.discountForm.value, 'coupons')
       .pipe(
@@ -70,7 +70,7 @@ submit() {
       .subscribe((res: any) => {
         if (res.success == true) {
           this.couponList = res.data;
-          console.log('res==>',res);
+          // console.log('res==>',res);
           this.cd.detectChanges();
           
         }

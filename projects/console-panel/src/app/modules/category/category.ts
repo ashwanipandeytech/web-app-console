@@ -99,7 +99,7 @@ unloadNotification($event: BeforeUnloadEvent) {
     });
 
     for (let pair of formData.entries()) {
-      //console.log(pair[0], pair[1]);
+      //// console.log(pair[0], pair[1]);
     }
 
     this.dataService.postForm('categories',formData)
@@ -113,7 +113,7 @@ unloadNotification($event: BeforeUnloadEvent) {
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        //// console.log('Response:', res);
         this.addCategory.reset();
           if (this.fileInput) {
     this.fileInput.nativeElement.value = '';
@@ -137,20 +137,20 @@ unloadNotification($event: BeforeUnloadEvent) {
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        //// console.log('Response:', res);
         if (res.data) {
 
           for (let i = 0; i < res.data.length; i++) {
             const element = res.data[i];
-            //console.log('element==>', element.thumbnail);
+            //// console.log('element==>', element.thumbnail);
             if (element?.thumbnail != null) {
-              //console.log('environment.API_URL==>', environment.API_URL);
+              //// console.log('environment.API_URL==>', environment.API_URL);
               element.thumbnail = environment.DOMAIN + '/' + element.thumbnail;
             }
             this.categoryListData.push(element);
           }
         }
-        //console.log('categoryListData==>', this.categoryListData);
+        //// console.log('categoryListData==>', this.categoryListData);
 
         this.cd.detectChanges();
         // this.categoryListData = res.data;
@@ -262,7 +262,7 @@ openCategoryPreview(item: any): void {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        // console.log('Response:', res);
          this.addCategory.reset();
          this.isEdit = false;
          this.imagePreview = '';

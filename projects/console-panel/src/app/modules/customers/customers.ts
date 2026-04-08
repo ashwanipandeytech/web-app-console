@@ -35,7 +35,7 @@ getCustomerList(){
         )
         .subscribe((res: any) => {
           let filteredData = [];
-          console.log('Response:', res);
+          // console.log('Response:', res);
           if (res?.data) {
             this.customerList = res.data;
             this.cd.detectChanges();

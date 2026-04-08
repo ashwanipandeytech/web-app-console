@@ -37,7 +37,7 @@ export class AddressSectionComponent implements OnInit {
   constructor() {
     this.isBrowser = isPlatformBrowser(this.platformId);
 
-    //console.log('data==>',this.data);
+    //// console.log('data==>',this.data);
     effect(() => {
       if (this.signalService.userLoggedIn()) {
         if (this.isBrowser) {
@@ -54,12 +54,12 @@ export class AddressSectionComponent implements OnInit {
   }
   openAddressPopup() {
     this.globalFunctionService.openAddressPopup().then((res: any) => {
-      console.info('res', res)
+      // console.info('res', res)
       if (res.result == 'success') {
         this.getAddressList();
         //this.cd.detectChanges();
       }
-      //console.log('==>',res);
+      //// console.log('==>',res);
     })
 
   }
@@ -87,7 +87,7 @@ export class AddressSectionComponent implements OnInit {
     ).subscribe((response: any) => {
       if (response.success == true) {
         this.addressListData = response.data;
-        console.log('this.addressListData==>', this.addressListData);
+        // console.log('this.addressListData==>', this.addressListData);
         this.isLoading = false;
         this.cd.detectChanges();
       }
@@ -117,16 +117,16 @@ export class AddressSectionComponent implements OnInit {
     });
     modalRef.componentInstance.data = item;
     modalRef.result.then((res) => {
-      // console.log('result===>',res);
+      // // console.log('result===>',res);
       if (res.result === 'success') {
         this.getAddressList();
         this.cd.detectChanges();
       }
 
-      //console.log('Modal closed with result:', result);
+      //// console.log('Modal closed with result:', result);
       // return res;
     }).catch((reason) => {
-      //console.log('Modal dismissed:', reason);
+      //// console.log('Modal dismissed:', reason);
       return reason;
 
     });

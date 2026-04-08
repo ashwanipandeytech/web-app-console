@@ -707,7 +707,7 @@ Upload</button>
                   <figure
                     class="d-flex align-items-center justify-content-center cursor-pointer border bg-light rounded h-100"
                     [ngClass]="{'border-primary': selectedImageIndex==$index}" (click)="getSelectedImage(item, $index)">
-                    <img [src]="item.url" [alt]="settingsModel.general.logo.desktop.alt || 'Desktop Logo'"
+                    <img [src]="item.url" [alt]="settingsModel?.general?.logo?.desktop?.alt || 'Desktop Logo'"
                       class="img-fluid img-preview rounded shadow-sm mt-2" />
                   </figure>
                 </div>

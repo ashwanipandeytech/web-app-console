@@ -1,6 +1,6 @@
 import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../../environments/environment';
+import { environment } from 'environments/environment';
 import { Capacitor } from '@capacitor/core';
 import { isPlatformBrowser } from '@angular/common';
 

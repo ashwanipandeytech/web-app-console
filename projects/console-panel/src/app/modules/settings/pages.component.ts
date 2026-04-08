@@ -37,7 +37,7 @@ export class PageList implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        //// console.log('Response:', res);
         if (res.data) {
           this.pageList = res.data;
           this.cdr.detectChanges()
@@ -49,7 +49,7 @@ export class PageList implements OnInit {
 
 
   viewPage(page: any) {
-    //console.log('View Page:', page);
+    //// console.log('View Page:', page);
     // open modal or navigate to detail page
   }
 
@@ -79,7 +79,7 @@ export class PageList implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        //// console.log('Response:', res);
         if (res.success) {
          this.globalService.showToast(res);
           this.pageList.splice(index, 1);

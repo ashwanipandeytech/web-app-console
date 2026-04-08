@@ -13,13 +13,13 @@
 
     <a routerLink="/">
       <img
-        [src]="this.dataService.getSpecificGeneralSettings('general').logo.desktop.imgSrc"
-        [alt]="this.dataService.getSpecificGeneralSettings('general').logo.desktop.alt"
+        [src]="this.dataService.getSpecificGeneralSettings('general')?.logo.desktop.imgSrc"
+        [alt]="this.dataService.getSpecificGeneralSettings('general')?.logo.desktop.alt"
         class="d-none d-lg-inline-block img-fluid"
       />
       <img
-        [src]="this.dataService.getSpecificGeneralSettings('general').logo.mobile.imgSrc"
-        [alt]="this.dataService.getSpecificGeneralSettings('general').logo.mobile.alt"
+        [src]="this.dataService.getSpecificGeneralSettings('general')?.logo.mobile.imgSrc"
+        [alt]="this.dataService.getSpecificGeneralSettings('general')?.logo.mobile.alt"
         class="d-lg-none img-fluid"
       />
     </a>

@@ -39,7 +39,7 @@ this.dataService.post(this.contactForm.value,'contact-us').pipe(
         }),
       )
       .subscribe((res: any) => {
-    console.log(this.contactForm.value);
+    // console.log(this.contactForm.value);
        if (res?.success == true) {
           this.globalCommonService.showToast(res);
           this.contactForm.reset();

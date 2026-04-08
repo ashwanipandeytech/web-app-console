@@ -25,7 +25,7 @@ getCustomerReports(){
         return of(error);
       })
     ).subscribe((response: any) => {
-      console.log('Response:', response);
+      // console.log('Response:', response);
     this.contactsList = response.data;
     this.contactsList.data.map((item:any)=>{
       item.showFullMessage = false

@@ -32,7 +32,7 @@ hide() {
 }
 
   setCounts(data: any) {
-    //console.log('signal service ==',data);
+    //// console.log('signal service ==',data);
     
     this.allCounts.set(data);
   }

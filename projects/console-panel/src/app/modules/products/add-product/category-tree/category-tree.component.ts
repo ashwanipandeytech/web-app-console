@@ -24,7 +24,7 @@ export class CategoryTreeComponent implements OnInit {
       this.removeId(cat.id);
     }
 
-    //console.log("Selected IDs:", this.selectedIds);
+    //// console.log("Selected IDs:", this.selectedIds);
   }
 
   // Add an ID once
@@ -68,7 +68,7 @@ export class CategoryTreeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('categoriesData==/',this.categoriesData);
+    // console.log('categoriesData==/',this.categoriesData);
     
   }
 

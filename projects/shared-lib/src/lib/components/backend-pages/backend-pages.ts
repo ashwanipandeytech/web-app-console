@@ -35,7 +35,7 @@ export class BackendPagesComponent {
             this.pageData.pageContent = this.sanitizer.bypassSecurityTrustHtml(this.pageData.pageContent);
           }
         }
-        console.info(this.pageData,'pageData')
+        // console.info(this.pageData,'pageData')
         this.isLoading = false;
       this.cd.detectChanges();
   

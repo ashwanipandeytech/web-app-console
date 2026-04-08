@@ -25,12 +25,12 @@ export class App {
    if(userData==null ||userData==undefined|| userData==''){
     //not logged in
     this.isLogin = false;
-    console.info('User not logged in');
+    // console.info('User not logged in');
     this.router.navigate(['login']);
    }else{
 
  this.isLogin = true;;
    }
-   // console.info('Environment', environment);
+   // // console.info('Environment', environment);
   }
 }

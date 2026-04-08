@@ -216,7 +216,7 @@ export class CustomEditorComponent implements ControlValueAccessor, OnChanges {
               throw new Error('Upload returned empty URL');
             }
             const finalUrl = await this.ensureImageVisible(url, file);
-            console.info('CustomEditor upload URL:', finalUrl);
+            // console.info('CustomEditor upload URL:', finalUrl);
             this.ensureImageInserted(finalUrl);
             return { default: finalUrl };
           } catch (err) {

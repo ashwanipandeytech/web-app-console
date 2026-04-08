@@ -31,7 +31,7 @@ export class HostOutletComponent {
     //   )
     //   .subscribe((res: any) => {
     //     if (res.success) {
-    //       console.log('Response:', res.data.settings);
+    //       // console.log('Response:', res.data.settings);
     //       this.allInOnePageSections.push({settings:res.data.settings})
     //     }
     //   })
@@ -43,11 +43,11 @@ export class HostOutletComponent {
 
 
     // this.activatedRoute.data.subscribe((response: any) => {
-    //   console.info(response,'response')
+    //   // console.info(response,'response')
     // //this.allInOnePageSections=response?.pageData;
     // response?.pageData.map((item: any) => {  
     //     let  templateVersion=item.fields.cComponentCode
-    //     //console.log('this.pageComponentFactory==>',this.pageComponentFactory);
+    //     //// console.log('this.pageComponentFactory==>',this.pageComponentFactory);
     //    this.pageComponentFactory.loadComponentInstance('Block-C-22-v1', item, this.hostContainer);
 
     //   })

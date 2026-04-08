@@ -2,7 +2,7 @@ import { Inject, inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Commonresponseobject } from '../model/responsemodel';
-import { environment } from '../../../../../environments/environment';
+import { environment } from 'environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom, of } from 'rxjs';
 import { Meta } from '@angular/platform-browser';
@@ -35,7 +35,7 @@ export class DataService {
     let httpOptions = {};
     if (user?.token) {
       this.authToken = user?.token;
-       console.info('endpoint')
+       // console.info('endpoint')
       headers = new HttpHeaders({
         Authorization: `Bearer ${this.authToken}`,
       });
@@ -58,7 +58,7 @@ export class DataService {
       // data.guest_token = guestToken;
 
     }
-    //console.log('httpOptions===>',httpOptions);
+    //// console.log('httpOptions===>',httpOptions);
     let commonurl = 'https://api.demohandler.in/api/v1/';
     switch (method.toUpperCase()) {
       case 'GET':
@@ -205,12 +205,12 @@ export class DataService {
       .then((data: any) => {
         // directly use the JSON from assets as the runtime env
         this.generalSetting = data.data.settings || {};
-        console.info('testing ssr', this.generalSetting);
+        // console.info('testing ssr', this.generalSetting);
            this.meta.addTags([
     { keyword: this.generalSetting.seoData.keywords, content: this.generalSetting.seoData.metaDescription,title:this.generalSetting.seoData.metaTitle },
     // ...
   ]);
-        //console.info('EnvService: environment loaded', this.generalSetting);
+        //// console.info('EnvService: environment loaded', this.generalSetting);
       })
       .catch((err) => {
         // fallback to minimal env on error

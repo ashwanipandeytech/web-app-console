@@ -86,7 +86,7 @@ export class MyOrdersComponent implements OnInit {
 
   ngOnInit() {
     this.isLoggedIn = false;
-    console.info('hererer')
+    // console.info('hererer')
       this.orderList();
       this.addRateUsForm();
       this.initBankDetailsForm();
@@ -135,7 +135,7 @@ export class MyOrdersComponent implements OnInit {
     this.rateUsForm.patchValue({ rating: value });
   }
   // openRateUsModal(item:any){
-  // //console.log('item===>',item);
+  // //// console.log('item===>',item);
   // this.orderId = item.id;
   // }
   submitRating(item: any = '', productId: any = '', index: any = ''): void {
@@ -148,12 +148,12 @@ export class MyOrdersComponent implements OnInit {
     if (!productId) {
       apiUrl = 'rate';
     }
-    console.log('this.rateUsForm==>', this.rateUsForm.value);
-    console.log('this.productid==>', productId);
+    // console.log('this.rateUsForm==>', this.rateUsForm.value);
+    // console.log('this.productid==>', productId);
 
     payload.product_id = productId;
     // payload.orderId = this.orderId;
-    //console.log('Rating Submitted:', payload);
+    //// console.log('Rating Submitted:', payload);
     this.dataService
       .post(payload, `orders/${this.orderId}/${apiUrl}`)
       .pipe(
@@ -162,7 +162,7 @@ export class MyOrdersComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:===>', res);
+        //// console.log('Response:===>', res);
 
         if (res?.success == true) {
           this.globalService.showToast(res);
@@ -209,7 +209,7 @@ export class MyOrdersComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:===>', res);
+        //// console.log('Response:===>', res);
         if (res.success == true) {
           this.orderListData = res.data.data;
           
@@ -218,7 +218,7 @@ export class MyOrdersComponent implements OnInit {
 
           //            this.orderListData = this.orderListData.map((order:any) => {
           //     if (order.id !== this.orderId) return order;
-          // console.log('order-------------------------',order);
+          // // console.log('order-------------------------',order);
 
           //     return {
           //       ...order,
@@ -254,10 +254,10 @@ export class MyOrdersComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:===>', res);
+        // console.log('Response:===>', res);
         if (res?.success == true) {
           this.orderListData = res.data;
-          console.log('orderListData==>',this.orderListData);
+          // console.log('orderListData==>',this.orderListData);
 
           this.orderListData.map((item: any) => {
 
@@ -269,7 +269,7 @@ export class MyOrdersComponent implements OnInit {
         }
         else if(res==null){
           this.orderListData = [];
-          console.log(this.orderListData);
+          // console.log(this.orderListData);
           this.cd.detectChanges();
 
         }
@@ -347,7 +347,7 @@ export class MyOrdersComponent implements OnInit {
   }
 
   downloadInvoice(order: any) {
-    console.info('downloadInvoice===>', order);
+    // console.info('downloadInvoice===>', order);
     this.dataService.downloadReport(`orders/${this.orderId}/invoice`, `${order.downloadInvoceName}`);
   }
 

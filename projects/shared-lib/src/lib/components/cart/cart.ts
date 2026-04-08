@@ -119,14 +119,14 @@ export class CartCommon {
   //       navigator.geolocation.getCurrentPosition((pos) => {
   //         const lat = pos.coords.latitude;
   //         const lng = pos.coords.longitude;
-  // //console.log('lat==>',lat);
-  // //console.log('lng==>',lng);
+  // //// console.log('lat==>',lat);
+  // //// console.log('lng==>',lng);
 
   //         const geocoder = new google.maps.Geocoder();
   //         geocoder.geocode({ location: { lat, lng } }, (res: any) => {
   //           if (res[0]) {
   //             this.selectedAddress = res[0].formatted_address;
-  //             //console.log('this.selectedAddres==>',this.selectedAddress);
+  //             //// console.log('this.selectedAddres==>',this.selectedAddress);
 
   //           }
   //         });
@@ -163,7 +163,7 @@ export class CartCommon {
           )
           .subscribe((res: any) => {
             this.selectedAddress = res.display_name;
-            //console.log('this.selectedAddress===>', this.selectedAddress);
+            //// console.log('this.selectedAddress===>', this.selectedAddress);
           });
       });
     }
@@ -189,7 +189,7 @@ export class CartCommon {
 
   submitForm() {
     if (this.addressForm.valid) {
-      //console.log(this.addressForm.value);
+      //// console.log(this.addressForm.value);
       let fullAddrress = this.addressForm.value;
       if (this.lat && this.lng) {
         fullAddrress.location = [
@@ -212,19 +212,19 @@ export class CartCommon {
           })
         )
         .subscribe((res: any) => {
-          //console.log('Response:', res);
+          //// console.log('Response:', res);
           if (res.success == true) {
             // this.router.navigate(['/cart']);
           }
         });
-      //console.log('addresss=====>', fullAddrress);
+      //// console.log('addresss=====>', fullAddrress);
     } else {
       this.addressForm.markAllAsTouched();
     }
   }
 
   onSelectAddress(item: any) {
-    //console.log('Selected:', item);
+    //// console.log('Selected:', item);
   }
 
   getAddressList() {
@@ -236,7 +236,7 @@ export class CartCommon {
         })
       )
       .subscribe((response: any) => {
-        //console.log('response==>', response);
+        //// console.log('response==>', response);
         if (response.success == true) {
           this.addressListData = response.data;
           this.cd.detectChanges();
@@ -250,19 +250,19 @@ export class CartCommon {
     });
     modalRef.result
       .then((result) => {
-        //console.log('Modal closed with result:', result);
+        //// console.log('Modal closed with result:', result);
       })
       .catch((reason) => {
-        //console.log('Modal dismissed:', reason);
+        //// console.log('Modal dismissed:', reason);
       });
   }
 
   //   getCookie() {
   //   const value = `; ${document.cookie}`;
   //   const parts = value;
-  //   //console.log('parts===>',parts);
+  //   //// console.log('parts===>',parts);
   //   // const token = this.getCookie('token');
-  // // //console.log('token=', token);
+  // // //// console.log('token=', token);
   //   // if (parts.length === 2) return parts.pop()?.split(';').shift();
   //   // return null;
   // }
@@ -345,7 +345,7 @@ export class CartCommon {
         })
       )
       .subscribe((response: any) => {
-        //console.log('response==>', response);
+        //// console.log('response==>', response);
         if (response.success == true) {
           this.cartListData = response.data.data;
           if (this.cartListData.length <= 0) {
@@ -375,7 +375,7 @@ export class CartCommon {
   //   let payload:any={
   //     items:[]
   //   };
-  //   console.log('data=====>',data);
+  //   // console.log('data=====>',data);
   //   payload.coupon_code = this.appliedCoupon;
   //   for (let i = 0; i < data.length; i++) {
   //     const element = data[i];
@@ -397,7 +397,7 @@ export class CartCommon {
   //       })
   //     )
   //     .subscribe((res: any) => {
-  //       console.log('payload===>',res);
+  //       // console.log('payload===>',res);
   //     })
 
   // }
@@ -444,14 +444,14 @@ export class CartCommon {
         })
       )
       .subscribe((res: any) => {
-        // //console.log('Response:', res);
+        // //// console.log('Response:', res);
         if (res.success) {
           this.calculateGstPrice(this.cartListData);
           this.grandTotal = this.globalService.calculateGrandTotal(this.cartListData);
           this.cd.detectChanges();
 
         } else if (res && res.error && res.error.message) {
-          //console.log('error  :', res.error.message);
+          //// console.log('error  :', res.error.message);
           this.globalService.showToast(res.error);
         }
         this.cd.detectChanges();
@@ -478,7 +478,7 @@ export class CartCommon {
     }
     this.loading = false;
 
-    // //console.log('this.grandTotal==>',this.grandTotal);
+    // //// console.log('this.grandTotal==>',this.grandTotal);
   }
 
   // deleteItem(id:any){
@@ -503,7 +503,7 @@ export class CartCommon {
   //     data: popupData,
   //   });
   //   dialogRef.afterClosed().subscribe((result) => {
-  //     //console.log('Dialog closed with:', result);
+  //     //// console.log('Dialog closed with:', result);
 
   //     if (result.action === 'ok') {
   //       this.deleteCartItem(id);
@@ -565,17 +565,17 @@ export class CartCommon {
 
     modalRef.result
       .then((result) => {
-        //console.log('Modal closed with result:', result);
-        //console.log('from==>',from);
-        //console.log('result.result===>',result.result);
+        //// console.log('Modal closed with result:', result);
+        //// console.log('from==>',from);
+        //// console.log('result.result===>',result.result);
 
         if (result.result == 'success' && from == 'checkout') {
           this.carList();
-          console.log('this.appliedCoupon==>', this.appliedCoupon);
+          // console.log('this.appliedCoupon==>', this.appliedCoupon);
 
           this.route.navigate(['/checkout']);
         } else {
-          console.log('result.result=================>',result);
+          // console.log('result.result=================>',result);
           if (result?.recallApi==false) {
            
             return
@@ -587,7 +587,7 @@ export class CartCommon {
         // this.route.navigate(['/checkout']);
       })
       .catch((reason) => {
-        //console.log('Modal dismissed:', reason);
+        //// console.log('Modal dismissed:', reason);
       });
   }
 
@@ -596,7 +596,7 @@ export class CartCommon {
     let payload: any = {
       items: []
     };
-    console.log('data=====>', data);
+    // console.log('data=====>', data);
     this.appliedCoupon = localStorage.getItem('appliedCoupon') || '';
     payload.coupon_code = this.appliedCoupon;
     for (let i = 0; i < data.length; i++) {
@@ -624,11 +624,11 @@ export class CartCommon {
         })
       )
       .subscribe((res: any) => {
-        console.log('payload===>', res.data.summary);
+        // console.log('payload===>', res.data.summary);
         this.gstSummary = res.data.summary;
         this.gstSummary.items = res.data.items;
         // this.isLoading = false;
-        console.log('this.cartListData==>', this.gstSummary);
+        // console.log('this.cartListData==>', this.gstSummary);
 
         this.cd.detectChanges();
       })
@@ -642,7 +642,7 @@ export class CartCommon {
   }
 
   checkCoupon(couponValue: any) {
-    console.log('Input value:', couponValue);
+    // console.log('Input value:', couponValue);
     const ids = this.cartListData.map((item: any) => {
       return item.id
     });
@@ -664,7 +664,7 @@ export class CartCommon {
       )
       .subscribe((res: any) => {
         if (res.success == true) {
-          console.log('enter , re', res);
+          // console.log('enter , re', res);
           this.globalService.showToast(res);
           if (this.couponModalRef) {
             this.couponModalRef.close();

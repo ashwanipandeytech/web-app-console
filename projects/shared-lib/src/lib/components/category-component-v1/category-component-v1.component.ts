@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject, Input, OnInit } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { environment } from 'environments/environment';
 import { DataService } from '../../services/data-service';
 import { catchError, of } from 'rxjs';
 import { Router } from '@angular/router';
@@ -16,7 +16,7 @@ export class CategoryComponentV1Component implements OnInit {
   private route = inject(Router);
   categoryListData: any = [];
   constructor() {
-    //console.log('CategoryComponentV1Component Load');
+    //// console.log('CategoryComponentV1Component Load');
   }
 
   ngOnInit() {

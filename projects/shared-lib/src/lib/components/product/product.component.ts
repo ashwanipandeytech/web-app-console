@@ -44,7 +44,7 @@ export class ProductComponent implements OnInit {
       if (this.isBrowser) {
         isLoggedIn = localStorage.getItem('isLoggedIn');
       }
-      //console.log('isLoggedIn==>',isLoggedIn,this.signalService.userLoggedIn());
+      //// console.log('isLoggedIn==>',isLoggedIn,this.signalService.userLoggedIn());
 
       if (isLoggedIn == 'true' || this.signalService.userLoggedIn()) {
         this.isLogin = true;
@@ -65,7 +65,7 @@ export class ProductComponent implements OnInit {
 
   openProduct(item: any) {
 
-    console.log('openProduct===>',item.product_details.permaLink);
+    // console.log('openProduct===>',item.product_details.permaLink);
     
    this.router.navigate(
   ['/product-details', item.product_details.permaLink],
@@ -196,7 +196,7 @@ export class ProductComponent implements OnInit {
       quantity: '1',
       guest_token: isGuest,
     };
-    // //console.log('finalData==.',finalData);
+    // //// console.log('finalData==.',finalData);
     // return;
     this.dataService
       .post(finalData, 'cart')
@@ -206,8 +206,8 @@ export class ProductComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
-        // //console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
+        //// console.log('Response:', res);
+        // //// console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
         // if (res.headers) {
         //   let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
         //   //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT
@@ -217,7 +217,7 @@ export class ProductComponent implements OnInit {
         //   this.globalService.showToast(res.body);
         // }
         if (res.success == true) {
-          // console.info('herer add to cart')
+          // // console.info('herer add to cart')
           // this.globalFunctionService.getCount();
           this.globalService.showToast(res);
           this.globalFunctionService.getCount();

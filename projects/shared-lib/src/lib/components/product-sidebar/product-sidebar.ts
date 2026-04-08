@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, effect, inject, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { environment } from '../../environments/environment';
+import { environment } from 'environments/environment';
 import { catchError, of, switchMap } from 'rxjs';
 import { DataService } from '../../services/data-service';
 import { GlobaCommonlService } from '../../services/global-common.service';
@@ -47,7 +47,7 @@ export class ProductSidebarCommon {
       if (this.isBrowser) {
         isLoggedIn = localStorage.getItem('isLoggedIn');
       }
-      //console.log('isLoggedIn==>',isLoggedIn,this.signalService.userLoggedIn());
+      //// console.log('isLoggedIn==>',isLoggedIn,this.signalService.userLoggedIn());
 
       if (isLoggedIn == 'true' || this.signalService.userLoggedIn()) {
         this.isLogin = true;
@@ -71,8 +71,8 @@ export class ProductSidebarCommon {
       if (id) {
         this.isLoading = true;
         this.productId = id;
-        // //console.log('this.productListData==>',this.productListData);
-        // //console.log('defaultProductListData==>',this.defaultProductListData);
+        // //// console.log('this.productListData==>',this.productListData);
+        // //// console.log('defaultProductListData==>',this.defaultProductListData);
         if (this.defaultProductListData) {
           this.productListData = this.defaultProductListData.filter(
             (item: any) => item.category.id == id,
@@ -86,7 +86,7 @@ export class ProductSidebarCommon {
     });
 
     // this.productId = this.route.snapshot.paramMap.get('id');
-    // //console.log(this.productId);
+    // //// console.log(this.productId);
   }
   callAllProductList() {
     this.isLoading = true;
@@ -106,7 +106,7 @@ export class ProductSidebarCommon {
         }),
       )
       .subscribe((response: any) => {
-        // //console.log('Response:', response);
+        // //// console.log('Response:', response);
         this.defaultProductListData = response.data.data;
         if (this.productId != 'all') {
           this.productListData = this.defaultProductListData.filter(
@@ -118,7 +118,7 @@ export class ProductSidebarCommon {
           this.isLoading = false;
         }
         this.applyProductCardImages(this.productListData);
-        //console.log('this.productListData.length',this.productListData.length);
+        //// console.log('this.productListData.length',this.productListData.length);
 
         this.cd.detectChanges();
         // if (response && response.success) {
@@ -140,7 +140,7 @@ export class ProductSidebarCommon {
         }),
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        //// console.log('Response:', res);
         if (res.data) {
           for (let i = 0; i < res.data.length; i++) {
             const element = res.data[i];
@@ -176,7 +176,7 @@ export class ProductSidebarCommon {
       quantity: '1',
       guest_token: isGuest,
     };
-    // //console.log('finalData==.',finalData);
+    // //// console.log('finalData==.',finalData);
     // return;
     this.dataService
       .post(finalData, 'cart')
@@ -186,8 +186,8 @@ export class ProductSidebarCommon {
         }),
       )
       .subscribe((res: any) => {
-        // //console.log('Response:', res);
-        // //console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
+        // //// console.log('Response:', res);
+        // //// console.log('🧩 x-cart-identifier:', res.headers.get('x-cart-identifier'));
         // if (res.headers) {
         //   let nonLoggedInUserToken = res.headers.get('x-cart-identifier');
         //   //THIS IS TO CHECK WHETHER USER IS GUEST OR NOT

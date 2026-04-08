@@ -15,7 +15,7 @@ export class ConfirmationPopupComponent implements OnInit {
   @Input() data: any;
 
   constructor() {
-    //console.log('popupData++++.',data);
+    //// console.log('popupData++++.',data);
   }
 
   ngOnInit() {}

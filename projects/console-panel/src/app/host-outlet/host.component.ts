@@ -19,7 +19,7 @@ export class HostOutletComponent {
   hostContainer!: ViewContainerRef;
   ngOnInit(): void {    
 //     this.activatedRoute.data.subscribe((response: any) => {
-//       console.info(response,'response')
+//       // console.info(response,'response')
      
 //     //this.allInOnePageSections=response?.pageData;
    

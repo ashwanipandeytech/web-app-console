@@ -48,10 +48,10 @@ export class GlobalFunctionService {
     modalRef.componentInstance.data = data;
     return modalRef.result;
     // modalRef.result.then((result) => {
-    //   //console.log('Modal closed with result:', result);
+    //   //// console.log('Modal closed with result:', result);
     //   return result;
     // }).catch((reason) => {
-    //   //console.log('Modal dismissed:', reason);
+    //   //// console.log('Modal dismissed:', reason);
     //   return reason;
 
     // });
@@ -64,7 +64,7 @@ export class GlobalFunctionService {
     const guestToken = isGuest;
     this.dataService.get(`user/overview-counts`).subscribe((res: any) => {
       this.countsList = res.data;
-      //console.log('res.data', res.data);
+      //// console.log('res.data', res.data);
 
       this.signalService.setCounts(res.data);
     });

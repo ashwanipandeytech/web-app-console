@@ -59,7 +59,7 @@ this.productListData = [];
         return of(null); // or you can return a default value if needed
       })
     ).subscribe((response: any) => {
-      //console.log('Response:', response);
+      //// console.log('Response:', response);
     this.productListData = response?.data || { data: [], meta: { links: [] } };
     this.allProducts = this.productListData?.data || [];
     this.refreshCategoryOptions();
@@ -234,7 +234,7 @@ this.callAllProductList();
     };
   }
 editoProduct(item:any){
-  console.log('item==>',item);
+  // console.log('item==>',item);
   
    const dialogRef: NgbModalRef = this.ngbModal.open(AddProduct, {
     windowClass: 'mobile-modal product-edit-popup',
@@ -251,13 +251,13 @@ editoProduct(item:any){
 
        dialogRef.result
       .then((result) => {
-        console.log('Modal closed with result:', result);
+        // console.log('Modal closed with result:', result);
         if (result == 'success') {
           this.callAllProductList();
         }
       })
       .catch((reason) => {
-        //console.log('Modal dismissed:', reason);
+        //// console.log('Modal dismissed:', reason);
       });
 }
 
@@ -274,7 +274,7 @@ cloneProduct(data:any){
     delete item.product_details.permaLink;
    }
    delete item.title;
-console.log('item==>',item);
+// console.log('item==>',item);
 
     dialogRef.componentInstance.data = {
       item,
@@ -283,13 +283,13 @@ console.log('item==>',item);
 
        dialogRef.result
       .then((result) => {
-        console.log('Modal closed with result:', result);
+        // console.log('Modal closed with result:', result);
         if (result == 'success') {
           this.callAllProductList();
         }
       })
       .catch((reason) => {
-        //console.log('Modal dismissed:', reason);
+        //// console.log('Modal dismissed:', reason);
       });
 }
     openDialog(id: any): void {
@@ -326,7 +326,7 @@ window.open(url,'_blank')
       )
       
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        //// console.log('Response:', res);
         this.callAllProductList();
           setTimeout(() => {
           this.globalService.showToast(res);

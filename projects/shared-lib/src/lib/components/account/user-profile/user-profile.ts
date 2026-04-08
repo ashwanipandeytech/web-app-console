@@ -48,10 +48,10 @@ export class UserProfile {
       }
     }
     this.activatedRoute.queryParams.subscribe(params => {
-      //console.log(params['key']);
+      //// console.log(params['key']);
       if (params['section']) {
         this.activePage = params['section'];
-        //console.log("this.activePage", this.activePage)
+        //// console.log("this.activePage", this.activePage)
 
         this.openComponent(this.activePage);
       }
@@ -69,7 +69,7 @@ export class UserProfile {
     }
   }
   openComponent(component: any) {
-    //console.log('component==>',component);
+    //// console.log('component==>',component);
     this.activePage = component;
     this.route.navigate([], {
       relativeTo: this.activatedRoute,

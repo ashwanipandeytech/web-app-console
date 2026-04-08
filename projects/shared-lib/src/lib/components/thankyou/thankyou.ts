@@ -30,7 +30,7 @@ export class Thankyou {
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
-      // console.log('Order ID:', params['orderId']);
+      // // console.log('Order ID:', params['orderId']);
       this.orderId = params['orderId'];
     });
     this.addRateUsForm();
@@ -117,7 +117,7 @@ export class Thankyou {
       });
   }
   setRating(value: number): void {
-    console.log("ratings", value)
+    // console.log("ratings", value)
     this.ratingValue = value;
     this.rateUsForm.patchValue({ rating: value });
   }

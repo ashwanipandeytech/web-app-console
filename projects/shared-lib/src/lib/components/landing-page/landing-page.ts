@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { catchError, of } from 'rxjs';
 import { DataService } from 'shared-lib';
-import { environment } from '../../environments/environment';
+import { environment } from 'environments/environment';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AddAddressModal } from 'shared-lib/model/add-address-modal/add-address-modal';
@@ -53,9 +53,9 @@ export class LandingPage {
       scrollable: true
     });
     modalRef.result.then((result) => {
-      //console.log('Modal closed with result:', result);
+      //// console.log('Modal closed with result:', result);
     }).catch((reason) => {
-      //console.log('Modal dismissed:', reason);
+      //// console.log('Modal dismissed:', reason);
     });
   }
 }

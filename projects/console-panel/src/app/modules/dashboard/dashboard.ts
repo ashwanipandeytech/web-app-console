@@ -33,7 +33,7 @@ export class Dashboard implements OnInit {
 
   getDashboardData() {
     this.dataService.get('dashboard').subscribe((res: any) => {
-      console.log('res===>', res);
+      // console.log('res===>', res);
       this.dashBoardData = res.data;
 
       const summarySource =
@@ -65,7 +65,7 @@ export class Dashboard implements OnInit {
   }
 
   downloadInvoice(order: any) {
-    console.info('downloadInvoice===>', order);
+    // console.info('downloadInvoice===>', order);
     this.dataService.downloadReport(`orders/${order.id}/invoice`, `${order.downloadInvoceName}`);
   }
 }

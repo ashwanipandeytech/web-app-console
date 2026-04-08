@@ -96,7 +96,7 @@ export class Checkout {
       if (userString) {
         let userObj = JSON.parse(userString);            // convert to object
         this.email = userObj.user.email;                  // access email
-        //console.log('Email:', this.email);
+        //// console.log('Email:', this.email);
       }
     }
 
@@ -190,7 +190,7 @@ export class Checkout {
       })
     ).subscribe((response: any) => {
       this.isLoading = true;
-      //console.log('response==>', response);
+      //// console.log('response==>', response);
       if (response.success == true) {
         this.cartListData = response.data.data || [];
         if (this.cartListData.length <= 0) {
@@ -219,8 +219,8 @@ export class Checkout {
     let payload: any = {
       items: []
     };
-    console.log('data=====>', data);
-    console.log('isCouponValue===>', this.appliedCoupon);
+    // console.log('data=====>', data);
+    // console.log('isCouponValue===>', this.appliedCoupon);
 
     payload.coupon_code = this.appliedCoupon;
     for (let i = 0; i < data.length; i++) {
@@ -248,11 +248,11 @@ export class Checkout {
         })
       )
       .subscribe((res: any) => {
-        console.log('payload===>', res.data.summary);
+        // console.log('payload===>', res.data.summary);
         this.gstSummary = res.data.summary;
         this.gstSummary.items = res.data.items;
         this.isLoading = false;
-        console.log('this.cartListData==>', this.gstSummary);
+        // console.log('this.cartListData==>', this.gstSummary);
         this.cd.detectChanges();
       })
 
@@ -265,7 +265,7 @@ export class Checkout {
       this.subTotal += element.product.price_data.finalPrice;
     }
     this.calculateGrandTotal();
-    // //console.log('this.grandTotal==>',this.grandTotal);
+    // //// console.log('this.grandTotal==>',this.grandTotal);
   }
   calculateGrandTotal() {
     let shippingCharge = 0;
@@ -277,7 +277,7 @@ export class Checkout {
     //   return;
     // }
     // else{openCheckout
-    console.log('this.selectedPaymentMethod==>', this.selectedPaymentMethod);
+    // console.log('this.selectedPaymentMethod==>', this.selectedPaymentMethod);
 
     if (this.selectedPaymentMethod == 'cod') {
 
@@ -347,7 +347,7 @@ export class Checkout {
       )
       .subscribe((res: any) => {
         if (res.success == true) {
-          console.log('Response:', res);
+          // console.log('Response:', res);
           // this.globalService.showToast(res);
           this.appliedCoupon = '';
           localStorage.removeItem('appliedCoupon');
@@ -470,7 +470,7 @@ export class Checkout {
       )
       .subscribe((res: any) => {
         if (res.success == true) {
-          //console.log('Response: FINAL OUTPUT', res);
+          //// console.log('Response: FINAL OUTPUT', res);
         }
         else {
           if (res.err) {
@@ -548,7 +548,7 @@ export class Checkout {
 
     this.globalFunctionService.getCountries().subscribe((res: any) => {
       this.countries = res.data;
-      //console.log('res====>', this.countries);
+      //// console.log('res====>', this.countries);
       this.states = this.countries[98].states;
     })
     // this.getCountries().subscribe({
@@ -563,7 +563,7 @@ export class Checkout {
 
   onStateChange(event: Event) {
     const value = (event.target as HTMLSelectElement).value;
-    //console.log('Selected index:', value);
+    //// console.log('Selected index:', value);
     this.globalFunctionService.getCities("India", value)
       .subscribe(cities => {
         this.cities = cities;
@@ -572,9 +572,9 @@ export class Checkout {
 
   onCountryChange(event: Event) {
     const index = Number((event.target as HTMLSelectElement).value);
-    //console.log('Selected index:', index);
+    //// console.log('Selected index:', index);
     this.states = this.countries[index].states;
-    //console.log('this.cities===>', this.states);
+    //// console.log('this.cities===>', this.states);
 
     // Example: load cities dynamically
     // this.loadCities(selectedCountry);
@@ -602,7 +602,7 @@ export class Checkout {
   // }
   choosePaymentMethod(method: any) {
     this.selectedPaymentMethod = method;
-    //console.log('menthodi==.', method);
+    //// console.log('menthodi==.', method);
 
   }
 
@@ -612,13 +612,13 @@ export class Checkout {
         return of(null); // or you can return a default value if needed
       })
     ).subscribe((response: any) => {
-      //console.log('response==>', response);
+      //// console.log('response==>', response);
       if (response?.success == true) {
         this.AllAddressList = response.data;
         this.addressListData = response.data.find(
           (item: any) => item.is_default === 1
         );
-        //console.log('addressListData===>', this.addressListData);
+        //// console.log('addressListData===>', this.addressListData);
 
         this.cd.detectChanges();
       }
@@ -633,7 +633,7 @@ export class Checkout {
         this.addressNotfound = false;
       }
       this.getAddressList();
-      //console.log('addressResp==========>',res);
+      //// console.log('addressResp==========>',res);
     })
 
     this.cd.detectChanges();
@@ -653,14 +653,14 @@ export class Checkout {
         this.addressNotfound = false;
       }
       this.getAddressList();
-      //console.log('addressResp==========>',res);
+      //// console.log('addressResp==========>',res);
     })
 
     this.cd.detectChanges();
 
   }
   getSelectedAddress(item: any) {
-    //console.log('item===>', item);
+    //// console.log('item===>', item);
     this.changedSelectedAddress = item;
 
   }
@@ -805,12 +805,12 @@ export class Checkout {
         })
       )
       .subscribe((res: any) => {
-        // //console.log('Response:', res);
+        // //// console.log('Response:', res);
         if (res.success) {
           this.calculateGstPrice(this.cartListData);
           this.grandTotal = this.globalService.calculateGrandTotal(this.cartListData);
         } else if (res && res.error && res.error.message) {
-          //console.log('error  :', res.error.message);
+          //// console.log('error  :', res.error.message);
           this.globalService.showToast(res.error);
         }
         this.cd.detectChanges();

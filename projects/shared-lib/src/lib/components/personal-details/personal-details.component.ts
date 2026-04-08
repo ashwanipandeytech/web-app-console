@@ -70,7 +70,7 @@ export class PersonalDetailsComponent implements OnInit {
       this.profileDetailsForm();
 
       this.currentUser = JSON.parse(localStorage.getItem('user') || 'null');
-      //console.log('currentUser===>',this.currentUser);
+      //// console.log('currentUser===>',this.currentUser);
     }
   }
 
@@ -78,7 +78,7 @@ export class PersonalDetailsComponent implements OnInit {
     if (this.isBrowser) {
       let userLoginData = JSON.parse(localStorage.getItem('user') || 'null');
       // let firstName = userLoginData.user.firstName.split(' ');
-      // //console.log('firstName==>',firstName);
+      // //// console.log('firstName==>',firstName);
     }
 
     this.profileForm = this.fb.group({
@@ -109,14 +109,14 @@ export class PersonalDetailsComponent implements OnInit {
   }
 
   submitForm() {
-    //console.log('this.profileForm.invalid==>',this.profileForm.invalid);
+    //// console.log('this.profileForm.invalid==>',this.profileForm.invalid);
 
     // if (this.profileForm.invalid) {
     //   this.profileForm.markAllAsTouched();
     //   return;
     // }
     // if (this.profileForm.valid) {
-    //console.log(this.profileForm.value);
+    //// console.log(this.profileForm.value);
     let fullAddrress = this.profileForm.value;
     // fullAddrress.location = '';
     // fullAddrress.label = 'home';
@@ -124,7 +124,7 @@ export class PersonalDetailsComponent implements OnInit {
     fullAddrress.name = fullAddrress.firstName + ' ' + fullAddrress.lastName;
     fullAddrress.phone = fullAddrress.phone.toString()
     // fullAddrress.postcode=fullAddrress.postcode.toString()
-    // console.info('fullAddrress',fullAddrress)
+    // // console.info('fullAddrress',fullAddrress)
     this.dataService
       .put(fullAddrress, 'profile')
       .pipe(
@@ -135,7 +135,7 @@ export class PersonalDetailsComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        //// console.log('Response:', res);
         // this.globalService.showToast(res);
         if (res.success == true) {
           this.globalService.showToast(res);
@@ -151,14 +151,14 @@ export class PersonalDetailsComponent implements OnInit {
             // 4. Save updated object back to localStorage
 
             localStorage.setItem('user', JSON.stringify(userObj));
-            console.log('Updated User:', JSON.parse(localStorage.getItem('user')!));
+            // console.log('Updated User:', JSON.parse(localStorage.getItem('user')!));
           }
 
           this.signalService.profileChanged.set(fullAddrress.name);
 
           // this.router.navigate(['/cart']);
         } else if (res.error && res.error.message) {
-          //console.log('error  :', res.error.message);
+          //// console.log('error  :', res.error.message);
           this.globalService.showToast(res.error);
         }
       });
@@ -186,14 +186,14 @@ export class PersonalDetailsComponent implements OnInit {
           return;
         }
 
-        //console.log('profileListData ==>', this.profileListData);
+        //// console.log('profileListData ==>', this.profileListData);
 
         // ✅ Safe address access
         // const data = this.profileListData.addresses?.[0] ?? {};
         const data =
           this.profileListData.addresses?.find((addr: any) => addr.is_default == 1) ?? {};
 
-        //console.log('data==>',data);
+        //// console.log('data==>',data);
 
         // ✅ Safe name split
         const fullName = this.profileListData.name?.trim().split(' ') ?? [];
@@ -202,7 +202,7 @@ export class PersonalDetailsComponent implements OnInit {
         const email = this.profileListData.email;
         const phone = this.profileListData.phone;
 
-        console.info('cities', this.cities, data.city);
+        // console.info('cities', this.cities, data.city);
         if (this.profileListData && response.success) {
           // ✅ patchValue is safe even if fields are empty
           this.profileForm.patchValue({
@@ -225,7 +225,7 @@ export class PersonalDetailsComponent implements OnInit {
   loadCountries() {
     this.globalFunctionService.getCountries().subscribe((res: any) => {
       this.countries = res.data;
-      //console.log('res====>',this.countries);
+      //// console.log('res====>',this.countries);
       this.getCities();
       this.cd.detectChanges();
 

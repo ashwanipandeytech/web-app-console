@@ -28,7 +28,7 @@ import { GlobaCommonlService } from '../../../services/global-common.service';
 import { GlobalFunctionService } from '../../../services/global-function.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common'; // Add isPlatformBrowser
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { environment } from '../../../../../../../environments/environment';
+import { environment } from 'environments/environment';
 @Component({
   selector: 'web-login',
   imports: [FormsModule, ReactiveFormsModule, CommonModule],
@@ -77,16 +77,16 @@ export class Login {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.isCheckoutPage = params['checkout'] === 'true' ? true : false;
 
-      //console.log(this.isCheckoutPage);
+      //// console.log(this.isCheckoutPage);
     });
     this.isBrowser = isPlatformBrowser(this.platformId); // Add this
-    console.info(this.router);
+    // console.info(this.router);
     this.signUpForm();
     this.loginForm();
     this.initForgotPasswordForm();
   }
   ngOnInit() {
-    //console.log('data==>',this.loginData);
+    //// console.log('data==>',this.loginData);
     if (this.loginData) {
       this.isForgotPwd = true;
       this.forgotStep = 'reset-password';
@@ -126,7 +126,7 @@ export class Login {
       )
       .subscribe((res: any) => {
         if (res.success == true) {
-          //console.log('Response:', res);
+          //// console.log('Response:', res);
           if (via == 'otp') {
             this.startOtpTimer();
             this.forgotStep = 'otp';
@@ -155,7 +155,7 @@ export class Login {
       )
       .subscribe((res: any) => {
         if (res.success == true) {
-          //console.log('Response:', res);
+          //// console.log('Response:', res);
           this.globalService.showToast(res);
         }
       });
@@ -192,7 +192,7 @@ export class Login {
       )
       .subscribe((res: any) => {
         if (res.success == true) {
-          //console.log('Response:', res);
+          //// console.log('Response:', res);
           this.globalService.showToast(res);
           this.closePopup();
         }
@@ -258,7 +258,7 @@ export class Login {
         }),
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        //// console.log('Response:', res);
         if (res.success == true) {
           this.closePopup();
           //  this.globalService.showToast(res);
@@ -266,7 +266,7 @@ export class Login {
       });
   }
   register() {
-    // console.log('this.signupForm==>', this.signupForm);
+    // // console.log('this.signupForm==>', this.signupForm);
     this.submittedRegister = true;
     if (this.signupForm.invalid) {
       // this.signupForm.markAllAsTouched();
@@ -288,7 +288,7 @@ export class Login {
           }),
         )
         .subscribe((res: any) => {
-          // //console.log('Response:', res);
+          // //// console.log('Response:', res);
           if (res.success == true) {
             this.globalService.showToast(res);
             if (this.isBrowser) {
@@ -327,7 +327,7 @@ export class Login {
               this.closePopup(true);
             }, 0);
           } else if (res.error && res.error.message) {
-            //console.log('error  :', res.error.message);
+            //// console.log('error  :', res.error.message);
             this.globalService.showToast(res.error);
           }
 
@@ -341,7 +341,7 @@ export class Login {
           // this.getCategoryList();
         });
     }
-    // //console.log("Form Data:", this.signupForm.value);
+    // //// console.log("Form Data:", this.signupForm.value);
   }
   closePopup(recallApi:boolean=true) {
     // if (action == 'deny') {
@@ -357,7 +357,7 @@ if(recallApi == false){
     // Returns true if the URL contains "cart" OR "user-profile" OR "checkout"
     const shouldExclude = keywords.some(key => this.router.url.includes(key));
 
-    console.info('shouldExclude', shouldExclude, this.router.url,)
+    // console.info('shouldExclude', shouldExclude, this.router.url,)
     if (!shouldExclude) {
 
       this.router.navigate(['/']).then(() => {
@@ -387,7 +387,7 @@ if(recallApi == false){
     // return;
     // } else {
     this.activeModal.close({ result: 'success',recallApi });
-    //console.log('enter login');
+    //// console.log('enter login');
     // }
 
     this.cd.detectChanges();
@@ -417,7 +417,7 @@ if(recallApi == false){
           }),
         )
         .subscribe((res: any) => {
-          // //console.log('Response:', res.error.message);
+          // //// console.log('Response:', res.error.message);
           if (res.success == true) {
             this.globalService.showToast(res);
             //  let tempAddress: any = JSON.parse(localStorage.getItem('tempAddress') || 'null');
@@ -444,7 +444,7 @@ if(recallApi == false){
               this.closePopup(true);
             }, 0);
           } else if (res.error && res.error.message) {
-            //console.log('error  :', res.error.message);
+            //// console.log('error  :', res.error.message);
             this.globalService.showToast(res.error);
           }
 
@@ -458,7 +458,7 @@ if(recallApi == false){
           //     data: popupData,
           //   });
           //   dialogRef.afterClosed().subscribe(result => {
-          //     //console.log('Dialog closed with:', result);
+          //     //// console.log('Dialog closed with:', result);
 
           //     if (result.action === 'ok') {
 
@@ -484,12 +484,12 @@ if(recallApi == false){
   loginWithGoogle() {
     const redirectUrl = `${environment.API_URL}auth/google/redirect?redirect=/landing`;
      window.location.href = redirectUrl;
-    console.log('redirectUrl===>', environment);
+    // console.log('redirectUrl===>', environment);
     
 
     // let endpoint = 'auth/google/redirect?redirect=/landing';
     // this.dataService.get(endpoint).subscribe((res: any) => {
-    //   //console.log('res===>', res);
+    //   //// console.log('res===>', res);
     // });
   }
   loginWithFacebook() {
@@ -497,7 +497,7 @@ if(recallApi == false){
     window.location.href = redirectUrl;
     // let endpoint = 'auth/google/redirect?redirect=/landing';
     // this.dataService.get(endpoint).subscribe((res: any) => {
-    //   //console.log('res===>', res);
+    //   //// console.log('res===>', res);
     // });
   }
 
@@ -550,7 +550,7 @@ if(recallApi == false){
       )
       .subscribe((res: any) => {
         if (res.success == true) {
-          //console.log('Response:', res);
+          //// console.log('Response:', res);
           this.globalService.showToast(res);
           this.forgotStep = 'reset-password';
         } else if (res.success == false) {
@@ -570,7 +570,7 @@ if(recallApi == false){
   }
 
   goBack() {
-    //console.log('this.forgotStep==>',this.forgotStep);
+    //// console.log('this.forgotStep==>',this.forgotStep);
 
     if (this.forgotStep == 'select') {
       this.isForgotPwd = false;

@@ -102,6 +102,7 @@ export class LayoutSettingsComponent implements OnInit {
       email: '',
       address: '',
     },
+    footer:[]
   };
   seoForm!:FormGroup;
   loading = true;
@@ -138,7 +139,7 @@ export class LayoutSettingsComponent implements OnInit {
     // this.dataService.loadSetting().subscribe((d: any) => {
     //   // this.settingsModel.set(d || {});
     // this.settingsModel=d;
-    // console.info(this.settingsModel)
+    // // console.info(this.settingsModel)
     // this.cdr.detectChanges();
 
     //   this.loading=false
@@ -156,9 +157,9 @@ this.seoFormGroup();
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        //// console.log('Response:', res);
         if (res.success) {
-          this.settingsModel = res.data.settings;
+          this.settingsModel = res?.data?.settings;
           //  this.uploadedFile = this.settingsModel.general.logo.desktop.imgSrc
 
           this.getPageList();
@@ -175,10 +176,10 @@ this.seoFormGroup();
   //       })
   //     )
   //     .subscribe((res: any) => {
-  //       //console.log('Response:', res);
+  //       //// console.log('Response:', res);
   //       if (res.data) {
   //         this.desktopLogoData = res.data;
-  //         console.log('desktopLogoData',this.desktopLogoData);
+  //         // console.log('desktopLogoData',this.desktopLogoData);
 
   //         this.cdr.detectChanges();
   //       }
@@ -194,9 +195,9 @@ this.seoFormGroup();
   }
   getSelectedImage(image: any, index:any) {
     this.selectedImageIndex=index;
-    console.log('image==>', image);
+    // console.log('image==>', image);
     this.isSelectedImage = true;
-    console.log('this.uploadIsFrom', this.uploadIsFrom);
+    // console.log('this.uploadIsFrom', this.uploadIsFrom);
     this.uploadedFile = null;
     this.imagePreview = null;
     this.selectedImageobj = [{ ...image, isFrom: this.uploadIsFrom }];
@@ -211,10 +212,10 @@ this.seoFormGroup();
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        //// console.log('Response:', res);
         if (res.data) {
           this.desktopLogoData = res.data;
-          console.log('desktopLogoData', this.desktopLogoData);
+          // console.log('desktopLogoData', this.desktopLogoData);
 
           this.cdr.detectChanges();
         }
@@ -230,7 +231,7 @@ this.seoFormGroup();
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        //// console.log('Response:', res);
         if (res.data) {
           this.pageList = res.data;
           // this.settingsModel.footer.map((item:any)=>{
@@ -249,16 +250,15 @@ this.seoFormGroup();
 
           // })
           //  this.settingsModel.footer.forEach((item: any) => {
-          this.settingsModel.footer.map((item: any) => {
+          this.settingsModel?.footer?.map((item: any) => {
             const pageList = JSON.parse(JSON.stringify(this.pageList));
 
             // Create a map for quick lookup of order
             const orderMap = new Map(
-              item.items.map((inner: any, index: number) => [inner.link, index])
+              item?.items?.map((inner: any, index: number) => [inner.link, index])
             );
 
-            item.pageList = pageList
-              .map((page: any) => ({
+            item.pageList = pageList?.map((page: any) => ({
                 ...page,
                 isSelected: orderMap.has(page.slug),
               }))
@@ -290,10 +290,10 @@ this.seoFormGroup();
   }
   // Add new empty slide
   addSlide(type: string) {
-    console.log('this.settingsModel[type]==>', this.settingsModel);
-    console.log('type==>', type);
+    // console.log('this.settingsModel[type]==>', this.settingsModel);
+    // console.log('type==>', type);
 
-    this.settingsModel[type].push({
+    this.settingsModel[type]?.push({
       imgSrc: '',
       alt: '',
       url: '',
@@ -307,7 +307,10 @@ this.seoFormGroup();
     }
   }
   addFooterColumn() {
-    this.settingsModel.footer.push({
+    console.log('this.pageList===>',this.pageList);
+    console.log('this.settingsModel==>',this.settingsModel);
+    this.settingsModel['footer'] = [];
+    this.settingsModel?.footer?.push({
       colHeading: '',
       externalLinkValue : '',
       showExternalInput : false,
@@ -337,11 +340,10 @@ this.seoFormGroup();
   saveSettings() {
     
     let settingData = JSON.parse(JSON.stringify(this.settingsModel));
-    console.log('settingData==>', settingData);
-    for (let i = 0; i < settingData.footer.length; i++) {
-      let data = settingData.footer[i].pageList.filter((item: any) => item.isSelected);
+    for (let i = 0; i < settingData?.footer?.length; i++) {
+      let data = settingData?.footer[i]?.pageList.filter((item: any) => item.isSelected);
       settingData.footer[i].items = [];
-      data.map((item: any) => {
+      data?.map((item: any) => {
         settingData.footer[i].items.push({
           label: item.title,
           link: item.slug,
@@ -358,7 +360,7 @@ this.seoFormGroup();
       settings: settingData,
     };
     payload.settings.seoData = this.seoForm.value
-    // console.info('this.settingsModel',this.settingsModel)
+    // // console.info('this.settingsModel',this.settingsModel)
     // return
     this.dataService
       .post(payload, 'settings')
@@ -370,7 +372,7 @@ this.seoFormGroup();
         })
       )
       .subscribe((res: any) => {
-        //console.log('Response:', res);
+        //// console.log('Response:', res);
         if (res.success) {
           this.globalService.showToast(res);
           this.getGeneralSetting();
@@ -383,7 +385,7 @@ this.seoFormGroup();
   onImageChange(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     this.uploadedFile = file;
-    console.log('this.uploadedFile==>', this.uploadedFile);
+    // console.log('this.uploadedFile==>', this.uploadedFile);
     if (file) {
       this.isSelectedImage = false;
       this.selectedImageobj = [];
@@ -485,8 +487,8 @@ this.seoFormGroup();
     }
   }
   async savedImage() {
-    console.log('uploadisFrom', this.uploadIsFrom);
-    console.log('this.selectedImageobj?.type==>', this.selectedImageobj);
+    // console.log('uploadisFrom', this.uploadIsFrom);
+    // console.log('this.selectedImageobj?.type==>', this.selectedImageobj);
 
     if (this.isSelectedImage && this.selectedImageobj.length > 0) {
       for (const element of this.selectedImageobj) {
@@ -513,7 +515,7 @@ this.seoFormGroup();
   }
 
   callUploadnediaSection(formData: any, fallbackType?: string) {
-    console.log('formData==>', formData);
+    // console.log('formData==>', formData);
 
     this.dataService
       .postForm('gallery', formData)
@@ -523,7 +525,7 @@ this.seoFormGroup();
         })
       )
       .subscribe((res: any) => {
-        console.log('Response:', res);
+        // console.log('Response:', res);
         const uploadItems = Array.isArray(res?.data)
           ? res.data
           : res?.data
@@ -535,8 +537,7 @@ this.seoFormGroup();
         }
 
         if (uploadItems.length > 0) {
-          const uploadedGalleryItems = uploadItems
-            .map((item: any) => ({
+          const uploadedGalleryItems = uploadItems?.map((item: any) => ({
               ...item,
               url: item?.url || item?.path || item?.src,
             }))
@@ -549,7 +550,7 @@ this.seoFormGroup();
           }
 
           if (uploadedGalleryItems.length > 0) {
-            const existingUrls = new Set((this.desktopLogoData || []).map((item: any) => item?.url));
+            const existingUrls = new Set((this.desktopLogoData || [])?.map((item: any) => item?.url));
             const freshItems = uploadedGalleryItems.filter((item: any) => !existingUrls.has(item.url));
             this.desktopLogoData = [...freshItems, ...(this.desktopLogoData || [])];
 
