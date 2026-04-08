@@ -5,17 +5,19 @@
             <!-- <a href="/category" class="h3 view">View All</a> -->
         </div>
         <div class="category-section row">
-            @for (control of categoryListData; track $index) {
-            <a (click)="gotoCategory(control.id)">
-                <div class="product-wrapper gap-0">
-                    <div class="wrapper-img">
-                        <img src="{{control.thumbnail}}" width="150px" alt="Feeders" class="p-2">
+            @if (categoryListData) {
+                @for (control of categoryListData; track $index) {
+                <a (click)="gotoCategory(control.id)">
+                    <div class="product-wrapper gap-0">
+                        <div class="wrapper-img">
+                            <img src="{{control.thumbnail}}" width="150px" alt="Feeders" class="p-2">
+                        </div>
+                        <div class="wrapper-info">
+                            <span class="wrapper-details text-dark text-capitalize">{{control.name}}</span>
+                        </div>
                     </div>
-                    <div class="wrapper-info">
-                        <span class="wrapper-details text-dark text-capitalize">{{control.name}}</span>
-                    </div>
-                </div>
-            </a>
+                </a>
+                }
             }
         </div>
     </div>

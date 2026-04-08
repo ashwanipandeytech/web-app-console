@@ -1,44 +1,45 @@
 <section
   id="hero"
   class="hero"
-  [ngClass]="data.data.classList.class_container"
+  [ngClass]="data?.data?.classList?.class_container"
 >
-  @if (data.data.isTitleEnable) {
-    <p class="h1 fw-bold my-4">{{ data.data.title }}</p>
+  @if (data?.data?.isTitleEnable) {
+    <p class="h1 fw-bold my-4">{{ data?.data?.title }}</p>
   }
 
   <div class="hero-section">
-    @if (dataService.getSpecificGeneralSettings(data.data.title).length === 1) {
+    @if (dataService.getSpecificGeneralSettings(data.data.title)?.length === 1) {
       <div class="single-banner text-center">
         <img
-        [routerLink]="dataService.getSpecificGeneralSettings(data.data.title)[0]?.url"
-          [src]="dataService.getSpecificGeneralSettings(data.data.title)[0]?.imgSrc"
+        [routerLink]="dataService.getSpecificGeneralSettings(data?.data?.title)[0]?.url"
+          [src]="dataService.getSpecificGeneralSettings(data?.data?.title)[0]?.imgSrc"
           loading="lazy"
           class="w-100"
-          [alt]="dataService.getSpecificGeneralSettings(data.data.title)[0]?.alt"
+          [alt]="dataService.getSpecificGeneralSettings(data?.data?.title)[0]?.alt"
         />
       </div>
     }
-    @if (dataService.getSpecificGeneralSettings(data.data.title).length > 1) {
+    @if (dataService.getSpecificGeneralSettings(data?.data?.title)?.length > 1) {
       <ngx-slick-carousel
         class="hero-slider slick-carousel"
         [config]="heroBannerSlideConfig"
       >
 
-
-        @for (slide of dataService.getSpecificGeneralSettings(data.data.title); track slide.img) {
-          <div ngxSlickItem class="slide position-relative">
-          <a [routerLink]="slide.url">
-  <img
-    [src]="slide.imgSrc"
-    loading="lazy"
-    [alt]="slide.alt"
-    class="w-100"
-  />
+@if (dataService.getSpecificGeneralSettings(data?.data?.title)) {
+  @for (slide of dataService.getSpecificGeneralSettings(data?.data?.title); track slide.img) {
+    <div ngxSlickItem class="slide position-relative">
+    <a [routerLink]="slide.url">
+<img
+[src]="slide.imgSrc"
+loading="lazy"
+[alt]="slide.alt"
+class="w-100"
+/>
 </a>
 
-          </div>
-        }
+    </div>
+  }
+}
       </ngx-slick-carousel>
     }
 

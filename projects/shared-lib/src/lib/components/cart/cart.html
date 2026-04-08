@@ -134,7 +134,7 @@
 <section class="product-cart w-1100 mx-auto box-shadows rounded-4 py-md-3 px-sm-4 px-2 mb-5">
   <div class="container">
     <!-- Blank cart start -->
-    @if (cartListData.length == 0 && isLoggedIn && !loading) {
+    @if (cartListData?.length == 0 && isLoggedIn && !loading) {
       <div class="empty-cart-container py-5 text-center">
         <div class="empty-cart-icon mb-4">
           <img
@@ -156,7 +156,7 @@
         </div>
       </div>
     }
-    @if (!isLoggedIn && cartListData.length == 0) {
+    @if (!isLoggedIn && cartListData?.length == 0) {
       <app-no-data
         message="There are no data available right now."
         [showAction]="false"
@@ -173,7 +173,7 @@
     } -->
     <!-- Blank cart end -->
 
-    @if (cartListData.length > 0) {
+    @if (cartListData?.length > 0) {
       <div class="row">
         <!-- product config section start-->
         <div class="col-md-8 col-12">

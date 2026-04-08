@@ -63,6 +63,20 @@ export class LayoutSettingsComponent implements OnInit {
         url: '',
       },
     ],
+    home_Promo_Slider:[
+ {
+        imgSrc: '',
+        alt: '',
+        url: '',
+      },
+    ],
+    home_Promo_Slider_bottom:[
+ {
+        imgSrc: '',
+        alt: '',
+        url: '',
+      },
+    ],
     home_Promo_Slider_testimonials: [
       {
         imgSrc: '',
@@ -102,7 +116,20 @@ export class LayoutSettingsComponent implements OnInit {
       email: '',
       address: '',
     },
-    footer:[]
+    footer:[
+        {colHeading: '',
+      externalLinkValue : '',
+      showExternalInput : false,
+      pageList:[],
+      items: [
+        {
+          label: '',
+          link: '',
+          isSelected: false,
+        },
+      ],
+    }
+    ]
   };
   seoForm!:FormGroup;
   loading = true;
@@ -290,9 +317,12 @@ this.seoFormGroup();
   }
   // Add new empty slide
   addSlide(type: string) {
-    // console.log('this.settingsModel[type]==>', this.settingsModel);
+    // console.log('this.settingsModel[type]==>', type);
     // console.log('type==>', type);
-
+// console.log('this.settingsModel==>',this.settingsModel);
+if (!this.settingsModel[type]) {
+  this.settingsModel[type] = [];
+}
     this.settingsModel[type]?.push({
       imgSrc: '',
       alt: '',
@@ -307,9 +337,7 @@ this.seoFormGroup();
     }
   }
   addFooterColumn() {
-    console.log('this.pageList===>',this.pageList);
-    console.log('this.settingsModel==>',this.settingsModel);
-    this.settingsModel['footer'] = [];
+    // this.settingsModel['footer'] = [];
     this.settingsModel?.footer?.push({
       colHeading: '',
       externalLinkValue : '',
