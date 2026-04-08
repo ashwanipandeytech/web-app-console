@@ -11,7 +11,7 @@ import { ConfirmationPopupComponent } from '../../confirmationPopup/confirmation
 import { GlobalService } from '../../global.service';
 import { AddProduct } from './add-product/add-product';
 import { NgbModal, NgbModalRef, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
-import { environment } from 'shared-lib/environments/environment';
+import { environment } from 'environments/environment';
 @Component({
   selector: 'app-all-products',
   imports: [NgbTooltip, Sidebar, Header, ConfirmationPopupComponent],
