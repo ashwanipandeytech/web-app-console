@@ -273,6 +273,9 @@ cloneProduct(data:any){
    if (item?.product_details) {
     delete item.product_details.permaLink;
    }
+   if (item?.variants) {
+    item.variants = [];
+   }
    delete item.title;
 // console.log('item==>',item);
 

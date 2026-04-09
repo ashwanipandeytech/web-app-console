@@ -10,6 +10,7 @@
             type="checkbox"
             [(ngModel)]="cat.checked"
             (change)="onCheckboxChange(cat)"
+            [disabled]="categorySelected && categorySelected !== cat.id"
             >
 
           <span class="label-text">{{ cat.name }}</span>

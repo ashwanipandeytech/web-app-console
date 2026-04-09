@@ -17,11 +17,15 @@ export class CategoryTreeComponent implements OnInit {
   @Input() categoriesData:any = {};
  @Input() selectedIds: number[] = [];   // shared between recursive component calls
 @Output() selectedId = new EventEmitter<number>();
+  categorySelected: any=false;
   onCheckboxChange(cat: any) {
     if (cat.checked) {
+      this.categorySelected = cat.id;
       this.addId(cat.id);
+       this.uncheckOthers(this.categoriesData?.categories, cat.id);
     } else {
       this.removeId(cat.id);
+       this.categorySelected = null;
     }
 
     //// console.log("Selected IDs:", this.selectedIds);
@@ -34,6 +38,16 @@ export class CategoryTreeComponent implements OnInit {
       this.selectedId.emit(this.selectedIds[0]);
     }
   }
+  uncheckOthers(categories: any[], selectedId: number) {
+  categories.forEach(c => {
+    if (c.id !== selectedId) {
+      c.checked = false;
+    }
+    if (c.children?.length) {
+      this.uncheckOthers(c.children, selectedId);
+    }
+  });
+}
 
   // Remove ID and also remove children IDs
   removeId(id: number) {

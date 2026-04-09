@@ -1562,7 +1562,7 @@ export class AddProduct {
     }
 
     const shouldFetchFromApi =
-      (this.data?.mode === 'update' || this.data?.mode === 'clone') &&
+      (this.data?.mode === 'update') &&
       !!this.data?.item?.id;
     if (!shouldFetchFromApi) {
       this.showVariantTable = false;
