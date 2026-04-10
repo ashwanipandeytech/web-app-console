@@ -72,7 +72,7 @@ export class App {
 
 
   ngAfterViewInit(): void {
-
+console.info('here')
 
     this.activatedRoute.queryParams.subscribe(params => {
       if (this.router.url.includes('reset-password') && params['token']) {
