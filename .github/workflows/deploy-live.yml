@@ -25,7 +25,7 @@ jobs:
         run: npx ng build frontend --configuration web-farming --base-href https://farmingmart.in/
 
       - name: Build Console (Live)
-        run: npx ng build console-panel --configuration console-farming --base-href https://farmingmart.in/console/
+        run: npx ng build console-panel --configuration console-farming --base-href https://console.farmingmart.in/
 
       - name: Deploy Frontend to Live
         uses: SamKirkland/FTP-Deploy-Action@4.3.5
@@ -54,7 +54,7 @@ jobs:
           port: 21
           protocol: ftp
           local-dir: ./dist/console-panel/browser/
-          server-dir: ${{ secrets.FTP_REMOTE_PATH_LIVE }}console/
+          server-dir: ${{ secrets.FTP_CONSOLE_REMOTE_PATH_LIVE }}
           dangerous-clean-slate: false
           exclude: |
             **/.htaccess
