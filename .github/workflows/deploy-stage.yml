@@ -43,12 +43,12 @@ jobs:
           local-dir: ./dist/frontend/browser/
           server-dir: ${{ secrets.FTP_REMOTE_PATH_STAGE }}
           dangerous-clean-slate: false
-          state-name: frontend-sync-state.json
           exclude: |
             **/.htaccess
             console/**
             api/**
-           
+            images/**
+
       - name: Deploy Console to Stage
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -60,6 +60,5 @@ jobs:
           local-dir: ./dist/console-panel/browser/
           server-dir: ${{ secrets.FTP_CONSOLE_REMOTE_PATH_STAGE }}
           dangerous-clean-slate: false
-          state-name: console-sync-state.json
           exclude: |
             **/.htaccess
