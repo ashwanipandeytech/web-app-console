@@ -46,7 +46,7 @@ jobs:
       **/.htaccess
       console/
       api/
-     
+      
 
 - name: Deploy Console to Stage
   uses: SamKirkland/FTP-Deploy-Action@v4.3.5
