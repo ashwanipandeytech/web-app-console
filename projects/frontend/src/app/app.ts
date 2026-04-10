@@ -38,7 +38,6 @@ export class App {
   isBrowser: boolean; // Add this
   private platformId = inject(PLATFORM_ID);
   constructor(private router: Router,
-    console.log("Frontend Version: Stage Deployment Verified - Success at 18:35:11");
     private activatedRoute: ActivatedRoute,
     private cd: ChangeDetectorRef
   ) {
@@ -72,7 +71,7 @@ export class App {
 
 
   ngAfterViewInit(): void {
-console.info('here')
+
 
     this.activatedRoute.queryParams.subscribe(params => {
       if (this.router.url.includes('reset-password') && params['token']) {

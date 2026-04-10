@@ -28,7 +28,7 @@ jobs:
         run: npx ng build console-panel --configuration console-farming --base-href https://console.farmingmart.in/
 
       - name: Deploy Frontend to Live
-        uses: SamKirkland/FTP-Deploy-Action@4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER_LIVE }}
           username: ${{ secrets.FTP_USERNAME_LIVE }}
@@ -46,7 +46,7 @@ jobs:
             */
 
       - name: Deploy Console to Live
-        uses: SamKirkland/FTP-Deploy-Action@4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER_LIVE }}
           username: ${{ secrets.FTP_USERNAME_LIVE }}
