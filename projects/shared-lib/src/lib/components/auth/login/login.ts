@@ -277,6 +277,7 @@ export class Login {
         isNonUserToken = JSON.parse(localStorage.getItem('GUEST_TOKEN') || 'null');
       }
       let formData = this.signupForm.value;
+      formData.phone = String(formData.phone);
       formData.guest_token = isNonUserToken;
       this.dataService
         .post(formData, 'auth/register')
