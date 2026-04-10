@@ -39,7 +39,8 @@ jobs:
           username: ${{ secrets.FTP_USERNAME_STAGE }}
           password: ${{ secrets.FTP_PASSWORD_STAGE }}
           port: 21
-          protocol: ftps
+          protocol: ftp
+          log-level: verbose
           local-dir: ./dist/frontend/browser/
           server-dir: ${{ secrets.FTP_REMOTE_PATH_STAGE }}
           dangerous-clean-slate: false
@@ -47,7 +48,6 @@ jobs:
             **/.htaccess
             console/**
             api/**
-            images/**
 
       - name: Deploy Console to Stage
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -56,7 +56,8 @@ jobs:
           username: ${{ secrets.FTP_USERNAME_STAGE }}
           password: ${{ secrets.FTP_PASSWORD_STAGE }}
           port: 21
-          protocol: ftps
+          protocol: ftp
+          log-level: verbose
           local-dir: ./dist/console-panel/browser/
           server-dir: ${{ secrets.FTP_CONSOLE_REMOTE_PATH_STAGE }}
           dangerous-clean-slate: false
