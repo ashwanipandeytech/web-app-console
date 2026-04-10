@@ -1,0 +1,55 @@
+name: Deploy Live
+
+on:
+  push:
+    branches:
+      - live
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build Frontend (Live)
+        run: npx ng build frontend --configuration web-production
+
+      - name: Build Console (Live)
+        run: npx ng build console-panel --configuration console-production
+
+      - name: Deploy Frontend to Live
+        uses: SamKirkland/FTP-Deploy-Action@4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER_LIVE }}
+          username: ${{ secrets.FTP_USERNAME_LIVE }}
+          password: ${{ secrets.FTP_PASSWORD_LIVE }}
+          port: 21
+          protocol: ftp
+          local-dir: ./dist/frontend/browser/
+          server-dir: ${{ secrets.FTP_REMOTE_PATH_LIVE }}
+          exclude: |
+            **/.htaccess
+            console/
+
+      - name: Deploy Console to Live
+        uses: SamKirkland/FTP-Deploy-Action@4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER_LIVE }}
+          username: ${{ secrets.FTP_USERNAME_LIVE }}
+          password: ${{ secrets.FTP_PASSWORD_LIVE }}
+          port: 21
+          protocol: ftp
+          local-dir: ./dist/console-panel/browser/
+          server-dir: ${{ secrets.FTP_REMOTE_PATH_LIVE }}console/
+          exclude: |
+            **/.htaccess
