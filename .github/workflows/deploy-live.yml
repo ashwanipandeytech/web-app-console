@@ -37,9 +37,13 @@ jobs:
           protocol: ftp
           local-dir: ./dist/frontend/browser/
           server-dir: ${{ secrets.FTP_REMOTE_PATH_LIVE }}
+          dangerous-clean-slate: false
           exclude: |
             **/.htaccess
             console/
+            api/
+            images/
+            */ # Exclude all other subdirectories
 
       - name: Deploy Console to Live
         uses: SamKirkland/FTP-Deploy-Action@4.3.5
@@ -51,5 +55,9 @@ jobs:
           protocol: ftp
           local-dir: ./dist/console-panel/browser/
           server-dir: ${{ secrets.FTP_REMOTE_PATH_LIVE }}console/
+            api/
+            images/
+            */ # Exclude all other subdirectories
+          dangerous-clean-slate: false
           exclude: |
             **/.htaccess
