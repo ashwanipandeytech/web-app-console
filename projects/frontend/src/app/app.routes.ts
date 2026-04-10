@@ -131,6 +131,7 @@ export const routes: Routes = [
     path: 'thank-you',
     component: Thankyou,
   },
+  
 
     {
         path: '**',
