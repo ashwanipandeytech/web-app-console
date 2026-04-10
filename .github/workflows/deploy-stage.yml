@@ -22,10 +22,10 @@ jobs:
         run: npm install --legacy-peer-deps
 
       - name: Build Frontend (Stage)
-        run: npx ng build frontend --configuration web-farming
+        run: npx ng build frontend --configuration web-production --base-href https://safure.demohandler.in/
 
       - name: Build Console (Stage)
-        run: npx ng build console-panel --configuration console-farming
+        run: npx ng build console-panel --configuration console-production --base-href https://safure.demohandler.in/console/
 
       - name: Deploy Frontend to Stage
         uses: SamKirkland/FTP-Deploy-Action@4.3.5
@@ -43,7 +43,7 @@ jobs:
             console/
             api/
             images/
-            */ # Exclude all other subdirectories
+            */
 
       - name: Deploy Console to Stage
         uses: SamKirkland/FTP-Deploy-Action@4.3.5
@@ -55,9 +55,6 @@ jobs:
           protocol: ftp
           local-dir: ./dist/console-panel/browser/
           server-dir: ${{ secrets.FTP_REMOTE_PATH_STAGE }}console/
-            api/
-            images/
-            */ # Exclude all other subdirectories
           dangerous-clean-slate: false
           exclude: |
             **/.htaccess
