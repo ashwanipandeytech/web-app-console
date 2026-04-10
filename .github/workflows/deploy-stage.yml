@@ -23,37 +23,42 @@ jobs:
 
       - name: Build Frontend (Stage)
         run: npx ng build frontend --configuration web-production --base-href https://safure.demohandler.in/
+- name: Build Console (Stage)
+  run: npx ng build console-panel --configuration console-production --base-href https://console.demohandler.in/
 
-      - name: Build Console (Stage)
-        run: npx ng build console-panel --configuration console-production --base-href https://console.demohandler.in/
+- name: Verify Build Output
+  run: |
+    ls -R dist/frontend/browser/
+    ls -R dist/console-panel/browser/
 
-      - name: Deploy Frontend to Stage
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER_STAGE }}
-          username: ${{ secrets.FTP_USERNAME_STAGE }}
-          password: ${{ secrets.FTP_PASSWORD_STAGE }}
-          port: 21
-          protocol: ftp
-          local-dir: ./dist/frontend/browser/
-          server-dir: ${{ secrets.FTP_REMOTE_PATH_STAGE }}
-          dangerous-clean-slate: false
-          exclude: |
-            **/.htaccess
-            console/
-            api/
-            images/
-          
-      - name: Deploy Console to Stage
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER_STAGE }}
-          username: ${{ secrets.FTP_USERNAME_STAGE }}
-          password: ${{ secrets.FTP_PASSWORD_STAGE }}
-          port: 21
-          protocol: ftp
-          local-dir: ./dist/console-panel/browser/
-          server-dir: ${{ secrets.FTP_CONSOLE_REMOTE_PATH_STAGE }}
-          dangerous-clean-slate: false
-          exclude: |
-            **/.htaccess
+- name: Deploy Frontend to Stage
+  uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+  with:
+    server: ${{ secrets.FTP_SERVER_STAGE }}
+    username: ${{ secrets.FTP_USERNAME_STAGE }}
+    password: ${{ secrets.FTP_PASSWORD_STAGE }}
+    port: 21
+    protocol: ftps
+    local-dir: ./dist/frontend/browser/
+    server-dir: ${{ secrets.FTP_REMOTE_PATH_STAGE }}
+    dangerous-clean-slate: false
+    exclude: |
+      **/.htaccess
+      console/
+      api/
+     
+
+- name: Deploy Console to Stage
+  uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+  with:
+    server: ${{ secrets.FTP_SERVER_STAGE }}
+    username: ${{ secrets.FTP_USERNAME_STAGE }}
+    password: ${{ secrets.FTP_PASSWORD_STAGE }}
+    port: 21
+    protocol: ftps
+    local-dir: ./dist/console-panel/browser/
+    server-dir: ${{ secrets.FTP_CONSOLE_REMOTE_PATH_STAGE }}
+    dangerous-clean-slate: false
+    exclude: |
+      **/.htaccess
+
