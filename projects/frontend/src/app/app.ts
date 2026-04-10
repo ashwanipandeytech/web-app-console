@@ -71,7 +71,7 @@ export class App {
 
 
   ngAfterViewInit(): void {
-console.info('STAGE CI/CD PROCESS ON PUSH TEST')
+console.info('STAGE CI/CD PROCESS ON PUSH TEST1')
 
     this.activatedRoute.queryParams.subscribe(params => {
       if (this.router.url.includes('reset-password') && params['token']) {
