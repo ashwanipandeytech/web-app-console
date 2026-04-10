@@ -38,6 +38,7 @@ export class App {
   isBrowser: boolean; // Add this
   private platformId = inject(PLATFORM_ID);
   constructor(private router: Router,
+    console.log("Frontend Version: Stage Deployment Verified - Success at 18:35:11");
     private activatedRoute: ActivatedRoute,
     private cd: ChangeDetectorRef
   ) {

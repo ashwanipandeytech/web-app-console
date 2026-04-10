@@ -19,6 +19,7 @@ export class App {
   public router=inject(Router)
   isLogin: boolean=false;
   constructor(){
+    console.log("Console Version: Stage Deployment Verified - Success at 18:35:11");
 // alert('hello 2');
    let userData= localStorage.getItem('user');
 
