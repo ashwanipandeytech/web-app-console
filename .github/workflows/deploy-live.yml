@@ -34,9 +34,9 @@ jobs:
           username: ${{ secrets.FTP_USERNAME_LIVE }}
           password: ${{ secrets.FTP_PASSWORD_LIVE }}
           port: 21
-          protocol: ftp
+          protocol: ftps
           local-dir: ./dist/frontend/browser/
-          server-dir: ${{ secrets.FTP_REMOTE_PATH_LIVE }}
+          server-dir: public_html/
           dangerous-clean-slate: false
           exclude: |
             **/.htaccess
@@ -51,9 +51,9 @@ jobs:
           username: ${{ secrets.FTP_USERNAME_LIVE }}
           password: ${{ secrets.FTP_PASSWORD_LIVE }}
           port: 21
-          protocol: ftp
+          protocol: ftps
           local-dir: ./dist/console-panel/browser/
-          server-dir: ${{ secrets.FTP_CONSOLE_REMOTE_PATH_LIVE }}
+          server-dir: public_html/console/
           dangerous-clean-slate: false
           exclude: |
             **/.htaccess
