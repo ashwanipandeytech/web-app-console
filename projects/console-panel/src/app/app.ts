@@ -19,7 +19,7 @@ export class App {
   public router=inject(Router)
   isLogin: boolean=false;
   constructor(){
-    console.info('CI/CD PROCESS ON PUSH TEST CONSOLE LIVE')
+    console.info('CI/CD PROCESS ON PUSH TEST CONSOLE LIVE NOW')
    
 // alert('hello 2');
    let userData= localStorage.getItem('user');

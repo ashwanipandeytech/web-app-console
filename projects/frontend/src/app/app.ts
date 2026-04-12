@@ -41,7 +41,7 @@ export class App {
     private activatedRoute: ActivatedRoute,
     private cd: ChangeDetectorRef
   ) {
-    console.info('CI/CD PROCESS ON PUSH TEST FRONTEND  LIVE ')
+    console.info('CI/CD PROCESS ON PUSH TEST FRONTEND  LIVE NOW')
     this.isBrowser = isPlatformBrowser(this.platformId); // Initialize isBrowser
     this.platFormType = this.platformDetectionService.getActivePlatform()
     let user = null;
