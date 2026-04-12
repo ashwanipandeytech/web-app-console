@@ -36,7 +36,7 @@ jobs:
           port: 21
           protocol: ftp
           local-dir: ./dist/frontend/browser/
-          server-dir: ./
+          server-dir: ${{ secrets.FTP_REMOTE_PATH_LIVE }}
           dangerous-clean-slate: false
           exclude: |
             **/.htaccess
@@ -53,7 +53,7 @@ jobs:
           port: 21
           protocol: ftp
           local-dir: ./dist/console-panel/browser/
-          server-dir: ./console/
+          server-dir: ${{ secrets.FTP_CONSOLE_REMOTE_PATH_LIVE }}
           dangerous-clean-slate: false
           exclude: |
             **/.htaccess
