@@ -43,7 +43,6 @@ jobs:
             console/
             api/
             images/
-            */
 
       - name: Deploy Console to Live
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
